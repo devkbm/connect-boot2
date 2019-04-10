@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.like.board.infra.mapper.BoardMapper">
+
+    <select id="test" parameterType="map" resultType="map">
+    <![CDATA[
+		SELECT 1 as num 
+	]]>     	  
+	</select>	   
+		
+	<select id="getArticleList" parameterType="map" resultType="map"><![CDATA[
+		select b.SYS_DT		as sysDt
+		     , b.SYS_USER	as sysUser
+		     , u.name 		as sysUsernm
+		     , b.UPD_DT  	as updDt
+		     , b.UPD_USER	as updUser
+		     , b.PK_ARTICLE	as pkArticle
+		     , b.PPK_ARTICLE as ppkArticle
+		     , b.TITLE 		as title
+		     , b.CONTENTS	as contents
+		     , b.PWD 		as pwd
+		     , b.HIT_CNT	as hitCnt
+		     , b.FROM_DT	as fromDt
+		     , b.TO_DT		as toDt
+		     , b.seq		as seq
+		     , 'Y'			as checkYn		     		     
+		     , (select group_concat(z.PK_FILE,'|',z.FILE_NM,'|',z.size order by z.PK_FILE SEPARATOR ',')     
+		          from grarticle_files x
+		         inner join cmfileinfo z
+		               on (x.PK_FILE = z.PK_FILE)
+		         where x.PK_ARTICLE = b.PK_ARTICLE )	as fileInfo		-- uuid | path | name | size
+		     , b.FK_BOARD	as fkBoard
+   		  from grboard a
+   			inner join grarticle b
+   	        	on (a.PK_BOARD = b.FK_BOARD)   	           			
+   	        left outer join user u
+   	         	on (b.SYS_USER = u.USERNAME)    		            
+       where a.PK_BOARD = #{fkBoard}      
+    ]]>          	
+    	<if test="title != null"><![CDATA[
+    	and b.title like #{title}
+    	]]></if>
+    	<if test="contents != null"><![CDATA[
+    	and b.contents like #{contents}
+    	]]></if>
+   order by b.PK_ARTICLE desc 	
+	</select>
+</mapper>
