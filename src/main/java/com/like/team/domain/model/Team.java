@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,22 +21,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "team")
+@Table(name = "GRWTEAM")
 public class Team {
 
 	@Id	
-	@Column(name="team_id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="TEAM_ID")
 	private String teamId;
 	
-	@Column(name="team_name")
+	@Column(name="TEAM_NAME")
 	private String teamName;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="team")
 	private List<JoinTeam> memberList = new ArrayList<JoinTeam>();			
 	
-	public Team(String teamId, String teamName) {
-		this.teamId = teamId;
+	public Team(String teamName) {		
 		this.teamName = teamName;
 	}
 	

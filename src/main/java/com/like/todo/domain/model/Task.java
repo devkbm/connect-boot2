@@ -20,11 +20,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"taskGroup"})
 @ToString(callSuper=true, includeFieldNames=true)
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 @Entity
 @Table(name = "grtask")
 @EntityListeners(AuditingEntityListener.class)
@@ -51,9 +54,7 @@ public class Task extends AuditEntity implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_task_group", nullable=false, updatable=false)
-	TaskGroup taskGroup;
-	
-	protected Task() {}
+	TaskGroup taskGroup;	
 	
 	public Task(TaskGroup taskGroup, String task, LocalDate dueDate, String comments) {
 		this.taskGroup = taskGroup;
