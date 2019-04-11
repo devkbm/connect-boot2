@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.team.domain.model.JoinTeam;
-import com.like.team.domain.model.Member;
+import com.like.dept.dto.DeptDTO;
+import com.like.team.domain.model.TeamMember;
+import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
 import com.like.team.service.TeamService;
+import com.like.user.domain.model.User;
 
 @RestController
 public class TeamController {
@@ -30,22 +33,34 @@ public class TeamController {
 	@Autowired
 	TeamService teamService;
 	
-	@GetMapping(value={"/team/{id}"})
-	public ResponseEntity<?> getTeam(@PathVariable(value="id") String teamId) {
+	@GetMapping(value={"/grw/team/{id}"})
+	public ResponseEntity<?> getTeam(@PathVariable(value="id") Long teamId) {
 						
-		Team team = teamService.getTeam(teamId);												
+		Team team = teamService.getTeam(teamId);				
 		
 		return WebControllerUtil.getResponse(team,
 				team == null ? 0 : 1, 
 				team == null ? false : true,
 				"조회 되었습니다.",
-				HttpStatus.OK);
+				HttpStatus.OK);													
 	}
 	
-	@GetMapping(value={"/team/{id}/members"})
-	public ResponseEntity<?> getMemberList(@PathVariable(value="id") String teamId) {
+	@GetMapping(value={"/grw/team"})
+	public ResponseEntity<?> getTeamList(@ModelAttribute TeamDTO.SearchCondition searchCondition) {
 						
-		List<Member> memberList = teamService.getMemberList(teamId);												
+		List<Team> teamList = teamService.getTeamList(searchCondition);				
+		
+		return WebControllerUtil.getResponse(teamList,
+				teamList.size(), 
+				teamList.isEmpty()? false : true,
+				teamList.size() + "건 조회 되었습니다.",
+				HttpStatus.OK);												
+	}
+	
+	@GetMapping(value={"/grw/team/{id}/member"})
+	public ResponseEntity<?> getMemberList(@PathVariable(value="id") Long teamId) {
+						
+		List<User> memberList = teamService.getTeamMemberList(teamId);												
 		
 		return WebControllerUtil.getResponse(memberList,
 				memberList == null ? 0 : 1, 
@@ -53,20 +68,8 @@ public class TeamController {
 				"조회 되었습니다.",
 				HttpStatus.OK);
 	}
-	
-	@GetMapping(value={"/member/{id}/teams"})
-	public ResponseEntity<?> getTeamList(@PathVariable(value="id") String memberId) {
-						
-		List<Team> teamList = teamService.getTeamList(memberId);												
 		
-		return WebControllerUtil.getResponse(teamList,
-				teamList == null ? 0 : 1, 
-				teamList == null ? false : true,
-				"조회 되었습니다.",
-				HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/team"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/grw/team"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveTeam(@Valid @RequestBody Team team, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
@@ -82,40 +85,13 @@ public class TeamController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping(value={"/member/{id}"})
-	public ResponseEntity<?> getMebmer(@PathVariable(value="id") String memberId) {
-						
-		Member member = teamService.getMember(memberId);		
-		
-		return WebControllerUtil.getResponse(member,
-				member == null ? 0 : 1, 
-				member == null ? false : true,
-				"조회 되었습니다.",
-				HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/member"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveMember(@Valid @RequestBody Member member, BindingResult result) {				
-		
-		if ( result.hasErrors()) {			
-			throw new ControllerException(result.getAllErrors().toString());
-		} 							
-																			
-		teamService.saveMember(member);			
-										 					
-		return WebControllerUtil.getResponse(member,
-				member != null ? 1 : 0, 
-				true, 
-				String.format("%d 건 저장되었습니다.", member != null ? 1 : 0), 
-				HttpStatus.OK);
-	}
-	
-	@PostMapping(value={"/member/{memberId}/join/{teamId}"})
+			
+	@PostMapping(value={"/grw/member/{memberId}/join/{teamId}"})
 	public ResponseEntity<?> joinTeam(
-			@PathVariable(value="teamId") String teamId,
+			@PathVariable(value="teamId") Long teamId,
 			@PathVariable(value="memberId") String memberId) {				
 
-		JoinTeam joinTeam = teamService.joinTeam(teamId, memberId);			
+		TeamMember joinTeam = teamService.joinTeam(teamId, memberId);			
 										 					
 		return WebControllerUtil.getResponse(joinTeam,
 				1, 
@@ -124,22 +100,8 @@ public class TeamController {
 				HttpStatus.OK);
 	}
 	
-	@PostMapping(value={"/member/{memberId}/team/{teamId}/change/{afterTeamId}"})
-	public ResponseEntity<?> changeTeam(
-			@PathVariable(value="teamId") String teamId,
-			@PathVariable(value="memberId") String memberId,
-			@PathVariable(value="afterTeamId") String afterTeamId) {				
-
-		JoinTeam joinTeam = teamService.changeTeam(memberId, teamId, afterTeamId);			
-										 					
-		return WebControllerUtil.getResponse(joinTeam,
-				1, 
-				true, 
-				String.format("팀이 변경되었습니다."), 
-				HttpStatus.OK);
-	}
 	
-	@DeleteMapping(value={"/member/{memberId}/team/{teamId}"})
+	@DeleteMapping(value={"/grw/member/{memberId}/team/{teamId}"})
 	public ResponseEntity<?> deleteTeam(
 			@PathVariable(value="teamId") String teamId,
 			@PathVariable(value="memberId") String memberId) {				

@@ -7,10 +7,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.like.team.domain.model.JoinTeam;
-import com.like.team.domain.model.Member;
+import com.like.team.domain.model.TeamMember;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
+import com.like.team.dto.TeamDTO;
+import com.like.user.domain.model.User;
+import com.like.user.service.UserService;
 
 @Service
 @Transactional
@@ -19,12 +21,15 @@ public class TeamService {
 	@Autowired
 	TeamRepository teamRepository;
 	
-	public Team getTeam(String teamId) {
+	@Autowired
+	UserService userService;
+	
+	public Team getTeam(Long teamId) {
 		return teamRepository.getTeam(teamId);
 	}
 	
-	public List<Team> getTeamList() {
-		return teamRepository.getTeamList();
+	public List<Team> getTeamList(TeamDTO.SearchCondition searchCondition) {
+		return teamRepository.getTeamList(searchCondition);
 	}
 	
 	public void saveTeam(Team team) {
@@ -35,55 +40,29 @@ public class TeamService {
 		teamRepository.deleteTeam(team);
 	}
 	
-	public List<Member> getMemberList(String teamId) {
+	public List<User> getTeamMemberList(Long teamId) {
 		Team team = teamRepository.getTeam(teamId);
 		
-		return team.getMemberList();
+		return team.getUserList();
+	}
+					
+	public TeamMember getTeamMember(Long id) {
+		return teamRepository.getTeamMember(id);
 	}
 	
-	public List<Team> getTeamList(String memberId) {
-		Member member = teamRepository.getMember(memberId);
-		
-		return member.getTeamList();
-	}
-	
-	public Member getMember(String memberId) {
-		return teamRepository.getMember(memberId);
-	}
-	
-	public void saveMember(Member member) {
-		teamRepository.saveMember(member);
-	}
-	
-	public void deleteMember(Member member) {
-		teamRepository.deleteMember(member);
-	}
-	
-	public JoinTeam joinTeam(String teamId, String memberId) {
+	public TeamMember joinTeam(Long teamId, String userId) {
 		Team team = teamRepository.getTeam(teamId);
-		Member member = teamRepository.getMember(memberId);
+		User member = userService.getUser(userId);
 		
-		JoinTeam joinTeam = new JoinTeam(team, member);
+		TeamMember joinTeam = new TeamMember(team, member);
 		
 		teamRepository.saveJoinTeam(joinTeam);
 		
 		return joinTeam;
 	}	
 	
-	public JoinTeam changeTeam(String memberId, String prevTeamId, String afterTeamId) {
-		JoinTeam joinTeam = teamRepository.getJoinTeam(prevTeamId, memberId);
-		
-		Team team = teamRepository.getTeam(afterTeamId);
-		
-		joinTeam.changeTeam(team);
-		
-		teamRepository.saveJoinTeam(joinTeam);
-		
-		return joinTeam;
-	}
-	
 	public void quitTeam(String memberId, String teamId) {
-		JoinTeam joinTeam = teamRepository.getJoinTeam(teamId, memberId);
+		TeamMember joinTeam = null; //teamRepository.getJoinTeam(teamId, memberId);
 		
 		teamRepository.deleteJoinTeam(joinTeam);
 	}

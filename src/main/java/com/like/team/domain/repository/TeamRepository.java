@@ -4,33 +4,27 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.like.team.domain.model.JoinTeam;
-import com.like.team.domain.model.Member;
+import com.like.team.domain.model.TeamMember;
+import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
 
 @Repository
 public interface TeamRepository {
 
-	Team getTeam(String teamId);
+	Team getTeam(Long teamId);
 	
-	List<Team> getTeamList();
+	List<Team> getTeamList(TeamDTO.SearchCondition searchCondition);
 	
 	void saveTeam(Team team);
 	
 	void deleteTeam(Team team);
 	
+	TeamMember getTeamMember(Long id);
+			
+	TeamMember getTeamMember(String teamId, String memberId);
 	
-	Member getMember(String memberId);
+	void saveJoinTeam(TeamMember joinTeam);
 	
-	void saveMember(Member member);
-	
-	void deleteMember(Member member);
-	
-	
-	JoinTeam getJoinTeam(String teamId, String memberId);
-	
-	void saveJoinTeam(JoinTeam joinTeam);
-	
-	void deleteJoinTeam(JoinTeam joinTeam);
+	void deleteJoinTeam(TeamMember joinTeam);
 	
 }

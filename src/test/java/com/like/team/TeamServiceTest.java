@@ -1,7 +1,7 @@
 package com.like.team;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -13,10 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.team.domain.model.Member;
 import com.like.team.domain.model.Team;
+import com.like.team.domain.model.TeamMember;
 import com.like.team.service.TeamService;
+import com.like.user.domain.model.User;
+import com.like.user.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,43 +31,64 @@ public class TeamServiceTest {
 	@Autowired
 	TeamService teamService;
 	
+	@Autowired
+	UserService userService;
+	
 	@Before 
-    public void setUp() throws Exception { 
-		Team team = new Team("team00","팀테스트");
-		
+    public void setUp() throws Exception { 		
+	}
+	
+	@Test
+	public void test001_팀생성및조회() {
+		//Given
+		Team team = this.createTeam();
+				
+		//When
 		teamService.saveTeam(team);
 		
-		Member member = new Member("member00","멤버00");
 		
-		teamService.saveMember(member);
+		//Then
+		Team test = teamService.getTeam(team.getTeamId());
+		
+		assertThat(test.getTeamName()).isEqualTo("개발팀");
 	}
 	
 	@Test
-	public void 팀조회() {
-		Team team = teamService.getTeam("team00");
+	public void test002_팀삭제() {
+		//Given
+		Team team = this.createTeam();
+		teamService.saveTeam(team);
 		
-		assertThat(team.getTeamId(),	is("team00"));
-		assertThat(team.getTeamName(),	is("팀테스트"));
+		//When
+		teamService.deleteTeam(team);
+		
+		//Then
+		log.info(team.toString());
+		//assertThat(team).isNull();					
 	}
 	
 	@Test
-	public void 팀저장() {
-		Team team = new Team("team01","팀테스트");
+	public void test003_팀가입() {
+		//Given
+		Team team = this.createTeam();
+		teamService.saveTeam(team);
 		
-		teamService.saveTeam(team);			
-	}
-	
-	@Test
-	public void 멤버저장() {
-		Member member = new Member("member001","멤버001");
+		User user = userService.getUser("1");
+						
+		//When
+		TeamMember teamMember = teamService.joinTeam(team.getTeamId(), user.getUserId());
 		
-		teamService.saveMember(member);		
+		//Then
+		TeamMember test = teamService.getTeamMember(teamMember.getId());
+		
+		assertThat(test.getTeam()).isEqualTo(team);
+		assertThat(test.getUser()).isEqualTo(user);
 	}
 	
-	@Test
-	public void 팀가입() {
-				
-		teamService.joinTeam("team00", "member00");
-	
+	private Team createTeam() {				
+		return new Team("개발팀");
 	}
+	
+	
+	
 }

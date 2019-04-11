@@ -1,37 +1,30 @@
 package com.like.team.domain.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.like.user.domain.model.User;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "GRWTEAMMEMBER")
-public class JoinTeam {
+@Table(name = "GRWTEAMUSER")
+public class TeamMember {
 
 	@Id 
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
 	private Long id;
-	
-	@Column(name="JOIN_DT")
-	private LocalDate joinDate;
-	
-	@Column(name="WITHDRAW_DT")
-	private LocalDate withdrawDate;
-	
+		
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="TEAM_ID")
@@ -39,27 +32,28 @@ public class JoinTeam {
 	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="MEMBER_ID")
-	private Member member;		
-	
-	@Builder
-	public JoinTeam(Team team, Member member, LocalDate joinDate, LocalDate withdrawDate) {		
+	@JoinColumn(name="USER_ID")
+	private User user;		
+		
+	public TeamMember(Team team, User user) {		
 		this.team = team;
-		this.member = member;
-		this.joinDate = joinDate;
-		this.withdrawDate = withdrawDate;
+		this.user = user;
 	}
 		
 	public void changeTeam(Team team) {
 		this.team = team;		
 	}
 	
-	public Member getMember() {
-		return this.member;
+	public Long getId() {
+		return this.id;
 	}
-	
+		
 	public Team getTeam() {
 		return this.team;
+	}
+	
+	public User getUser() {
+		return this.user;
 	}
 	
 }

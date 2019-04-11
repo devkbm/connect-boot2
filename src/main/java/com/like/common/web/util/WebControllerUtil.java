@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.like.common.web.response.ResponseObject;
 import com.like.common.web.response.ResponseObjectList;
 
+import lombok.Builder;
+
 public abstract class WebControllerUtil {
 		
 	private static final ObjectMapper mapper = new ObjectMapper();	
@@ -46,6 +48,7 @@ public abstract class WebControllerUtil {
 	 * @param httpStatus	Http 응답 코드
 	 * @return Rest 요청 결과 
 	 */
+	@Builder(builderMethodName="listBuilber")
 	public static ResponseEntity<ResponseObjectList> getResponse(List<?> data, int size, boolean success, String message, HttpStatus httpStatus) {
 									
 		ResponseObjectList obj = new ResponseObjectList(data, size, success, message);			      
@@ -61,7 +64,7 @@ public abstract class WebControllerUtil {
 	 * @param message		결과 메세지
 	 * @param httpStatus	Http 응답 코드
 	 * @return Rest 요청 결과 
-	 */
+	 */	
 	public static <T> ResponseEntity<ResponseObject<T>> getResponse(T data, int size, boolean success, String message, HttpStatus httpStatus) {
 		
 		ResponseObject<T> obj = new ResponseObject<T>(data, size, success, message);		
@@ -73,9 +76,6 @@ public abstract class WebControllerUtil {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 		return responseHeaders;		
-	}
-	  
-	
-
+	}		 
 	
 }
