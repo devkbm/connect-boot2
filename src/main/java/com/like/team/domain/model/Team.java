@@ -1,5 +1,6 @@
 package com.like.team.domain.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,10 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.like.common.domain.AuditEntity;
 import com.like.user.domain.model.User;
 
 import lombok.AccessLevel;
@@ -25,7 +29,9 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "GRWTEAM")
-public class Team {
+public class Team extends AuditEntity implements Serializable {
+	
+	private static final long serialVersionUID = 7255535665611002987L;
 
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,6 +40,10 @@ public class Team {
 	
 	@Column(name="TEAM_NAME")
 	private String teamName;
+	
+	/*@OneToOne
+	@JoinColumn(name="USER_ID")
+	private User manager;*/ 
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="team")

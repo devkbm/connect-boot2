@@ -33,7 +33,7 @@ public class TeamJpaRepository implements TeamRepository {
 	public Team getTeam(Long teamId) {
 		Optional<Team> entity = jpaTeam.findById(teamId); 
 				
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class TeamJpaRepository implements TeamRepository {
 	@Override
 	public TeamMember getTeamMember(Long id) {
 		Optional<TeamMember> entity = jpaTeamMember.findById(id);
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override

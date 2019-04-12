@@ -51,9 +51,9 @@ public class ArticleJpaRepository implements ArticleRepository {
 	}
 		
 	public Article getArticle(Long id) {	
-		Optional<Article> article = jpaArticle.findById(id);
+		Optional<Article> entity = jpaArticle.findById(id);
 		
-		return article.get();
+		return entity.isPresent() ? entity.get() : null;
 		
 	}
 			
@@ -172,7 +172,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 		
 		Optional<Article> entity = jpaArticle.findById(pkArticle);
 		
-		return entity.get().getAttachedFileInfoList();
+		return entity.isPresent() ? entity.get().getAttachedFileInfoList() : null;
 	}
 	
 	

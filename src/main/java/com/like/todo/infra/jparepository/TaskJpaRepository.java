@@ -38,7 +38,7 @@ public class TaskJpaRepository implements TaskRepository {
 	public TaskGroup getTaskGroup(Long pkTaskGroup) {
 		Optional<TaskGroup> entity = jpaTaskGroup.findById(pkTaskGroup);
 		
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class TaskJpaRepository implements TaskRepository {
 	@Override
 	public Task getTask(Long pkTask) {
 		Optional<Task> entity = jpaTask.findById(pkTask);
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override

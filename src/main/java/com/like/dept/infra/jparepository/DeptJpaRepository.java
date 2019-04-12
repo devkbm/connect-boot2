@@ -26,9 +26,9 @@ public class DeptJpaRepository implements DeptRepository {
 	
 	@Override
 	public Dept getDept(String deptCode) {
-		Optional<Dept> dept = jpaDept.findById(deptCode);
+		Optional<Dept> entity = jpaDept.findById(deptCode);
 		
-		return dept.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override

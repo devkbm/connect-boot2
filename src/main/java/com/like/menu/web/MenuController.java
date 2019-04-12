@@ -257,7 +257,7 @@ public class MenuController {
 	public ResponseEntity<?> saveResource(@RequestBody @Valid WebResourceDTO.ResourceSave dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
-			throw new ControllerException("오류");
+			throw new ControllerException(result.getAllErrors().toString());
 		} 
 		
 		WebResource resource = menuQueryService.getResource(dto.getResourceCode());							

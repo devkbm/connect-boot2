@@ -38,7 +38,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	public AppointmentCode getAppointmentCode(String codeId) {
 		Optional<AppointmentCode> entity = jpaAppointmentCode.findById(codeId);
 		
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	@Override
 	public AppointmentCodeDetails getAppointmentCodeDetails(Long id) {
 		Optional<AppointmentCodeDetails> entity = jpaAppointmentCodeDetails.findById(id); 
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	@Override
 	public DeptType getDeptType(String id) {
 		Optional<DeptType> entity = jpaDeptType.findById(id);
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	@Override
 	public JobType getJobType(String id) {
 		Optional<JobType> entity = jpaJobType.findById(id);
-		return entity.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override

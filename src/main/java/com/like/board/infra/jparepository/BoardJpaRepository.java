@@ -30,9 +30,9 @@ public class BoardJpaRepository implements BoardRepository {
 	private final QBoard qBoard = QBoard.board;		
 		
 	public Board getBoard(Long id) {
-		Optional<Board> board = jpaBoard.findById(id);
+		Optional<Board> entity = jpaBoard.findById(id);
 		
-		return board.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 	
 	public List<Board> getBoardList(BoardDTO.QueryCondition condition) {		

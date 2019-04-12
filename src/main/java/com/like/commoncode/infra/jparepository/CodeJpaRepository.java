@@ -30,9 +30,9 @@ public class CodeJpaRepository implements CommonCodeRepository {
 
 	@Override
 	public Code getCode(String codeId) {
-		Optional<Code> code = jpaCommonCode.findById(codeId);
+		Optional<Code> entity = jpaCommonCode.findById(codeId);
 		
-		return code.get();
+		return entity.isPresent() ? entity.get() : null;
 	}
 	
 	@Override
