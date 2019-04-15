@@ -1,13 +1,23 @@
 package com.like.team.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+import com.like.dept.dto.DeptDTO;
+import com.like.dept.dto.DeptDTO.DeptSave;
+import com.like.dept.dto.DeptDTO.DeptSave.DeptSaveBuilder;
 import com.like.team.domain.model.QTeam;
 import com.querydsl.core.BooleanBuilder;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class TeamDTO {
 	
@@ -31,5 +41,25 @@ public class TeamDTO {
 		}
 	}
 	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class TeamSave implements Serializable {
+				
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+		
+		Long teamId;
+
+		String teamName;
+		
+		List<String> memberList;
+	}
 		
 }

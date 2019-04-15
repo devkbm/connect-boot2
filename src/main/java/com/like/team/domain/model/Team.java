@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,13 +47,17 @@ public class Team extends AuditEntity implements Serializable {
 	private User manager;*/ 
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="team")
+	@OneToMany(mappedBy="team", cascade = CascadeType.PERSIST)
 	private List<TeamMember> memberList = new ArrayList<TeamMember>();			
 	
-	public Team(String teamName) {		
-		this.teamName = teamName;
-	}
+	public Team(String teamName) {
+		this.teamName = teamName;		
+	}	
 	
+	public void addMemberList(List<TeamMember> memberList) {
+		this.memberList = memberList;
+	}
+		
 	public List<User> getUserList() {
 		/*List<Member> memberList = new ArrayList<>();
 		for (JoinTeam joinTeam : this.memberList) {

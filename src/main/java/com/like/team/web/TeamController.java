@@ -1,7 +1,9 @@
 package com.like.team.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,20 @@ import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
 import com.like.team.service.TeamService;
 import com.like.user.domain.model.User;
+import com.like.user.dto.UserDTO;
+import com.like.user.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class TeamController {
-
+	
 	@Autowired
 	TeamService teamService;
+	
+	@Resource
+	UserService userService;
 		
 	@GetMapping(value={"/grw/team"})
 	public ResponseEntity<?> getTeamList(@ModelAttribute TeamDTO.SearchCondition searchCondition) {
@@ -57,12 +67,28 @@ public class TeamController {
 	}
 	
 	@RequestMapping(value={"/grw/team"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveTeam(@Valid @RequestBody Team team, BindingResult result) {				
+	public ResponseEntity<?> saveTeam(@Valid @RequestBody TeamDTO.TeamSave dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
-																			
+		
+		Team team = dto.getTeamId() == null ? null : teamService.getTeam(dto.getTeamId());
+		
+		if (team == null) {
+			team = new Team(dto.getTeamName());
+			List<User> userList = userService.getUserList(dto.getMemberList());					 
+			
+			List<TeamMember> teamMemberList = new ArrayList<TeamMember>();
+			for (User user: userList) {
+				teamMemberList.add(new TeamMember(team, user));
+			}
+			
+			team.addMemberList(teamMemberList);								
+		} else {
+			team = null;
+		}
+		
 		teamService.saveTeam(team);			
 										 					
 		return WebControllerUtil.getResponse(team,
@@ -72,8 +98,20 @@ public class TeamController {
 				HttpStatus.OK);
 	}
 	
+	@GetMapping(value={"/grw/allmember"})
+	public ResponseEntity<?> getAllMemberList(UserDTO.QueryCondition condition) {
+				
+		List<User> userList = teamService.getAllMember(condition);						 				
+		
+		return WebControllerUtil.getResponse(userList,
+				userList.size(), 
+				userList.size() > 0 ? true : false ,
+				"조회 되었습니다.",
+				HttpStatus.OK);
+	}
+	
 	@GetMapping(value={"/grw/team/{id}/member"})
-	public ResponseEntity<?> getMemberList(@PathVariable(value="id") Long teamId) {
+	public ResponseEntity<?> getTeamMemberList(@PathVariable(value="id") Long teamId) {
 						
 		List<User> memberList = teamService.getTeamMemberList(teamId);												
 		

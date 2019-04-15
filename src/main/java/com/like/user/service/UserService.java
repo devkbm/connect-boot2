@@ -60,6 +60,10 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 	
+	public List<User> getUserList(List<String> userIds) {
+		return userRepository.getUserList(userIds);
+	}
+	
 	/**
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트

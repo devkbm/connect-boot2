@@ -18,6 +18,8 @@ public interface UserRepository {
 	 */
 	User getUser(String userId) throws UsernameNotFoundException;
 	
+	List<User> getUserList(List<String> userIds);
+	
 	/**
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트

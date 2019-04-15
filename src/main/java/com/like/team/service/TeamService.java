@@ -12,6 +12,8 @@ import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.team.dto.TeamDTO;
 import com.like.user.domain.model.User;
+import com.like.user.domain.repository.UserRepository;
+import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 
 @Service
@@ -38,6 +40,10 @@ public class TeamService {
 	
 	public void deleteTeam(Team team) {
 		teamRepository.deleteTeam(team);
+	}
+	
+	public List<User> getAllMember(UserDTO.QueryCondition searchCondition) {
+		return userService.getUserList(searchCondition);
 	}
 	
 	public List<User> getTeamMemberList(Long teamId) {

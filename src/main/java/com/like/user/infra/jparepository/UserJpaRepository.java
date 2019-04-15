@@ -41,6 +41,11 @@ public class UserJpaRepository implements UserRepository {
 	}
 	
 	@Override
+	public List<User> getUserList(List<String> userIds) {
+		return jpaUser.findAllById(userIds);
+	}
+	
+	@Override
 	public List<User> getUserList(UserDTO.QueryCondition condition) {
 		return  queryFactory
 				.selectFrom(qUser)
