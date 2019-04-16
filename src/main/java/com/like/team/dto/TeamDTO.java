@@ -28,11 +28,17 @@ public class TeamDTO {
 
 		private final QTeam qTeam = QTeam.team;			
 				
+		Long teamId;
+		
 		String teamName;						
 		
 		public BooleanBuilder getCondition() {
 			BooleanBuilder builder = new BooleanBuilder();
 								
+			if (this.teamId != null) {
+				builder.and(qTeam.teamId.eq(this.teamId));
+			}			
+			
 			if (StringUtils.hasText(this.teamName)) {
 				builder.and(qTeam.teamName.like("%"+this.teamName+"%"));
 			}			

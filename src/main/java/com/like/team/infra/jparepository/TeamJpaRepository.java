@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.team.domain.model.TeamMember;
+import com.like.team.domain.model.id.TeamMemberId;
 import com.google.common.collect.Lists;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.team.dto.TeamDTO;
 import com.like.team.infra.jparepository.springdata.JpaTeam;
 import com.like.team.infra.jparepository.springdata.JpaTeamMember;
+import com.like.user.domain.model.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -43,34 +45,41 @@ public class TeamJpaRepository implements TeamRepository {
 
 	@Override
 	public void saveTeam(Team team) {
-		jpaTeam.save(team);		
+		jpaTeam.save(team);
+		//jpaTeam.saveAndFlush(team);		
 	}
 
 	@Override
 	public void deleteTeam(Team team) {
 		jpaTeam.delete(team);		
 	}
+	
 
 	@Override
-	public TeamMember getTeamMember(Long id) {
-		Optional<TeamMember> entity = jpaTeamMember.findById(id);
-		return entity.isPresent() ? entity.get() : null;
-	}
-
-	@Override
-	public TeamMember getTeamMember(String teamId, String memberId) {
+	public TeamMember getTeamMember(Team team, User member) {				
+		Optional<TeamMember> entity = jpaTeamMember.findById(new TeamMemberId(team.getTeamId(), member.getUserId()));
 		
-		return null;
+		return entity.isPresent() ? entity.get() : null;
 	}
 
 	@Override
 	public void saveJoinTeam(TeamMember joinTeam) {
 		jpaTeamMember.save(joinTeam);		
 	}
+	
+	@Override
+	public void saveJoinTeam(List<TeamMember> teamMemberList) {
+		jpaTeamMember.saveAll(teamMemberList);		
+	}
 
 	@Override
 	public void deleteJoinTeam(TeamMember joinTeam) {
 		jpaTeamMember.delete(joinTeam);
+	}
+
+	@Override
+	public void deleteJoinTeam(List<TeamMember> teamMemberList) {
+		jpaTeamMember.deleteAll(teamMemberList);		
 	}
 	
 }

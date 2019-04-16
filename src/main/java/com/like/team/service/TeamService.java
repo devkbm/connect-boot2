@@ -1,5 +1,6 @@
 package com.like.team.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.like.team.domain.model.TeamMember;
+import com.like.team.domain.model.id.TeamMemberId;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.team.dto.TeamDTO;
 import com.like.user.domain.model.User;
-import com.like.user.domain.repository.UserRepository;
 import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 
@@ -30,47 +31,104 @@ public class TeamService {
 		return teamRepository.getTeam(teamId);
 	}
 	
+	/**
+	 * 조건에 해당하는 팀 명단을 조회한다.
+	 * @param searchCondition 조회조건
+	 * @return List<Team> 팀 명단
+	 */
 	public List<Team> getTeamList(TeamDTO.SearchCondition searchCondition) {
 		return teamRepository.getTeamList(searchCondition);
 	}
 	
-	public void saveTeam(Team team) {
+	/**
+	 * 팀을 저장한다.
+	 * @param team 팀 엔티티
+	 * @param teamMemberList 팀원 엔티티
+	 */
+	public void saveTeam(Team team, List<User> userList) {
 		teamRepository.saveTeam(team);
+					
+		// 기존 등록된 멤버 삭제
+		this.clearTeamMemberList(team);
+		
+		if (userList != null) {
+		
+			List<TeamMember> teamMemberList = new ArrayList<TeamMember>();		
+			for (User user: userList) {
+				teamMemberList.add(new TeamMember(team, user));
+			}	
+			
+			// 팀원 등록
+			teamRepository.saveJoinTeam(teamMemberList);
+		}
 	}
 	
+	/**
+	 * 팀을 삭제한다.
+	 * @param team 팀 엔티티
+	 */
 	public void deleteTeam(Team team) {
 		teamRepository.deleteTeam(team);
 	}
 	
+	/**
+	 * 조건에 해당하는 유저 정보를 조회한다.
+	 * @param searchCondition 조회 조건
+	 * @return User 
+	 */
 	public List<User> getAllMember(UserDTO.QueryCondition searchCondition) {
 		return userService.getUserList(searchCondition);
 	}
 	
+	/**
+	 * 팀에 소속된 팀원 명단을 조회한다.
+	 * @param teamId
+	 * @return
+	 */
 	public List<User> getTeamMemberList(Long teamId) {
 		Team team = teamRepository.getTeam(teamId);
 		
-		return team.getUserList();
+		return team.getMemberList();
 	}
 					
-	public TeamMember getTeamMember(Long id) {
-		return teamRepository.getTeamMember(id);
+	/**
+	 * 
+	 * @param teamId 팀 엔티티 Id
+	 * @param userId 유저 엔티티 Id
+	 * @return 
+	 */
+	public TeamMember getTeamMember(Long teamId, String userId) {
+		Team team = teamRepository.getTeam(teamId);
+		User user = userService.getUser(userId);
+				
+		return teamRepository.getTeamMember(team, user);
 	}
 	
+	/**
+	 * 팀에 가입한다.
+	 * @param teamId 팀 엔티티 Id
+	 * @param userId 유저 엔티티 Id
+	 * @return 
+	 */
 	public TeamMember joinTeam(Long teamId, String userId) {
-		Team team = teamRepository.getTeam(teamId);
-		User member = userService.getUser(userId);
+		//Team team = teamRepository.getTeam(teamId);
+		//User member = userService.getUser(userId);
 		
-		TeamMember joinTeam = new TeamMember(team, member);
+		TeamMember joinTeam = new TeamMember(new TeamMemberId(teamId, userId));
 		
 		teamRepository.saveJoinTeam(joinTeam);
 		
 		return joinTeam;
 	}	
-	
-	public void quitTeam(String memberId, String teamId) {
-		TeamMember joinTeam = null; //teamRepository.getJoinTeam(teamId, memberId);
 		
-		teamRepository.deleteJoinTeam(joinTeam);
-	}
+	/**
+	 * 팀에 해당하는 팀원 정보를 초기화한다.
+	 * @param team 팀 엔티티
+	 */
+	public void clearTeamMemberList(Team team) {
+		List<TeamMember> teamMemberList = team.getTeamMemberList();
+		
+		teamRepository.deleteJoinTeam(teamMemberList);
+	}	
 	
 }

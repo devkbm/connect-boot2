@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,37 +35,48 @@ public class Team extends AuditEntity implements Serializable {
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="TEAM_ID")
-	private Long teamId;
+	Long teamId;
 	
 	@Column(name="TEAM_NAME")
-	private String teamName;
+	String teamName;
 	
 	/*@OneToOne
 	@JoinColumn(name="USER_ID")
 	private User manager;*/ 
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="team", cascade = CascadeType.PERSIST)
-	private List<TeamMember> memberList = new ArrayList<TeamMember>();			
+	@OneToMany(mappedBy="team", fetch = FetchType.EAGER)
+	List<TeamMember> memberList = new ArrayList<TeamMember>();			
 	
 	public Team(String teamName) {
 		this.teamName = teamName;		
 	}	
 	
+	public void changeTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+	
 	public void addMemberList(List<TeamMember> memberList) {
 		this.memberList = memberList;
 	}
 		
-	public List<User> getUserList() {
-		/*List<Member> memberList = new ArrayList<>();
+	public List<User> getMemberList() {
+		/*
+		// Java 7
+		List<Member> memberList = new ArrayList<>();
 		for (JoinTeam joinTeam : this.memberList) {
 			memberList.add(joinTeam.getMember());
 		}
 		
-		return memberList;*/
+		return memberList;
+		*/
 		return this.memberList
 				.stream()
 				.map(r -> r.getUser())
 				.collect(Collectors.toList());
+	}
+	
+	public List<TeamMember> getTeamMemberList() {
+		return this.memberList;
 	}
 }

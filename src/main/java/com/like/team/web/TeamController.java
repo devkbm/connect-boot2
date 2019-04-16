@@ -1,6 +1,5 @@
 package com.like.team.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +23,7 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.team.domain.model.TeamMember;
 import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
+import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;
 import com.like.user.domain.model.User;
 import com.like.user.dto.UserDTO;
@@ -59,7 +58,9 @@ public class TeamController {
 						
 		Team team = teamService.getTeam(teamId);				
 		
-		return WebControllerUtil.getResponse(team,
+		TeamDTO.TeamSave dto = TeamDTOAssembler.convertDTO(team);
+		
+		return WebControllerUtil.getResponse(dto,
 				team == null ? 0 : 1, 
 				team == null ? false : true,
 				"조회 되었습니다.",
@@ -73,23 +74,20 @@ public class TeamController {
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
 		
-		Team team = dto.getTeamId() == null ? null : teamService.getTeam(dto.getTeamId());
+		Team team = dto.getTeamId() == null ? null : teamService.getTeam(dto.getTeamId());		
 		
 		if (team == null) {
-			team = new Team(dto.getTeamName());
-			List<User> userList = userService.getUserList(dto.getMemberList());					 
-			
-			List<TeamMember> teamMemberList = new ArrayList<TeamMember>();
-			for (User user: userList) {
-				teamMemberList.add(new TeamMember(team, user));
-			}
-			
-			team.addMemberList(teamMemberList);								
+			team = new Team(dto.getTeamName());						
 		} else {
-			team = null;
+			team.changeTeamName(dto.getTeamName());
+		}
+						
+		List<User> userList = null;		
+		if (dto.getMemberList() != null) {
+			userList = userService.getUserList(dto.getMemberList());					 											
 		}
 		
-		teamService.saveTeam(team);			
+		teamService.saveTeam(team, userList);		
 										 					
 		return WebControllerUtil.getResponse(team,
 				team != null ? 1 : 0, 
@@ -136,20 +134,6 @@ public class TeamController {
 				String.format("팀에 등록 되었습니다."), 
 				HttpStatus.OK);
 	}
-	
-	
-	@DeleteMapping(value={"/grw/member/{memberId}/team/{teamId}"})
-	public ResponseEntity<?> deleteTeam(
-			@PathVariable(value="teamId") String teamId,
-			@PathVariable(value="memberId") String memberId) {				
-
-		teamService.quitTeam(memberId, teamId);	
-										 					
-		return WebControllerUtil.getResponse(memberId,
-				1, 
-				true, 
-				String.format("팀에서 제외되었습니다."), 
-				HttpStatus.OK);
-	}
+		
 	
 }

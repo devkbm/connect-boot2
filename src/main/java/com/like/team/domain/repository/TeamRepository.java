@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.team.domain.model.TeamMember;
 import com.like.team.dto.TeamDTO;
+import com.like.user.domain.model.User;
 import com.like.team.domain.model.Team;
 
 @Repository
@@ -18,13 +19,15 @@ public interface TeamRepository {
 	void saveTeam(Team team);
 	
 	void deleteTeam(Team team);
-	
-	TeamMember getTeamMember(Long id);
 			
-	TeamMember getTeamMember(String teamId, String memberId);
+	TeamMember getTeamMember(Team team, User member);	
 	
 	void saveJoinTeam(TeamMember joinTeam);
 	
+	void saveJoinTeam(List<TeamMember> teamMemberList);
+	
 	void deleteJoinTeam(TeamMember joinTeam);
+	
+	void deleteJoinTeam(List<TeamMember> teamMemberList);
 	
 }
