@@ -15,6 +15,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "GRWWORKGROUP")
 @EntityListeners(AuditingEntityListener.class)
@@ -30,4 +36,10 @@ public class WorkGroup extends AuditEntity {
 	
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
+	
+	public WorkGroup(String name) {
+		this.name = name;
+		this.scheduleList = null;		
+	}
+	
 }
