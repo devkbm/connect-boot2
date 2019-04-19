@@ -4,14 +4,14 @@ package com.like.workschedule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.service.WorkGroupService;
@@ -27,12 +27,12 @@ public class WorkScheduleServiceTest {
 	@Autowired
 	WorkGroupService workGroupService;
 	
-	
 	@Before 
     public void setUp() throws Exception { 		
 	}
 	
 	@Test
+	@WithMockUser
 	public void test001_업무그룹생성() {
 		//Given
 		WorkGroup entity = this.createWorkGroup();

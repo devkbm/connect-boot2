@@ -9,11 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.google.common.collect.Lists;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
+import com.like.workschedule.domain.model.WorkGroupMember;
+import com.like.workschedule.domain.model.id.WorkGroupMemberId;
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO.ScheduleSearch;
 import com.like.workschedule.dto.WorkDTO.SearchCondition;
 import com.like.workschedule.infra.jparepository.springdata.JpaSchedule;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroup;
+import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroupMember;
 
 @Repository
 public class ScheduleJpaRepository implements ScheduleRepository {
@@ -22,7 +25,10 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	private JpaWorkGroup jpaWorkGroup;
 	
 	@Autowired
-	private JpaSchedule jpaSchedule;
+	private JpaWorkGroupMember jpaWorkGroupMember;
+	
+	@Autowired
+	private JpaSchedule jpaSchedule;	
 	
 	@Override
 	public List<WorkGroup> getWorkGroupList(SearchCondition searchCondition) {
@@ -43,6 +49,22 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Override
 	public void deleteWorkGroup(WorkGroup workGroup) {
 		jpaWorkGroup.delete(workGroup);		
+	}
+	
+	@Override
+	public WorkGroupMember getWorkGroupMember(WorkGroupMemberId id) {
+		Optional<WorkGroupMember> entity = jpaWorkGroupMember.findById(id);
+		return entity.isPresent() ? entity.get() : null;
+	}
+
+	@Override
+	public void saveWorkGroupMember(WorkGroupMember workGroupMember) {
+		jpaWorkGroupMember.save(workGroupMember);
+	}
+
+	@Override
+	public void deleteWorkGroupMember(WorkGroupMember workGroupMember) {
+		jpaWorkGroupMember.delete(workGroupMember);		
 	}
 	
 	@Override

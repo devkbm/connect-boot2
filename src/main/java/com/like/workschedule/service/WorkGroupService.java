@@ -1,6 +1,5 @@
 package com.like.workschedule.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
+import com.like.workschedule.domain.model.WorkGroupMember;
+import com.like.workschedule.domain.model.id.WorkGroupMemberId;
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
 
@@ -41,6 +42,19 @@ public class WorkGroupService {
 		WorkGroup entity = scheduleRepository.getWorkGroup(id);
 		scheduleRepository.deleteWorkGroup(entity);
 	}
+	
+	public WorkGroupMember getWorkGroupMember(WorkGroupMemberId id) {
+		return scheduleRepository.getWorkGroupMember(id);
+	}
+	
+	public void saveWorkGroupMember(WorkGroup workGroup, WorkGroupMember workGroupMember) {
+		scheduleRepository.saveWorkGroupMember(workGroupMember);
+	}
+
+	public void deleteWorkGroupMember(WorkGroupMember workGroupMember) {
+		scheduleRepository.deleteWorkGroupMember(workGroupMember);
+	}
+		
 	
 	public List<Schedule> getScheduleList(WorkDTO.ScheduleSearch searchCondition) {
 		return scheduleRepository.getScheduleList(searchCondition);		

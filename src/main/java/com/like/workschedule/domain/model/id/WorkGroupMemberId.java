@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class WorkGroupMemberId implements Serializable {
 	
-	@Column(name="FK_WORKGROUP")
+	@Column(name="WORKGROUP_ID")
 	Long workGroupId;
 		
 	@Column(name="USER_ID")

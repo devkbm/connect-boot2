@@ -27,7 +27,7 @@ public class WorkGroupMember extends AuditEntity implements Serializable {
 	
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "WORKGROUP_ID", nullable=false, updatable=false)
+	@JoinColumn(name = "WORKGROUP_ID", insertable = false, updatable = false)
 	WorkGroup workGroup;
 	
 	@JsonBackReference

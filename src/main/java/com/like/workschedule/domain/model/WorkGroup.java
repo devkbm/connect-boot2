@@ -37,9 +37,13 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	
+	@OneToMany(mappedBy = "workGroup")
+	List<WorkGroupMember> memberList;
+	
 	public WorkGroup(String name) {
 		this.name = name;
-		this.scheduleList = null;		
+		this.scheduleList = null;
+		this.memberList = null;
 	}
 	
 }

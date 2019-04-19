@@ -2,7 +2,7 @@ package com.like.workschedule.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 import org.springframework.util.StringUtils;
 
@@ -78,7 +78,9 @@ public class WorkDTO {
 		
 		Long id;
 				
-		String name;			
+		String name;		
+		
+		List<String> userList;
 	}
 	
 	@Data
