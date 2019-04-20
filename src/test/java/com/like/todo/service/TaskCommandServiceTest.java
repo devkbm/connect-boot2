@@ -2,6 +2,7 @@ package com.like.todo.service;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.todo.domain.model.TaskGroup;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,6 +37,7 @@ public class TaskCommandServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void 업무그룹등록() {
 		TaskGroup taskGroup = new TaskGroup("제목없는 목록");
 		
@@ -46,6 +47,7 @@ public class TaskCommandServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void 업무등록() {
 		
 	}

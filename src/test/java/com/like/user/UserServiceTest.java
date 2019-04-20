@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 
 
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -36,6 +37,7 @@ public class UserServiceTest {
 	UserService userService;
 						
 	@Test	
+	@Ignore
 	public void test01_사용자등록및조회() {
 		//Given		
 		User user = User.builder()

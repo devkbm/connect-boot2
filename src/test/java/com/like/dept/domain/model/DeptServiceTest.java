@@ -12,6 +12,7 @@ import org.junit.runners.MethodSorters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class DeptServiceTest {
 	DeptService deptService;	
 				
 	@Test	
+	@WithMockUser
 	public void test01_메뉴그룹등록및조회() {
 		//Given
 		Dept dept = this.createDept();								
@@ -50,6 +52,7 @@ public class DeptServiceTest {
 	}
 	
 	@Test	
+	@WithMockUser
 	public void test02_메뉴그룹등록_상위부서포함_및_조회() {
 		//Given
 		Dept dept = this.createDept();		

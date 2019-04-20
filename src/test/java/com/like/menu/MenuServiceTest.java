@@ -11,6 +11,7 @@ import org.junit.runners.MethodSorters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +60,7 @@ public class MenuServiceTest {
     } 
 	
 	@Test	
+	@WithMockUser
 	public void test01_메뉴그룹등록및조회() {
 		//Given
 		MenuGroup menuGroup = new MenuGroup("Test","테스트메뉴그룹","테스트메뉴그룹");		
@@ -76,6 +78,7 @@ public class MenuServiceTest {
 		
 	
 	@Test
+	@WithMockUser
 	public void test02_메뉴등록및조회() throws Exception {
 		//Given
 		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
@@ -104,6 +107,7 @@ public class MenuServiceTest {
 	}
 	
 	@Test	
+	@WithMockUser
 	public void test03_프로그램등록및조회() throws Exception {	
 		//Given
 		WebResource program = WebResource.builder()
