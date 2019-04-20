@@ -33,7 +33,7 @@ public class WorkGroupMember extends AuditEntity implements Serializable {
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
-	private User user;
+	User user;
 	
 	public WorkGroupMember(WorkGroup workGroup, User user) {
 		this.id = new WorkGroupMemberId(workGroup.getId(), user.getUserId());

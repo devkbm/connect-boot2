@@ -2,9 +2,11 @@ package com.like.workschedule.domain.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,13 +39,17 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	
-	@OneToMany(mappedBy = "workGroup")
+	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER)
 	List<WorkGroupMember> memberList;
 	
 	public WorkGroup(String name) {
 		this.name = name;
 		this.scheduleList = null;
 		this.memberList = null;
+	}
+	
+	public void addWorkGroupMember(WorkGroupMember member) {
+		this.memberList.add(member);
 	}
 	
 }

@@ -61,7 +61,7 @@ public class Schedule extends AuditEntity implements Serializable {
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
-		this.workGroup = workGroup;
+		this.workGroup = workGroup;		
 	}
 	
 	

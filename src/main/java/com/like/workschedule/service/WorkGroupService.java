@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.like.user.domain.model.User;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
@@ -47,8 +48,18 @@ public class WorkGroupService {
 		return scheduleRepository.getWorkGroupMember(id);
 	}
 	
-	public void saveWorkGroupMember(WorkGroup workGroup, WorkGroupMember workGroupMember) {
-		scheduleRepository.saveWorkGroupMember(workGroupMember);
+	public void saveWorkGroupMember(WorkGroup workGroup, User user) {
+		scheduleRepository.saveWorkGroup(workGroup);
+					
+		scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+	}
+	
+	public void saveWorkGroupMember(WorkGroup workGroup, List<User> userList) {
+		scheduleRepository.saveWorkGroup(workGroup);
+		
+		for (User user: userList) {
+			scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+		}
 	}
 
 	public void deleteWorkGroupMember(WorkGroupMember workGroupMember) {

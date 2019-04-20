@@ -26,6 +26,7 @@ import com.like.team.domain.model.Team;
 import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;
 import com.like.user.domain.model.User;
+import com.like.user.domain.repository.UserRepository;
 import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 import com.like.workschedule.domain.model.Schedule;
@@ -43,6 +44,9 @@ public class WorkGroupController {
 	
 	@Resource(name="scheduleJpaRepository")
 	ScheduleRepository scheduleRepository;	
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
 	WorkGroupService workGroupService;
@@ -64,6 +68,11 @@ public class WorkGroupController {
 						
 		WorkGroup entity = workGroupService.getWorkGroup(id);							
 		
+		log.info(id.toString());		
+		log.info(id.toString());
+		log.info(id.toString());
+		log.info(id.toString());
+		
 		return WebControllerUtil.getResponse(entity,
 				entity == null ? 0 : 1, 
 				entity == null ? false : true,
@@ -80,8 +89,15 @@ public class WorkGroupController {
 		
 		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(scheduleRepository, dto);
 		
-		workGroupService.saveWorkGroup(entity);		
-										 					
+		//workGroupService.saveWorkGroup(entity);		
+		if (dto.getUserList() != null) {
+			List<User> user = userRepository.getUserList(dto.getUserList());
+			workGroupService.saveWorkGroupMember(entity, user);
+		}
+		
+		//log.info(user.getUserId());
+		//log.info(user.getUserId());
+		
 		return WebControllerUtil.getResponse(entity,
 				entity != null ? 1 : 0, 
 				true, 
