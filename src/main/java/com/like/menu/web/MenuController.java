@@ -21,13 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
+import com.like.menu.domain.model.MenuDTOAssembler;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.enums.MenuType;
+import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.dto.EnumDTO;
 import com.like.menu.dto.MenuDTO;
 import com.like.menu.dto.MenuGroupDTO;
 import com.like.menu.dto.WebResourceDTO;
+import com.like.menu.infra.jparepository.MenuJpaRepository;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -37,6 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class MenuController {
 
+	@Resource(name="menuJpaRepository")
+	private MenuRepository menuRepository;
+	
 	@Resource
 	private MenuCommandService menuCommandService;
 	
@@ -189,17 +195,18 @@ public class MenuController {
 			if (StringUtils.hasText(dto.getResource())) {
 				program = menuQueryService.getResource(dto.getResource());;
 			}					
+			menu = MenuDTOAssembler.toEntity(menuRepository, dto);
 			
-			menu = new Menu(dto.getMenuCode(), 
+			/*menu = new Menu(dto.getMenuCode(), 
 							dto.getMenuName(),
 							dto.getParentMenuCode(),
 							MenuType.valueOf(dto.getMenuType()), 
 							dto.getSequence(), 
 							dto.getLevel(),
 							menuGroup,
-							program);
+							program);*/
 		} else {
-			menu.updateEntity(dto);
+			// menu.updateEntity(dto);
 			
 			if (dto.getResource() != null) {
 				WebResource program = menuQueryService.getResource(dto.getResource());
