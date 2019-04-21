@@ -31,6 +31,7 @@ import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
+import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.WorkScheduleDTOAssembler;
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
@@ -69,9 +70,7 @@ public class WorkGroupController {
 		WorkGroup entity = workGroupService.getWorkGroup(id);							
 		
 		log.info(id.toString());		
-		log.info(id.toString());
-		log.info(id.toString());
-		log.info(id.toString());
+		log.info(id.toString());		
 		
 		return WebControllerUtil.getResponse(entity,
 				entity == null ? 0 : 1, 
@@ -89,11 +88,19 @@ public class WorkGroupController {
 		
 		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(scheduleRepository, dto);
 		
-		//workGroupService.saveWorkGroup(entity);		
+		//workGroupService.saveWorkGroup(entity);
+		log.info(entity.toString());
 		if (dto.getUserList() != null) {
-			List<User> user = userRepository.getUserList(dto.getUserList());
-			workGroupService.saveWorkGroupMember(entity, user);
+			List<User> userList = userRepository.getUserList(dto.getUserList());
+			for ( User user: userList ) {
+				WorkGroupMember member = new WorkGroupMember(entity, user);
+				log.info(member.toString());
+				entity.addWorkGroupMember(member);
+			}
+			//workGroupService.saveWorkGroupMember(entity, user);
 		}
+		log.info(entity.toString());
+		workGroupService.saveWorkGroup(entity);
 		
 		//log.info(user.getUserId());
 		//log.info(user.getUserId());

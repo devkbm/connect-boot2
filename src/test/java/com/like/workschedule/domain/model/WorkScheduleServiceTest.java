@@ -55,6 +55,7 @@ public class WorkScheduleServiceTest {
 	
 	@Test
 	@WithMockUser
+	@Ignore
 	public void test002_업무그룹맴버추가() {
 		//Given
 		WorkGroup entity = this.createWorkGroup();
@@ -70,7 +71,7 @@ public class WorkScheduleServiceTest {
 		//workGroupService.saveWorkGroupMember(entity, member);
 		
 		//Then
-		WorkGroupMember test = workGroupService.getWorkGroupMember(new WorkGroupMemberId(entity.getId(), user.getUserId()));
+		/*WorkGroupMember test = workGroupService.getWorkGroupMember(new WorkGroupMemberId(entity.getId(), user.getUserId()));
 		WorkGroupMember test2 = workGroupService.getWorkGroupMember(new WorkGroupMemberId(entity.getId(), user2.getUserId()));
 		
 				
@@ -80,7 +81,50 @@ public class WorkScheduleServiceTest {
 		log.info(test.id.getUserId());
 		log.info(test.id.getWorkGroupId().toString());
 		log.info(test2.id.getUserId());
-		log.info(test2.id.getWorkGroupId().toString());				
+		log.info(test2.id.getWorkGroupId().toString());*/				
+	}
+	
+	@Test
+	@WithMockUser
+	public void test003_업무그룹맴버추가() {
+		//Given
+		WorkGroup entity = this.createWorkGroup();
+		
+		User user = userService.getUser("1"); 		
+		WorkGroupMember member = new WorkGroupMember(entity, user);
+		
+		entity.addWorkGroupMember(member);
+										
+		//When
+		workGroupService.saveWorkGroup(entity);
+		
+		//Then
+		WorkGroupMember test = workGroupService.getWorkGroupMember(new WorkGroupMemberId(entity.getId(), user.getUserId()));		
+						
+		assertThat(test.user.getUserId()).isEqualTo("1");		
+		assertThat(test.workGroup.getId()).isEqualTo(entity.getId());
+		
+		//log.info(test.toString());		
+						
+	}
+	
+	@Test
+	@WithMockUser
+	public void test004_업무그룹멤버저장후추가() {
+		//Given
+		WorkGroup entity = this.createWorkGroup();
+		
+		User user = userService.getUser("1"); 		
+		WorkGroupMember member = new WorkGroupMember(entity, user);
+		
+		entity.addWorkGroupMember(member);
+		workGroupService.saveWorkGroup(entity);
+		
+		//When
+		User user2 = userService.getUser("2");
+		WorkGroupMember member2 = new WorkGroupMember(entity, user2);
+		entity.addWorkGroupMember(member2);
+		workGroupService.saveWorkGroup(entity);
 	}
 	
 	private WorkGroup createWorkGroup() {				

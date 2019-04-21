@@ -42,7 +42,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "menuGroup", cascade = CascadeType.PERSIST)          
+	@OneToMany(mappedBy = "menuGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE})          
     List<Menu> menuList = new ArrayList<Menu>();
 				
 	public MenuGroup(String menuGroupCode, String menuGroupName, String description) {	

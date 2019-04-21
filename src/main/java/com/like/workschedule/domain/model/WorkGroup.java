@@ -1,5 +1,6 @@
 package com.like.workschedule.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,10 +19,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = {"scheduleList"})
 @Getter
 @Entity
 @Table(name = "GRWWORKGROUP")
@@ -39,8 +45,8 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	
-	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER)
-	List<WorkGroupMember> memberList;
+	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	List<WorkGroupMember> memberList = new ArrayList<>();
 	
 	public WorkGroup(String name) {
 		this.name = name;
@@ -49,7 +55,20 @@ public class WorkGroup extends AuditEntity {
 	}
 	
 	public void addWorkGroupMember(WorkGroupMember member) {
-		this.memberList.add(member);
+		if (this.memberList == null) { 
+			this.memberList = new ArrayList<>();
+		}
+		log.info( member.toString());
+		log.info( String.valueOf(this.memberList.contains(member)));
+		
+		// 중복 방지
+		if (!this.memberList.contains(member)) {
+			this.memberList.add(member);
+		}
+		
+		// 참조 추가
+		member.setWorkGroup(this);
+		
 	}
 	
 }

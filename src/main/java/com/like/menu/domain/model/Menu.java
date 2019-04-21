@@ -49,7 +49,7 @@ public class Menu extends AuditEntity implements Serializable {
 	@Column(name="p_menu_code")
 	private String parentMenuCode;
 	
-	@OneToOne(cascade={CascadeType.PERSIST})
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="p_menu_code", insertable=false, updatable=false )
 	Menu parent;
 	
