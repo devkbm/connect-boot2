@@ -105,17 +105,17 @@ public class MenuJpaRepository implements MenuRepository {
 	public List<MenuDTO.MenuHierarchy> getMenuRootList(String menuGroupCode) {
 								
 		Expression<Boolean> isLeaf = new CaseBuilder()											
-											.when(qMenu.parentMenuCode.isNotNull()).then(true)
+											.when(qMenu.parent.menuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 						
 		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
 				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url ,isLeaf))
+											, qMenu.parent.menuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url ,isLeaf))
 				.from(qMenu)
 					.leftJoin(qMenu.resource, qWebResource)					
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
-					.and(qMenu.parentMenuCode.isNull()));													
+					.and(qMenu.parent.menuCode.isNull()));													
 				
 		return query.fetch();
 	}
@@ -123,17 +123,17 @@ public class MenuJpaRepository implements MenuRepository {
 	public List<MenuDTO.MenuHierarchy> getMenuChildrenList(String menuGroupCode, String parentMenuCode) {					
 		
 		Expression<Boolean> isLeaf = new CaseBuilder()										
-											.when(qMenu.parentMenuCode.isNotNull()).then(true)
+											.when(qMenu.parent.menuCode.isNotNull()).then(true)
 											.otherwise(false).as("isLeaf");
 						
 		JPAQuery<MenuDTO.MenuHierarchy> query = queryFactory
 				.select(Projections.constructor(MenuDTO.MenuHierarchy.class
 											, qMenu.menuGroup.menuGroupCode, qMenu.menuCode, qMenu.menuName
-											, qMenu.parentMenuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url, isLeaf))
+											, qMenu.parent.menuCode, qMenu.menuType, qMenu.sequence, qMenu.level, qWebResource.url, isLeaf))
 				.from(qMenu)				
 					.leftJoin(qMenu.resource, qWebResource)
 				.where(qMenu.menuGroup.menuGroupCode.eq(menuGroupCode)
-					.and(qMenu.parentMenuCode.eq(parentMenuCode)));
+					.and(qMenu.parent.menuCode.eq(parentMenuCode)));
 																		
 		return query.fetch();
 	}
