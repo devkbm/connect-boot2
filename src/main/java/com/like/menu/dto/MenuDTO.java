@@ -91,8 +91,7 @@ public class MenuDTO {
 			this.modifiedBy 	= menu.getModifiedBy();
 			this.menuGroupCode 	= menu.getMenuGroup().getMenuGroupCode();
 			this.menuCode 		= menu.getMenuCode();
-			this.menuName 		= menu.getMenuName();
-			this.parentMenuCode = menu.getParentMenuCode();
+			this.menuName 		= menu.getMenuName();			
 			this.menuType		= menu.getMenuType().toString();				
 			this.sequence 		= menu.getSequence();
 			this.level 			= menu.getLevel();

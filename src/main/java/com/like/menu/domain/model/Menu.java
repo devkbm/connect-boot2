@@ -41,41 +41,37 @@ public class Menu extends AuditEntity implements Serializable {
 
 	@Id
 	@Column(name = "menu_code")
-	private String menuCode;
+	String menuCode;
 	
 	@Column(name="menu_name")
-	private String menuName; 		
-	
-	@Column(name="p_menu_code")
-	private String parentMenuCode;
-	
+	String menuName; 		
+			
 	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="p_menu_code", insertable=false, updatable=false )
+	@JoinColumn(name="p_menu_code", nullable = true )
 	Menu parent;
 	
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="menu_type")
-	private MenuType menuType;
+	MenuType menuType;
 	
 	@Column(name="seq")
-	private long sequence;
+	long sequence;
 	
 	@Column(name="lvl")
-	private long level;			
+	long level;			
 			 				
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)
-	private MenuGroup menuGroup = new MenuGroup();
+	MenuGroup menuGroup = new MenuGroup();
 	
 	@OneToOne(optional=true)
 	@JoinColumn(name = "resource_code", nullable=true)
-	private WebResource resource = new WebResource();
+	WebResource resource = new WebResource();
 		
 	@Builder
 	public Menu(String menuCode, 
-				String menuName, 
-				String parentMenuCode, 				
+				String menuName, 				 			
 				MenuType menuType, 
 				long sequence,
 				long level, 
@@ -83,8 +79,7 @@ public class Menu extends AuditEntity implements Serializable {
 				WebResource resource) {
 		
 		this.menuCode = menuCode;
-		this.menuName = menuName;
-		this.parentMenuCode = parentMenuCode;		
+		this.menuName = menuName;			
 		this.menuType = menuType;
 		this.sequence = sequence;
 		this.level = level;
@@ -100,7 +95,7 @@ public class Menu extends AuditEntity implements Serializable {
 		this.resource = resource;
 	}
 			
-	public Menu updateEntity(MenuDTO.MenuSave dto) {
+	/*public Menu updateEntity(MenuDTO.MenuSave dto) {
 		this.menuCode	= dto.getMenuCode() != null ? dto.getMenuCode() : this.menuCode;
 		this.menuName 	= dto.getMenuName() != null ? dto.getMenuName() : this.menuName;
 		this.menuType	= MenuType.valueOf(dto.getMenuType());
@@ -109,6 +104,6 @@ public class Menu extends AuditEntity implements Serializable {
 		this.parentMenuCode = dto.getParentMenuCode() != null ? dto.getParentMenuCode() : this.parentMenuCode;
 		
 		return this;
-	}
+	}*/
 
 }

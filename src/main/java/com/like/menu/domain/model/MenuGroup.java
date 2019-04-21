@@ -19,6 +19,7 @@ import com.like.common.domain.AuditEntity;
 import com.like.menu.dto.MenuGroupDTO;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -33,18 +34,19 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	
 	@Id
 	@Column(name="menu_group_code")
-	private String menuGroupCode;
+	String menuGroupCode;
 	
 	@Column(name="menu_group_name")
-	private String menuGroupName; 
+	String menuGroupName; 
 		
 	@Column(name="description")
-	private String description;
+	String description;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "menuGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE})          
     List<Menu> menuList = new ArrayList<Menu>();
-				
+			
+	@Builder
 	public MenuGroup(String menuGroupCode, String menuGroupName, String description) {	
 		this.menuGroupCode = menuGroupCode;
 		this.menuGroupName = menuGroupName;
