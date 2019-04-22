@@ -1,9 +1,46 @@
 package com.like.dept.domain.model;
 
+import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.dto.DeptDTO;
 
 public class DeptDTOAssembler {	
 		
+	public static Dept toEntity(DeptRepository repository, DeptDTO.DeptSave dto) {
+		Dept dept = repository.getDept(dto.getDeptCode());
+		Dept parentDept = null;
+		
+		if (dto.getParentDeptCode() != null) {
+			parentDept = repository.getDept(dto.getParentDeptCode());
+		}			
+		
+		if (dept == null) {
+			dept = Dept.builder()
+					   .deptCode(dto.getDeptCode())
+					   .deptNameKorean(dto.getDeptNameKorean())
+					   .deptAbbreviationKorean(dto.getDeptAbbreviationKorean())
+					   .deptNameEnglish(dto.getDeptNameEnglish())
+					   .deptAbbreviationEnglish(dto.getDeptAbbreviationEnglish())
+					   .fromDate(dto.getFromDate())
+					   .toDate(dto.getToDate())
+					   .seq(dto.getSeq())
+					   .comment(dto.getComment())
+					   .parentDept(parentDept)
+					   .build();
+		} else {
+			dept.deptNameKorean 		= nvl(dto.getDeptNameKorean(), 				dept.deptNameKorean);		
+			dept.deptAbbreviationKorean = nvl(dto.getDeptAbbreviationKorean(), 		dept.deptAbbreviationKorean);
+			dept.deptNameEnglish 		= nvl(dto.getDeptNameEnglish(), 			dept.deptNameEnglish);		
+			dept.deptAbbreviationEnglish = nvl(dto.getDeptAbbreviationEnglish(), 	dept.deptAbbreviationEnglish);
+			
+			dept.toDate					= nvl(dto.getToDate(),		dept.toDate);
+			dept.seq					= nvl(dto.getSeq(),			dept.seq);
+			dept.comment				= nvl(dto.getComment(),		dept.comment);
+			dept.parentDept				= parentDept;
+		}
+		
+		return null;
+	}
+	
 	public static Dept createEntity(DeptDTO.DeptSave dto, Dept parentDept) {
 		if (dto.getDeptCode() == null) {
 			new IllegalArgumentException("부서코드가 없습니다.");

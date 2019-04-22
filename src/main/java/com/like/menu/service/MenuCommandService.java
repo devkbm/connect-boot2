@@ -27,14 +27,8 @@ public class MenuCommandService {
 		menuJpaRepository.deleteMenuGroup(menuGroupCode);
 	}
 	
-	public void saveMenu(Menu menu, String menuGroupCode) throws Exception {
-		MenuGroup menuGroup = menuJpaRepository.getMenuGroup(menuGroupCode);		
-		
-		if ( menuGroup == null ) {
-			throw new IllegalArgumentException(" MenuGroup Entity(" + menuGroupCode + ") is not exist");			
-		}
-		
-		menuJpaRepository.saveMenu(menu,menuGroup);		
+	public void saveMenu(Menu menu) throws Exception {			
+		menuJpaRepository.saveMenu(menu);		
 	}
 	
 	public void deleteMenu(String menuCode) {

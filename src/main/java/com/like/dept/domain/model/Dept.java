@@ -70,7 +70,7 @@ public class Dept extends AuditEntity implements Serializable {
 	String comment;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "p_dept_cd")
+	@JoinColumn(name = "p_dept_cd", nullable = true)
 	Dept parentDept;	
 
 }

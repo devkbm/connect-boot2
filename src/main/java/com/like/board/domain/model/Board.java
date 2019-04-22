@@ -41,8 +41,8 @@ public class Board extends AuditEntity implements Serializable {
 	Long pkBoard;
 	    
 	
-	@OneToOne(cascade={CascadeType.PERSIST})
-	@JoinColumn(name="PPK_BOARD")
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="PPK_BOARD", nullable = false)
 	Board parent;
 	
 	/**

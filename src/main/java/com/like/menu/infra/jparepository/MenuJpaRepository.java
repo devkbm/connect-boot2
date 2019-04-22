@@ -158,8 +158,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public void saveMenu(Menu menu, MenuGroup menuGroup) {
-		menu.setMenuGroup(menuGroup);		
+	public void saveMenu(Menu menu) {			
 		jpaMenu.save(menu);		
 	}
 

@@ -71,16 +71,5 @@ public class WebResource extends AuditEntity implements Serializable{
 	public void registerMenu(Menu menu) {
 		this.menuList.add(menu);
 	}
-
-	
-	
-	/*public WebResource updateEntity(ProgramDTO.ProgramSave dto) {
-		this.programCode 	= dto.getProgramCode() != null ? dto.getProgramCode() : this.programCode ;
-		this.programName 	= dto.getProgramName() != null ? dto.getProgramName() : this.programName ;
-		this.url			= dto.getUrl() != null ? dto.getUrl() : this.url ;
-		this.description	= dto.getDescription() != null ? dto.getDescription() : this.description ;
-		
-		return this;
-	}*/
 			
 }

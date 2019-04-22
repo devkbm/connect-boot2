@@ -27,6 +27,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -70,12 +71,12 @@ public class Menu extends AuditEntity implements Serializable {
 	WebResource resource = new WebResource();
 		
 	@Builder
-	public Menu(String menuCode, 
+	public Menu(@NonNull MenuGroup menuGroup,
+				String menuCode, 
 				String menuName, 				 			
 				MenuType menuType, 
 				long sequence,
-				long level, 
-				MenuGroup menuGroup, 
+				long level, 				
 				WebResource resource) {
 		
 		this.menuCode = menuCode;

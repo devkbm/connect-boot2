@@ -3,7 +3,8 @@ package com.like.menu.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.QMenuGroup;

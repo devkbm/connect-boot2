@@ -104,13 +104,7 @@ public class MenuController {
 			throw new ControllerException(result.getAllErrors().toString());
 		} 
 		
-		MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());
-		
-		if (menuGroup == null) {
-			menuGroup = new MenuGroup(dto.getMenuGroupCode(), dto.getMenuGroupName(), dto.getDescription());
-		} else {
-			menuGroup = menuGroup.updateEntity(dto);
-		}					
+		MenuGroup menuGroup = MenuDTOAssembler.toEntity(menuRepository, dto);					
 																			
 		menuCommandService.saveMenuGroup(menuGroup);			
 										 					
@@ -186,35 +180,9 @@ public class MenuController {
 			log.info(result.getAllErrors().toString());
 		} 
 		
-		Menu menu = menuQueryService.getMenu(dto.getMenuCode());			
-						
-		if ( menu == null ) {								
-			MenuGroup menuGroup = menuQueryService.getMenuGroup(dto.getMenuGroupCode());						
-			WebResource program = null;
-			
-			if (StringUtils.hasText(dto.getResource())) {
-				program = menuQueryService.getResource(dto.getResource());;
-			}					
-			menu = MenuDTOAssembler.toEntity(menuRepository, dto);
-			
-			/*menu = new Menu(dto.getMenuCode(), 
-							dto.getMenuName(),
-							dto.getParentMenuCode(),
-							MenuType.valueOf(dto.getMenuType()), 
-							dto.getSequence(), 
-							dto.getLevel(),
-							menuGroup,
-							program);*/
-		} else {
-			// menu.updateEntity(dto);
-			
-			if (dto.getResource() != null) {
-				WebResource program = menuQueryService.getResource(dto.getResource());
-				menu.registerProgram(program);
-			}
-		}			
-		
-		menuCommandService.saveMenu(menu, dto.getMenuGroupCode());																			
+		Menu menu = MenuDTOAssembler.toEntity(menuRepository, dto);			
+									
+		menuCommandService.saveMenu(menu);																			
 														 				
 		return WebControllerUtil.getResponse(null,
 				menu != null ? 1 : 0, 

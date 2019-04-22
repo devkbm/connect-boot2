@@ -31,7 +31,7 @@ public interface MenuRepository {
 			
 	List<Menu> getMenuList(MenuDTO.QueryCondition condition);
 			
-	void saveMenu(Menu menu, MenuGroup menuGroup);
+	void saveMenu(Menu menu);
 	
 	void deleteMenu(String menuCode);	
 	

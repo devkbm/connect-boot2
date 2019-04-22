@@ -45,8 +45,16 @@ public class MenuServiceTest {
 		MenuGroup menuGroup = new MenuGroup("GROUP","테스트메뉴그룹","테스트메뉴그룹");				
 		menuCommandService.saveMenuGroup(menuGroup);			
 		
-		Menu menu = new Menu("MENU", "테스트메뉴", null, MenuType.ITEM, 0L, 0L, null, null);
-		menuCommandService.saveMenu(menu, menuGroup.getMenuGroupCode());
+		Menu menu = Menu.builder()
+						.menuGroup(menuGroup)
+						.menuCode("MENU")
+						.menuName("테스트메뉴")
+						.menuType(MenuType.ITEM)
+						.sequence(0L)
+						.level(0L)
+						.build();
+		
+		menuCommandService.saveMenu(menu);
 					
 		WebResource program = WebResource.builder()
 											.resourceCode("Program")
@@ -86,6 +94,7 @@ public class MenuServiceTest {
 		
 		//When		
 		Menu menu = Menu.builder()
+						.menuGroup(menuGroup)
 						.menuCode("testmenu")
 						.menuName("테스트메뉴")
 						.menuType(MenuType.ITEM)
@@ -93,7 +102,7 @@ public class MenuServiceTest {
 						.sequence(0L)						
 						.build();
 		
-		menuCommandService.saveMenu(menu, menuGroup.getMenuGroupCode());		
+		menuCommandService.saveMenu(menu);		
 		
 		//Then
 		Menu test = menuQueryService.getMenu(menu.getMenuCode());

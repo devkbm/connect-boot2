@@ -27,11 +27,15 @@ public class MenuDTOAssembler {
 	public static Menu toEntity(MenuRepository repository, MenuDTO.MenuSave dto) {
 		MenuGroup menuGroup = repository.getMenuGroup(dto.getMenuGroupCode());
 		Menu entity = repository.getMenu(dto.getMenuCode());
+		Menu parent = null; 
+		if (dto.getParentMenuCode() != null) {
+			parent = repository.getMenu(dto.getParentMenuCode());
+		}
 		WebResource resource = repository.getResource(dto.getResource());
 				
 		if (entity == null) {
 			entity = Menu.builder()
-						 .menuGroup(menuGroup)
+						 .menuGroup(menuGroup)						 
 						 .menuCode(dto.getMenuCode())
 						 .menuName(dto.getMenuName())
 						 .menuType(MenuType.valueOf(dto.getMenuType()))
@@ -44,6 +48,7 @@ public class MenuDTOAssembler {
 			entity.sequence = nvl(dto.getSequence(), 	entity.sequence);
 			entity.resource = nvl(resource, 			entity.resource);
 		}
+		entity.parent = parent;
 		
 		return entity;		
 	}
