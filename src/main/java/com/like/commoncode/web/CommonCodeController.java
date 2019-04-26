@@ -63,7 +63,7 @@ public class CommonCodeController {
 	}
 	
 	@GetMapping("/common/code/{id}") 
-	public ResponseEntity<?> getCodeList(@PathVariable String id) {
+	public ResponseEntity<?> getCode(@PathVariable String id) {
 								  						 					
 		Code entity = commonCodeQueryService.getCode(id);
 		

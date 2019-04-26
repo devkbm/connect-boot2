@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class DeptController {
 	@Resource(name = "deptService")
 	private DeptService deptService;
 		
-	@RequestMapping(value={"/common/dept"}, method=RequestMethod.GET) 
+	@GetMapping("/common/dept")
 	public ResponseEntity<?> getDeptList(@ModelAttribute DeptDTO.SearchCondition searchCondition) {
 							
 		List<Dept> list = deptService.getDeptList(searchCondition);  						 						
@@ -41,6 +42,18 @@ public class DeptController {
 											list.size(), 
 											true, 
 											String.format("%d 건 조회되었습니다.", list.size()), 
+											HttpStatus.OK);
+	}
+		
+	@GetMapping("/common/dept/{id}")
+	public ResponseEntity<?> getDept(@PathVariable String id) {
+							
+		Dept dept = deptService.getDept(id);  						 						
+		
+		return WebControllerUtil.getResponse(dept, 
+											dept == null ? 0 : 1, 
+											true, 
+											String.format("%d 건 조회되었습니다.", dept == null ? 0 : 1), 
 											HttpStatus.OK);
 	}
 		
