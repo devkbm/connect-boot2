@@ -16,6 +16,8 @@ public interface DeptRepository {
 	List<Dept> getAllDeptList();
 	
 	List<Dept> getDeptList(DeptDTO.SearchCondition searchCondition);
+	
+	List<DeptDTO.DeptHierarchy> getDeptHierarchy();
 			
 	void saveDept(Dept dept);
 	

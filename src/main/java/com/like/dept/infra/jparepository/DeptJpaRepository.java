@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.like.dept.domain.repository.DeptRepository;
+import com.like.dept.dto.DeptDTO.DeptHierarchy;
 import com.like.dept.dto.DeptDTO.SearchCondition;
 import com.like.dept.infra.jparepository.springdata.JpaDept;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -43,6 +44,14 @@ public class DeptJpaRepository implements DeptRepository {
 				.where(searchCondition.getCondition())
 				.fetch();
 	}
+	
+
+	@Override
+	public List<DeptHierarchy> getDeptHierarchy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	@Override
 	public void saveDept(Dept dept) {

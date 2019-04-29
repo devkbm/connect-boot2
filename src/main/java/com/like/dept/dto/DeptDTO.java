@@ -3,11 +3,14 @@ package com.like.dept.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.dept.domain.model.QDept;
 import com.querydsl.core.BooleanBuilder;
 
@@ -85,5 +88,79 @@ public class DeptDTO {
 		String comment;
 	}
 	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder	
+	public static class DeptHierarchy implements Serializable {		
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+		
+		String parentDeptCode;
+				
+		String deptCode;		
+				
+		String deptNameKorean;		
+		
+		String deptAbbreviationKorean;
+		
+		String deptNameEnglish;
+		
+		String deptAbbreviationEnglish;
+							
+		LocalDate fromDate;
+				
+		LocalDate toDate;
+		
+		Integer seq;
+		
+		String comment;
+		
+		List<DeptDTO.DeptHierarchy> children = new ArrayList<>();
+		
+		/**
+		 * NzTreeNode property 
+		 */
+		String title;
+		
+		String key;
+				
+		@JsonProperty(value="isLeaf") 
+		boolean isLeaf;
+
+		public DeptHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
+				String parentDeptCode, String deptCode, String deptNameKorean, String deptAbbreviationKorean,
+				String deptNameEnglish, String deptAbbreviationEnglish, LocalDate fromDate, LocalDate toDate,
+				Integer seq, String comment) {
+			super();
+			this.createdDt = createdDt;
+			this.createdBy = createdBy;
+			this.modifiedDt = modifiedDt;
+			this.modifiedBy = modifiedBy;
+			this.parentDeptCode = parentDeptCode;
+			this.deptCode = deptCode;
+			this.deptNameKorean = deptNameKorean;
+			this.deptAbbreviationKorean = deptAbbreviationKorean;
+			this.deptNameEnglish = deptNameEnglish;
+			this.deptAbbreviationEnglish = deptAbbreviationEnglish;
+			this.fromDate = fromDate;
+			this.toDate = toDate;
+			this.seq = seq;
+			this.comment = comment;
+			
+			this.title 	= this.deptNameKorean;
+			this.key 	= this.deptCode;			
+		}
+
+		
+		
+		
+	}
 	
 }
