@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.like.menu.domain.model.MenuGroup;
+import com.like.user.domain.repository.UserRepository;
 import com.like.user.dto.UserDTO;
 import com.like.user.dto.UserDTO.UserSave;
 
 public class UserDTOAssembler {	
 		
-	public static User createEntity(UserDTO.UserSave dto, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+	public static User createEntity(UserRepository repository, UserDTO.UserSave dto, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+		
+		List<Authority> authority = repository.getAuthorityList(dto.getAuthorityList());		
 		
 		return User.builder()
 					.userId(dto.getUserId())										
 					.name(dto.getName())
-					.password(dto.getPassword())
+					.password(dto.getPassword())	
+					//.dept(dept)					
 					.isEnabled(dto.getEnabled())	
 					.authorities(authorityList)
 					.menuGroupList(menuGroupList)					
@@ -45,6 +49,7 @@ public class UserDTOAssembler {
 								.userId(entity.userId)
 								.name(entity.name)
 								.password(entity.password)
+								.deptCode(entity.dept.getDeptCode())
 								.enabled(entity.isEnabled)
 								.imageBase64(entity.getImageBase64())
 								.authorityList(entity.getAuthorityList()

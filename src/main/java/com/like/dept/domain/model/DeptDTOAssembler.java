@@ -2,6 +2,7 @@ package com.like.dept.domain.model;
 
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.dto.DeptDTO;
+import com.like.dept.dto.DeptDTO.DeptSave;
 
 public class DeptDTOAssembler {	
 		
@@ -38,7 +39,7 @@ public class DeptDTOAssembler {
 			dept.parentDept				= parentDept;
 		}
 		
-		return null;
+		return dept;
 	}
 	
 	public static Dept createEntity(DeptDTO.DeptSave dto, Dept parentDept) {
@@ -80,6 +81,29 @@ public class DeptDTOAssembler {
 		
 		return dept;
 	}	
+	
+	public static DeptDTO.DeptSave convertDTO(Dept entity) {							
+		
+		Dept parent = entity.getParentDept();							
+		
+		DeptSave dto = DeptSave.builder()
+								.createdDt(entity.getCreatedDt())
+								.createdBy(entity.getCreatedBy())
+								.modifiedDt(entity.getModifiedDt())
+								.modifiedBy(entity.getModifiedBy())
+								.deptCode(entity.deptCode)
+								.parentDeptCode(parent == null ? null : parent.getDeptCode())								
+								.deptNameKorean(entity.deptNameKorean)
+								.deptAbbreviationKorean(entity.deptAbbreviationKorean)
+								.deptNameEnglish(entity.deptNameEnglish)
+								.deptAbbreviationEnglish(entity.deptAbbreviationEnglish)
+								.fromDate(entity.fromDate)
+								.toDate(entity.toDate)
+								.seq(entity.seq)
+								.comment(entity.comment)
+								.build();		
+		return dto;		
+	}
 			
 	/**
 	 * 

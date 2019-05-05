@@ -12,6 +12,7 @@ import com.like.commoncode.domain.repository.CommonCodeRepository;
 import com.like.commoncode.dto.CodeComboDTO;
 import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
+import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -60,9 +61,9 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	
 	@Override
 	public List<CodeHierarchy> getCodeHierarchyList(Predicate predicate) {
-		List<CodeHierarchy> rootNodeList = this.getRootCodeList();
+		List<CodeHierarchy> rootNodeList = this.getCodeRootNodeList();
 		
-		List<CodeHierarchy> result = this.addChildrenCodeList(rootNodeList);
+		List<CodeHierarchy> result = this.addCodeChildrenList(rootNodeList);
 		
 		return result;
 	}
@@ -88,25 +89,19 @@ public class CodeJpaRepository implements CommonCodeRepository {
 		jpaCommonCode.deleteById(codeId);		
 	}	
 	
-	private List<CodeHierarchy> getRootCodeList() {
+	private List<CodeHierarchy> getCodeRootNodeList() {
 		
 		return queryFactory
-				.select(Projections.constructor(CodeHierarchy.class,
-						qCode._super.createdDt, qCode._super.createdBy, qCode._super.modifiedDt, qCode._super.modifiedBy,
-						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation,
-						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
+				.select(this.getCodehierarchyConstructor())
 				.from(qCode)
 				.where(qCode.isRootNode()
-						.and(qCode.enabled()))					
+					.and(qCode.enabled()))					
 				.fetch();
 	}
 		
-	private List<CodeHierarchy> getChildrenCodeList(String parentId) {
+	private List<CodeHierarchy> getCodeChildNodeList(String parentId) {
 		return queryFactory
-				.select(Projections.constructor(CodeHierarchy.class,
-						qCode._super.createdDt, qCode._super.createdBy, qCode._super.modifiedDt, qCode._super.modifiedBy,
-						qCode.id, qCode.parentCode.id, qCode.code, qCode.codeName, qCode.codeNameAbbreviation,
-						qCode.fromDate, qCode.toDate, qCode.seq, qCode.cmt))
+				.select(this.getCodehierarchyConstructor())
 				.from(qCode)
 				.where(qCode.parentCode.id.eq(parentId)
 					.and(qCode.enabled()))
@@ -118,12 +113,12 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	 * @param list
 	 * @return
 	 */
-	private List<CodeHierarchy> addChildrenCodeList(List<CodeHierarchy> list) {
+	private List<CodeHierarchy> addCodeChildrenList(List<CodeHierarchy> list) {
 		List<CodeHierarchy> children = null;
 		
 		for ( CodeHierarchy code : list ) {
 			
-			children = getChildrenCodeList(code.getId());
+			children = getCodeChildNodeList(code.getId());
 			
 			if (children.isEmpty()) {
 				code.setLeaf(true);
@@ -133,14 +128,31 @@ public class CodeJpaRepository implements CommonCodeRepository {
 				code.setLeaf(false);
 				
 				// 재귀 호출
-				addChildrenCodeList(children);
+				addCodeChildrenList(children);
 			}				
 		}
 		
 		return list;
 	}
-
 	
-
+	
+	private ConstructorExpression<CodeHierarchy> getCodehierarchyConstructor() {
+		return Projections.constructor(
+				CodeHierarchy.class,
+				qCode._super.createdDt, 
+				qCode._super.createdBy, 
+				qCode._super.modifiedDt, 
+				qCode._super.modifiedBy,
+				qCode.id, 
+				qCode.parentCode.id, 
+				qCode.code, 
+				qCode.codeName, 
+				qCode.codeNameAbbreviation,
+				qCode.fromDate, 
+				qCode.toDate, 
+				qCode.seq, 
+				qCode.cmt);		
+	}
+	
 	
 }

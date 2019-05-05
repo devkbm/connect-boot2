@@ -12,6 +12,8 @@ import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.dto.DeptDTO.DeptHierarchy;
 import com.like.dept.dto.DeptDTO.SearchCondition;
 import com.like.dept.infra.jparepository.springdata.JpaDept;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -29,7 +31,8 @@ public class DeptJpaRepository implements DeptRepository {
 	public Dept getDept(String deptCode) {
 		Optional<Dept> entity = jpaDept.findById(deptCode);
 		
-		return entity.isPresent() ? entity.get() : null;
+		//return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override
@@ -48,8 +51,11 @@ public class DeptJpaRepository implements DeptRepository {
 
 	@Override
 	public List<DeptHierarchy> getDeptHierarchy() {
-		// TODO Auto-generated method stub
-		return null;
+		List<DeptHierarchy> rootNodeList = this.getDeptRootNodeList();
+		
+		List<DeptHierarchy> result = this.addDeptChildNodeList(rootNodeList);
+		
+		return result;
 	}
 
 
@@ -62,7 +68,63 @@ public class DeptJpaRepository implements DeptRepository {
 	public void deleteDept(String deptCode) {
 		jpaDept.deleteById(deptCode);		
 	}
+	
+	private List<DeptHierarchy> addDeptChildNodeList(List<DeptHierarchy> list) {
+		List<DeptHierarchy> children = null;
+		
+		for ( DeptHierarchy node : list) {
+			
+			children = getDeptChildNodeList(node.getDeptCode());
+			
+			if (children.isEmpty()) {
+				node.setLeaf(true);
+				continue;
+			} else {
+				node.setChildren(children);
+				node.setLeaf(false);
+				
+				// 재귀 호출
+				this.addDeptChildNodeList(children);
+			}			
+		}
+		
+		return list;
+	}
 
+	private List<DeptHierarchy> getDeptRootNodeList() {
+		return queryFactory
+				.select(this.getDeptHierarchyConstructor())
+				.from(qDept)
+				.where(qDept.isRootNode())
+				.fetch();
+	}
+	
+	private List<DeptHierarchy> getDeptChildNodeList(String parentDeptCode) {
+		return queryFactory
+				.select(this.getDeptHierarchyConstructor())
+				.from(qDept)
+				.where(qDept.parentDept.deptCode.eq(parentDeptCode))
+				.fetch();
+	}
+	
+	private ConstructorExpression<DeptHierarchy> getDeptHierarchyConstructor() {
+		return Projections.constructor(
+				DeptHierarchy.class,
+				qDept._super.createdDt, 
+				qDept._super.createdBy,
+				qDept._super.modifiedDt,
+				qDept._super.modifiedBy,
+				qDept.parentDept.deptCode,
+				qDept.deptCode,
+				qDept.deptNameKorean,
+				qDept.deptAbbreviationKorean,
+				qDept.deptNameEnglish,
+				qDept.deptAbbreviationEnglish,
+				qDept.fromDate,
+				qDept.toDate,
+				qDept.seq,
+				qDept.comment);
+	}
 	
 
 }

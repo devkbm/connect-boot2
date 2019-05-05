@@ -37,6 +37,7 @@ import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.model.UserDTOAssembler;
+import com.like.user.domain.repository.UserRepository;
 import com.like.user.dto.AuthorityDTO;
 import com.like.user.dto.LoginRequestDTO;
 import com.like.user.dto.PasswordRequestDTO;
@@ -48,6 +49,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class UserController {
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired 
 	AuthenticationManager authenticationManager;
@@ -129,7 +133,7 @@ public class UserController {
 		User user = null;
 		
 		if (preUser == null) { 
-			user = UserDTOAssembler.createEntity(dto, authList, menuGroupList);
+			user = UserDTOAssembler.createEntity(userRepository, dto, authList, menuGroupList);
 		} else {
 			user = UserDTOAssembler.mergeEntity(preUser, dto, authList, menuGroupList);
 		}

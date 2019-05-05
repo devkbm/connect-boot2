@@ -18,6 +18,24 @@ create table if not exists COM.COMCODE (
 	constraint pk_comcode primary key(CODE_ID)	
 ) COMMENT = '공통코드관리';
 
+create table if not exists COM.COMDEPT (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    DEPT_CD				VARCHAR(10) 	NOT NULL 	COMMENT '부서코드',
+    P_DEPT_CD			VARCHAR(255)	NULL 		COMMENT '상위부서코드',
+    DEPT_NM_KOR			VARCHAR(255) 	NOT NULL 	COMMENT '부서명(한글)',
+    DEPT_ABBR_KOR		VARCHAR(255) 	NULL 		COMMENT '부서약어(한글)',
+    DEPT_NM_ENG			VARCHAR(255) 	NULL 		COMMENT '부서명(영어)',
+    DEPT_ABBR_ENG		VARCHAR(255) 	NULL 		COMMENT '부서약어(영어)',
+	FROM_DT				DATE			NULL		COMMENT '시작일',
+	TO_DT				DATE			NULL		COMMENT '종료일',	
+	PRT_SEQ				INT				NULL		COMMENT '출력순서',		
+	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
+	constraint pk_comdept primary key(DEPT_CD)	
+) COMMENT = '통합부서관리';
+
 create table if not exists COM.COMFILEINFO (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
@@ -42,6 +60,7 @@ create table if not exists COM.COMUSER (
 	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
     USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
     USER_NAME			VARCHAR(100)	NULL		COMMENT '유저명',
+    DEPT_CD				VARCHAR(10) 	NULL 		COMMENT '부서코드',
     PWD 		   		VARCHAR(2000)	NULL		COMMENT '비밀번호',
     FK_FILE				VARCHAR(40)		NULL        COMMENT '이미지파일',
     NON_EXPIRED_YN		BOOLEAN			NOT NULL    COMMENT '계정만료여부',
@@ -129,25 +148,3 @@ create table if not exists COM.COMUSERMENUGROUP (
 	constraint fk_comusermenugroup2 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE)
 ) COMMENT = '사용자메뉴그룹매핑관리';
 
-
-create table if not exists COM.COMDEPT (
-	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
-	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    DEPT_CD				VARCHAR(10) 	NOT NULL 	COMMENT '부서코드',
-    P_DEPT_CD			VARCHAR(255)	NULL 		COMMENT '상위부서코드',
-    DEPT_NM_KOR			VARCHAR(255) 	NOT NULL 	COMMENT '부서명(한글)',
-    DEPT_ABBR_KOR		VARCHAR(255) 	NULL 		COMMENT '부서약어(한글)',
-    DEPT_NM_ENG			VARCHAR(255) 	NULL 		COMMENT '부서명(영어)',
-    DEPT_ABBR_ENG		VARCHAR(255) 	NULL 		COMMENT '부서약어(영어)',
-	FROM_DT				DATE			NULL		COMMENT '시작일',
-	TO_DT				DATE			NULL		COMMENT '종료일',	
-	PRT_SEQ				INT				NULL		COMMENT '출력순서',		
-	CMT					VARCHAR(2000) 	NOT NULL 	COMMENT '비고',
-	constraint pk_comdept primary key(DEPT_CD)	
-) COMMENT = '통합부서관리';
-
-
-
-  

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
+import com.like.dept.domain.model.Dept;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.infra.FileUtil;
 import com.like.menu.domain.model.MenuGroup;
@@ -73,6 +75,10 @@ public class User extends AuditEntity implements UserDetails {
 	@JoinColumn(name = "fk_file", nullable=true)
 	FileInfo image;
 	
+	@OneToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "dept_cd", nullable = true)
+	Dept dept;
+	
 	@Singular(value="authorities")
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comuserauthority",
@@ -85,16 +91,16 @@ public class User extends AuditEntity implements UserDetails {
     @JoinTable(name="comusermenugroup",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
-	List<MenuGroup> menuGroupList;			
+	List<MenuGroup> menuGroupList;		
 		
 	@Builder
-	public User(String userId, String name, String password, Boolean isAccountNonExpired, Boolean isAccountNonLocked,
-			Boolean isCredentialsNonExpired, Boolean isEnabled, List<Authority> authorities,
-			List<MenuGroup> menuGroupList) {
-		super();
+	public User(String userId, String name, String password, Dept dept, 
+			Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, 
+			Boolean isEnabled, List<Authority> authorities,	List<MenuGroup> menuGroupList) {		
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
+		this.dept = dept;
 		this.isAccountNonExpired = isAccountNonExpired == null ? true : isAccountNonExpired;
 		this.isAccountNonLocked = isAccountNonLocked == null ? true : isAccountNonLocked;
 		this.isCredentialsNonExpired = isCredentialsNonExpired == null ? true : isCredentialsNonExpired;
@@ -143,6 +149,7 @@ public class User extends AuditEntity implements UserDetails {
 	public String getUserId() {
 		return this.userId;
 	}
+	
 	public String getName() {
 		return name;
 	}

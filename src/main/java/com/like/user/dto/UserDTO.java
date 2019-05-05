@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
 import com.like.common.validation.annotation.Id;
 import com.like.user.domain.model.QUser;
-import com.like.user.domain.model.User;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.AllArgsConstructor;
@@ -74,6 +73,8 @@ public class UserDTO {
 		String name;
 			
 		String password;	
+		
+		String deptCode;
 		
 		String imageBase64;
 				

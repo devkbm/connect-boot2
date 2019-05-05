@@ -22,6 +22,7 @@ import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeDTOAssembler;
 import com.like.commoncode.dto.CodeDTO;
 import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
+import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
 
@@ -31,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class CommonCodeController {
 
+	@Resource(name="codeJpaRepository")
+	private CodeJpaRepository codeJpaRepository;
+	
 	@Resource
 	private CommonCodeCommandService commonCodeCommandService;
 	
@@ -82,15 +86,9 @@ public class CommonCodeController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 
+		} 						
 		
-		Code parentCode = null;
-		
-		if ( dto.getParentId() != null ) {
-			parentCode = commonCodeQueryService.getCode(dto.getParentId());
-		}				
-		
-		Code code = CodeDTOAssembler.createEntity(dto, parentCode);
+		Code code = CodeDTOAssembler.createEntity(codeJpaRepository, dto);
 				
 		commonCodeCommandService.saveCode(code);		
 											 				

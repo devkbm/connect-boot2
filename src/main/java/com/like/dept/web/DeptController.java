@@ -22,8 +22,13 @@ import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.dto.DeptDTO;
+import com.like.dept.dto.DeptDTO.DeptHierarchy;
+import com.like.dept.dto.DeptDTO.DeptSave;
 import com.like.dept.service.DeptService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class DeptController {
 
@@ -32,7 +37,19 @@ public class DeptController {
 	
 	@Resource(name = "deptService")
 	private DeptService deptService;
+	
+	@GetMapping("/common/depttree")
+	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute DeptDTO.SearchCondition searchCondition) {
+							
+		List<DeptHierarchy> list = deptService.getDeptHierarchyList();  						 						
 		
+		return WebControllerUtil.getResponse(list, 
+											list.size(), 
+											true, 
+											String.format("%d 건 조회되었습니다.", list.size()), 
+											HttpStatus.OK);
+	}
+	
 	@GetMapping("/common/dept")
 	public ResponseEntity<?> getDeptList(@ModelAttribute DeptDTO.SearchCondition searchCondition) {
 							
@@ -48,24 +65,30 @@ public class DeptController {
 	@GetMapping("/common/dept/{id}")
 	public ResponseEntity<?> getDept(@PathVariable String id) {
 							
-		Dept dept = deptService.getDept(id);  						 						
+		Dept dept = deptService.getDept(id);  	
 		
-		return WebControllerUtil.getResponse(dept, 
-											dept == null ? 0 : 1, 
+		DeptSave dto = DeptDTOAssembler.convertDTO(dept);
+		
+		return WebControllerUtil.getResponse(dto, 
+											dto == null ? 0 : 1, 
 											true, 
-											String.format("%d 건 조회되었습니다.", dept == null ? 0 : 1), 
+											String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1), 
 											HttpStatus.OK);
 	}
 		
 	@RequestMapping(value={"/common/dept"}, method={RequestMethod.POST,RequestMethod.PUT})	
-	public ResponseEntity<?> saveCode(@RequestBody DeptDTO.DeptSave dto, BindingResult result) {			
+	public ResponseEntity<?> saveDept(@RequestBody DeptDTO.DeptSave dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 					
-						
+		
+		log.info(dto.toString());
+		
 		Dept dept = DeptDTOAssembler.toEntity(deptRepository, dto);							
-				
+		
+		
+		
 		deptService.saveDept(dept);		
 											 				
 		return WebControllerUtil.getResponse(null,

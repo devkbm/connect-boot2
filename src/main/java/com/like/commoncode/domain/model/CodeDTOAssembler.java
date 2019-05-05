@@ -2,13 +2,16 @@ package com.like.commoncode.domain.model;
 
 import com.like.commoncode.dto.CodeDTO;
 import com.like.commoncode.dto.CodeDTO.CodeSave;
+import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 
 public class CodeDTOAssembler {	
 		
-	public static Code createEntity(CodeDTO.CodeSave dto, Code parentCode) {
-		/*if (dto.getId() == null) {
-			new IllegalArgumentException("ID가 존재하지 않습니다.");
-		}*/
+	public static Code createEntity(CodeJpaRepository repository, CodeDTO.CodeSave dto) {
+		Code parentCode = null;
+		
+		if (dto.getParentId() != null) {
+			parentCode = repository.getCode(dto.getParentId());
+		}		
 		
 		return Code.builder()				
 				.parentCode(parentCode)
