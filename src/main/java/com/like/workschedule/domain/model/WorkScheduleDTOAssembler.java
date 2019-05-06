@@ -5,7 +5,7 @@ import com.like.workschedule.dto.WorkDTO;
 
 public class WorkScheduleDTOAssembler {
 
-	public static WorkGroup toEntity(ScheduleRepository repository, WorkDTO.WorkGroupSave dto) {
+	public static WorkGroup toEntity(WorkDTO.WorkGroupSave dto, ScheduleRepository repository) {
 		WorkGroup entity = null;
 		
 		if (dto.getId() != null) {
@@ -19,7 +19,7 @@ public class WorkScheduleDTOAssembler {
 	}
 	
 	
-	public static Schedule toEntity(ScheduleRepository repository, WorkDTO.ScheduleSave dto) {
+	public static Schedule toEntity(WorkDTO.ScheduleSave dto, ScheduleRepository repository) {
 		Schedule entity = null;
 		WorkGroup workGroup = null;
 		

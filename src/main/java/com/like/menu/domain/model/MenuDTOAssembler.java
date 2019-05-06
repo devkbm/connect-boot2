@@ -7,7 +7,7 @@ import com.like.menu.dto.MenuGroupDTO;
 
 public class MenuDTOAssembler {
 
-	public static MenuGroup toEntity(MenuRepository repository, MenuGroupDTO.MenuGroupSave dto) {
+	public static MenuGroup toEntity(MenuGroupDTO.MenuGroupSave dto, MenuRepository repository) {
 		MenuGroup entity = repository.getMenuGroup(dto.getMenuGroupCode());
 		
 		if (entity == null) {
@@ -24,7 +24,7 @@ public class MenuDTOAssembler {
 		return entity;
 	}	
 	
-	public static Menu toEntity(MenuRepository repository, MenuDTO.MenuSave dto) {
+	public static Menu toEntity(MenuDTO.MenuSave dto, MenuRepository repository) {
 		MenuGroup menuGroup = repository.getMenuGroup(dto.getMenuGroupCode());
 		Menu entity = repository.getMenu(dto.getMenuCode());
 		Menu parent = null; 

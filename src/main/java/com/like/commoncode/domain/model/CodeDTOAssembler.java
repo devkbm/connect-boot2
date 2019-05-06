@@ -6,7 +6,7 @@ import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 
 public class CodeDTOAssembler {	
 		
-	public static Code createEntity(CodeJpaRepository repository, CodeDTO.CodeSave dto) {
+	public static Code createEntity(CodeDTO.CodeSave dto, CodeJpaRepository repository) {
 		Code parentCode = null;
 		
 		if (dto.getParentId() != null) {

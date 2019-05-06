@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,15 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.team.domain.model.TeamMember;
-import com.like.team.dto.TeamDTO;
-import com.like.team.domain.model.Team;
-import com.like.team.domain.model.TeamDTOAssembler;
-import com.like.team.service.TeamService;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.dto.UserDTO;
-import com.like.user.service.UserService;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
@@ -86,7 +78,7 @@ public class WorkGroupController {
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
 		
-		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(scheduleRepository, dto);
+		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
 		
 		//workGroupService.saveWorkGroup(entity);
 		log.info(entity.toString());
@@ -144,7 +136,7 @@ public class WorkGroupController {
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
 		
-		Schedule entity = WorkScheduleDTOAssembler.toEntity(scheduleRepository, dto);
+		Schedule entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
 		
 		workGroupService.saveSchedule(entity);		
 										 					

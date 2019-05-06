@@ -85,10 +85,8 @@ public class DeptController {
 		
 		log.info(dto.toString());
 		
-		Dept dept = DeptDTOAssembler.toEntity(deptRepository, dto);							
-		
-		
-		
+		Dept dept = DeptDTOAssembler.toEntity(dto, deptRepository);							
+					
 		deptService.saveDept(dept);		
 											 				
 		return WebControllerUtil.getResponse(null,

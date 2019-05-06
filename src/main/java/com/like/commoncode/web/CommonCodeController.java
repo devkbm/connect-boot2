@@ -88,7 +88,7 @@ public class CommonCodeController {
 			throw new ControllerException("오류");
 		} 						
 		
-		Code code = CodeDTOAssembler.createEntity(codeJpaRepository, dto);
+		Code code = CodeDTOAssembler.createEntity(dto, codeJpaRepository);
 				
 		commonCodeCommandService.saveCode(code);		
 											 				

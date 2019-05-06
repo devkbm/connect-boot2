@@ -104,7 +104,7 @@ public class MenuController {
 			throw new ControllerException(result.getAllErrors().toString());
 		} 
 		
-		MenuGroup menuGroup = MenuDTOAssembler.toEntity(menuRepository, dto);					
+		MenuGroup menuGroup = MenuDTOAssembler.toEntity(dto, menuRepository);					
 																			
 		menuCommandService.saveMenuGroup(menuGroup);			
 										 					
@@ -180,7 +180,7 @@ public class MenuController {
 			log.info(result.getAllErrors().toString());
 		} 
 		
-		Menu menu = MenuDTOAssembler.toEntity(menuRepository, dto);			
+		Menu menu = MenuDTOAssembler.toEntity(dto, menuRepository);			
 									
 		menuCommandService.saveMenu(menu);																			
 														 				

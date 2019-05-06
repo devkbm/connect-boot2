@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.Authority;
@@ -49,9 +51,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class UserController {
-	
+		
 	@Autowired
 	UserRepository userRepository;
+	
+	@Resource(name="menuJpaRepository")
+	private MenuRepository menuRepository;
+	
+	@Resource(name="deptJpaRepository")
+	private DeptRepository deptRepository;	
 	
 	@Autowired 
 	AuthenticationManager authenticationManager;
@@ -124,20 +132,10 @@ public class UserController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		}			
-		
-		List<Authority> authList = userService.getAllAuthorityList(dto.getAuthorityList());
-		List<MenuGroup> menuGroupList = menuQueryService.getMenuGroupList(dto.getMenuGroupList());
-		
-		User preUser = userService.getUser(dto.getUserId());
-		User user = null;
-		
-		if (preUser == null) { 
-			user = UserDTOAssembler.createEntity(userRepository, dto, authList, menuGroupList);
-		} else {
-			user = UserDTOAssembler.mergeEntity(preUser, dto, authList, menuGroupList);
-		}
-								
+		}						
+				
+		User user = UserDTOAssembler.toEntity(dto, userRepository, menuRepository, deptRepository);
+											
 		userService.createUser(user);					
 																					 		
 		return WebControllerUtil.getResponse(null,

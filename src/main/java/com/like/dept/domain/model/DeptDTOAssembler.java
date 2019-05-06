@@ -6,7 +6,7 @@ import com.like.dept.dto.DeptDTO.DeptSave;
 
 public class DeptDTOAssembler {	
 		
-	public static Dept toEntity(DeptRepository repository, DeptDTO.DeptSave dto) {
+	public static Dept toEntity(DeptDTO.DeptSave dto,DeptRepository repository) {
 		Dept dept = repository.getDept(dto.getDeptCode());
 		Dept parentDept = null;
 		
