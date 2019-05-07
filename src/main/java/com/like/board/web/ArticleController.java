@@ -123,8 +123,7 @@ public class ArticleController {
 											
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
-		}			
-		log.info(dto.toString());		
+		}						
 				
 		Article article = this.convertEntity(dto);						
 		
@@ -209,7 +208,7 @@ public class ArticleController {
 								//.files(attachedFileList)
 								.build();
 		}		
-
+		
 		// 4. FileInfo를 AttachedFile로 변환한다.
 		attachedFileList = AttachedFileConverter.convert(article, fileInfoList);
 		

@@ -53,7 +53,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 	public Article getArticle(Long id) {	
 		Optional<Article> entity = jpaArticle.findById(id);
 		
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 		
 	}
 			
@@ -181,7 +181,8 @@ public class ArticleJpaRepository implements ArticleRepository {
 	 * 게시글 엔티티의 순번을 설정한다.
 	 * @param article
 	 */
-	private void setArticleSequence(Article article) {
+	private void setArticleSequence(Article article) {		
+		
 		if (article.getSeq() == null ) {							
 			article.setSeq(getArticleNextSeq(article.getBoard().getPkBoard()));
 		} else if (article.getSeq() == 0 ) {

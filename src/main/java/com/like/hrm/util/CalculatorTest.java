@@ -106,7 +106,7 @@ public class CalculatorTest {
             }
         }*/
     	
-    	String test = "5^2";
+    	String test = "round(500 * -200)";    	
     	
     	System.out.println(lexer.lex(test).map(t -> t.stream()
 				   .filter(token -> token.kind != Type.Whitespace)
@@ -116,11 +116,11 @@ public class CalculatorTest {
     	
     	System.out.println(UUID.randomUUID().version());
     	
-    	for (int i=0; i<10000; i++) {
+    	/*for (int i=0; i<10000; i++) {
     		//System.out.println(UUID.randomUUID().toString());
     		System.out.println(System.nanoTime() + i);
     		
-    	}    	
+    	} */   	
     	
     }
 
@@ -130,6 +130,7 @@ public class CalculatorTest {
         add("^([-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][-+]?[0-9]+)?+)",    Type.Number);        
         add("^([+\\-*\\/%^()])",   		Type.Operator);
         add("^([ \t])",            		Type.Whitespace);
+        add("^([a-z]+)",  				Type.Function);
     }};       
 
 

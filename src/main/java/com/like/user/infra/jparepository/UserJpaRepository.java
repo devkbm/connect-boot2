@@ -37,7 +37,7 @@ public class UserJpaRepository implements UserRepository {
 	public User getUser(String userId) throws UsernameNotFoundException {
 		Optional<User> entity = jpaUser.findById(userId);
 		
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public class UserJpaRepository implements UserRepository {
 	@Override
 	public Authority getAuthority(String authorityName) {
 		Optional<Authority> entity = jpaAuthority.findById(authorityName);
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override

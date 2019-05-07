@@ -118,7 +118,7 @@ public class UserController {
 	@GetMapping(value={"/common/user"})
 	public ResponseEntity<?> getUserList(UserDTO.QueryCondition condition) {
 				
-		List<User> userList = userService.getUserList(condition);						 				
+		List<User> userList = userService.getUserList(condition);						
 		
 		return WebControllerUtil.getResponse(userList,
 				userList.size(), 

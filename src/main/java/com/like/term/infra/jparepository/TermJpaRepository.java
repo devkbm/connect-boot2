@@ -28,7 +28,7 @@ public class TermJpaRepository implements TermRepository {
 	public TermDictionary getTerm(Long pkTerm) {
 		Optional<TermDictionary> entity = jpaTerm.findById(pkTerm); 
 		
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 	
 	@Override

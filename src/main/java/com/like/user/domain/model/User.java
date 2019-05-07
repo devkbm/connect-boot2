@@ -72,10 +72,10 @@ public class User extends AuditEntity implements UserDetails {
 	Boolean isEnabled = true;
 	
 	@OneToOne(optional=true)
-	@JoinColumn(name = "fk_file", nullable=true)
+	@JoinColumn(name = "fk_file", nullable = true)
 	FileInfo image;
 	
-	@OneToOne(fetch = FetchType.LAZY, optional = true)
+	@OneToOne(optional = true)
 	@JoinColumn(name = "dept_cd", nullable = true)
 	Dept dept;
 	

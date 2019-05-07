@@ -51,7 +51,7 @@ public class MenuJpaRepository implements MenuRepository {
 	public MenuGroup getMenuGroup(String menuGroupCode) {
 		Optional<MenuGroup> entity = jpaMenuGroup.findById(menuGroupCode);
 					
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class MenuJpaRepository implements MenuRepository {
 	@Override
 	public Menu getMenu(String menuCode) {
 		Optional<Menu> entity = jpaMenu.findById(menuCode);
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class MenuJpaRepository implements MenuRepository {
 	public WebResource getResource(String resourceCode) {
 		Optional<WebResource> entity = jpaWebResource.findById(resourceCode);
 		 
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override

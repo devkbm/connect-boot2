@@ -21,7 +21,11 @@ public class UserDTOAssembler {
 		
 		List<Authority> authorityList = repository.getAuthorityList(dto.getAuthorityList());		
 		List<MenuGroup> menuGroupList = menuRepository.getMenuGroupList(dto.getMenuGroupList());
-		Dept dept = deptRepository.getDept(dto.getDeptCode());
+		Dept dept = null; 
+		
+		if ( dto.getDeptCode() != null ) {
+			dept = deptRepository.getDept(dto.getDeptCode());
+		}
 		
 		if (user == null) {
 			user = UserDTOAssembler.createEntity(dto, dept, authorityList, menuGroupList);
@@ -69,7 +73,7 @@ public class UserDTOAssembler {
 								.userId(entity.userId)
 								.name(entity.name)
 								.password(entity.password)
-								.deptCode(entity.dept.getDeptCode())
+								.deptCode(entity.dept == null ? null : entity.dept.getDeptCode())
 								.enabled(entity.isEnabled)
 								.imageBase64(entity.getImageBase64())
 								.authorityList(entity.getAuthorityList()

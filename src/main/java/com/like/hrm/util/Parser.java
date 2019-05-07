@@ -81,34 +81,34 @@ class Parser {
                  op_stack = new ArrayList<Token<Type>>(this.op_stack);
 
              switch (t.sequence) {
-             case "(":
-                 op_stack.add(t);
-                 break;
-             case ")":
-                 while (true) {
-                     if (op_stack.isEmpty()) { throw new IllegalArgumentException(); }
-
-                     Token<Type> pop = op_stack.remove(op_stack.size() - 1);
-                     if (pop.sequence.equals("(")) { break; }
-
-                     output.add(pop);
-                 }
-                 break;
-             default:
-                 while (!op_stack.isEmpty()) {
-                     Token<Type> top = op_stack.get(op_stack.size() - 1);
-                     boolean condition = !top.sequence.equals("(") &&
-                         ( is_left_assoc(t)
-                         ? precedence(t) <= precedence(top)
-                         : precedence(t) < precedence(top) );
-
-                     if (!condition) { break; }
-
-                     output.add(top);
-                     op_stack.remove(op_stack.size() - 1);
-                 }
-
-                 op_stack.add(t);
+	             case "(":
+	                 op_stack.add(t);
+	                 break;
+	             case ")":
+	                 while (true) {
+	                     if (op_stack.isEmpty()) { throw new IllegalArgumentException(); }
+	
+	                     Token<Type> pop = op_stack.remove(op_stack.size() - 1);
+	                     if (pop.sequence.equals("(")) { break; }
+	
+	                     output.add(pop);
+	                 }
+	                 break;
+	             default:
+	                 while (!op_stack.isEmpty()) {
+	                     Token<Type> top = op_stack.get(op_stack.size() - 1);
+	                     boolean condition = !top.sequence.equals("(") &&
+	                         ( is_left_assoc(t)
+	                         ? precedence(t) <= precedence(top)
+	                         : precedence(t) < precedence(top) );
+	
+	                     if (!condition) { break; }
+	
+	                     output.add(top);
+	                     op_stack.remove(op_stack.size() - 1);
+	                 }
+	
+	                 op_stack.add(t);
              }
 
              return new Context(cursor + 1, output, op_stack); }

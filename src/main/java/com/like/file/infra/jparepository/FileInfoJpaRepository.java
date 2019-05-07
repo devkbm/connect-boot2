@@ -24,7 +24,7 @@ public class FileInfoJpaRepository implements FileRepository {
 	public FileInfo getFileInfo(String id) {
 		Optional<FileInfo> entity = jpaFileInfo.findById(id);
 		
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 	
 	@Override
