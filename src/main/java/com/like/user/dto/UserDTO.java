@@ -33,8 +33,9 @@ public class UserDTO {
 		String userId;
 		
 		String name;
-			
 		
+		String deptCode;
+					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
@@ -44,6 +45,10 @@ public class UserDTO {
 			
 			if (StringUtils.hasText(this.name)) {
 				builder.and(qUser.name.like("%"+this.name+"%"));
+			}
+			
+			if (StringUtils.hasText(this.deptCode)) {
+				builder.and(qUser.dept.deptCode.eq(this.deptCode));
 			}
 			
 			return builder;
@@ -75,6 +80,10 @@ public class UserDTO {
 		String password;	
 		
 		String deptCode;
+		
+		String mobileNum;
+		
+		String email;
 		
 		String imageBase64;
 				

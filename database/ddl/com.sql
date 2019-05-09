@@ -61,6 +61,8 @@ create table if not exists COM.COMUSER (
     USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
     USER_NAME			VARCHAR(100)	NULL		COMMENT '유저명',
     DEPT_CD				VARCHAR(10) 	NULL 		COMMENT '부서코드',
+    MOBILE_NUM 			VARCHAR(20) 	NULL		COMMENT '핸드폰번호',
+    EMAIL 				VARCHAR(320) 	NULL 		COMMENT '이메일주소'
     PWD 		   		VARCHAR(2000)	NULL		COMMENT '비밀번호',
     FK_FILE				VARCHAR(40)		NULL        COMMENT '이미지파일',
     NON_EXPIRED_YN		BOOLEAN			NOT NULL    COMMENT '계정만료여부',

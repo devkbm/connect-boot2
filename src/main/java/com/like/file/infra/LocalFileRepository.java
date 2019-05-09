@@ -15,12 +15,15 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Repository
 public class LocalFileRepository {
 
+	@Value("${localFilePath}")
 	private String path;
 	
 	private int BUFFER_SIZE = 4096;
@@ -29,7 +32,8 @@ public class LocalFileRepository {
 	}
 	
 	public String getPath() {
-		return "C:\\temp";
+		//return "C:\\temp";		
+		return this.path;
 	}
 	
 	public void fileTransfer(MultipartFile sourceFile, String path, String fileName) throws Exception {

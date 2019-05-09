@@ -71,6 +71,12 @@ public class User extends AuditEntity implements UserDetails {
 	@Column(name="enabled_yn")
 	Boolean isEnabled = true;
 	
+	@Column(name="mobile_num")
+	String mobileNum;
+	
+	@Column(name="email")
+	String email;
+			
 	@OneToOne(optional=true)
 	@JoinColumn(name = "fk_file", nullable = true)
 	FileInfo image;
@@ -94,13 +100,15 @@ public class User extends AuditEntity implements UserDetails {
 	List<MenuGroup> menuGroupList;		
 		
 	@Builder
-	public User(String userId, String name, String password, Dept dept, 
+	public User(String userId, String name, String password, Dept dept, String mobileNum, String email,
 			Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, 
 			Boolean isEnabled, List<Authority> authorities,	List<MenuGroup> menuGroupList) {		
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
 		this.dept = dept;
+		this.mobileNum = mobileNum;
+		this.email = email;
 		this.isAccountNonExpired = isAccountNonExpired == null ? true : isAccountNonExpired;
 		this.isAccountNonLocked = isAccountNonLocked == null ? true : isAccountNonLocked;
 		this.isCredentialsNonExpired = isCredentialsNonExpired == null ? true : isCredentialsNonExpired;

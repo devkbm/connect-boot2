@@ -43,7 +43,9 @@ public class UserDTOAssembler {
 					.userId(dto.getUserId())										
 					.name(dto.getName())
 					.password(dto.getPassword())	
-					.dept(dept)					
+					.dept(dept)				
+					.mobileNum(dto.getMobileNum())
+					.email(dto.getEmail())
 					.isEnabled(dto.getEnabled())	
 					.authorities(authorityList)
 					.menuGroupList(menuGroupList)					
@@ -56,6 +58,8 @@ public class UserDTOAssembler {
 		entity.name			= nvl(dto.getName(),	 	entity.name);
 		entity.password		= nvl(dto.getPassword(), 	entity.password);
 		entity.dept			= dept;
+		entity.mobileNum	= nvl(dto.getMobileNum(),	entity.mobileNum);
+		entity.email		= nvl(dto.getEmail(),		entity.email);
 		entity.isEnabled	= nvl(dto.getEnabled(),		entity.isEnabled);
 		entity.authorities 	= authorityList;
 		entity.menuGroupList= menuGroupList;
@@ -74,6 +78,8 @@ public class UserDTOAssembler {
 								.name(entity.name)
 								.password(entity.password)
 								.deptCode(entity.dept == null ? null : entity.dept.getDeptCode())
+								.mobileNum(entity.mobileNum)
+								.email(entity.email)
 								.enabled(entity.isEnabled)
 								.imageBase64(entity.getImageBase64())
 								.authorityList(entity.getAuthorityList()
