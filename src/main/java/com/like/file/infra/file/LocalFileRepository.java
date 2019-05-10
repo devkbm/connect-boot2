@@ -1,4 +1,4 @@
-package com.like.file.infra;
+package com.like.file.infra.file;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,41 +17,60 @@ import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Repository
 public class LocalFileRepository {
 
 	@Value("${localFilePath}")
-	private String path;
+	private String localUploadPath;
+	
+	@Value("${staticUploadPath}")
+	private String staticUploadPath;
 	
 	private int BUFFER_SIZE = 4096;
 	
 	public LocalFileRepository() {		
 	}
 	
-	public String getPath() {
-		//return "C:\\temp";		
-		return this.path;
+	public enum FileUploadLocation {
+		STATIC_PATH, LOCAL_PATH
 	}
 	
-	public void fileTransfer(MultipartFile sourceFile, String path, String fileName) throws Exception {
-						
+	public String getPath() {	
+		return this.localUploadPath;
+	}
+	
+	public String getStaticUploadPath() {
+		return this.staticUploadPath;
+	}
+	
+	public void fileTransfer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
+		String path = null;
+		
 		if(sourceFile == null || sourceFile.isEmpty()){			
 			throw new FileNotFoundException();
 		}
-					
-		try (InputStream is = sourceFile.getInputStream();
-			 ReadableByteChannel  cin = Channels.newChannel(is);	
-			 FileOutputStream fos = new FileOutputStream(new File(path, fileName));
-			 FileChannel cout = fos.getChannel();) {			
-					
-			 cout.transferFrom(cin, 0, is.available());						 				
-		}							
+		
+		if ( location == FileUploadLocation.LOCAL_PATH) {
+			path = this.getPath();
+		} else {
+			path = this.getStaticUploadPath();
+		}
+								
+		streamToFile(sourceFile.getInputStream(), new File(path, fileName));									
 	}
 	
-	public void fileToStream(File file, OutputStream os) throws Exception {
+	public void streamToFile(InputStream is, File file) throws FileNotFoundException, IOException  {
+		try (ReadableByteChannel	cin = Channels.newChannel(is);	
+			 FileOutputStream 		fos = new FileOutputStream(file);
+			 FileChannel 			cout = fos.getChannel();) {			
+						
+			 cout.transferFrom(cin, 0, is.available());						 				
+		}		
+	}
+	
+	public void fileToStream(File file, OutputStream os) throws FileNotFoundException, IOException {
 			
 		try (
 			FileInputStream fis = new FileInputStream(file);
@@ -62,23 +81,37 @@ public class LocalFileRepository {
 		}		
 	}
 	
+	
+	/**
+	 * 파일을 삭제한다.
+	 * @param file 
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public Boolean deleteFile(File file) throws FileNotFoundException {
+		Boolean result = false;
+		
+		if(file == null || !file.exists()) {			
+			throw new FileNotFoundException();
+		}
+		
+		result = file.delete();
+				
+		return result;		
+	}
+	
 	/**
 	 * 파일을 삭제한다.
 	 * @param path 파일 경로
 	 * @param name 파일명
 	 * @return 삭제 여부
-	 * @throws Exception
+	 * @throws FileNotFoundException 
 	 */
-	public Boolean deleteFile(String path, String name) throws Exception {
-		File file = new File(path, name);
-		Boolean result = false;
-		if(file.isFile()){
-			result = file.delete();
-		}
-		return result;
+	public Boolean deleteFile(String path, String name) throws FileNotFoundException {		
+		return deleteFile(new File(path, name));
 	}
 	
-	public String fileToBase64String(String path, String fileName) throws Exception {
+	public String fileToBase64String(String path, String fileName) throws FileNotFoundException, IOException {
 		
 		byte[] buffer;
 		byte[] byteArray;
@@ -109,16 +142,19 @@ public class LocalFileRepository {
 		
 		byte[] buffer;
 		byte[] byteArray;
-		int bytesRead = -1;
+		int bytesRead 	= -1;
+		int bufferSize 	= 4096; 
 				
 		try (InputStream is = new FileInputStream(file);
 			 BufferedInputStream bis = new BufferedInputStream(is);
 			 ByteArrayOutputStream bos = new ByteArrayOutputStream();) {
 							
-			buffer = new byte[4906];		
+			buffer = new byte[bufferSize];		
+			
 			while ((bytesRead = is.read(buffer)) != -1) {
 				bos.write(buffer, 0, bytesRead);
 			}
+			
 			byteArray = bos.toByteArray();					
 		} 
 		

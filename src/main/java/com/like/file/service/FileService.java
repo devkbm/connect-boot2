@@ -1,6 +1,8 @@
 package com.like.file.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.like.file.domain.model.FileInfo;
-import com.like.file.infra.LocalFileRepository;
+import com.like.file.infra.file.LocalFileRepository;
+import com.like.file.infra.file.LocalFileRepository.FileUploadLocation;
 import com.like.file.infra.jparepository.FileInfoJpaRepository;
-import com.like.file.infra.jparepository.springdata.JpaFileInfo;
 
 @Service("fileService")
 public class FileService {
@@ -28,21 +30,29 @@ public class FileService {
 	private LocalFileRepository localFileRepository;	
 	
 	@Transactional
-	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
-																					
-		FileInfo file = newFileInfo(sourceFile, userId, pgmId);			
+	public FileInfo uploadFile(MultipartFile sourceFile, String userId, String pgmId) throws FileNotFoundException, IOException {
+									
+		String uuid = UUID.randomUUID().toString();
+		
+		fileTransefer(sourceFile, uuid, FileUploadLocation.LOCAL_PATH);
+		
+		FileInfo file = createFileInfo(sourceFile, uuid, userId, pgmId);		
 												
 		return fileInfoRepository.save(file);		
 	}
 	
 	@Transactional
-	public List<FileInfo> uploadFile(List<MultipartFile> sourceFiles, String userId, String pgmId) throws Exception {
+	public List<FileInfo> uploadFile(List<MultipartFile> sourceFiles, String userId, String pgmId) throws FileNotFoundException, IOException {
 		
 		List<FileInfo> rtn = new ArrayList<FileInfo>();
 		
 		for (MultipartFile multipartFile : sourceFiles) {			
-																	
-			FileInfo file = newFileInfo(multipartFile, userId, pgmId);	
+										
+			String uuid = UUID.randomUUID().toString();
+			
+			fileTransefer(multipartFile, uuid, FileUploadLocation.LOCAL_PATH);
+			
+			FileInfo file = createFileInfo(multipartFile, uuid, userId, pgmId);	
 			
 			rtn.add(fileInfoRepository.save(file));
 		}
@@ -51,8 +61,7 @@ public class FileService {
 	}
 		
 		
-	public FileInfo downloadFile(HttpServletResponse response, String pk)
-			throws Exception {
+	public FileInfo downloadFile(HttpServletResponse response, String pk) throws FileNotFoundException, IOException {
 		
 		FileInfo file = getFileInfo(pk);
 		
@@ -62,9 +71,10 @@ public class FileService {
 	}
 	
 	@Transactional	
-	public void downloadFile(FileInfo fileInfo, OutputStream os) throws Exception {		
+	public void downloadFile(FileInfo fileInfo, OutputStream os) throws FileNotFoundException, IOException {		
+		File file = new File(fileInfo.getPath(), fileInfo.getUuid());
 		
-		localFileRepository.fileToStream(new File(fileInfo.getPath(), fileInfo.getUuid()), os);
+		localFileRepository.fileToStream(file, os);
 		
 		// 다운로드 카운트 + 1
 		fileInfo.plusDownloadCount();
@@ -88,29 +98,27 @@ public class FileService {
 		return fileInfoRepository.getFileInfoList(id);
 	}
 	
-	private FileInfo newFileInfo(MultipartFile sourceFile, String userId, String pgmId) throws Exception {
-		
-		String uuid = UUID.randomUUID().toString();
-		
-		localFileRepository.fileTransfer(sourceFile, localFileRepository.getPath(), uuid);
-																
-		FileInfo file = FileInfo.builder()
-								.uuid(uuid)
-								.path(localFileRepository.getPath())
-								.fileName(sourceFile.getOriginalFilename())
-								.size(sourceFile.getSize())
-								.contentType(sourceFile.getContentType())
-								.userId(userId)
-								.pgmId(pgmId)
-								.build();
-		return file;
+	public void fileTransefer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
+		localFileRepository.fileTransfer(sourceFile, fileName, location);
 	}
-
-
-	public String downloadBase64(String id) throws Exception {
+	
+	public String downloadBase64(String id) throws FileNotFoundException, IOException {
 		FileInfo info = fileInfoRepository.getFileInfo(id);
 					
 		return localFileRepository.fileToBase64String(info.getPath(), info.getUuid());		
+	}
+	
+	private FileInfo createFileInfo(MultipartFile sourceFile, String uuid, String userId, String pgmId) {
+		
+		return FileInfo.builder()
+					   .uuid(uuid)
+				       .path(localFileRepository.getPath())
+				       .fileName(sourceFile.getOriginalFilename())
+				       .size(sourceFile.getSize())
+				       .contentType(sourceFile.getContentType())
+				       .userId(userId)
+				       .pgmId(pgmId)
+				       .build();
 	}
 	
 }

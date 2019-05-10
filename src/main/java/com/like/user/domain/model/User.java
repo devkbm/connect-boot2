@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
 import com.like.dept.domain.model.Dept;
 import com.like.file.domain.model.FileInfo;
-import com.like.file.infra.FileUtil;
+import com.like.file.infra.file.FileUtil;
 import com.like.menu.domain.model.MenuGroup;
 
 import lombok.AccessLevel;
