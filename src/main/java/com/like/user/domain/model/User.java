@@ -76,10 +76,9 @@ public class User extends AuditEntity implements UserDetails {
 	
 	@Column(name="email")
 	String email;
-			
-	@OneToOne(optional=true)
-	@JoinColumn(name = "fk_file", nullable = true)
-	FileInfo image;
+				
+	@Column(name="fk_file")
+	String image;
 	
 	@OneToOne(optional = true)
 	@JoinColumn(name = "dept_cd", nullable = true)
@@ -202,32 +201,13 @@ public class User extends AuditEntity implements UserDetails {
 		this.password = "12345678";	
 	}
 	
-	public void ChangeImage(FileInfo imageFileInfo) {
+	public void ChangeImage(String imageFileInfo) {
 		this.image = imageFileInfo;
 	}
 	
-	public FileInfo getImage() {
+	public String getImage() {
 		return this.image;
 	}
-	
-	public String getImageUrl() {
-		String rtn = null;
-		FileInfo imageFileInfo = this.getImage();
-		if ( imageFileInfo != null ) {
-			rtn = imageFileInfo.getPkFile();
-		}
-		
-		return rtn;		
-	}
-	
-	public String getImageBase64() throws FileNotFoundException, IOException {		
-		String rtn = "";
-		
-		if (this.image != null) {
-			rtn = FileUtil.getBase64String(image.getPath(), image.getUuid());
-		}
-		
-		return rtn;
-	}
+				
 	
 }

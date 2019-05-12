@@ -98,7 +98,8 @@ public class UserController {
          
 		User user = userService.getUser(username); 			
 					
-		return new AuthenticationToken(user.getUsername(),user.getName(), user.getImageUrl(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
+		return new AuthenticationToken(user.getUsername(),user.getName(), user.getImage(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
+		
 	}		
 		
 	@GetMapping(value={"/common/user/{id}"})
