@@ -98,8 +98,8 @@ public class FileService {
 		return fileInfoRepository.getFileInfoList(id);
 	}
 	
-	public void fileTransefer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
-		localFileRepository.fileTransfer(sourceFile, fileName, location);
+	public String fileTransefer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
+		return localFileRepository.fileTransfer(sourceFile, fileName, location);
 	}
 	
 	public String downloadBase64(String id) throws FileNotFoundException, IOException {

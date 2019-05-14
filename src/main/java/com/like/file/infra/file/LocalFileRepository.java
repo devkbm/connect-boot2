@@ -45,8 +45,9 @@ public class LocalFileRepository {
 		return this.staticUploadPath;
 	}
 	
-	public void fileTransfer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
+	public String fileTransfer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
 		String path = null;
+		File file = null;
 		
 		if(sourceFile == null || sourceFile.isEmpty()){			
 			throw new FileNotFoundException();
@@ -57,8 +58,12 @@ public class LocalFileRepository {
 		} else {
 			path = this.getStaticUploadPath();
 		}
+		
+		file = new File(path, fileName);
 								
-		streamToFile(sourceFile.getInputStream(), new File(path, fileName));									
+		streamToFile(sourceFile.getInputStream(), file);	
+		
+		return file.getPath();
 	}
 	
 	public void streamToFile(InputStream is, File file) throws FileNotFoundException, IOException  {

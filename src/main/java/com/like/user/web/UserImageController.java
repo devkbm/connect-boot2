@@ -41,16 +41,15 @@ public class UserImageController {
 		//FileInfo fileInfo = fileService.uploadFile(file, userId, "user");
 		
 		String uuid = UUID.randomUUID().toString();
-		fileService.fileTransefer(file, uuid, FileUploadLocation.STATIC_PATH);
+		String path = fileService.fileTransefer(file, uuid, FileUploadLocation.STATIC_PATH);
 		
 		User user = userService.getUser(userId);
-		
-		
-		//user.ChangeImage(fileInfo);
+				
+		user.ChangeImage(uuid);
 		
 		userService.saveUser(user);
 		
-		//response.put("data", fileInfo);
+		response.put("data", path);
 		response.put("status", "done");
 							
 		return new ResponseEntity<Map<String,Object>>(response, responseHeaders, HttpStatus.OK);
