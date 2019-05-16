@@ -2,7 +2,6 @@ package com.like.user.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.domain.repository.DeptRepository;
-import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.service.MenuQueryService;
 import com.like.user.domain.model.AuthenticationToken;
@@ -60,47 +57,12 @@ public class UserController {
 	
 	@Resource(name="deptJpaRepository")
 	private DeptRepository deptRepository;	
-	
-	@Autowired 
-	AuthenticationManager authenticationManager;
-	
+			
 	@Resource
 	UserService userService;
 	
 	@Resource
-	MenuQueryService menuQueryService;
-	
-	private void authentication(String username, String password, List<GrantedAuthority> authorities, HttpSession session) {
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
-		
-		Authentication authentication = authenticationManager.authenticate(token); 
-							
-		SecurityContextHolder.getContext().setAuthentication(authentication); 						
-		
-		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-	}
-		 
-	@PostMapping(value={"/common/user/login"})
-	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) throws FileNotFoundException, IOException {
-		
-		if ( result.hasErrors() ) {
-			log.info(result.toString());
-			return null;
-		}
-		
-		String username = dto.getUsername();
-		String password = dto.getPassword();
-
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));					
-		
-        authentication(username, password, authorities, session);
-         
-		User user = userService.getUser(username); 			
-					
-		return new AuthenticationToken(user.getUsername(),user.getName(), user.getImage(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
-		
-	}		
+	MenuQueryService menuQueryService;	
 		
 	@GetMapping(value={"/common/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) throws FileNotFoundException, IOException {

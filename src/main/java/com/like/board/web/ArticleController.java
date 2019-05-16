@@ -1,12 +1,16 @@
 package com.like.board.web;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,11 +54,13 @@ public class ArticleController {
 	private FileService fileService;	
 		
 	@GetMapping("/grw/board/article/{id}")
-	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id) {						
+	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id, HttpSession session) {						
 		
 		Article article = boardQueryService.getArticle(id);		
 	
-		ArticleDTO.ArticleResponse response = BoardDTOAssembler.converDTO(article);
+		ArticleDTO.ArticleResponse response = BoardDTOAssembler.converDTO(article);		
+		
+		log.info(SecurityContextHolder.getContext().getAuthentication().getName());
 		
 		return WebControllerUtil.getResponse(response, 
 				article == null ? 0 : 1, 

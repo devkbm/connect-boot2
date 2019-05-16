@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,6 @@ import com.like.board.domain.model.QArticle;
 import com.like.file.dto.FileResponseDTO;
 import com.querydsl.core.BooleanBuilder;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -166,7 +166,9 @@ public class ArticleDTO {
 		LocalDateTime modifiedDt;
 			
 		String modifiedBy;
-	    	
+	    
+		String userName;
+		
 		Long fkBoard;
 		
 		Long pkArticle;	
@@ -192,6 +194,8 @@ public class ArticleDTO {
 	    	
 	    Integer depth;	    		   
 	            	    
-	    List<FileResponseDTO> fileList;	                	   	    	    	    	  	        
+	    List<FileResponseDTO> fileList;	  
+	    
+	    Boolean editable;
 	}
 }

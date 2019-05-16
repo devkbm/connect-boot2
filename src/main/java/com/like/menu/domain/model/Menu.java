@@ -31,7 +31,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"menuGroup"})
 @Entity
 @Getter
 @Table(name = "commenu")

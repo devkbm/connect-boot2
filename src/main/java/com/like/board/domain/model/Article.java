@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -54,11 +55,7 @@ public class Article extends AuditEntity implements Serializable {
 	 */
 	@Column(name="PPK_ARTICLE")
 	Long ppkArticle;		
-	
-	
-	@Transient
-	@Formula("(SELECT X.USER_NAME FROM COM.COMUSER X WHERE X.USER_ID = sys_user)")
-	private String userName;
+		
 	
 	/**
 	 * 제목
@@ -103,14 +100,14 @@ public class Article extends AuditEntity implements Serializable {
      */
 	@Column(name="HIER_DEPTH")
     int depth;
-	
+			
 	@Column(name="PWD_YN")
-	private Boolean pwdYn;
+	Boolean pwdYn;
 	
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="HASH_METHOD")
-	private PasswordType pwdMethod;
+	PasswordType pwdMethod;
 	
 	/**
      * 비밀번호
@@ -131,8 +128,14 @@ public class Article extends AuditEntity implements Serializable {
                           
 	@Singular(value="files")
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    List<AttachedFile> files;    
+    List<AttachedFile> files;
 			
+	@Formula("(SELECT X.USER_NAME FROM COM.COMUSER X WHERE X.USER_ID = sys_user)")
+	String userName;
+			
+	@Transient
+	Boolean editable;
+	
 	public Long getId() {
 		return this.pkArticle;
 	}
@@ -174,7 +177,15 @@ public class Article extends AuditEntity implements Serializable {
 	
 	public void setFiles(List<AttachedFile> files) {
 		this.files = files;
-	}	
+	}
 	
+	public Boolean getEditable() {
 		
+		String sessionId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		log.info(sessionId);
+		
+		return sessionId.equals(this.createdBy) ? true : false;
+	}
+			
 }

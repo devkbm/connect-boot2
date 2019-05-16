@@ -1,9 +1,8 @@
 package com.like.user.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.Data;
 

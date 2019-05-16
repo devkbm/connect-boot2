@@ -26,7 +26,7 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude= {"menuList"})
 @Entity
 @Table(name = "comresource")
 @EntityListeners(AuditingEntityListener.class)

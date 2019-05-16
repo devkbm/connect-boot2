@@ -76,6 +76,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 		  				   .leftJoin(qAttachedFile.fileInfo, qFileInfo)
 		  				   .fetchJoin()
 		  				   .where(condition.getBooleanBuilder())
+		  				   .orderBy(qArticle.pkArticle.desc())
 		  				   .fetch();
 		
 		//return (List<Article>) jpaArticle.findAll(queryDTO.getBooleanBuilder());		

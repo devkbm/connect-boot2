@@ -2,11 +2,7 @@ package com.like.common.security;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.security.InvalidParameterException;
-import java.util.Enumeration;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.like.user.dto.LoginRequestDTO;
@@ -31,7 +26,8 @@ public class RequestBodyReaderAuthenticationFilter extends UsernamePasswordAuthe
     private final ObjectMapper objectMapper = new ObjectMapper(); 
 	
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request,
+	public Authentication attemptAuthentication(
+			HttpServletRequest request,
 			HttpServletResponse response) throws AuthenticationException {
 		
 		String requestBody;		
@@ -48,6 +44,8 @@ public class RequestBodyReaderAuthenticationFilter extends UsernamePasswordAuthe
 			} else {
 				throw new InternalAuthenticationServiceException("HttpRequest is Null");					
 			}
+			log.info(requestBody);
+			log.info(token.toString());
 				                                                           
 		} catch (Exception e) {
 			log.error("error : " + ERROR_MESSAGE);

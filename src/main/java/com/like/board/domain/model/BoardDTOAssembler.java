@@ -118,10 +118,12 @@ public class BoardDTOAssembler {
 				.modifiedBy(entity.getModifiedBy())
 				.pkArticle(entity.pkArticle)
 				.ppkArticle(entity.ppkArticle)
-				.fkBoard(entity.getBoard().getPkBoard())
+				.userName(entity.userName)
+				.fkBoard(entity.getBoard().getPkBoard())				
 				.title(entity.title)
 				.contents(entity.contents)
-				.fileList(responseList)
+				.fileList(responseList)			
+				.editable(entity.getEditable())
 				.build();
 	}
 	

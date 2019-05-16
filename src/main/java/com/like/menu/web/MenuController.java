@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,6 +79,8 @@ public class MenuController {
 		
 		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
 		
+		log.info(SecurityContextHolder.getContext().getAuthentication().getName());
+		
 		return WebControllerUtil.getResponse(menuGroup, 
 				menuGroup.size(), 
 				true, 
@@ -145,7 +148,7 @@ public class MenuController {
 	@GetMapping("/common/menu")
 	public ResponseEntity<?> getMenuList(MenuDTO.QueryCondition dto) {				
 		
-		List<Menu> list = menuQueryService.getMenuList(dto);														 						
+		List<Menu> list = menuQueryService.getMenuList(dto);			
 		
 		return WebControllerUtil.getResponse(list, 
 				list.size(), 
