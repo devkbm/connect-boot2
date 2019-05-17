@@ -3,7 +3,7 @@ package com.like.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-
+import java.util.List;
 
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -19,6 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.menu.domain.model.MenuGroup;
 import com.like.user.domain.model.User;
 import com.like.user.dto.UserDTO;
 import com.like.user.dto.UserDTO.UserSave;
@@ -64,6 +65,16 @@ public class UserServiceTest {
 		assertThat(test.isCredentialsNonExpired()).isEqualTo(true);		
 	}
 		
+	@Test
+	public void test002_사용자조회() {
+		User user = userService.getFullUser("1");
+		
+		//List<MenuGroup> menuGroupList = user.getMenuGroupList();
+		
+		log.info(user.getMenuGroupList().toString());
+		
+				
+	}
 	
 	
 	

@@ -19,6 +19,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
@@ -31,6 +32,8 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 	
 	private RequestCache requestCache = new HttpSessionRequestCache();
 
+	private static final ObjectMapper mapper = new ObjectMapper();
+	
 	@Resource
 	private UserService loginService;
 	
@@ -45,49 +48,50 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 			HttpServletRequest request, 
 			HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-    	
-		log.info(authentication.getName());        
-		log.info(SecurityContextHolder.getContext().getAuthentication().getName());		
-						
-		response.setContentType("application/json;charset=UTF-8");
-		PrintWriter pw = response.getWriter();
+
+        // log.info(authentication.getName());        
+ 		// log.info(SecurityContextHolder.getContext().getAuthentication().getName());		
+ 						
+ 		response.setContentType("application/json;charset=UTF-8");
+ 		
+ 		User user = loginService.getFullUser(authentication.getName());
+ 		// log.info(user.getMenuGroupList().toString());
+ 								
+ 		AuthenticationToken token = AuthenticationToken
+ 										.builder()
+ 										.userId(user.getUsername())
+ 										.userName(user.getName())
+ 										.imageUrl(user.getImage())
+ 										.collection(user.getAuthorities())
+ 										.menuGroupList(user.getMenuGroupList())
+ 										.token(this.session.getId())
+ 										.build();
+
+ 		String str = mapper.writeValueAsString(token);
+ 		
+ 		
+ 		PrintWriter pw = response.getWriter();
+ 		pw.write(str);
+ 		pw.flush();
 		
-		
-		User user = loginService.getUser(authentication.getName());
-		
-		AuthenticationToken token = AuthenticationToken
-										.builder()
-										.userId(user.getUsername())
-										.userName(user.getName())
-										.imageUrl(user.getImage())
-										.collection(user.getAuthorities())
-										.menuGroupList(user.getMenuGroupList())
-										.token(this.session.getId())
-										.build();
-		
-		pw.write(token.toString());
-		pw.flush();
-		
-		log.info(this.session.getId());
-		
-        SavedRequest savedRequest = requestCache.getRequest(request, response);        
-        log.info(savedRequest == null ? "true" : "false");
+        SavedRequest savedRequest = requestCache.getRequest(request, response);                
                 
         if (savedRequest == null) {
             clearAuthenticationAttributes(request);
             return;
         }
-                
-        log.info("222");
+                        
         String targetUrlParam = getTargetUrlParameter();
         if (isAlwaysUseDefaultTargetUrl() || (targetUrlParam != null && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
-        }
-        log.info("333");
+        }        
         
         clearAuthenticationAttributes(request);
+        
+        
+
                 
 	}
 			

@@ -23,6 +23,9 @@ import com.like.user.domain.service.UserDomainService;
 import com.like.user.dto.AuthorityDTO;
 import com.like.user.dto.UserDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Transactional
 @Service
 public class UserService implements UserDetailsService {	
@@ -56,8 +59,17 @@ public class UserService implements UserDetailsService {
 	 */
 	public User getUser(String userId) {
 		User user = userRepository.getUser(userId);
-		
+						
 		return user;
+	}
+		
+	public User getFullUser(String userId) {
+		User user = userRepository.getFullUser(userId);
+		List<MenuGroup> menuGroupList = user.getMenuGroupList();
+		
+		log.info(menuGroupList.toString());
+		
+		return user;				
 	}
 	
 	public List<User> getUserList(List<String> userIds) {

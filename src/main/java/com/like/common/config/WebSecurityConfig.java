@@ -18,11 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -30,7 +27,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.like.common.security.RestLoginFailureHandler;
 import com.like.common.security.RestLoginSuccessHandler;
-import com.like.common.security.RequestBodyReaderAuthenticationFilter;
 import com.like.common.security.RestAuthenticationEntryPoint;
 import com.like.user.service.UserService;
 
@@ -77,10 +73,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 			.cors().and()			
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()			
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()							
-				//.antMatchers("/common/user/login").permitAll()				
+				.antMatchers("/common/user/login").permitAll()				
 				//.antMatchers("/common/menuhierarchy/**").permitAll()
 				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
 				//.anyRequest().authenticated().and()		// 인증된 요청만 허용
@@ -88,13 +84,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
 			
-			.formLogin()				
+			/*.formLogin()				
 				.loginProcessingUrl("/login")				
 				.usernameParameter("username")
 				.passwordParameter("password")
 				.successHandler(authSuccessHandler)
 				.failureHandler(authFailureHandler)
-				.permitAll().and()
+				.permitAll().and()*/
 			.logout()
 				.logoutUrl("/common/user/logout")
 				//.logoutSuccessHandler(logoutSuccessHandler)

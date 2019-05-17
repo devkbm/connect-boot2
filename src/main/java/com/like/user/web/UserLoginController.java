@@ -82,15 +82,7 @@ public class UserLoginController {
 		
 		List<GrantedAuthority> authorities = (List<GrantedAuthority>)user.getAuthorities();           						
         authentication(username, password, authorities, session);         		 							       
-        
-        /*String userId, 
-		String userName, 
-		String imageUrl,
-		Collection<? extends GrantedAuthority> collection,
-		List<MenuGroup> menuGroupList,
-		String token*/
-        
-		//return new AuthenticationToken(user.getUsername(),user.getName(), user.getImage(), user.getAuthorities(), user.getMenuGroupList(), session.getId());
+                
 		return AuthenticationToken
 				.builder()
 				.userId(user.getUsername())

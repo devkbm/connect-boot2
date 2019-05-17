@@ -30,10 +30,9 @@ import com.like.menu.domain.model.MenuGroup;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Singular;
 import lombok.ToString;
 
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"menuGroupList"})
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"authorities","comusermenugroup"})
@@ -78,20 +77,18 @@ public class User extends AuditEntity implements UserDetails {
 	@OneToOne(optional = true)
 	@JoinColumn(name = "dept_cd", nullable = true)
 	Dept dept;
-	
-	@Singular(value="authorities")
+		
 	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comuserauthority",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="authority_name"))	
-	List<Authority> authorities;
-		
-	@Singular(value="menuGroupList") 
+	List<Authority> authorities = new ArrayList<>();
+			
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="comusermenugroup",
     		joinColumns= @JoinColumn(name="user_id"),
     		inverseJoinColumns=@JoinColumn(name="menu_group_code"))	
-	List<MenuGroup> menuGroupList;		
+	List<MenuGroup> menuGroupList = new ArrayList<>();		
 		
 	@Builder
 	public User(String userId, String name, String password, Dept dept, String mobileNum, String email,
