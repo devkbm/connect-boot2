@@ -63,8 +63,8 @@ public class UserLoginController {
 		
 		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 		
-		log.info(SecurityContextHolder.getContext().getAuthentication().getName() + " 로그인 되었습니다.");
-		log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+		// log.info(SecurityContextHolder.getContext().getAuthentication().getName() + " 로그인 되었습니다.");
+		// log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 	}
 		 
 	@PostMapping(value={"/common/user/login"})

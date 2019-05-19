@@ -20,6 +20,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -27,6 +31,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.like.common.security.RestLoginFailureHandler;
 import com.like.common.security.RestLoginSuccessHandler;
+import com.like.common.security.CustomCsrfFilter;
 import com.like.common.security.RestAuthenticationEntryPoint;
 import com.like.user.service.UserService;
 
@@ -58,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private RestLoginFailureHandler authFailureHandler;
 	
-	
+	private static final String[] CSRF_IGNORE = {"/common/user/login","/static/**"};
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -71,9 +76,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//    .headers().frameOptions().disable();			
 		
 		http.csrf().disable()
+				/*.ignoringAntMatchers(CSRF_IGNORE)				
+				.csrfTokenRepository(csrfTokenRepository()).and()				
+				.addFilterAfter(new CustomCsrfFilter(), CsrfFilter.class)*/				
 			.cors().and()			
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()			
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()							
 				.antMatchers("/common/user/login").permitAll()				
@@ -84,13 +92,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
 			
-			/*.formLogin()				
+			.formLogin()				
 				.loginProcessingUrl("/login")				
 				.usernameParameter("username")
 				.passwordParameter("password")
 				.successHandler(authSuccessHandler)
 				.failureHandler(authFailureHandler)
-				.permitAll().and()*/
+				.permitAll().and()
 			.logout()
 				.logoutUrl("/common/user/logout")
 				//.logoutSuccessHandler(logoutSuccessHandler)
@@ -110,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
        
        // Request Header에 Http default 이외에 정해진 것만 허용한다.
-       configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token", "Authorization", "x-xsrf-token"));
+       configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token", "Authorization", "x-xsrf-token", "XSRF-TOKEN"));
        
        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
        
@@ -144,6 +152,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		log.info(auth.toString());
 	}
+	
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setHeaderName(CustomCsrfFilter.CSRF_COOKIE_NAME);
+		
+		return repository;
+	}
+
 	
 	/*
 	@Bean
