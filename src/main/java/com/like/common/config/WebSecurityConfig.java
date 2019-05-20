@@ -75,10 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//http.csrf().disable()
 		//    .headers().frameOptions().disable();			
 		
-		http.csrf().disable()
-				/*.ignoringAntMatchers(CSRF_IGNORE)				
+		http.csrf()//.disable()
+				.ignoringAntMatchers(CSRF_IGNORE)				
 				.csrfTokenRepository(csrfTokenRepository()).and()				
-				.addFilterAfter(new CustomCsrfFilter(), CsrfFilter.class)*/				
+				.addFilterAfter(new CustomCsrfFilter(), CsrfFilter.class)				
 			.cors().and()			
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
@@ -87,8 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/common/user/login").permitAll()				
 				//.antMatchers("/common/menuhierarchy/**").permitAll()
 				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
-				//.anyRequest().authenticated().and()		// 인증된 요청만 허용
-				.anyRequest().permitAll().and()				// 모든 요청 허용(테스트용도)
+				.anyRequest().authenticated().and()		// 인증된 요청만 허용
+				//.anyRequest().permitAll().and()				// 모든 요청 허용(테스트용도)
 			// 모든 연결을 HTTPS로 강제 전환
 			//.requiresChannel().anyRequest().requiresSecure().and()
 			
@@ -114,11 +114,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
        CorsConfiguration configuration = new CorsConfiguration();              
-       configuration.setAllowedOrigins(Arrays.asList("*"));
+       configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
        
        // Request Header에 Http default 이외에 정해진 것만 허용한다.
-       configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token", "Authorization", "x-xsrf-token", "XSRF-TOKEN"));
+       configuration.setAllowedHeaders(Arrays.asList("origin","Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token", "Authorization", "x-xsrf-token", "XSRF-TOKEN", "X-Access-Token"));
        
        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin","Access-Control-Allow-Credentials"));
        
