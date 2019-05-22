@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()			
 			.authorizeRequests()
 			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()							
-				.antMatchers("/common/user/login").permitAll()				
+				.antMatchers("/common/user/login").permitAll()								
 				//.antMatchers("/common/menuhierarchy/**").permitAll()
 				//.antMatchers("/grw/**").permitAll()//hasRole("USER")							
 				.anyRequest().authenticated().and()		// 인증된 요청만 허용
