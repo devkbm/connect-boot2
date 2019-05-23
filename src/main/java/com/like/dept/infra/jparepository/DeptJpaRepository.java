@@ -96,6 +96,7 @@ public class DeptJpaRepository implements DeptRepository {
 				.select(this.getDeptHierarchyConstructor())
 				.from(qDept)
 				.where(qDept.isRootNode())
+				.orderBy(qDept.seq.asc())				
 				.fetch();
 	}
 	
@@ -104,6 +105,7 @@ public class DeptJpaRepository implements DeptRepository {
 				.select(this.getDeptHierarchyConstructor())
 				.from(qDept)
 				.where(qDept.parentDept.deptCode.eq(parentDeptCode))
+				.orderBy(qDept.seq.asc())
 				.fetch();
 	}
 	
