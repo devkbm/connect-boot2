@@ -182,9 +182,7 @@ public class Article extends AuditEntity implements Serializable {
 	public Boolean getEditable() {
 		
 		String sessionId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		log.info(sessionId);
-		
+					
 		return sessionId.equals(this.createdBy) ? true : false;
 	}
 			
