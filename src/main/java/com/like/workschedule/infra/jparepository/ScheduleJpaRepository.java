@@ -38,7 +38,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Override
 	public WorkGroup getWorkGroup(Long id) {
 		Optional<WorkGroup> entity = jpaWorkGroup.findById(id);
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Override
 	public WorkGroupMember getWorkGroupMember(WorkGroupMemberId id) {
 		Optional<WorkGroupMember> entity = jpaWorkGroupMember.findById(id);
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Override
 	public Schedule getSchedule(Long id) {
 		Optional<Schedule> entity = jpaSchedule.findById(id);
-		return entity.isPresent() ? entity.get() : null;
+		return entity.orElse(null);
 	}
 
 	@Override

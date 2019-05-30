@@ -59,14 +59,13 @@ public class WorkGroupController {
 	@GetMapping(value={"/grw/workgroup/{id}"})
 	public ResponseEntity<?> getWorkGroup(@PathVariable(value="id") Long id) {
 						
-		WorkGroup entity = workGroupService.getWorkGroup(id);							
+		WorkGroup entity = workGroupService.getWorkGroup(id);										
 		
-		log.info(id.toString());		
-		log.info(id.toString());		
+		WorkDTO.WorkGroupSave dto = WorkScheduleDTOAssembler.convertDTO(entity);
 		
-		return WebControllerUtil.getResponse(entity,
-				entity == null ? 0 : 1, 
-				entity == null ? false : true,
+		return WebControllerUtil.getResponse(dto,
+				dto == null ? 0 : 1, 
+				dto == null ? false : true,
 				"조회 되었습니다.",
 				HttpStatus.OK);													
 	}
@@ -80,10 +79,11 @@ public class WorkGroupController {
 		
 		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
 		
-		//workGroupService.saveWorkGroup(entity);
-		log.info(entity.toString());
-		if (dto.getUserList() != null) {
-			List<User> userList = userRepository.getUserList(dto.getUserList());
+		List<String> dtoMemberList = dto.getMemberList();
+						
+		if (dtoMemberList != null) {
+			List<User> userList = userRepository.getUserList(dtoMemberList);
+			
 			for ( User user: userList ) {
 				WorkGroupMember member = new WorkGroupMember(entity, user);
 				log.info(member.toString());

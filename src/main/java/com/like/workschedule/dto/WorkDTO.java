@@ -76,11 +76,11 @@ public class WorkDTO {
 		
 		String modifiedBy;
 		
-		Long id;
+		Long workGroupId;
 				
-		String name;		
+		String workGroupName;		
 		
-		List<String> userList;
+		List<String> memberList;
 	}
 	
 	@Data

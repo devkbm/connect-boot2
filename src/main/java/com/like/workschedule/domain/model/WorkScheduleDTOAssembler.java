@@ -1,21 +1,34 @@
 package com.like.workschedule.domain.model;
 
+import java.util.stream.Collectors;
+
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
+import com.like.workschedule.dto.WorkDTO.WorkGroupSave;
 
 public class WorkScheduleDTOAssembler {
 
 	public static WorkGroup toEntity(WorkDTO.WorkGroupSave dto, ScheduleRepository repository) {
 		WorkGroup entity = null;
 		
-		if (dto.getId() != null) {
-			entity = repository.getWorkGroup(dto.getId());
-			entity.name = dto.getName();			
+		if (dto.getWorkGroupId() != null) {
+			entity = repository.getWorkGroup(dto.getWorkGroupId());
+			entity.name = dto.getWorkGroupName();			
 		} else {
-			entity = new WorkGroup(dto.getName());
+			entity = new WorkGroup(dto.getWorkGroupName());
 		}
 					
 		return entity;
+	}
+	
+	public static WorkDTO.WorkGroupSave convertDTO(WorkGroup entity) {
+		WorkDTO.WorkGroupSave dto = WorkGroupSave.builder()
+												.workGroupId(entity.getId())
+												.workGroupName(entity.getName())
+												.memberList(entity.memberList.stream().map( r -> r.getUser().getUserId()).collect(Collectors.toList()))
+												.build();
+		
+		return dto;
 	}
 	
 	
