@@ -17,9 +17,9 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.common.domain.AuditEntity;
+import com.like.user.domain.model.User;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -45,7 +45,7 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	
-	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	List<WorkGroupMember> memberList = new ArrayList<>();
 	
 	public WorkGroup(String name) {
@@ -57,9 +57,7 @@ public class WorkGroup extends AuditEntity {
 	public void addWorkGroupMember(WorkGroupMember member) {
 		if (this.memberList == null) { 
 			this.memberList = new ArrayList<>();
-		}
-		log.info( member.toString());
-		log.info( String.valueOf(this.memberList.contains(member)));
+		}		
 		
 		// 중복 방지
 		if (!this.memberList.contains(member)) {
@@ -67,8 +65,15 @@ public class WorkGroup extends AuditEntity {
 		}
 		
 		// 참조 추가
-		member.setWorkGroup(this);
-		
+		member.setWorkGroup(this);		
+	}
+	
+	public void deleteWorkGroupMember(User user) {
+		this.memberList.remove(new WorkGroupMember(this, user));		
+	}
+	
+	public void clearWorkGroupMember() {
+		this.memberList.clear();
 	}
 	
 }
