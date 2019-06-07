@@ -27,6 +27,7 @@ import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.WorkScheduleDTOAssembler;
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
+import com.like.workschedule.dto.WorkDTO.ScheduleSave;
 import com.like.workschedule.service.WorkGroupService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -118,9 +119,10 @@ public class WorkGroupController {
 						
 		Schedule entity = workGroupService.getSchedule(id);							
 		
-		return WebControllerUtil.getResponse(entity,
-				entity == null ? 0 : 1, 
-				entity == null ? false : true,
+		ScheduleSave dto = WorkScheduleDTOAssembler.convertDTO(entity);
+		return WebControllerUtil.getResponse(dto,
+				dto == null ? 0 : 1, 
+				dto == null ? false : true,
 				"조회 되었습니다.",
 				HttpStatus.OK);													
 	}

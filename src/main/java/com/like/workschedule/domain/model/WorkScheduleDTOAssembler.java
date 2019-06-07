@@ -65,7 +65,7 @@ public class WorkScheduleDTOAssembler {
 												.start(entity.start)
 												.end(entity.end)
 												.allDay(entity.allDay)
-												.workGroupId(entity.getWorkGroup().id)
+												.workGroupId(entity.getWorkGroup().getId())
 												.build();
 														
 		return dto;
