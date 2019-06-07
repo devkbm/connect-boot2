@@ -80,22 +80,18 @@ public class WorkGroupController {
 		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
 		
 		List<String> dtoMemberList = dto.getMemberList();
-						
+		entity.clearWorkGroupMember();
+		
 		if (dtoMemberList != null) {
 			List<User> userList = userRepository.getUserList(dtoMemberList);
 			
 			for ( User user: userList ) {
-				WorkGroupMember member = new WorkGroupMember(entity, user);
-				log.info(member.toString());
+				WorkGroupMember member = new WorkGroupMember(entity, user);				
 				entity.addWorkGroupMember(member);
 			}
 			//workGroupService.saveWorkGroupMember(entity, user);
-		}
-		log.info(entity.toString());
-		workGroupService.saveWorkGroup(entity);
-		
-		//log.info(user.getUserId());
-		//log.info(user.getUserId());
+		}		
+		workGroupService.saveWorkGroup(entity);		
 		
 		return WebControllerUtil.getResponse(entity,
 				entity != null ? 1 : 0, 
