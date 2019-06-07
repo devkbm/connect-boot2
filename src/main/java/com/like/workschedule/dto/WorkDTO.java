@@ -107,7 +107,7 @@ public class WorkDTO {
 		
 		Boolean allDay;
 		
-		Long fkWorkGroup;
+		Long workGroupId;
 	}
 	
 	

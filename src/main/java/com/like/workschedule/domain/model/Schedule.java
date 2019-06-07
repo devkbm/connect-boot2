@@ -23,10 +23,12 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @JsonAutoDetect(fieldVisibility=Visibility.ANY)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "GRWSCHEDULE")
 @EntityListeners(AuditingEntityListener.class)
