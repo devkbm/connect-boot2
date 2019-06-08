@@ -1,7 +1,10 @@
 package com.like.workschedule.domain.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,10 +46,10 @@ public class Schedule extends AuditEntity implements Serializable {
 	String title;
 	
 	@Column(name="START_DT")
-	LocalDateTime start;
+	Instant start;
 	
 	@Column(name="END_DT")
-	LocalDateTime end;
+	Instant end;
 	
 	@Column(name="ALLDAY")
 	Boolean allDay;	
@@ -57,7 +60,7 @@ public class Schedule extends AuditEntity implements Serializable {
 	WorkGroup workGroup;
 
 	@Builder
-	public Schedule(String title, LocalDateTime start, LocalDateTime end, 
+	public Schedule(String title, Instant start, Instant end, 
 			        Boolean allDay, WorkGroup workGroup) {
 		this.title = title;
 		this.start = start;

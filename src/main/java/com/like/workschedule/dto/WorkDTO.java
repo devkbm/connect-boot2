@@ -1,7 +1,10 @@
 package com.like.workschedule.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
@@ -101,9 +104,9 @@ public class WorkDTO {
 				
 		String title;
 		
-		LocalDateTime start;
+		Instant start;
 		
-		LocalDateTime end;
+		Instant end;
 		
 		Boolean allDay;
 		
