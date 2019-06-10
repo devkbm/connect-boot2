@@ -7,6 +7,8 @@ import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.util.StringUtils;
 
 import com.like.workschedule.domain.model.QSchedule;
@@ -48,7 +50,11 @@ public class WorkDTO {
 
 		private final QSchedule qSchedule = QSchedule.schedule;
 		
+		@NotEmpty
 		Long fkWorkGroup;
+		
+		@NotEmpty
+		Instant queryYm;
 		
 		String title;			
 					
@@ -56,6 +62,11 @@ public class WorkDTO {
 			BooleanBuilder builder = new BooleanBuilder();
 								
 			builder.and(qSchedule.workGroup.id.eq(this.fkWorkGroup));
+			
+			if (this.queryYm != null) {
+				builder.and(qSchedule.start.goe(this.queryYm));
+				builder.and(qSchedule.end.loe(this.queryYm));
+			}
 			
 			if (StringUtils.hasText(this.title)) {
 				builder.and(qSchedule.title.like("%"+this.title+"%"));

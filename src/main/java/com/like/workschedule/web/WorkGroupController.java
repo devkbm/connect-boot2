@@ -1,6 +1,7 @@
 package com.like.workschedule.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -107,10 +108,12 @@ public class WorkGroupController {
 						
 		List<Schedule> workGroupList = workGroupService.getScheduleList(searchCondition);				
 		
-		return WebControllerUtil.getResponse(workGroupList,
-				workGroupList.size(), 
-				workGroupList.isEmpty()? false : true,
-				workGroupList.size() + "건 조회 되었습니다.",
+		List<ScheduleSave> dtoList = workGroupList.stream().map( r -> WorkScheduleDTOAssembler.convertDTO(r)).collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList,
+				dtoList.size(), 
+				dtoList.isEmpty()? false : true,
+				dtoList.size() + "건 조회 되었습니다.",
 				HttpStatus.OK);												
 	}
 	
