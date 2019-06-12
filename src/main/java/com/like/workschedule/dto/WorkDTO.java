@@ -59,7 +59,10 @@ public class WorkDTO {
 		Long fkWorkGroup;
 		
 		@NotEmpty
-		String queryYm;
+		String fromDate;
+		
+		@NotEmpty
+		String toDate;
 		
 		String title;			
 					
@@ -67,39 +70,38 @@ public class WorkDTO {
 			BooleanBuilder builder = new BooleanBuilder();
 								
 			builder.and(qSchedule.workGroup.id.eq(this.fkWorkGroup));
-					
-			log.info(this.queryYm.substring(0, 4));
-			log.info(this.queryYm.substring(4, 6));
+								
 			
-			LocalDateTime param = LocalDateTime.of(Integer.parseInt(this.queryYm.substring(0, 4)), 
-													Integer.parseInt(this.queryYm.substring(4, 6)), 
-													1, 
-													0, 
-													0, 
-													0);
+			LocalDateTime fromDateTime = LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
+														  Integer.parseInt(this.fromDate.substring(4, 6)), 
+														  Integer.parseInt(this.fromDate.substring(6, 8)), 
+														  0, 
+														  0, 
+														  0);
 			
-			log.info(param.toString());
-			log.info(param.with(TemporalAdjusters.lastDayOfMonth()).toString());
+			LocalDateTime toDateTime = LocalDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
+														Integer.parseInt(this.toDate.substring(4, 6)), 
+														Integer.parseInt(this.toDate.substring(6, 8)), 
+														23, 
+														59, 
+														59);
 			
-			DateTimeExpression<LocalDateTime> monthFirstDay = Expressions.asDateTime(param);
-			DateTimeExpression<LocalDateTime> monthEndDay = Expressions.asDateTime(param.with(TemporalAdjusters.lastDayOfMonth()));
+			//log.info(param.toString());
+			//log.info(param.with(TemporalAdjusters.lastDayOfMonth()).toString());
 			
+			DateTimeExpression<LocalDateTime> fromExpression = Expressions.asDateTime(fromDateTime);
+			DateTimeExpression<LocalDateTime> toExpression = Expressions.asDateTime(toDateTime);
 			
+			//DateTimeExpression<LocalDateTime> monthEndDay = Expressions.asDateTime(param.with(TemporalAdjusters.lastDayOfMonth()));					
 			// LocalDateTime firstDay = param.with(TemporalAdjusters.firstDayOfMonth());
 				
 																		
-			if (this.queryYm != null) {
-				builder.and(monthFirstDay.between(qSchedule.start, qSchedule.end)
-						.or(monthEndDay.between(qSchedule.start, qSchedule.end))
-						.or(qSchedule.start.between(monthFirstDay, monthEndDay))
-						.or(qSchedule.end.between(monthFirstDay, monthEndDay)));
+
+			builder.and(fromExpression.between(qSchedule.start, qSchedule.end)
+					.or(toExpression.between(qSchedule.start, qSchedule.end))
+					.or(qSchedule.start.between(fromExpression, toExpression))
+					.or(qSchedule.end.between(fromExpression, toExpression)));
 				
-				/*
-					builder.and(qSchedule.start.goe(monthEndDay));
-					builder.and(qSchedule.end.loe(monthEndDay));
-					builder.and(monthEndDay.between(qSchedule.start, qSchedule.end));
-				*/
-			}
 			
 			if (StringUtils.hasText(this.title)) {
 				builder.and(qSchedule.title.like("%"+this.title+"%"));
