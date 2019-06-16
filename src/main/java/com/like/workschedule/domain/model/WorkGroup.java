@@ -42,6 +42,9 @@ public class WorkGroup extends AuditEntity {
 	@Column(name="NAME")
 	String name;
 	
+	@Column(name="COLOR")
+	String color;
+	
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	

@@ -14,9 +14,11 @@ public class WorkScheduleDTOAssembler {
 		
 		if (dto.getWorkGroupId() != null) {
 			entity = repository.getWorkGroup(dto.getWorkGroupId());
-			entity.name = dto.getWorkGroupName();			
+			entity.name = dto.getWorkGroupName();	
+			entity.color = dto.getColor();
 		} else {
 			entity = new WorkGroup(dto.getWorkGroupName());
+			entity.color = dto.getColor();
 		}
 					
 		return entity;
@@ -26,6 +28,7 @@ public class WorkScheduleDTOAssembler {
 		WorkDTO.WorkGroupSave dto = WorkGroupSave.builder()
 												.workGroupId(entity.getId())
 												.workGroupName(entity.getName())
+												.color(entity.getColor())
 												.memberList(entity.memberList.stream().map( r -> r.getUser().getUserId()).collect(Collectors.toList()))
 												.build();
 		

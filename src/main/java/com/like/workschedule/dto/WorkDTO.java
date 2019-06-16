@@ -1,9 +1,7 @@
 package com.like.workschedule.dto;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,9 +11,7 @@ import org.springframework.util.StringUtils;
 import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.Expressions;
 
 import lombok.AllArgsConstructor;
@@ -128,6 +124,8 @@ public class WorkDTO {
 		Long workGroupId;
 				
 		String workGroupName;		
+		
+		String color;
 		
 		List<String> memberList;
 	}

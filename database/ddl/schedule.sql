@@ -5,6 +5,7 @@ create table if not exists COM.GRWWORKGROUP (
 	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     ID					INT UNSIGNED	NOT NULL	AUTO_INCREMENT	COMMENT '업무그룹ID',
     NAME				VARCHAR(2000)	NULL		COMMENT '업무그룹명',    
+	COLOR				VARCHAR(9)		NULL		COMMENT '색상',    
 	constraint pk_grwworkgroup primary key(ID)
 ) COMMENT = '업무그룹';
 
