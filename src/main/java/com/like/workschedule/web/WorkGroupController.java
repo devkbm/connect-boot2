@@ -28,6 +28,7 @@ import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.WorkScheduleDTOAssembler;
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
+import com.like.workschedule.dto.WorkDTO.ScheduleResponse;
 import com.like.workschedule.dto.WorkDTO.ScheduleSave;
 import com.like.workschedule.service.WorkGroupService;
 
@@ -108,7 +109,7 @@ public class WorkGroupController {
 						
 		List<Schedule> workGroupList = workGroupService.getScheduleList(searchCondition);				
 		
-		List<ScheduleSave> dtoList = workGroupList.stream().map( r -> WorkScheduleDTOAssembler.convertDTO(r)).collect(Collectors.toList());
+		List<ScheduleResponse> dtoList = workGroupList.stream().map( r -> WorkScheduleDTOAssembler.convertResDTO(r)).collect(Collectors.toList());
 		
 		return WebControllerUtil.getResponse(dtoList,
 				dtoList.size(), 

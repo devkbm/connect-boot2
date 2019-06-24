@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.dto.WorkDTO;
+import com.like.workschedule.dto.WorkDTO.ScheduleResponse;
 import com.like.workschedule.dto.WorkDTO.ScheduleSave;
 import com.like.workschedule.dto.WorkDTO.WorkGroupSave;
 
@@ -69,6 +70,23 @@ public class WorkScheduleDTOAssembler {
 												.end(entity.end)
 												.allDay(entity.allDay)
 												.workGroupId(entity.getWorkGroup().getId())
+												.build();
+														
+		return dto;
+	}
+	
+	public static ScheduleResponse convertResDTO(Schedule entity) {
+		
+		WorkGroup workGroup = entity.getWorkGroup();
+		
+		WorkDTO.ScheduleResponse dto = ScheduleResponse.builder()
+												.workGroupId(workGroup.getId())
+												.id(entity.id)
+												.title(entity.title)
+												.color(workGroup.getColor())
+												.start(entity.start)
+												.end(entity.end)
+												.allDay(entity.allDay)																							
 												.build();
 														
 		return dto;

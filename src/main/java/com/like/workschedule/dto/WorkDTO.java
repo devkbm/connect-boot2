@@ -157,5 +157,34 @@ public class WorkDTO {
 		Long workGroupId;
 	}
 	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class ScheduleResponse implements Serializable {
+				
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+		
+		Long workGroupId;
+		
+		Long id;
+				
+		String title;
+		
+		String color;
+		
+		LocalDateTime start;
+		
+		LocalDateTime end;
+		
+		Boolean allDay;			
+	}
+	
 	
 }
