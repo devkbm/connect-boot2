@@ -2,12 +2,18 @@ package com.like.workschedule.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.querydsl.core.BooleanBuilder;
@@ -68,25 +74,27 @@ public class WorkDTO {
 			builder.and(qSchedule.workGroup.id.eq(this.fkWorkGroup));
 								
 			
-			LocalDateTime fromDateTime = LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
+			OffsetDateTime fromDateTime = OffsetDateTime.of(
+											LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
 														  Integer.parseInt(this.fromDate.substring(4, 6)), 
 														  Integer.parseInt(this.fromDate.substring(6, 8)), 
 														  0, 
 														  0, 
-														  0);
+														  0), ZoneOffset.ofHours(9));
 			
-			LocalDateTime toDateTime = LocalDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
+			OffsetDateTime toDateTime = OffsetDateTime.of(
+											LocalDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
 														Integer.parseInt(this.toDate.substring(4, 6)), 
 														Integer.parseInt(this.toDate.substring(6, 8)), 
 														23, 
 														59, 
-														59);
+														59), ZoneOffset.ofHours(9));
 			
 			//log.info(param.toString());
 			//log.info(param.with(TemporalAdjusters.lastDayOfMonth()).toString());
 			
-			DateTimeExpression<LocalDateTime> fromExpression = Expressions.asDateTime(fromDateTime);
-			DateTimeExpression<LocalDateTime> toExpression = Expressions.asDateTime(toDateTime);
+			DateTimeExpression<OffsetDateTime> fromExpression = Expressions.asDateTime(fromDateTime);
+			DateTimeExpression<OffsetDateTime> toExpression = Expressions.asDateTime(toDateTime);
 			
 			//DateTimeExpression<LocalDateTime> monthEndDay = Expressions.asDateTime(param.with(TemporalAdjusters.lastDayOfMonth()));					
 			// LocalDateTime firstDay = param.with(TemporalAdjusters.firstDayOfMonth());
@@ -148,9 +156,9 @@ public class WorkDTO {
 				
 		String title;
 		
-		LocalDateTime start;
+		OffsetDateTime start;
 		
-		LocalDateTime end;
+		OffsetDateTime end;
 		
 		Boolean allDay;
 		
@@ -178,10 +186,10 @@ public class WorkDTO {
 		String title;
 		
 		String color;
-		
-		LocalDateTime start;
-		
-		LocalDateTime end;
+				
+		OffsetDateTime start;
+				
+		OffsetDateTime end;
 		
 		Boolean allDay;			
 	}

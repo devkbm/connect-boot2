@@ -1,5 +1,8 @@
 package com.like;
 
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -22,5 +25,10 @@ public class ConnectBoot2Application {
 	@Bean
 	public JPAQueryFactory queryFactory() {
 		return new JPAQueryFactory(em);
+	}
+	
+	@PostConstruct
+	void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 	}
 }

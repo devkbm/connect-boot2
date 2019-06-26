@@ -46,10 +46,10 @@ public class Schedule extends AuditEntity implements Serializable {
 	String title;
 	
 	@Column(name="START_DT")
-	LocalDateTime start;
+	OffsetDateTime start;
 	
 	@Column(name="END_DT")
-	LocalDateTime end;
+	OffsetDateTime end;
 	
 	@Column(name="ALLDAY")
 	Boolean allDay;	
@@ -60,7 +60,7 @@ public class Schedule extends AuditEntity implements Serializable {
 	WorkGroup workGroup;
 
 	@Builder
-	public Schedule(String title, LocalDateTime start, LocalDateTime end, 
+	public Schedule(String title, OffsetDateTime start, OffsetDateTime end, 
 			        Boolean allDay, WorkGroup workGroup) {
 		this.title = title;
 		this.start = start;

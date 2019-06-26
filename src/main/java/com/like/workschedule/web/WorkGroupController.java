@@ -123,7 +123,7 @@ public class WorkGroupController {
 						
 		Schedule entity = workGroupService.getSchedule(id);							
 		
-		ScheduleSave dto = WorkScheduleDTOAssembler.convertDTO(entity);
+		ScheduleResponse dto = WorkScheduleDTOAssembler.convertResDTO(entity);
 		return WebControllerUtil.getResponse(dto,
 				dto == null ? 0 : 1, 
 				dto == null ? false : true,
