@@ -15,6 +15,8 @@ public interface ScheduleRepository {
 
 	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchCondition searchCondition);
 	
+	public List<WorkGroup> getMyWorkGroupList(String userId);
+	
 	public WorkGroup getWorkGroup(Long id);
 	
 	public void saveWorkGroup(WorkGroup workGroup);

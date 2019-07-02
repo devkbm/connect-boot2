@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
+import com.like.file.domain.model.QFileInfo;
+import com.like.workschedule.domain.model.QWorkGroupMember;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
@@ -17,10 +19,17 @@ import com.like.workschedule.dto.WorkDTO.SearchCondition;
 import com.like.workschedule.infra.jparepository.springdata.JpaSchedule;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroup;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroupMember;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
 public class ScheduleJpaRepository implements ScheduleRepository {
 
+	@Autowired
+	private JPAQueryFactory  queryFactory;	
+	
 	@Autowired
 	private JpaWorkGroup jpaWorkGroup;
 	
@@ -30,10 +39,25 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Autowired
 	private JpaSchedule jpaSchedule;	
 	
+	private final QWorkGroupMember qWorkGroupMember = QWorkGroupMember.workGroupMember;
+	
 	@Override
 	public List<WorkGroup> getWorkGroupList(SearchCondition searchCondition) {
 		return Lists.newArrayList(jpaWorkGroup.findAll(searchCondition.getBooleanBuilder()));
 	}
+	
+	@Override
+	public List<WorkGroup> getMyWorkGroupList(String userId) {
+		
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(JPAExpressions.select(Expressions.constant(1))
+									.from(qWorkGroupMember)
+									.where(qWorkGroupMember.user.userId.eq(userId)).exists()
+			);				
+		
+		return Lists.newArrayList(jpaWorkGroup.findAll(builder));					
+	}
+
 	
 	@Override
 	public WorkGroup getWorkGroup(Long id) {

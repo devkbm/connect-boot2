@@ -59,6 +59,18 @@ public class WorkGroupController {
 				HttpStatus.OK);												
 	}
 	
+	@GetMapping(value={"/grw/myworkgroup/{id}"})
+	public ResponseEntity<?> getWorkGroupList(@PathVariable(value="id") String id) {
+						
+		List<WorkGroup> workGroupList = workGroupService.getMyWorkGroupList(id);				
+		
+		return WebControllerUtil.getResponse(workGroupList,
+				workGroupList.size(), 
+				workGroupList.isEmpty()? false : true,
+				workGroupList.size() + "건 조회 되었습니다.",
+				HttpStatus.OK);												
+	}
+	
 	@GetMapping(value={"/grw/workgroup/{id}"})
 	public ResponseEntity<?> getWorkGroup(@PathVariable(value="id") Long id) {
 						

@@ -26,6 +26,10 @@ public class WorkGroupService {
 		return null;		
 	}
 	
+	public List<WorkGroup> getMyWorkGroupList(String userId) {
+		return scheduleRepository.getMyWorkGroupList(userId);	
+	}
+	
 	/**
 	 * 업무그룹를 조회한다.
 	 * @param id
