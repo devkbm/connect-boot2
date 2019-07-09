@@ -44,6 +44,10 @@ public class WorkGroupMember extends AuditEntity implements Serializable {
 		this.workGroup = workGroup;
 		this.user = user;
 	}
+	
+	public String getUserId() {
+		return this.user.getUserId();
+	}
 
 	@Override
 	public String toString() {

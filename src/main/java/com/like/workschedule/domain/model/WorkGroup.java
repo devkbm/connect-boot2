@@ -1,7 +1,9 @@
 package com.like.workschedule.domain.model;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"scheduleList"})
+@ToString(exclude = {"scheduleList", "memberList"})
 @Getter
 @Entity
 @Table(name = "GRWWORKGROUP")
@@ -49,7 +51,7 @@ public class WorkGroup extends AuditEntity {
 	List<Schedule> scheduleList;
 	
 	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
-	List<WorkGroupMember> memberList = new ArrayList<>();
+	Set<WorkGroupMember> memberList = new LinkedHashSet<>();
 	
 	public WorkGroup(String name) {
 		this.name = name;
@@ -59,7 +61,7 @@ public class WorkGroup extends AuditEntity {
 	
 	public void addWorkGroupMember(WorkGroupMember member) {
 		if (this.memberList == null) { 
-			this.memberList = new ArrayList<>();
+			this.memberList = new LinkedHashSet<>();
 		}		
 		
 		// 중복 방지
@@ -71,7 +73,7 @@ public class WorkGroup extends AuditEntity {
 		member.setWorkGroup(this);		
 	}
 	
-	public void deleteWorkGroupMember(User user) {
+	public void deleteWorkGroupMember(User user) {		
 		this.memberList.remove(new WorkGroupMember(this, user));		
 	}
 	

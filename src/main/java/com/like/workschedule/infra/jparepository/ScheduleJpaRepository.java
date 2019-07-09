@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
-import com.like.file.domain.model.QFileInfo;
+import com.like.workschedule.domain.model.QSchedule;
+import com.like.workschedule.domain.model.QWorkGroup;
 import com.like.workschedule.domain.model.QWorkGroupMember;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
@@ -39,7 +40,9 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Autowired
 	private JpaSchedule jpaSchedule;	
 	
+	private final QWorkGroup qWorkGroup = QWorkGroup.workGroup;
 	private final QWorkGroupMember qWorkGroupMember = QWorkGroupMember.workGroupMember;
+	private final QSchedule qSchedule = QSchedule.schedule;
 	
 	@Override
 	public List<WorkGroup> getWorkGroupList(SearchCondition searchCondition) {
@@ -49,13 +52,35 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	@Override
 	public List<WorkGroup> getMyWorkGroupList(String userId) {
 		
+		/*
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(JPAExpressions.select(Expressions.constant(1))
 									.from(qWorkGroupMember)
 									.where(qWorkGroupMember.user.userId.eq(userId)).exists()
 			);				
 		
-		return Lists.newArrayList(jpaWorkGroup.findAll(builder));					
+		return Lists.newArrayList(jpaWorkGroup.findAll(builder));
+		*/
+		
+		/*
+		 		return queryFactory.select(qArticle)
+							.from(qArticle)	
+							.leftJoin(qArticle.files, qAttachedFile)
+							.fetchJoin()
+							.where(qArticle.board.pkBoard.eq(fkBoard))							
+							.fetch();	
+		 */
+		return queryFactory.select(qWorkGroup).distinct()
+							.from(qWorkGroup)							
+							.innerJoin(qWorkGroup.scheduleList, qSchedule)
+							.fetchJoin()
+							.innerJoin(qWorkGroup.memberList, qWorkGroupMember)
+							.fetchJoin()
+							.where(qWorkGroupMember.user.userId.eq(userId))
+							/*.where(JPAExpressions.select(Expressions.constant(1))
+												 .from(qWorkGroupMember)
+												 .where(qWorkGroupMember.user.userId.eq(userId)).exists())*/
+							.fetch();							
 	}
 
 	
