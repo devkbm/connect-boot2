@@ -74,12 +74,12 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 							.from(qWorkGroup)							
 							.innerJoin(qWorkGroup.scheduleList, qSchedule)
 							.fetchJoin()
-							.innerJoin(qWorkGroup.memberList, qWorkGroupMember)
-							.fetchJoin()
-							.where(qWorkGroupMember.user.userId.eq(userId))
-							/*.where(JPAExpressions.select(Expressions.constant(1))
+							//.innerJoin(qWorkGroup.memberList, qWorkGroupMember)
+							//.fetchJoin()
+							/*.where(qWorkGroupMember.user.userId.eq(userId))*/
+							.where(JPAExpressions.select(Expressions.constant(1))
 												 .from(qWorkGroupMember)
-												 .where(qWorkGroupMember.user.userId.eq(userId)).exists())*/
+												 .where(qWorkGroupMember.user.userId.eq(userId)).exists())
 							.fetch();							
 	}
 
