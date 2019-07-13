@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,10 +59,12 @@ public class WorkGroupController {
 				HttpStatus.OK);												
 	}
 	
-	@GetMapping(value={"/grw/myworkgroup/{id}"})
-	public ResponseEntity<?> getWorkGroupList(@PathVariable(value="id") String id) {
+	@GetMapping(value={"/grw/myworkgroup"})
+	public ResponseEntity<?> getWorkGroupList() {
 						
-		List<WorkGroup> workGroupList = workGroupService.getMyWorkGroupList(id);				
+		String sessionId = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		List<WorkGroup> workGroupList = workGroupService.getMyWorkGroupList(sessionId);				
 		
 		return WebControllerUtil.getResponse(workGroupList,
 				workGroupList.size(), 
