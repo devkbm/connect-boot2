@@ -78,7 +78,11 @@ public class WorkGroup extends AuditEntity {
 	}
 	
 	public void clearWorkGroupMember() {
-		this.memberList.clear();
+		if (this.memberList == null) {
+			this.memberList = new LinkedHashSet<>();			
+		} else if (!this.memberList.isEmpty()) {
+			this.memberList.clear();
+		}
 	}
 	
 }
