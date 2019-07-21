@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -58,7 +60,7 @@ public class WorkDTO {
 		private final QSchedule qSchedule = QSchedule.schedule;
 		
 		@NotEmpty
-		Long fkWorkGroup;
+		String fkWorkGroup;
 		
 		@NotEmpty
 		String fromDate;
@@ -70,10 +72,19 @@ public class WorkDTO {
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-								
-			builder.and(qSchedule.workGroup.id.eq(this.fkWorkGroup));
-								
+											
+			String idArray[] = this.fkWorkGroup.split(","); 
+
+			//long ids[] = Arrays.stream(idArray).mapToLong(Long::parseLong).toArray();
 			
+			List<Long> ids = new ArrayList<Long>();
+			
+			for (int i=0; i<idArray.length; i++) {
+				ids.add(Long.parseLong(idArray[i]));
+			}			
+						
+			builder.and(qSchedule.workGroup.id.in(ids));
+														
 			OffsetDateTime fromDateTime = OffsetDateTime.of(
 											LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
 														  Integer.parseInt(this.fromDate.substring(4, 6)), 
