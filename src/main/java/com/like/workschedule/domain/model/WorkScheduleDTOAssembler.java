@@ -5,11 +5,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.stream.Collectors;
 
+import com.like.workschedule.boundary.WorkDTO;
+import com.like.workschedule.boundary.WorkDTO.ScheduleResponse;
+import com.like.workschedule.boundary.WorkDTO.ScheduleSave;
+import com.like.workschedule.boundary.WorkDTO.WorkGroupSave;
 import com.like.workschedule.domain.repository.ScheduleRepository;
-import com.like.workschedule.dto.WorkDTO;
-import com.like.workschedule.dto.WorkDTO.ScheduleResponse;
-import com.like.workschedule.dto.WorkDTO.ScheduleSave;
-import com.like.workschedule.dto.WorkDTO.WorkGroupSave;
 
 public class WorkScheduleDTOAssembler {
 

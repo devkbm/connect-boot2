@@ -8,12 +8,12 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.like.user.domain.model.User;
+import com.like.workschedule.boundary.SearchCondition;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.id.WorkGroupMemberId;
 import com.like.workschedule.domain.repository.ScheduleRepository;
-import com.like.workschedule.dto.WorkDTO;
 
 @Service
 @Transactional
@@ -22,7 +22,7 @@ public class WorkGroupService {
 	@Resource(name="scheduleJpaRepository")
 	ScheduleRepository scheduleRepository;	
 	
-	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchCondition searchCondition) {
+	public List<WorkGroup> getWorkGroupList(SearchCondition.WorkGroupSearch searchCondition) {
 		return null;		
 	}
 	
@@ -71,7 +71,7 @@ public class WorkGroupService {
 	}
 		
 	
-	public List<Schedule> getScheduleList(WorkDTO.ScheduleSearch searchCondition) {
+	public List<Schedule> getScheduleList(SearchCondition.ScheduleSearch searchCondition) {
 		return scheduleRepository.getScheduleList(searchCondition);		
 	}
 	

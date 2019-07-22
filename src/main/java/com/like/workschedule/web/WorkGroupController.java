@@ -23,13 +23,14 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
+import com.like.workschedule.boundary.SearchCondition;
+import com.like.workschedule.boundary.WorkDTO;
+import com.like.workschedule.boundary.WorkDTO.ScheduleResponse;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.WorkScheduleDTOAssembler;
 import com.like.workschedule.domain.repository.ScheduleRepository;
-import com.like.workschedule.dto.WorkDTO;
-import com.like.workschedule.dto.WorkDTO.ScheduleResponse;
 import com.like.workschedule.service.WorkGroupService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class WorkGroupController {
 	WorkGroupService workGroupService;
 			
 	@GetMapping(value={"/grw/workgroup"})
-	public ResponseEntity<?> getWorkGroupList(@ModelAttribute WorkDTO.SearchCondition searchCondition) {
+	public ResponseEntity<?> getWorkGroupList(@ModelAttribute SearchCondition.WorkGroupSearch searchCondition) {
 						
 		List<WorkGroup> workGroupList = workGroupService.getWorkGroupList(searchCondition);				
 		
@@ -119,7 +120,7 @@ public class WorkGroupController {
 	
 	
 	@GetMapping(value={"/grw/schedule"})
-	public ResponseEntity<?> getScheduleList(@ModelAttribute WorkDTO.ScheduleSearch searchCondition) {
+	public ResponseEntity<?> getScheduleList(@ModelAttribute SearchCondition.ScheduleSearch searchCondition) {
 						
 		List<Schedule> workGroupList = workGroupService.getScheduleList(searchCondition);				
 		

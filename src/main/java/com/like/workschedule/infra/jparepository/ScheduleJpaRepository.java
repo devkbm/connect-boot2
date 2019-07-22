@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
+import com.like.workschedule.boundary.SearchCondition;
 import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.like.workschedule.domain.model.QWorkGroupMember;
@@ -15,8 +16,6 @@ import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.id.WorkGroupMemberId;
 import com.like.workschedule.domain.repository.ScheduleRepository;
-import com.like.workschedule.dto.WorkDTO.ScheduleSearch;
-import com.like.workschedule.dto.WorkDTO.SearchCondition;
 import com.like.workschedule.infra.jparepository.springdata.JpaSchedule;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroup;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroupMember;
@@ -45,7 +44,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	private final QSchedule qSchedule = QSchedule.schedule;
 	
 	@Override
-	public List<WorkGroup> getWorkGroupList(SearchCondition searchCondition) {
+	public List<WorkGroup> getWorkGroupList(SearchCondition.WorkGroupSearch searchCondition) {
 		return Lists.newArrayList(jpaWorkGroup.findAll(searchCondition.getBooleanBuilder()));
 	}
 	
@@ -125,7 +124,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	}
 	
 	@Override
-	public List<Schedule> getScheduleList(ScheduleSearch searchCondition) {
+	public List<Schedule> getScheduleList(SearchCondition.ScheduleSearch searchCondition) {
 		return Lists.newArrayList(jpaSchedule.findAll(searchCondition.getBooleanBuilder()));
 	}
 

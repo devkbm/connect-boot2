@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.like.workschedule.boundary.SearchCondition;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.id.WorkGroupMemberId;
-import com.like.workschedule.dto.WorkDTO;
 
 @Repository
 public interface ScheduleRepository {
 
-	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchCondition searchCondition);
+	public List<WorkGroup> getWorkGroupList(SearchCondition.WorkGroupSearch searchCondition);
 	
 	public List<WorkGroup> getMyWorkGroupList(String userId);
 	
@@ -31,7 +31,7 @@ public interface ScheduleRepository {
 	public void deleteWorkGroupMember(WorkGroupMember workGroupMember);
 	
 	
-	public List<Schedule> getScheduleList(WorkDTO.ScheduleSearch searchCondition);
+	public List<Schedule> getScheduleList(SearchCondition.ScheduleSearch searchCondition);
 	
 	public Schedule getSchedule(Long id);
 	
