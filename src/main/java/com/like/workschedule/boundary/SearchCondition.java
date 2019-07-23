@@ -63,18 +63,8 @@ public class SearchCondition {
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-											
-			String idArray[] = this.fkWorkGroup.split(","); 
-
-			//long ids[] = Arrays.stream(idArray).mapToLong(Long::parseLong).toArray();
-			
-			List<Long> ids = new ArrayList<Long>();
-			
-			for (int i=0; i<idArray.length; i++) {
-				ids.add(Long.parseLong(idArray[i]));
-			}			
-						
-			builder.and(qSchedule.workGroup.id.in(ids));
+																				
+			builder.and(qSchedule.workGroup.id.in(this.changeIdType(this.fkWorkGroup)));
 														
 			OffsetDateTime fromDateTime = OffsetDateTime.of(
 											LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
@@ -114,6 +104,25 @@ public class SearchCondition {
 			}						
 			
 			return builder;
+		}
+		
+				
+		/**
+		 * 콤마로 구분된 id 매개변수를 List<Long>타입으로 변환한다. 
+		 * @param params
+		 * @return List<Long>
+		 */
+		private List<Long> changeIdType(String params) {
+			
+			String idArray[] = params.split(","); 			
+		
+			List<Long> ids = new ArrayList<Long>(idArray.length);
+			
+			for (int i=0; i<idArray.length; i++) {
+				ids.add(Long.parseLong(idArray[i]));
+			}	
+			
+			return ids;
 		}
 	}
 }
