@@ -1,4 +1,4 @@
-package com.like.menu.dto;
+package com.like.menu.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,32 +14,6 @@ import lombok.Data;
 
 public class MenuGroupDTO {
 
-	@Data
-	public static class QueryCondition implements Serializable {
-
-		private static final long serialVersionUID = 4855967336075857695L;
-
-		private final QMenuGroup qMenuGroup = QMenuGroup.menuGroup;
-		
-		String menuGroupCode;
-		
-		String menuGroupName;
-				
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			if (StringUtils.hasText(this.menuGroupCode)) {
-				builder.and(qMenuGroup.menuGroupCode.like("%"+this.menuGroupCode+"%"));
-			}
-			
-			if (StringUtils.hasText(this.menuGroupName)) {
-				builder.and(qMenuGroup.menuGroupName.like("%"+this.menuGroupName+"%"));
-			}			
-			
-			return builder;
-		}
-	}
-	
 	@Data
 	public static class MenuGroupSave implements Serializable {
 		

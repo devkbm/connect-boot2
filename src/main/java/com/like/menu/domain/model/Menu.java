@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.like.common.domain.AuditEntity;
 import com.like.menu.domain.model.enums.MenuType;
-import com.like.menu.dto.MenuDTO;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -46,11 +45,7 @@ public class Menu extends AuditEntity implements Serializable {
 	
 	@Column(name="menu_name")
 	String menuName; 		
-			
-	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="p_menu_code", nullable = true )
-	Menu parent;
-	
+				
 	@Enumerated(EnumType.STRING)
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	@Column(name="menu_type")
@@ -60,7 +55,11 @@ public class Menu extends AuditEntity implements Serializable {
 	long sequence;
 	
 	@Column(name="lvl")
-	long level;			
+	long level;
+	
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="p_menu_code", nullable = true )
+	Menu parent;
 			 				
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_group_code", nullable=false, updatable=false)

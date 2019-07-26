@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.menu.boundary.MenuDTO;
+import com.like.menu.boundary.SearchCondition;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
@@ -13,9 +15,6 @@ import com.like.menu.domain.model.QMenu;
 import com.like.menu.domain.model.QMenuGroup;
 import com.like.menu.domain.model.QWebResource;
 import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.dto.MenuDTO;
-import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.WebResourceDTO;
 import com.like.menu.infra.jparepository.springdata.JpaMenu;
 import com.like.menu.infra.jparepository.springdata.JpaMenuGroup;
 import com.like.menu.infra.jparepository.springdata.JpaWebResource;
@@ -55,7 +54,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.QueryCondition condition) {
+	public List<MenuGroup> getMenuGroupList(SearchCondition.MenuGroupSearch condition) {
 		return queryFactory
 				.selectFrom(qMenuGroup)
 				.where(condition.getBooleanBuilder())
@@ -92,7 +91,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Menu> getMenuList(MenuDTO.QueryCondition condition) {
+	public List<Menu> getMenuList(SearchCondition.MenuSearch condition) {
 		return queryFactory
 				.selectFrom(qMenu)
 					.innerJoin(qMenu.menuGroup, qMenuGroup)
@@ -175,7 +174,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<WebResource> getResourceList(WebResourceDTO.QueryCondition condition) {
+	public List<WebResource> getResourceList(SearchCondition.WebResourceSearch condition) {
 					
 		return queryFactory
 				.selectFrom(qWebResource)

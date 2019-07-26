@@ -1,9 +1,9 @@
 package com.like.menu.domain.model;
 
+import com.like.menu.boundary.MenuDTO;
+import com.like.menu.boundary.MenuGroupDTO;
 import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.dto.MenuDTO;
-import com.like.menu.dto.MenuGroupDTO;
 
 public class MenuDTOAssembler {
 

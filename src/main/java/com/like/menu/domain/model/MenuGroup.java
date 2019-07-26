@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
-import com.like.menu.dto.MenuGroupDTO;
+import com.like.menu.boundary.MenuGroupDTO;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,7 +31,9 @@ import lombok.ToString;
 @Table(name = "commenugroup")
 @EntityListeners(AuditingEntityListener.class)
 public class MenuGroup extends AuditEntity implements Serializable {
-	
+		
+	private static final long serialVersionUID = -4167406611235216478L;
+
 	@Id
 	@Column(name="menu_group_code")
 	String menuGroupCode;

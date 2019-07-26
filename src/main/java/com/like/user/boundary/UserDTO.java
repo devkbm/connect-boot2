@@ -1,20 +1,14 @@
 package com.like.user.boundary;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.util.StringUtils;
-
 import com.like.common.validation.annotation.Id;
-import com.like.user.domain.model.QUser;
-import com.querydsl.core.BooleanBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

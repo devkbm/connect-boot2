@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.menu.boundary.EnumDTO;
+import com.like.menu.boundary.MenuDTO;
+import com.like.menu.boundary.MenuGroupDTO;
+import com.like.menu.boundary.SearchCondition;
+import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuDTOAssembler;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.enums.MenuType;
 import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.dto.EnumDTO;
-import com.like.menu.dto.MenuDTO;
-import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.WebResourceDTO;
-import com.like.menu.infra.jparepository.MenuJpaRepository;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -89,7 +88,7 @@ public class MenuController {
 	}
 	
 	@GetMapping("/common/menugroup")
-	public ResponseEntity<?> getMenuGroupList(MenuGroupDTO.QueryCondition dto) {				
+	public ResponseEntity<?> getMenuGroupList(SearchCondition.MenuGroupSearch dto) {				
 		
 		List<MenuGroup> list = menuQueryService.getMenuGroupList(dto); 							
 		
@@ -146,7 +145,7 @@ public class MenuController {
 	}
 	
 	@GetMapping("/common/menu")
-	public ResponseEntity<?> getMenuList(MenuDTO.QueryCondition dto) {				
+	public ResponseEntity<?> getMenuList(SearchCondition.MenuSearch dto) {				
 		
 		List<Menu> list = menuQueryService.getMenuList(dto);			
 		
@@ -208,7 +207,7 @@ public class MenuController {
 	
 	
 	@GetMapping("/common/webresource")
-	public ResponseEntity<?> getWebResourceList(WebResourceDTO.QueryCondition condition) {							 			
+	public ResponseEntity<?> getWebResourceList(SearchCondition.WebResourceSearch condition) {							 			
 		
 		List<WebResource> list = menuQueryService.getResourceList(condition);
 										

@@ -1,4 +1,4 @@
-package com.like.menu.dto;
+package com.like.menu.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -6,50 +6,14 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.util.StringUtils;
-
 import com.like.menu.domain.model.Menu;
-import com.like.menu.domain.model.QMenu;
-import com.like.menu.domain.model.QMenuGroup;
 import com.like.menu.domain.model.enums.MenuType;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
 
 public class MenuDTO {
-	
-	@Data
-	public static class QueryCondition implements Serializable {
 		
-		private static final long serialVersionUID = -7394537330230941998L;
-
-		private final QMenu qMenu = QMenu.menu;
-		
-		@NotEmpty
-		String menuGroupCode;
-		
-		String menuCode;
-		
-		String menuName;
-				
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-						
-			builder.and(QMenuGroup.menuGroup.menuGroupCode.eq(this.menuGroupCode));
-			
-			if (StringUtils.hasText(this.menuCode)) {
-				builder.and(qMenu.menuCode.like("%"+this.menuCode+"%"));
-			}
-			
-			if (StringUtils.hasText(this.menuName)) {
-				builder.and(qMenu.menuName.like("%"+this.menuName+"%"));
-			}			
-			
-			return builder;
-		}
-	}
-	
 	@Data
 	public static class MenuSave implements Serializable {
 		

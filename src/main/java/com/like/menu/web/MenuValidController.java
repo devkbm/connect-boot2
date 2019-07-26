@@ -12,7 +12,6 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
-import com.like.menu.dto.MenuDTO;
 import com.like.menu.service.MenuQueryService;
 
 @RestController

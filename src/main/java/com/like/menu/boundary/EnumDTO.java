@@ -1,4 +1,4 @@
-package com.like.menu.dto;
+package com.like.menu.boundary;
 
 public class EnumDTO {
 

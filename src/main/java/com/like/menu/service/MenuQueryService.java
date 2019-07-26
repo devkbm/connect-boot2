@@ -7,12 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.menu.boundary.MenuDTO;
+import com.like.menu.boundary.SearchCondition;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
-import com.like.menu.dto.MenuDTO;
-import com.like.menu.dto.MenuGroupDTO;
-import com.like.menu.dto.WebResourceDTO;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuGroup(menuGroupCode);
 	}
 	
-	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.QueryCondition condition) {
+	public List<MenuGroup> getMenuGroupList(SearchCondition.MenuGroupSearch condition) {
 		return menuJpaRepository.getMenuGroupList(condition);
 	}
 	
@@ -45,7 +44,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenu(menuCode);
 	}
 	
-	public List<Menu> getMenuList(MenuDTO.QueryCondition condition) {
+	public List<Menu> getMenuList(SearchCondition.MenuSearch condition) {
 		return menuJpaRepository.getMenuList(condition);
 	}
 	
@@ -59,7 +58,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getResource(resourceCode);
 	}
 	
-	public List<WebResource> getResourceList(WebResourceDTO.QueryCondition condition) {
+	public List<WebResource> getResourceList(SearchCondition.WebResourceSearch condition) {
 		return menuJpaRepository.getResourceList(condition);
 	}
 }

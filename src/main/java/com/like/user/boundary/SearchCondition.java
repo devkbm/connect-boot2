@@ -29,8 +29,8 @@ public class SearchCondition {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
-			builder.and(likeAuthority("%"+this.authority+"%"))
-				   .and(likeDescription("%"+this.description+"%"));					
+			builder.and(likeAuthority(this.authority))
+				   .and(likeDescription(this.description));					
 			
 			return builder;
 		}
@@ -40,7 +40,7 @@ public class SearchCondition {
 				return null;
 			}
 			
-			return qAuthority.authorityName.like("%"+this.authority+"%");
+			return qAuthority.authorityName.like("%"+authority+"%");
 		}
 		
 		private BooleanExpression likeDescription(String description) {
@@ -48,7 +48,7 @@ public class SearchCondition {
 				return null;
 			}
 			
-			return qAuthority.description.like("%"+this.description+"%");
+			return qAuthority.description.like("%"+description+"%");
 		}
 		
 	}
@@ -70,8 +70,8 @@ public class SearchCondition {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
-			builder.and(likeUserId("%"+this.userId+"%"))
-			 	   .and(likeUserName("%"+this.name+"%"))
+			builder.and(likeUserId(this.userId))
+			 	   .and(likeUserName(this.name))
 			 	   .and(equalDeptCode(this.deptCode));						
 			
 			return builder;
@@ -79,18 +79,18 @@ public class SearchCondition {
 		
 		private BooleanExpression likeUserId(String userId) {
 			if (StringUtils.isEmpty(userId)) {
-				return null;
+				return null;				
 			}
-			
-			return qUser.userId.like(userId);
+						
+			return qUser.userId.like("%"+userId+"%");
 		}
 		
 		private BooleanExpression likeUserName(String name) {
 			if (StringUtils.isEmpty(name)) {
 				return null;
 			}
-			
-			return qUser.name.like(name);
+						
+			return qUser.name.like("%"+name+"%");
 		}
 		
 		private BooleanExpression equalDeptCode(String deptCode) {
