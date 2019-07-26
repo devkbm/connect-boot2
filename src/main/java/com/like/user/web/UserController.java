@@ -5,18 +5,10 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,15 +24,14 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.service.MenuQueryService;
-import com.like.user.domain.model.AuthenticationToken;
+import com.like.user.boundary.AuthorityDTO;
+import com.like.user.boundary.PasswordRequestDTO;
+import com.like.user.boundary.SearchCondition;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.model.UserDTOAssembler;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.dto.AuthorityDTO;
-import com.like.user.dto.LoginRequestDTO;
-import com.like.user.dto.PasswordRequestDTO;
-import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +70,7 @@ public class UserController {
 	}
 		
 	@GetMapping(value={"/common/user"})
-	public ResponseEntity<?> getUserList(UserDTO.QueryCondition condition) {
+	public ResponseEntity<?> getUserList(SearchCondition.UserSearch condition) {
 				
 		List<User> userList = userService.getUserList(condition);						
 		
@@ -145,7 +136,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value={"/common/authority"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getAuthorityList(AuthorityDTO.QueryCondition dto) {				
+	public ResponseEntity<?> getAuthorityList(SearchCondition.AuthoritySearch dto) {				
 		
 		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
 		

@@ -5,15 +5,18 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
@@ -34,12 +37,18 @@ public class SearchCondition {
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-									
-			if (StringUtils.hasText(this.name)) {
-				builder.and(qWorkGroup.name.like("%"+this.name+"%"));
-			}						
+			
+			builder.and(likeGroupName(this.name));			
 			
 			return builder;
+		}
+		
+		private BooleanExpression likeGroupName(String name) {
+			if (StringUtils.isEmpty(name)) {
+				return null;
+			}
+			
+			return qWorkGroup.name.like("%"+this.name+"%");
 		}
 	}
 	
@@ -63,53 +72,62 @@ public class SearchCondition {
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-																				
-			builder.and(qSchedule.workGroup.id.in(this.changeIdType(this.fkWorkGroup)));
-														
-			OffsetDateTime fromDateTime = OffsetDateTime.of(
-											LocalDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
+																									
+			OffsetDateTime fromDateTime = OffsetDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
 														  Integer.parseInt(this.fromDate.substring(4, 6)), 
 														  Integer.parseInt(this.fromDate.substring(6, 8)), 
 														  0, 
 														  0, 
-														  0), ZoneOffset.ofHours(9));
+														  0,
+														  0, 
+														  ZoneOffset.ofHours(9));
 			
-			OffsetDateTime toDateTime = OffsetDateTime.of(
-											LocalDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
+			OffsetDateTime toDateTime = OffsetDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
 														Integer.parseInt(this.toDate.substring(4, 6)), 
 														Integer.parseInt(this.toDate.substring(6, 8)), 
 														23, 
 														59, 
-														59), ZoneOffset.ofHours(9));
-			
-			//log.info(param.toString());
-			//log.info(param.with(TemporalAdjusters.lastDayOfMonth()).toString());
+														59,
+														59, 
+														ZoneOffset.ofHours(9));			
 			
 			DateTimeExpression<OffsetDateTime> fromExpression = Expressions.asDateTime(fromDateTime);
 			DateTimeExpression<OffsetDateTime> toExpression = Expressions.asDateTime(toDateTime);
 			
 			//DateTimeExpression<LocalDateTime> monthEndDay = Expressions.asDateTime(param.with(TemporalAdjusters.lastDayOfMonth()));					
-			// LocalDateTime firstDay = param.with(TemporalAdjusters.firstDayOfMonth());
-				
-																		
+			// LocalDateTime firstDay = param.with(TemporalAdjusters.firstDayOfMonth());																					
 
+			
 			builder.and(fromExpression.between(qSchedule.start, qSchedule.end)
-					.or(toExpression.between(qSchedule.start, qSchedule.end))
-					.or(qSchedule.start.between(fromExpression, toExpression))
-					.or(qSchedule.end.between(fromExpression, toExpression)));
+						.or(toExpression.between(qSchedule.start, qSchedule.end))
+						.or(qSchedule.start.between(fromExpression, toExpression))
+						.or(qSchedule.end.between(fromExpression, toExpression)));
 				
-			
-			if (StringUtils.hasText(this.title)) {
-				builder.and(qSchedule.title.like("%"+this.title+"%"));
-			}						
-			
+			builder.and(inWorkgroupIds(this.changeIdType(this.fkWorkGroup)))
+			       .and(likeTitle(this.title));
+											
 			return builder;
+		}					
+		
+		private BooleanExpression inWorkgroupIds(List<Long> ids) {
+			if ( CollectionUtils.isEmpty(ids) ) {
+				return null;
+			}
+			
+			return qSchedule.workGroup.id.in(ids);
 		}
 		
-				
+		private BooleanExpression likeTitle(String title) {
+			if (StringUtils.isEmpty(title)) {
+				return null;
+			}
+			
+			return qSchedule.title.like("%"+title+"%");
+		}
+		
 		/**
 		 * 콤마로 구분된 id 매개변수를 List<Long>타입으로 변환한다. 
-		 * @param params
+		 * @param params			ex) 1,2,3
 		 * @return List<Long>
 		 */
 		private List<Long> changeIdType(String params) {
@@ -124,5 +142,7 @@ public class SearchCondition {
 			
 			return ids;
 		}
+		
+		
 	}
 }

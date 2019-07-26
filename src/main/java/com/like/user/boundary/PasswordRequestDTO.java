@@ -1,4 +1,4 @@
-package com.like.user.dto;
+package com.like.user.boundary;
 
 import lombok.Data;
 

@@ -23,10 +23,10 @@ import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.service.MenuQueryService;
+import com.like.user.boundary.LoginRequestDTO;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.dto.LoginRequestDTO;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;

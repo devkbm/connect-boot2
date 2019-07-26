@@ -15,13 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.service.MenuQueryService;
+import com.like.user.boundary.AuthorityDTO;
+import com.like.user.boundary.SearchCondition;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 import com.like.user.domain.model.UserDTOAssembler;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
-import com.like.user.dto.AuthorityDTO;
-import com.like.user.dto.UserDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -80,7 +81,7 @@ public class UserService implements UserDetailsService {
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트
 	 */
-	public List<User> getUserList(UserDTO.QueryCondition condition) {
+	public List<User> getUserList(SearchCondition.UserSearch condition) {
 		return userRepository.getUserList(condition);
 	}
 	
@@ -145,7 +146,7 @@ public class UserService implements UserDetailsService {
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
-	public List<Authority> getAuthorityList(AuthorityDTO.QueryCondition condition) {        									
+	public List<Authority> getAuthorityList(SearchCondition.AuthoritySearch condition) {        									
         return userRepository.getAuthorityList(condition);
 	}
 	

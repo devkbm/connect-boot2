@@ -1,4 +1,4 @@
-package com.like.user.dto;
+package com.like.user.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,38 +22,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class UserDTO {
-
-	@Data
-	public static class QueryCondition implements Serializable {
-
-		private static final long serialVersionUID = -7886731992928427538L;
-
-		private final QUser qUser = QUser.user;
-		
-		String userId;
-		
-		String name;
-		
-		String deptCode;
-					
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			if (StringUtils.hasText(this.userId)) {
-				builder.and(qUser.userId.like("%"+this.userId+"%"));
-			}
-			
-			if (StringUtils.hasText(this.name)) {
-				builder.and(qUser.name.like("%"+this.name+"%"));
-			}
-			
-			if (StringUtils.hasText(this.deptCode)) {
-				builder.and(qUser.dept.deptCode.eq(this.deptCode));
-			}
-			
-			return builder;
-		}
-	}
 	
 	@Data
 	@Builder

@@ -25,8 +25,8 @@ import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.User;
-import com.like.user.dto.UserDTO;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;

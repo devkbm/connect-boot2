@@ -20,9 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.MenuGroup;
+import com.like.user.boundary.UserDTO;
+import com.like.user.boundary.UserDTO.UserSave;
 import com.like.user.domain.model.User;
-import com.like.user.dto.UserDTO;
-import com.like.user.dto.UserDTO.UserSave;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;

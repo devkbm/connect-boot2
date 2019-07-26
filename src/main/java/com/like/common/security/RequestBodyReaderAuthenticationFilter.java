@@ -15,7 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.like.user.dto.LoginRequestDTO;
+import com.like.user.boundary.LoginRequestDTO;
 
 public class RequestBodyReaderAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	

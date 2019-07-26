@@ -9,9 +9,9 @@ import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.repository.MenuRepository;
+import com.like.user.boundary.UserDTO;
+import com.like.user.boundary.UserDTO.UserSave;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.dto.UserDTO;
-import com.like.user.dto.UserDTO.UserSave;
 
 public class UserDTOAssembler {	
 		
