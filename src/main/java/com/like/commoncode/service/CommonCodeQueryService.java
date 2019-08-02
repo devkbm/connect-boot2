@@ -7,10 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.commoncode.boundary.CodeComboDTO;
+import com.like.commoncode.boundary.CodeDTO;
+import com.like.commoncode.boundary.SearchCondition;
+import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.dto.CodeComboDTO;
-import com.like.commoncode.dto.CodeDTO;
-import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.querydsl.core.types.Predicate;
 
@@ -33,11 +34,11 @@ public class CommonCodeQueryService {
 		return codeJpaRepository.getCodeList(parentCodeId);
 	}
 	
-	public List<Code> getCodeList(CodeDTO.SearchCondition searchCondition) {		
+	public List<Code> getCodeList(SearchCondition.CodeSearch searchCondition) {		
 		return codeJpaRepository.getCodeList(searchCondition.getCondition());
 	}
 	
-	public List<CodeHierarchy> getCodeHierarchyList(CodeDTO.SearchCondition searchCondition) {		
+	public List<CodeHierarchy> getCodeHierarchyList(SearchCondition.CodeSearch searchCondition) {		
 		
 		return codeJpaRepository.getCodeHierarchyList(searchCondition.getCondition());
 	}

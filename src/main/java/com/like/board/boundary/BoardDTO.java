@@ -1,4 +1,4 @@
-package com.like.board.dto;
+package com.like.board.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,35 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class BoardDTO {
-
-	/**
-	 * 게시판 조회조건 
-	 */
-	@Data
-	public static class QueryCondition implements Serializable {
-		
-		private static final long serialVersionUID = 1L;
-
-		private final QBoard qBoard = QBoard.board;
-		
-		String boardName;
-		
-		String boardType;
-					
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			if (StringUtils.hasText(this.boardName)) {
-				builder.and(qBoard.boardName.like("%"+this.boardName+"%"));
-			}
-			
-			if (StringUtils.hasText(this.boardType)) {
-				builder.and(qBoard.boardType.eq(BoardType.valueOf(boardType)));
-			}
-			
-			return builder;
-		}
-	}
 	
 	/**
 	 * 게시판 저장을 위한 DTO Class

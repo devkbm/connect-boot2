@@ -1,4 +1,4 @@
-package com.like.board.dto;
+package com.like.board.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,36 +24,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 public class ArticleDTO {
-
-	@Data
-	public static class QueryCondition implements Serializable {
-		
-		private static final long serialVersionUID = 1L;
-
-		private final QArticle qArticle = QArticle.article;
-		
-		Long fkBoard;
-		
-		String title;
-		
-		String contents;
-					
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			builder.and(qArticle.board.pkBoard.eq(fkBoard));
-			
-			if (StringUtils.hasText(this.title)) {
-				builder.and(qArticle.title.like("%"+this.title+"%"));
-			}
-			
-			if (StringUtils.hasText(this.contents)) {
-				builder.and(qArticle.contents.like("%"+this.contents+"%"));
-			}
-			
-			return builder;
-		}
-	}
 	
 	@Data	
 	@NoArgsConstructor	

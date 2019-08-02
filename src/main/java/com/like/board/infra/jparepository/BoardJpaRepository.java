@@ -1,6 +1,5 @@
 package com.like.board.infra.jparepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
-import com.like.board.dto.BoardDTO;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
+import com.like.board.boundary.BoardDTO;
+import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.*;
 
 @Repository
@@ -35,7 +32,7 @@ public class BoardJpaRepository implements BoardRepository {
 		return entity.isPresent() ? entity.get() : null;
 	}
 	
-	public List<Board> getBoardList(BoardDTO.QueryCondition condition) {		
+	public List<Board> getBoardList(SearchCondition.BoardSearch condition) {		
 		return queryFactory
 					.selectFrom(qBoard)
 					.where(condition.getBooleanBuilder())

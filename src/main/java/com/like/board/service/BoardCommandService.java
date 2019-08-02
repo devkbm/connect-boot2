@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.board.boundary.ArticleDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
@@ -14,8 +15,6 @@ import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.domain.service.AttachedFileConverter;
-import com.like.board.dto.ArticleDTO;
-import com.like.board.dto.BoardDTO;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 

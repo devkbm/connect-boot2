@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.like.board.dto.ArticleDTO;
+import com.like.board.boundary.SearchCondition;
 
 @Mapper
 public interface BoardMapper {
@@ -16,6 +16,6 @@ public interface BoardMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Map<String,Object>> getArticleList(ArticleDTO.QueryCondition queryDTO);
+	List<Map<String,Object>> getArticleList(SearchCondition.ArticleSearch queryDTO);
 			
 }

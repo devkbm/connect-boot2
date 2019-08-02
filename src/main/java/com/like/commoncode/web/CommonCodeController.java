@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.commoncode.boundary.CodeDTO;
+import com.like.commoncode.boundary.SearchCondition;
+import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.CodeDTOAssembler;
-import com.like.commoncode.dto.CodeDTO;
-import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
@@ -43,7 +44,7 @@ public class CommonCodeController {
 	
 	
 	@GetMapping("/common/codetree") 
-	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute CodeDTO.SearchCondition searchCondition) {
+	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute SearchCondition.CodeSearch searchCondition) {
 							
 		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
 		
@@ -55,7 +56,7 @@ public class CommonCodeController {
 	}
 	
 	@GetMapping("/common/code") 
-	public ResponseEntity<?> getCodeList(@ModelAttribute CodeDTO.SearchCondition searchCondition) {
+	public ResponseEntity<?> getCodeList(@ModelAttribute SearchCondition.CodeSearch searchCondition) {
 							
 		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
 		

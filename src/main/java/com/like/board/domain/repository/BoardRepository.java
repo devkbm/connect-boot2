@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.like.board.boundary.BoardDTO;
+import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Board;
-import com.like.board.dto.BoardDTO;
 
 @Repository
 public interface BoardRepository {
@@ -21,7 +22,7 @@ public interface BoardRepository {
 	 * 전체 게시판 도메인 리스트를 조회
 	 * @return	게시판 도메인 리스트
 	 */
-	List<Board> getBoardList(BoardDTO.QueryCondition condition);
+	List<Board> getBoardList(SearchCondition.BoardSearch condition);
 			
 	/**
 	 * 게시판 계층명단을 조회

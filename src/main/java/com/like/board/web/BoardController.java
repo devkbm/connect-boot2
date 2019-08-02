@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.board.boundary.BoardDTO;
+import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.BoardDTO;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -76,7 +77,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/grw/board")
-	public ResponseEntity<?> getBoardList(BoardDTO.QueryCondition condition) {						
+	public ResponseEntity<?> getBoardList(SearchCondition.BoardSearch condition) {						
 		
 		List<Board> list = boardQueryService.getBoardList(condition); 										
 							

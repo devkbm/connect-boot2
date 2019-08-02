@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.like.commoncode.boundary.CodeComboDTO;
+import com.like.commoncode.boundary.CodeDTO;
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.dto.CodeComboDTO;
-import com.like.commoncode.dto.CodeDTO;
 import com.querydsl.core.types.Predicate;
 
 @Repository

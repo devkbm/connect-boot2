@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.commoncode.boundary.CodeComboDTO;
+import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.QCode;
 import com.like.commoncode.domain.repository.CommonCodeRepository;
-import com.like.commoncode.dto.CodeComboDTO;
-import com.like.commoncode.dto.CodeDTO.CodeHierarchy;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Predicate;

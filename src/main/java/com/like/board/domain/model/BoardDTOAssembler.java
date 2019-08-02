@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.like.board.boundary.ArticleDTO;
+import com.like.board.boundary.BoardDTO;
+import com.like.board.boundary.BoardDTO.BoardSaveDTO;
 import com.like.board.domain.model.enums.BoardType;
-import com.like.board.dto.ArticleDTO;
-import com.like.board.dto.BoardDTO;
-import com.like.board.dto.BoardDTO.BoardSaveDTO;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
 

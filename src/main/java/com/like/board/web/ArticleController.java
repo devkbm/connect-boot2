@@ -23,14 +23,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.like.board.boundary.ArticleDTO;
+import com.like.board.boundary.SearchCondition;
+import com.like.board.boundary.ArticleDTO.ArticleResponse;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.service.AttachedFileConverter;
-import com.like.board.dto.ArticleDTO;
-import com.like.board.dto.ArticleDTO.ArticleResponse;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
@@ -82,7 +83,7 @@ public class ArticleController {
 	}
 		
 	@GetMapping("/grw/board/article")
-	public ResponseEntity<?> getArticleList(ArticleDTO.QueryCondition condition) {
+	public ResponseEntity<?> getArticleList(SearchCondition.ArticleSearch condition) {
 																	
 		List<Article> list = boardQueryService.getAritlceList(condition);  							
 				

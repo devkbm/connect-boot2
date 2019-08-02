@@ -1,7 +1,7 @@
 package com.like.commoncode.domain.model;
 
-import com.like.commoncode.dto.CodeDTO;
-import com.like.commoncode.dto.CodeDTO.CodeSave;
+import com.like.commoncode.boundary.CodeDTO;
+import com.like.commoncode.boundary.CodeDTO.CodeSave;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 
 public class CodeDTOAssembler {	

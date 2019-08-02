@@ -1,4 +1,4 @@
-package com.like.commoncode.dto;
+package com.like.commoncode.boundary;
 
 import java.io.Serializable;
 

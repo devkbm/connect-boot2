@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.ArticleRepository;
-import com.like.board.dto.ArticleDTO;
 import com.like.board.infra.jparepository.springdata.JpaArticle;
 import com.like.board.infra.jparepository.springdata.JpaArticleCheck;
 import com.like.board.infra.jparepository.springdata.JpaAttachedFile;
@@ -19,6 +18,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
+import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.*;
 
 @Slf4j
@@ -67,7 +67,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 							.fetch();				
 	}
 	
-	public List<Article> getArticleList(ArticleDTO.QueryCondition condition) { 	
+	public List<Article> getArticleList(SearchCondition.ArticleSearch condition) { 	
 		
 		return queryFactory.select(qArticle).distinct()
 		  				   .from(qArticle)		  				   
