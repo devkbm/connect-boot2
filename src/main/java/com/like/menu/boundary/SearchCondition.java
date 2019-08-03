@@ -124,16 +124,10 @@ public class SearchCondition {
 			builder
 				.and(likeResourceCode(this.resourceCode))
 				.and(likeResourceName(this.resourceName))
-				.and(likeResourceType(this.resourceType));									
-			
-			if (StringUtils.hasText(this.url)) {
-				builder.and(qWebResource.url.like("%"+this.url+"%"));
-			}
-			
-			if (StringUtils.hasText(this.description)) {
-				builder.and(qWebResource.description.like("%"+this.description+"%"));
-			}
-			
+				.and(likeResourceType(this.resourceType))
+				.and(likeUrl(this.url))
+				.and(likeDescription(this.description));									
+											
 			return builder;
 		}
 		
@@ -159,6 +153,22 @@ public class SearchCondition {
 			}
 			
 			return qWebResource.resourceType.like("%"+resourceType+"%");
+		}
+		
+		private BooleanExpression likeUrl(String url) {
+			if (StringUtils.isEmpty(url)) {
+				return null;
+			}
+			
+			return qWebResource.url.like("%"+url+"%");
+		}
+		
+		private BooleanExpression likeDescription(String description) {
+			if (StringUtils.isEmpty(description)) {
+				return null;
+			}
+			
+			return qWebResource.description.like("%"+description+"%");
 		}
 	}
 }

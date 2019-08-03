@@ -2,7 +2,6 @@ package com.like.workschedule.domain.model.id;
 
 import java.io.Serializable;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,9 @@ import lombok.Setter;
 //@EqualsAndHashCode
 @NoArgsConstructor
 public class WorkGroupMemberId implements Serializable {
-	
+		
+	private static final long serialVersionUID = -9015996959356053573L;
+
 	Long workGroup;
 			
 	String user;		

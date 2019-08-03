@@ -1,11 +1,9 @@
 package com.like.workschedule.boundary;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -73,30 +71,14 @@ public class SearchCondition {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 																									
-			OffsetDateTime fromDateTime = OffsetDateTime.of(Integer.parseInt(this.fromDate.substring(0, 4)), 
-														  Integer.parseInt(this.fromDate.substring(4, 6)), 
-														  Integer.parseInt(this.fromDate.substring(6, 8)), 
-														  0, 
-														  0, 
-														  0,
-														  0, 
-														  ZoneOffset.ofHours(9));
-			
-			OffsetDateTime toDateTime = OffsetDateTime.of(Integer.parseInt(this.toDate.substring(0, 4)), 
-														Integer.parseInt(this.toDate.substring(4, 6)), 
-														Integer.parseInt(this.toDate.substring(6, 8)), 
-														23, 
-														59, 
-														59,
-														59, 
-														ZoneOffset.ofHours(9));			
+			OffsetDateTime fromDateTime = getFromDate(this.fromDate);			
+			OffsetDateTime toDateTime = getToDate(this.toDate);			
 			
 			DateTimeExpression<OffsetDateTime> fromExpression = Expressions.asDateTime(fromDateTime);
 			DateTimeExpression<OffsetDateTime> toExpression = Expressions.asDateTime(toDateTime);
 			
 			//DateTimeExpression<LocalDateTime> monthEndDay = Expressions.asDateTime(param.with(TemporalAdjusters.lastDayOfMonth()));					
 			// LocalDateTime firstDay = param.with(TemporalAdjusters.firstDayOfMonth());																					
-
 			
 			builder.and(fromExpression.between(qSchedule.start, qSchedule.end)
 						.or(toExpression.between(qSchedule.start, qSchedule.end))
@@ -143,6 +125,28 @@ public class SearchCondition {
 			return ids;
 		}
 		
+		private OffsetDateTime getFromDate(String fromDate) {
+			return OffsetDateTime.of(
+					Integer.parseInt(fromDate.substring(0, 4)), 
+					Integer.parseInt(fromDate.substring(4, 6)), 
+					Integer.parseInt(fromDate.substring(6, 8)), 
+					0, 
+					0, 
+					0,
+					0, 
+					ZoneOffset.ofHours(9));
+		}
 		
+		private OffsetDateTime getToDate(String toDate) {
+			return OffsetDateTime.of(
+					Integer.parseInt(toDate.substring(0, 4)), 
+					Integer.parseInt(toDate.substring(4, 6)), 
+					Integer.parseInt(toDate.substring(6, 8)), 
+					23, 
+					59, 
+					59,
+					59, 
+					ZoneOffset.ofHours(9));		
+		}
 	}
 }

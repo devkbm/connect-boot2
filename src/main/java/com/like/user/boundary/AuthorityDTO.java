@@ -5,11 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.util.StringUtils;
 
 import com.like.user.domain.model.Authority;
-import com.like.user.domain.model.QAuthority;
-import com.querydsl.core.BooleanBuilder;
 
 import lombok.Data;
 
