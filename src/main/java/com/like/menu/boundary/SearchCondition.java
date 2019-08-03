@@ -74,15 +74,27 @@ public class SearchCondition {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
-			if (StringUtils.hasText(this.menuGroupCode)) {
-				builder.and(qMenuGroup.menuGroupCode.like("%"+this.menuGroupCode+"%"));
+			builder
+				.and(likeMenGroupCode(this.menuGroupCode))
+				.and(likeMenGroupName(this.menuGroupName));
+											
+			return builder;
+		}
+		
+		private BooleanExpression likeMenGroupCode(String menuGroupCode) {
+			if (StringUtils.isEmpty(menuGroupCode)) {
+				return null;
 			}
 			
-			if (StringUtils.hasText(this.menuGroupName)) {
-				builder.and(qMenuGroup.menuGroupName.like("%"+this.menuGroupName+"%"));
-			}			
+			return qMenuGroup.menuGroupCode.like("%"+menuGroupCode+"%");
+		}
+		
+		private BooleanExpression likeMenGroupName(String menuGroupName) {
+			if (StringUtils.isEmpty(menuGroupName)) {
+				return null;
+			}
 			
-			return builder;
+			return qMenuGroup.menuGroupName.like("%"+menuGroupName+"%");
 		}
 		
 		
@@ -109,17 +121,10 @@ public class SearchCondition {
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
-			if (StringUtils.hasText(this.resourceCode)) {
-				builder.and(qWebResource.resourceCode.like("%"+this.resourceCode+"%"));
-			}
-			
-			if (StringUtils.hasText(this.resourceName)) {
-				builder.and(qWebResource.resourceName.like("%"+this.resourceName+"%"));
-			}
-			
-			if (StringUtils.hasText(this.resourceType)) {
-				builder.and(qWebResource.resourceType.like("%"+this.resourceType+"%"));
-			}
+			builder
+				.and(likeResourceCode(this.resourceCode))
+				.and(likeResourceName(this.resourceName))
+				.and(likeResourceType(this.resourceType));									
 			
 			if (StringUtils.hasText(this.url)) {
 				builder.and(qWebResource.url.like("%"+this.url+"%"));
@@ -130,6 +135,30 @@ public class SearchCondition {
 			}
 			
 			return builder;
+		}
+		
+		private BooleanExpression likeResourceCode(String resourceCode) {
+			if (StringUtils.isEmpty(resourceCode)) {
+				return null;
+			}
+			
+			return qWebResource.resourceCode.like("%"+resourceCode+"%");
+		}
+		
+		private BooleanExpression likeResourceName(String resourceName) {
+			if (StringUtils.isEmpty(resourceName)) {
+				return null;
+			}
+			
+			return qWebResource.resourceName.like("%"+resourceName+"%");
+		}
+		
+		private BooleanExpression likeResourceType(String resourceType) {
+			if (StringUtils.isEmpty(resourceType)) {
+				return null;
+			}
+			
+			return qWebResource.resourceType.like("%"+resourceType+"%");
 		}
 	}
 }

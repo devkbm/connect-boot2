@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.like.dept.boundary.DeptDTO;
+import com.like.dept.boundary.SearchCondition;
 import com.like.dept.domain.model.Dept;
-import com.like.dept.dto.DeptDTO;
 
 
 @Repository
@@ -15,7 +16,7 @@ public interface DeptRepository {
 	
 	List<Dept> getAllDeptList();
 	
-	List<Dept> getDeptList(DeptDTO.SearchCondition searchCondition);
+	List<Dept> getDeptList(SearchCondition.DeptSearch searchCondition);
 	
 	List<DeptDTO.DeptHierarchy> getDeptHierarchy();
 			

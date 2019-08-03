@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.dept.boundary.DeptDTO.DeptHierarchy;
+import com.like.dept.boundary.SearchCondition;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.like.dept.domain.repository.DeptRepository;
-import com.like.dept.dto.DeptDTO.DeptHierarchy;
-import com.like.dept.dto.DeptDTO.SearchCondition;
 import com.like.dept.infra.jparepository.springdata.JpaDept;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
@@ -41,7 +41,7 @@ public class DeptJpaRepository implements DeptRepository {
 	}
 	
 	@Override
-	public List<Dept> getDeptList(SearchCondition searchCondition) {
+	public List<Dept> getDeptList(SearchCondition.DeptSearch searchCondition) {
 		return queryFactory				
 				.selectFrom(qDept)
 				.where(searchCondition.getCondition())

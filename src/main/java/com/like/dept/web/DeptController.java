@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.dept.boundary.DeptDTO;
+import com.like.dept.boundary.SearchCondition;
+import com.like.dept.boundary.DeptDTO.DeptHierarchy;
+import com.like.dept.boundary.DeptDTO.DeptSave;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.domain.repository.DeptRepository;
-import com.like.dept.dto.DeptDTO;
-import com.like.dept.dto.DeptDTO.DeptHierarchy;
-import com.like.dept.dto.DeptDTO.DeptSave;
 import com.like.dept.service.DeptService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class DeptController {
 	private DeptService deptService;
 	
 	@GetMapping("/common/depttree")
-	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute DeptDTO.SearchCondition searchCondition) {
+	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute SearchCondition.DeptSearch searchCondition) {
 							
 		List<DeptHierarchy> list = deptService.getDeptHierarchyList();  						 						
 		
@@ -51,7 +52,7 @@ public class DeptController {
 	}
 	
 	@GetMapping("/common/dept")
-	public ResponseEntity<?> getDeptList(@ModelAttribute DeptDTO.SearchCondition searchCondition) {
+	public ResponseEntity<?> getDeptList(@ModelAttribute SearchCondition.DeptSearch searchCondition) {
 							
 		List<Dept> list = deptService.getDeptList(searchCondition);  						 						
 		

@@ -1,15 +1,11 @@
 package com.like.team.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import com.like.dept.dto.DeptDTO;
-import com.like.dept.dto.DeptDTO.DeptSave;
 import com.like.team.domain.model.QTeam;
 import com.querydsl.core.BooleanBuilder;
 

@@ -1,4 +1,4 @@
-package com.like.dept.dto;
+package com.like.dept.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -19,35 +19,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class DeptDTO {
-	
-	@Data
-	public static class SearchCondition implements Serializable {
-		
-		private static final long serialVersionUID = -4777670465777456711L;
-
-		private final QDept qDept = QDept.dept;
-		
-		String deptCode;
-				
-		String deptName;
-					
-		Boolean isEnabled;
-		
-		public BooleanBuilder getCondition() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			if (StringUtils.hasText(this.deptCode)) {
-				builder.and(qDept.deptCode.like("%"+this.deptCode+"%"));
-			}
-			
-			if (StringUtils.hasText(this.deptName)) {
-				builder.and(qDept.deptAbbreviationKorean.like("%"+this.deptName+"%"));
-			}			
-			
-			return builder;
-		}
-	}
+public class DeptDTO {	
 	
 	@Data
 	@NoArgsConstructor

@@ -1,8 +1,8 @@
 package com.like.dept.domain.model;
 
+import com.like.dept.boundary.DeptDTO;
+import com.like.dept.boundary.DeptDTO.DeptSave;
 import com.like.dept.domain.repository.DeptRepository;
-import com.like.dept.dto.DeptDTO;
-import com.like.dept.dto.DeptDTO.DeptSave;
 
 public class DeptDTOAssembler {	
 		
