@@ -40,10 +40,10 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	@Column(name="RREGNO")
 	private String residentRegistrationNumber;
 		
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<DeptChangeHistory> deptHistory = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<JobChangeHistory> jobHistory = new ArrayList<>();
 	
 	public Employee(String id, String name, String residentRegistrationNumber) {

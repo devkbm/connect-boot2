@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -50,6 +51,7 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup")
 	List<Schedule> scheduleList;
 	
+	@OrderBy("USER_ID asc")
 	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	Set<WorkGroupMember> memberList = new LinkedHashSet<>();
 	
