@@ -26,7 +26,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.BoardDTO.QueryCondition;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.service.AttachedFileConverter;
