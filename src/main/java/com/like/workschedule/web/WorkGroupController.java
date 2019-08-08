@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -162,6 +163,18 @@ public class WorkGroupController {
 				true, 
 				String.format("%d 건 저장되었습니다.", entity != null ? 1 : 0), 
 				HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value={"/grw/schedule/{id}"})
+	public ResponseEntity<?> deleteSchedule(@PathVariable(value="id") Long id) {
+						
+		workGroupService.deleteSchedule(id);							
+				
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true,
+				"삭제 되었습니다.",
+				HttpStatus.OK);													
 	}
 	
 }

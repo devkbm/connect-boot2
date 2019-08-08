@@ -83,4 +83,9 @@ public class WorkGroupService {
 		scheduleRepository.saveSchedule(schedule);
 	}
 	
+	public void deleteSchedule(Long id) {
+		Schedule entity = scheduleRepository.getSchedule(id);
+		scheduleRepository.deleteSchedule(entity);
+	}
+	
 }
