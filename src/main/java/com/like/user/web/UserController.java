@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.common.util.SessionUtil;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.domain.repository.DeptRepository;
@@ -54,7 +55,24 @@ public class UserController {
 	
 	@Resource
 	MenuQueryService menuQueryService;	
+	
+	
+	@GetMapping(value={"/common/user/myinfo"})
+	public ResponseEntity<?> getUserInfo() throws FileNotFoundException, IOException {
+								
+		String userId = SessionUtil.getUserId();
+				
+		User user = userService.getUser(userId);				
 		
+		UserDTO.UserSave dto = UserDTOAssembler.convertDTO(user);					
+		
+		return WebControllerUtil.getResponse(dto,
+				 user == null ? 0 : 1, 
+				 user == null ? false : true,
+				 "조회 되었습니다.",
+				 HttpStatus.OK);
+	}
+	
 	@GetMapping(value={"/common/user/{id}"})
 	public ResponseEntity<?> getUser(@PathVariable(value="id") String userId) throws FileNotFoundException, IOException {
 						
