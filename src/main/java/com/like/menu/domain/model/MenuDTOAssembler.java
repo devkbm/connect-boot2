@@ -31,7 +31,11 @@ public class MenuDTOAssembler {
 		if (dto.getParentMenuCode() != null) {
 			parent = repository.getMenu(dto.getParentMenuCode());
 		}
-		WebResource resource = repository.getResource(dto.getResource());
+		WebResource resource = null;
+		
+		if (dto.getResource() != null) {
+			resource = repository.getResource(dto.getResource());
+		}
 				
 		if (entity == null) {
 			entity = Menu.builder()
