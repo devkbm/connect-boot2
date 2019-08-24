@@ -8,11 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.util.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.like.dept.domain.model.QDept;
-import com.querydsl.core.BooleanBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
