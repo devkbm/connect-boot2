@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
@@ -30,5 +31,12 @@ public class EmployeeService {
 	
 	public void deleteEmployee(String id) {		
 		employeeRepository.deleteEmployee(id);
+	}
+	
+	public void saveDeptChangeHistory(String id, DeptChangeHistory deptChangeHistory) {
+		Employee emp = employeeRepository.getEmployee(id);
+		emp.addDeptChange(deptChangeHistory);
+		
+		employeeRepository.saveEmployee(emp);
 	}
 }

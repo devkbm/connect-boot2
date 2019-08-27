@@ -72,7 +72,8 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
 	
-	public DeptChangeHistory(String deptType, String deptCode, LocalDate fromDate, LocalDate toDate) {
+	public DeptChangeHistory(Employee employee, String deptType, String deptCode, LocalDate fromDate, LocalDate toDate) {
+		this.employee = employee;
 		this.deptType = deptType;
 		this.deptCode = deptCode;
 		this.fromDate = fromDate;

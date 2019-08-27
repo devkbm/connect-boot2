@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.employee.boundary.EmployeeDTO;
+import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.service.EmployeeService;
 
@@ -32,13 +33,8 @@ public class EmployeeController {
 	
 	@GetMapping("/hrm/employee/{id}")
 	public ResponseEntity<?> getEmployee(@PathVariable String id) {
-		
-		log.info(id);
-		Employee emp = employeeService.getEmployee(id);  						
-		
-		Employee emp2 = new Employee("2", "123", "123123");
-		
-		employeeService.saveEmployee(emp2);
+				
+		Employee emp = employeeService.getEmployee(id);  									
 		
 		return WebControllerUtil.getResponse(emp, 
 											emp == null ? 0 : 1, 
@@ -47,7 +43,7 @@ public class EmployeeController {
 											HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/hrm/employee2/create"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	@RequestMapping(value={"/hrm/employee/create"}, method={RequestMethod.POST,RequestMethod.PUT})	
 	public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDTO.NewEmployee dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
@@ -58,6 +54,25 @@ public class EmployeeController {
 		Employee emp = new Employee(dto.getId(), dto.getName(), dto.getResidentRegistrationNumber());
 		
 		employeeService.saveEmployee(emp);
+											 				
+		return WebControllerUtil.getResponse(null,
+				1, 
+				true, 
+				String.format("%d 건 저장되었습니다.", 1), 
+				HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/employee/changedept"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	public ResponseEntity<?> saveDeptChange(@RequestBody EmployeeDTO.NewDept dto, BindingResult result) {			
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+		Employee emp = employeeService.getEmployee(dto.getId());  	
+		
+		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp, dto.getDeptType(), dto.getDeptCode(), dto.getFromDate(), dto.getToDate());
+		
+		employeeService.saveDeptChangeHistory(dto.getId(), deptChangeHistory);
 											 				
 		return WebControllerUtil.getResponse(null,
 				1, 
