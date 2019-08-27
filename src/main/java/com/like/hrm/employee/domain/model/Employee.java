@@ -57,6 +57,7 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	}
 	
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
+		
 		deptHistory.add(deptChangeHistory);
 	}
 	
