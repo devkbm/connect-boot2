@@ -22,7 +22,7 @@ public interface EmployeeRepository {
 	 * @param yyyy	년도
 	 * @return Employee 엔티티
 	 */
-	Employee getLastEmployee(int yyyy);
+	Employee getLastEmployee(String yyyy);
 	
 	List<Employee> getEmployeeList();
 	

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.employee.boundary.EmployeeDTO;
-import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.service.EmployeeService;
 
@@ -49,11 +48,8 @@ public class EmployeeController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 											
-		
-		log.info(dto.toString());
-		Employee emp = new Employee(dto.getId(), dto.getName(), dto.getResidentRegistrationNumber());
-		
-		employeeService.saveEmployee(emp);
+						
+		employeeService.newEmployee(dto);
 											 				
 		return WebControllerUtil.getResponse(null,
 				1, 
@@ -68,11 +64,8 @@ public class EmployeeController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 											
-		Employee emp = employeeService.getEmployee(dto.getId());  	
-		
-		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp, dto.getDeptType(), dto.getDeptCode(), dto.getFromDate(), dto.getToDate());
-		
-		employeeService.saveDeptChangeHistory(dto.getId(), deptChangeHistory);
+				
+		employeeService.saveDeptChangeHistory(dto);
 											 				
 		return WebControllerUtil.getResponse(null,
 				1, 

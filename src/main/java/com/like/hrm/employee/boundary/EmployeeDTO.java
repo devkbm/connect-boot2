@@ -16,9 +16,7 @@ public class EmployeeDTO {
 	@Builder
 	public static class NewEmployee implements Serializable {
 		
-		private static final long serialVersionUID = 5189496256963058913L;
-
-		private String id;
+		private static final long serialVersionUID = 5189496256963058913L;	
 		
 		private String name;
 					

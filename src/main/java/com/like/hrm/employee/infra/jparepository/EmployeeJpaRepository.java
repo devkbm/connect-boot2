@@ -10,6 +10,8 @@ import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.infra.jparepository.springdata.JpaEmployee;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -31,13 +33,15 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	}
 
 	@Override
-	public Employee getLastEmployee(int yyyy) {
-		queryFactory.select(qEmployee.id.max())
-					.from(qEmployee)					
-					.where(qEmployee.id.like(String.valueOf(yyyy)+'%'))
-					.fetchOne();
+	public Employee getLastEmployee(String yyyy) {
 
-		return null;
+		return queryFactory.select(qEmployee)
+							.from(qEmployee)					
+							.where(qEmployee.id.eq(JPAExpressions
+													.select(qEmployee.id.max())
+													.from(qEmployee)
+													.where(qEmployee.id.like(yyyy+'%'))))													
+							.fetchOne();
 	}
 
 	@Override
