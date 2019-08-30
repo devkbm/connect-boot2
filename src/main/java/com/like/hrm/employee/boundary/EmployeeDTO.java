@@ -3,6 +3,8 @@ package com.like.hrm.employee.boundary;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class EmployeeDTO {
 		
 		private static final long serialVersionUID = 5189496256963058913L;	
 		
+		@NotEmpty
 		private String name;
 					
 		private String residentRegistrationNumber;

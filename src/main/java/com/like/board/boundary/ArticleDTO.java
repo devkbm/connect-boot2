@@ -9,13 +9,10 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.like.board.domain.model.QArticle;
 import com.like.file.dto.FileResponseDTO;
-import com.querydsl.core.BooleanBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -10,9 +10,6 @@ import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service("employeeService")
 @Transactional
 public class EmployeeService {
@@ -36,7 +33,11 @@ public class EmployeeService {
 	}
 	
 	public void newEmployee(EmployeeDTO.NewEmployee dto) {								
-		Employee emp = new Employee(idGenerator.generateEmpId(), dto.getName(), dto.getResidentRegistrationNumber());
+		Employee emp = Employee.builder()
+							   .id(idGenerator.generateEmpId())
+							   .name(dto.getName())
+							   .residentRegistrationNumber(dto.getResidentRegistrationNumber())
+							   .build();	
 		
 		employeeRepository.saveEmployee(emp);
 	}
@@ -48,7 +49,15 @@ public class EmployeeService {
 	public void saveDeptChangeHistory(EmployeeDTO.NewDept dto) {
 		Employee emp = employeeRepository.getEmployee(dto.getId());
 		
-		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp, dto.getDeptType(), dto.getDeptCode(), dto.getFromDate(), dto.getToDate());
+		if (emp == null) {
+			throw new IllegalArgumentException(dto.getId() + " 사번이 존재하지 않습니다.");
+		}
+		
+		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp
+																   ,dto.getDeptType()
+																   ,dto.getDeptCode()
+																   ,dto.getFromDate()
+																   ,dto.getToDate());
 				
 		emp.addDeptChange(deptChangeHistory);
 		

@@ -1,12 +1,17 @@
 
 create table if not exists HRMEMPLOYEE (
-	SYS_DT		DATETIME		null		COMMENT '최초등록일시',
-	SYS_USER 	VARCHAR(50)		null		COMMENT '최초등록유저',
-	UPD_DT		DATETIME		null		COMMENT '최종수정일시',
-	UPD_USER	VARCHAR(50)		null		COMMENT '최종수정유저',
-	EMP_ID		VARCHAR(10) 	not null  	COMMENT '사원ID',
-	EMP_NAME	VARCHAR(50)		not null	COMMENT '성명',
-	RREGNO		VARCHAR(20)		null		COMMENT '주민등록번호',
+	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT			DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER		VARCHAR(50)		null		COMMENT '최종수정유저',
+	EMP_ID			VARCHAR(10) 	not null  	COMMENT '사원ID',
+	EMP_NAME		VARCHAR(500)	null		COMMENT '성명(한글)',
+	EMP_NAME_ENG	VARCHAR(500)	null		COMMENT '성명(영어)',
+	EMP_NAME_CHI	VARCHAR(500)	null		COMMENT '성명(한문)',
+	RREGNO			VARCHAR(20)		null		COMMENT '주민등록번호',
+	GENDER			VARCHAR(1)		null		COMMENT '성별',
+	BIRTHDAY		DATE			null		COMMENT '생일',
+	WORK_CONDITION	VARCHAR(2)		null		COMMENT '근무상태',
 	constraint pk_hrmemployee primary key(EMP_ID)
 );
 
