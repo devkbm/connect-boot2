@@ -85,6 +85,15 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<JobChangeHistory> jobHistory = new ArrayList<>();		
+
+	/**
+	 * @param name
+	 * @param residentRegistrationNumber
+	 */
+	public Employee(String name, String residentRegistrationNumber) {	
+		this.name = name;
+		this.residentRegistrationNumber = residentRegistrationNumber;			
+	}
 	
 	@Builder
 	public Employee(String id, 
@@ -154,6 +163,9 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	public void appoint(AppointmentLedgerDetail ledgerDetail) {
 
 	}
+
+
+
 	
 	
 }
