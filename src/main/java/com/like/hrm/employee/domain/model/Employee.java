@@ -22,7 +22,9 @@ import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPLOYEE")
@@ -90,9 +92,11 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	 * @param name
 	 * @param residentRegistrationNumber
 	 */
-	public Employee(String name, String residentRegistrationNumber) {	
+	public Employee(String id, String name, String residentRegistrationNumber) {
+		this.id = id;
 		this.name = name;
-		this.residentRegistrationNumber = residentRegistrationNumber;			
+		this.residentRegistrationNumber = residentRegistrationNumber;
+		this.workCondition = "Z";
 	}
 	
 	@Builder
@@ -115,7 +119,14 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		return this.id;
 	}
 	
+	public List<DeptChangeHistory> getDeptChangeHistory() {
+		return this.deptHistory;
+	}
+	
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
+		
+		this.terminateDept(deptChangeHistory.getDeptType()
+						  ,deptChangeHistory.getFromDate());
 		
 		deptHistory.add(deptChangeHistory);
 	}
@@ -127,17 +138,20 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	/**
 	 * <p>부서 이력을 종료일자 기준으로 종료시킨다.</p>
 	 * @param deptType
-	 * @param deptCode
 	 * @param terminateDate
 	 */
-	public void terminateDept(String deptType, String deptCode, LocalDate terminateDate) {
-		
-		for (DeptChangeHistory deptHistory: this.deptHistory) {
-			if ( deptHistory.equalDeptType(deptType)
-			  && deptHistory.equalDeptCode(deptCode)		
+	public void terminateDept(String deptType, LocalDate terminateDate) {
+				
+		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
+			
+			if (terminateDate.isBefore(deptHistory.getFromDate())) {
+				throw new IllegalArgumentException(deptHistory.getFromDate() + "일로 시작하는 부서 이력이 존재합니다.");
+			}
+			
+			if ( deptHistory.equalDeptType(deptType)			  	
 			  && deptHistory.isEnabled(terminateDate) )
 				
-				deptHistory.terminateHistory(terminateDate);				
+				deptHistory.terminateHistory(terminateDate.minusDays(1));				
 		}									
 		
 	}

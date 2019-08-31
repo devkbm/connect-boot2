@@ -33,11 +33,17 @@ public class EmployeeService {
 	}
 	
 	public void newEmployee(EmployeeDTO.NewEmployee dto) {								
+		/*
 		Employee emp = Employee.builder()
 							   .id(idGenerator.generateEmpId())
 							   .name(dto.getName())
 							   .residentRegistrationNumber(dto.getResidentRegistrationNumber())
 							   .build();	
+		*/
+		
+		Employee emp = new Employee(idGenerator.generateEmpId()
+				                   ,dto.getName()
+				                   ,dto.getResidentRegistrationNumber());
 		
 		employeeRepository.saveEmployee(emp);
 	}
@@ -47,10 +53,10 @@ public class EmployeeService {
 	}
 	
 	public void saveDeptChangeHistory(EmployeeDTO.NewDept dto) {
-		Employee emp = employeeRepository.getEmployee(dto.getId());
+		Employee emp = employeeRepository.getEmployee(dto.getEmployeeId());
 		
 		if (emp == null) {
-			throw new IllegalArgumentException(dto.getId() + " 사번이 존재하지 않습니다.");
+			throw new IllegalArgumentException(dto.getEmployeeId() + " 사번이 존재하지 않습니다.");
 		}
 		
 		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp

@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -31,6 +32,7 @@ import lombok.NoArgsConstructor;
  * @author 김병민
  * 
  */
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPDEPTHISTORY")
@@ -80,12 +82,27 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 		this.toDate = toDate;		
 	}
 	
-	public boolean isEnabled(LocalDate date) {
-		return date.isAfter(fromDate) && date.isBefore(toDate) ? true : false;		
+	/**
+	 * 기준일에 사용가능한지 여부 리턴
+	 * @param date 기준일
+	 * @return
+	 */
+	public boolean isEnabled(LocalDate date) {		
+		return ( date.isAfter(fromDate) || date.isEqual(fromDate) ) 
+		 	&& ( date.isBefore(toDate) || date.isEqual(toDate) ) ? true : false;		
 	}
 	
+	/**
+	 * 부서이력의 종료시킨다
+	 * 예외) 종료일이 시작일보다 이전일 경우 시작일로 변경
+	 * @param date 종료일
+	 */
 	public void terminateHistory(LocalDate date) {
-		this.toDate = date;
+		if (date.isAfter(this.fromDate)) {
+			this.toDate = date;
+		} else {
+			this.toDate = this.fromDate;
+		}
 	}
 	
 	public boolean equalDeptHistory(Employee employee, String deptType, String deptCode) {

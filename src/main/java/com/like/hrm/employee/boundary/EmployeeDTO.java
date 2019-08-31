@@ -19,10 +19,11 @@ public class EmployeeDTO {
 	public static class NewEmployee implements Serializable {
 		
 		private static final long serialVersionUID = 5189496256963058913L;	
-		
+				
 		@NotEmpty
 		private String name;
-					
+				
+		@NotEmpty
 		private String residentRegistrationNumber;
 		
 	}
@@ -35,14 +36,19 @@ public class EmployeeDTO {
 				
 		private static final long serialVersionUID = 8984690778056785945L;
 
-		private String id;
+		@NotEmpty
+		private String employeeId;
 		
+		@NotEmpty
 		private String deptType;
 				
+		@NotEmpty
 		private String deptCode;
 				
+		@NotEmpty
 		private LocalDate fromDate;
 			
+		@NotEmpty
 		private LocalDate toDate;
 		
 	}
