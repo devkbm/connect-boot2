@@ -22,6 +22,10 @@ public class EmployeeDTO {
 				
 		@NotEmpty
 		private String name;
+
+		private String nameEng;
+		
+		private String nameChi;
 				
 		@NotEmpty
 		private String residentRegistrationNumber;
@@ -44,6 +48,30 @@ public class EmployeeDTO {
 				
 		@NotEmpty
 		private String deptCode;
+				
+		@NotEmpty
+		private LocalDate fromDate;
+			
+		@NotEmpty
+		private LocalDate toDate;
+		
+	}
+	
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class NewJob implements Serializable {					
+
+		@NotEmpty
+		private String employeeId;
+		
+		@NotEmpty
+		private String jobType;
+				
+		@NotEmpty
+		private String jobCode;
 				
 		@NotEmpty
 		private LocalDate fromDate;

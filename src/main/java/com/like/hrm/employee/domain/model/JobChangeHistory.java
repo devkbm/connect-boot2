@@ -23,6 +23,7 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -35,6 +36,7 @@ import lombok.NoArgsConstructor;
  * @author 김병민
  * 
  */
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPJOBHISTORY")
@@ -71,19 +73,25 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 	private Employee employee;
 
 	@Builder
-	public JobChangeHistory(String jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {		
+	public JobChangeHistory(Employee employee, String jobType, String jobCode, LocalDate fromDate, LocalDate toDate) {
+		this.employee 	= employee;
 		this.jobType 	= jobType;
 		this.jobCode 	= jobCode;		
 		this.fromDate 	= fromDate;
 		this.toDate 	= toDate;				
-	}	
+	}		
 	
 	public boolean isEnabled(LocalDate date) {
-		return date.isAfter(fromDate) && date.isBefore(toDate) ? true : false;		
+		return  ( date.isAfter(fromDate) || date.isEqual(fromDate) ) 
+			 && ( date.isBefore(toDate) || date.isEqual(toDate) ) ? true : false;		
 	}
 	
 	public void terminateHistory(LocalDate date) {
-		this.toDate = date;
+		if (date.isAfter(this.fromDate)) {
+			this.toDate = date;
+		} else {
+			this.toDate = this.fromDate;
+		}
 	}
 	
 	public boolean equalJobType(String jobType) {

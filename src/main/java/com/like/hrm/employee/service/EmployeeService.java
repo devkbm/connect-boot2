@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.model.JobChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
 
@@ -43,6 +44,8 @@ public class EmployeeService {
 		
 		Employee emp = new Employee(idGenerator.generateEmpId()
 				                   ,dto.getName()
+				                   ,dto.getNameEng()
+				                   ,dto.getNameChi()
 				                   ,dto.getResidentRegistrationNumber());
 		
 		employeeRepository.saveEmployee(emp);
@@ -66,6 +69,23 @@ public class EmployeeService {
 																   ,dto.getToDate());
 				
 		emp.addDeptChange(deptChangeHistory);
+		
+		employeeRepository.saveEmployee(emp);
+	}
+	
+	public void saveJobChangeHistory(EmployeeDTO.NewJob dto) {
+		Employee emp = employeeRepository.getEmployee(dto.getEmployeeId());
+		
+		if (emp == null) {
+			throw new IllegalArgumentException(dto.getEmployeeId() + " 사번이 존재하지 않습니다.");
+		}
+		
+		JobChangeHistory jobChangeHistory = new JobChangeHistory(emp
+																,dto.getJobType()
+																,dto.getJobCode()
+																,dto.getFromDate()
+																,dto.getToDate());
+		emp.addJobChange(jobChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
 	}

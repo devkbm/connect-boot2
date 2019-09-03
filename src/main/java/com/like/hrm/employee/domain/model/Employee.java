@@ -15,15 +15,16 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 import com.like.hrm.appointment.domain.model.Appointable;
 import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -81,40 +82,26 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	 */
 	@Column(name="WORK_CONDITION")
 	String workCondition;
-	
+		
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<DeptChangeHistory> deptHistory = new ArrayList<>();
-	
+		
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<JobChangeHistory> jobHistory = new ArrayList<>();		
-
-	/**
-	 * @param name
-	 * @param residentRegistrationNumber
-	 */
-	public Employee(String id, String name, String residentRegistrationNumber) {
-		this.id = id;
-		this.name = name;
-		this.residentRegistrationNumber = residentRegistrationNumber;
-		this.workCondition = "Z";
-	}
 	
-	@Builder
 	public Employee(String id, 
 					String name, 
 					String nameEng, 
 					String nameChi, 
-					String residentRegistrationNumber,
-					String workCondition) {		
+					String residentRegistrationNumber) {
 		this.id = id;
 		this.name = name;
 		this.nameEng = nameEng;
 		this.nameChi = nameChi;
 		this.residentRegistrationNumber = residentRegistrationNumber;
-		this.workCondition = workCondition;
+		this.workCondition = "Z";
 	}
-	
-	
+		
 	public String getEmployeeId() {
 		return this.id;
 	}
@@ -123,17 +110,17 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		return this.deptHistory;
 	}
 	
+	public List<JobChangeHistory> getJobChangeHistory() {
+		return this.jobHistory;
+	}
+	
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
 		
 		this.terminateDept(deptChangeHistory.getDeptType()
 						  ,deptChangeHistory.getFromDate());
 		
 		deptHistory.add(deptChangeHistory);
-	}
-	
-	public void addJobChange(JobChangeHistory jobChangeHistory) {
-		jobHistory.add(jobChangeHistory);
-	}
+	}	
 	
 	/**
 	 * <p>부서 이력을 종료일자 기준으로 종료시킨다.</p>
@@ -144,7 +131,8 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 				
 		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
 			
-			if (terminateDate.isBefore(deptHistory.getFromDate())) {
+			if (terminateDate.isBefore(deptHistory.getFromDate())
+			 && deptHistory.equalDeptType(deptType)) {
 				throw new IllegalArgumentException(deptHistory.getFromDate() + "일로 시작하는 부서 이력이 존재합니다.");
 			}
 			
@@ -156,20 +144,31 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		
 	}
 	
+	public void addJobChange(JobChangeHistory jobChangeHistory) {
+		this.terminateJob(jobChangeHistory.getJobType()
+						 ,jobChangeHistory.getFromDate());
+		
+		jobHistory.add(jobChangeHistory);
+	}
+	
 	/**
 	 * <p>인사정보 이력을 종료일자 기준으로 종료시킨다.</p>
 	 * @param jobType
-	 * @param jobCode
 	 * @param terminateDate
 	 */
-	public void terminateJob(String jobType, String jobCode, LocalDate terminateDate) {
+	public void terminateJob(String jobType, LocalDate terminateDate) {
 		
-		for (JobChangeHistory jobHistory: this.jobHistory) {
-			if ( jobHistory.equalJobType(jobType) 
-			  && jobHistory.equalJobCode(jobCode)
+		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
+			
+			if (jobHistory.equalJobType(jobType) 
+			 && terminateDate.isBefore(jobHistory.getFromDate())) {
+				throw new IllegalArgumentException(jobHistory.getFromDate() + "일로 시작하는 이력이 존재합니다.");
+			}
+			
+			if ( jobHistory.equalJobType(jobType) 			  
 			  && jobHistory.isEnabled(terminateDate) )
 				
-				jobHistory.terminateHistory(terminateDate);				
+				jobHistory.terminateHistory(terminateDate.minusDays(1));				
 		}
 	}
 
