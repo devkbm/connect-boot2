@@ -63,6 +63,8 @@ public class EmployeeDTO {
 	@AllArgsConstructor
 	@Builder
 	public static class NewJob implements Serializable {					
+		
+		private static final long serialVersionUID = -5137257776558074803L;
 
 		@NotEmpty
 		private String employeeId;
@@ -81,4 +83,29 @@ public class EmployeeDTO {
 		
 	}
 	
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class NewStatus implements Serializable {					
+
+		private static final long serialVersionUID = -129845094404797994L;
+
+		@NotEmpty
+		private String employeeId;
+		
+		@NotEmpty
+		private String appointmentCode;
+				
+		@NotEmpty
+		private String statusCode;
+				
+		@NotEmpty
+		private LocalDate fromDate;
+			
+		@NotEmpty
+		private LocalDate toDate;
+		
+	}
 }

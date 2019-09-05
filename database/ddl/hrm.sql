@@ -45,6 +45,21 @@ create table if not exists HRMEMPJOBHISTORY (
 	constraint fk_hrmempjobhistory foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 );
 
+create table if not exists HRMEMPSTATUSHISTORY (
+	SYS_DT		DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 	VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT		DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER	VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID			INT				not null	COMMENT '근무상태이력ID'	AUTO_INCREMENT,
+	EMP_ID		VARCHAR(10) 	not null  	COMMENT '사원ID',
+	APPOINTMENT_CODE	VARCHAR(10)		not null	COMMENT '발령코드',
+	STATUS_CODE	VARCHAR(10)		not null	COMMENT '상태코드',
+	FROM_DT		DATE			not null	COMMENT '시작일자',
+	TO_DT		DATE			not null	COMMENT '종료일자',	
+	constraint pk_hrmempstatushistory primary key(ID),
+	constraint fk_hrmempstatushistory foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+);
+
 create table if not exists COM.APPOINMENTCODEDETAILS (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',

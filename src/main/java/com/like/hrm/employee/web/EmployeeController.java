@@ -90,4 +90,20 @@ public class EmployeeController {
 											,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value={"/hrm/employee/changestatus"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	public ResponseEntity<?> saveStatusChange(@RequestBody EmployeeDTO.NewStatus dto, BindingResult result) {			
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+				
+		employeeService.saveStatusChangeHistory(dto);
+											 				
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
 }

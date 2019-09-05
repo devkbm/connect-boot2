@@ -89,6 +89,9 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<JobChangeHistory> jobHistory = new ArrayList<>();		
 	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	List<StatusChangeHistory> statusHistory = new ArrayList<>();
+	
 	public Employee(String id, 
 					String name, 
 					String nameEng, 
@@ -112,6 +115,10 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	
 	public List<JobChangeHistory> getJobChangeHistory() {
 		return this.jobHistory;
+	}
+	
+	public List<StatusChangeHistory> getStatusChangeHistory() {
+		return this.statusHistory;
 	}
 	
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
@@ -170,6 +177,20 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 				
 				jobHistory.terminateHistory(terminateDate.minusDays(1));				
 		}
+	}
+	
+	public void changeStatus(String appointmentCode, String statusCode, LocalDate fromDate, LocalDate toDate) {
+		for (StatusChangeHistory statusHistory: this.getStatusChangeHistory()) {
+			if (fromDate.isBefore(statusHistory.getFromDate())) {
+				throw new IllegalArgumentException(statusHistory.getFromDate() + "일로 시작하는 이력이 존재합니다.");
+			}
+			
+			if (statusHistory.isEnabled(fromDate)) {
+				statusHistory.terminateHistory(fromDate.minusDays(1));
+			}
+		}
+					
+		this.statusHistory.add(new StatusChangeHistory(this, appointmentCode, statusCode, fromDate, toDate));
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.like.hrm.employee.domain.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.like.common.domain.AuditEntity;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +25,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "HRMEMPWORKHISTORY")
+@Table(name = "HRMEMPSTATUSHISTORY")
 @EntityListeners(AuditingEntityListener.class)
-public class WorkStatusHistory {
+public class StatusChangeHistory extends AuditEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,17 +63,29 @@ public class WorkStatusHistory {
 	 * @param fromDate
 	 * @param toDate
 	 */
-	public WorkStatusHistory(Employee employee
-							,String appointmentCode
-							,String statusCode
-							,LocalDate fromDate
-							,LocalDate toDate) {		
+	public StatusChangeHistory(Employee employee
+							  ,String appointmentCode
+							  ,String statusCode
+							  ,LocalDate fromDate
+							  ,LocalDate toDate) {		
 		this.employee = employee;
 		this.appointmentCode = appointmentCode;
 		this.statusCode = statusCode;
 		this.fromDate = fromDate;
-		this.toDate = toDate;
-		
+		this.toDate = toDate;	
+	}
+	
+	public boolean isEnabled(LocalDate date) {
+		return  ( date.isAfter(fromDate) || date.isEqual(fromDate) ) 
+			 && ( date.isBefore(toDate) || date.isEqual(toDate) ) ? true : false;		
+	}
+	
+	public void terminateHistory(LocalDate date) {
+		if (date.isAfter(this.fromDate)) {
+			this.toDate = date;
+		} else {
+			this.toDate = this.fromDate;
+		}
 	}
 	
 	

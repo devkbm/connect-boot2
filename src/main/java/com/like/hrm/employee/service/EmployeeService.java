@@ -8,6 +8,7 @@ import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.JobChangeHistory;
+import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
 
@@ -56,12 +57,8 @@ public class EmployeeService {
 	}
 	
 	public void saveDeptChangeHistory(EmployeeDTO.NewDept dto) {
-		Employee emp = employeeRepository.getEmployee(dto.getEmployeeId());
-		
-		if (emp == null) {
-			throw new IllegalArgumentException(dto.getEmployeeId() + " 사번이 존재하지 않습니다.");
-		}
-		
+		Employee emp = getEmployeeInfo(dto.getEmployeeId());
+						
 		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp
 																   ,dto.getDeptType()
 																   ,dto.getDeptCode()
@@ -74,11 +71,7 @@ public class EmployeeService {
 	}
 	
 	public void saveJobChangeHistory(EmployeeDTO.NewJob dto) {
-		Employee emp = employeeRepository.getEmployee(dto.getEmployeeId());
-		
-		if (emp == null) {
-			throw new IllegalArgumentException(dto.getEmployeeId() + " 사번이 존재하지 않습니다.");
-		}
+		Employee emp = getEmployeeInfo(dto.getEmployeeId());			
 		
 		JobChangeHistory jobChangeHistory = new JobChangeHistory(emp
 																,dto.getJobType()
@@ -88,5 +81,26 @@ public class EmployeeService {
 		emp.addJobChange(jobChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
+	}
+	
+	public void saveStatusChangeHistory(EmployeeDTO.NewStatus dto) {
+		Employee emp = getEmployeeInfo(dto.getEmployeeId());
+						
+		emp.changeStatus(dto.getAppointmentCode()
+						,dto.getStatusCode()
+						,dto.getFromDate()
+						,dto.getToDate());	
+		
+		employeeRepository.saveEmployee(emp);
+	}
+	
+	private Employee getEmployeeInfo(String empId) {
+		Employee emp = employeeRepository.getEmployee(empId);
+		
+		if (emp == null) {
+			throw new IllegalArgumentException(empId + " 사번이 존재하지 않습니다.");
+		}
+		
+		return emp;
 	}
 }
