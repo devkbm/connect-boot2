@@ -1,11 +1,8 @@
 package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -13,19 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.DiscriminatorOptions;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,24 +44,36 @@ public class AppointmentCodeDetails extends AuditEntity implements Serializable 
 	@Column(name="PK_CODE_DETAIL")
 	private Long pkCodeDetails;	
 	
+	// 인사, 부서, 근무상태
 	@Column(name="CHANGE_TYPE")
 	private String changeType;
+			
+	// 소속부서, 직위 등
+	@Column(name="CHANGE_TYPE_DETAIL")
+	private String changeTypeDetail;
+		
+	@Column(name="prt_seq")
+	private Integer sequence;									
 	
-	@Column(name="TYPE_CODE")
-	private String typeCode;
-	
-	@Column(name="TYPE_NAME")
-	private String typeName;		
-				
-	@Column(name="CODE_GROUP",insertable=false, updatable=false)
-	private String codeGroup;
-	
-	@Column(name="CODE",insertable=false, updatable=false)
-	private String code;
-				
 	@ManyToOne(fetch=FetchType.LAZY)			
-	@JoinColumn(name="code_id")
-	private AppointmentCode appointmentCode;	
+	@JoinColumn(name="appointment_code", nullable=false, updatable=false)
+	private AppointmentCode appointmentCode;
+
+	/**
+	 * @param appointmentCode
+	 * @param changeType
+	 * @param changeTypeDetail
+	 * @param sequence
+	 */
+	public AppointmentCodeDetails(AppointmentCode appointmentCode
+								 ,String changeType
+								 ,String changeTypeDetail
+								 ,Integer sequence) {
+		this.appointmentCode = appointmentCode;
+		this.changeType = changeType;
+		this.changeTypeDetail = changeTypeDetail;
+		this.sequence = sequence;		
+	}	
 	
 	
 }

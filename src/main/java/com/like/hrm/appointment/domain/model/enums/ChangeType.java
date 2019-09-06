@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum ChangeType {
 
 	// 부서정보	
-	DEPT("H0002",	"부서"), 
+	DEPT("DEPT",		"부서"), 
 		
 	// 인사정보	
-	JOB("H0003", 	"인사");
-				
+	JOB("JOB", 			"인사"),
+	
+	// 상태정보
+	STATUS("STATUS",	"근무상태");
+	
 	private String code;
 	private String name;
 	

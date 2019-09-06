@@ -22,10 +22,8 @@ import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
-@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "HRMEMPLOYEE")
@@ -121,6 +119,10 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		return this.statusHistory;
 	}
 	
+	/**
+	 * <p>부서변경이력을 추가한다.</p>
+	 * @param deptChangeHistory
+	 */
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
 		
 		this.terminateDept(deptChangeHistory.getDeptType()
@@ -130,27 +132,31 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	}	
 	
 	/**
-	 * <p>부서 이력을 종료일자 기준으로 종료시킨다.</p>
+	 * <p>부서 이력 중 기준일자에 해당하는 사용가능한 이력이 있을 경우 전일로 종료시킨다.</p>
 	 * @param deptType
-	 * @param terminateDate
+	 * @param referenceDate
 	 */
-	public void terminateDept(String deptType, LocalDate terminateDate) {
+	public void terminateDept(String deptType, LocalDate referenceDate) {
 				
 		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
 			
-			if (terminateDate.isBefore(deptHistory.getFromDate())
+			if (referenceDate.isBefore(deptHistory.getFromDate())
 			 && deptHistory.equalDeptType(deptType)) {
 				throw new IllegalArgumentException(deptHistory.getFromDate() + "일로 시작하는 부서 이력이 존재합니다.");
 			}
 			
 			if ( deptHistory.equalDeptType(deptType)			  	
-			  && deptHistory.isEnabled(terminateDate) )
+			  && deptHistory.isEnabled(referenceDate) )
 				
-				deptHistory.terminateHistory(terminateDate.minusDays(1));				
+				deptHistory.terminateHistory(referenceDate.minusDays(1));				
 		}									
 		
 	}
 	
+	/**
+	 * <p>인사정보이력을 추가한다.</p>
+	 * @param jobChangeHistory
+	 */
 	public void addJobChange(JobChangeHistory jobChangeHistory) {
 		this.terminateJob(jobChangeHistory.getJobType()
 						 ,jobChangeHistory.getFromDate());
@@ -161,21 +167,21 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	/**
 	 * <p>인사정보 이력을 종료일자 기준으로 종료시킨다.</p>
 	 * @param jobType
-	 * @param terminateDate
+	 * @param referenceDate
 	 */
-	public void terminateJob(String jobType, LocalDate terminateDate) {
+	public void terminateJob(String jobType, LocalDate referenceDate) {
 		
 		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
 			
 			if (jobHistory.equalJobType(jobType) 
-			 && terminateDate.isBefore(jobHistory.getFromDate())) {
+			 && referenceDate.isBefore(jobHistory.getFromDate())) {
 				throw new IllegalArgumentException(jobHistory.getFromDate() + "일로 시작하는 이력이 존재합니다.");
 			}
 			
 			if ( jobHistory.equalJobType(jobType) 			  
-			  && jobHistory.isEnabled(terminateDate) )
+			  && jobHistory.isEnabled(referenceDate) )
 				
-				jobHistory.terminateHistory(terminateDate.minusDays(1));				
+				jobHistory.terminateHistory(referenceDate.minusDays(1));				
 		}
 	}
 	

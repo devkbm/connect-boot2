@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -31,51 +32,46 @@ import lombok.ToString;
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
-@Table(name = "comcode")
+@Table(name = "APPOINMENTCODE")
 @EntityListeners(AuditingEntityListener.class)
 public class AppointmentCode extends AuditEntity implements Serializable {
 	 
 	private static final long serialVersionUID = -2792716645396219283L;
 	
-	@Id
-	@Column(name="code_id")
-	private String id;
-	
-	@Column(name="p_code_id")
-	private String parentId;
-		
-	@Column(name="code")
+	@Id	
+	@Column(name="appointment_code")
 	String code;
 	
-	@Column(name="code_name")
+	@Column(name="appointment_code_name")
 	String codeName;
 		
 	@Column(name="use_yn")
 	boolean useYn = true;
-	
-	@Column(name="from_dt")
-	LocalDateTime fromDate;
-	
-	@Column(name="to_dt")
-	LocalDateTime toDate;
-	
+			
 	@Column(name="prt_seq")
 	Integer sequence;
 	
-	@OneToMany(mappedBy = "appointmentCode")
-	private List<AppointmentCodeDetails> codeDetails = new ArrayList<>();		
-	
-	@Builder
-	public AppointmentCode(String code, String codeName, boolean useYn, LocalDateTime fromDate, LocalDateTime toDate,
-			Integer sequence) {
-		super();
-		this.parentId = "HRMH0001";
-		this.id = "HRMH0001"+this.code;
+	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL )
+	private List<AppointmentCodeDetails> codeDetails = new ArrayList<>();
+
+	/**
+	 * @param code
+	 * @param codeName
+	 * @param useYn
+	 * @param sequence
+	 * @param codeDetails
+	 */
+	public AppointmentCode(String code
+						  ,String codeName
+						  ,boolean useYn
+						  ,Integer sequence
+						  ,List<AppointmentCodeDetails> codeDetails) {		
 		this.code = code;
 		this.codeName = codeName;
 		this.useYn = useYn;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
 		this.sequence = sequence;
-	}
+		this.codeDetails = codeDetails;
+	}		
+	
+	
 }
