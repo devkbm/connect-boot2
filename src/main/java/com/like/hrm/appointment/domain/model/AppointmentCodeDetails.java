@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"appointmentCode"})
 @Getter
 @Entity
-@Table(name = "APPOINMENTCODEDETAILS")
+@Table(name = "HRMAPPOINMENTCODEDETAILS")
 @EntityListeners(AuditingEntityListener.class)
 public class AppointmentCodeDetails extends AuditEntity implements Serializable {
 		

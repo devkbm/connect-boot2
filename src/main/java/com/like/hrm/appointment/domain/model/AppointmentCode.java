@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
-@Table(name = "APPOINMENTCODE")
+@Table(name = "HRMAPPOINTMENTCODE")
 @EntityListeners(AuditingEntityListener.class)
 public class AppointmentCode extends AuditEntity implements Serializable {
 	 

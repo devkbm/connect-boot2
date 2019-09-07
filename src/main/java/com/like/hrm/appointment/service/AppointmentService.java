@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
@@ -43,19 +42,7 @@ public class AppointmentService {
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
 		appointmentJpaRepository.deleteAppintmentCode(appointmentCode);
 	}
-	
-	public AppointmentCodeDetails getAppointmentCodeDetails(Long id) {				
-		return appointmentJpaRepository.getAppointmentCodeDetails(id);
-	}
-	
-	public void saveAppointmentCodeDetails(AppointmentCodeDetails details) {
-		appointmentJpaRepository.saveAppointmentCodeDetails(details);
-	}
-	
-	public void deleteAppointmentCodeDetails(AppointmentCodeDetails details) {
-		appointmentJpaRepository.deleteAppointmentCodeDetails(details);
-	}
-	
+		
 		
 	public DeptType getDeptType(String id) {
 		return appointmentJpaRepository.getDeptType(id);
