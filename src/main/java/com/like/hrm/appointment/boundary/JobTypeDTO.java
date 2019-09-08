@@ -1,4 +1,4 @@
-package com.like.hrm.appointment.dto;
+package com.like.hrm.appointment.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;

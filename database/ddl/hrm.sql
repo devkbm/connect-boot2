@@ -74,7 +74,7 @@ create table if not exists COM.HRMAPPOINTMENTCODE (
 ) COMMENT = '발령코드정보';
 
 
-create table if not exists COM.HRMAPPOINMENTCODEDETAILS (
+create table if not exists COM.HRMAPPOINTMENTCODEDETAILS (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',

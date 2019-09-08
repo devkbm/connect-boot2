@@ -1,8 +1,6 @@
-package com.like.hrm.appointment.dto;
+package com.like.hrm.appointment.boundary;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -15,21 +13,30 @@ public class AppointmentCodeDTO {
 	public static class CodeSave implements Serializable {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
-		
-			
+					
 		private String code;
 			
 		private String codeName;					
-			
-		private LocalDate fromDate;
-			
-		private LocalDate toDate;
-			
-		private int seq;
+								
+		private int sequence;
 			
 		private boolean useYn;
 		
 		private String cmt;
-									
+	}
+	
+	@Data
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class CodeDetailSave implements Serializable {					
+					
+		private static final long serialVersionUID = 309168416341042059L;
+
+		private String code;
+			
+		private String changeType;					
+		
+		private String changeTypeDetail;
+								
+		private int sequence;				
 	}
 }

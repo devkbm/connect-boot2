@@ -5,13 +5,14 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
-import com.like.hrm.appointment.infra.jparepository.AppointmentJpaRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public class AppointmentService {
 	public ApplicationEventPublisher applicationEventPublisher;
 	
 	@Autowired
-	private AppointmentJpaRepository appointmentJpaRepository;
+	private AppointmentRepository appointmentRepository;
 	
 	public void doSomething() {
 		log.info("서비스 발행");
@@ -32,40 +33,54 @@ public class AppointmentService {
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
-		return appointmentJpaRepository.getAppointmentCode(codeId);
+		return appointmentRepository.getAppointmentCode(codeId);
 	}
 	
-	public void saveAppintmentCode(AppointmentCode appointmentCode) {
-		appointmentJpaRepository.saveAppintmentCode(appointmentCode);
+	public void saveAppointmentCode(AppointmentCodeDTO.CodeSave dto) {
+		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());
+		
+		if (appointmentCode == null ) {		
+			appointmentCode = new AppointmentCode(dto.getCode()
+												 ,dto.getCodeName()
+												 ,true
+												 ,dto.getSequence()
+												 ,null);
+		}
+		
+		appointmentRepository.saveAppintmentCode(appointmentCode);
 	}
 	
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
-		appointmentJpaRepository.deleteAppintmentCode(appointmentCode);
+		appointmentRepository.deleteAppintmentCode(appointmentCode);
 	}
 		
+	public void saveAppointmentCodeDetail(AppointmentCodeDTO.CodeDetailSave dto) {
+		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());
+		
+	}
 		
 	public DeptType getDeptType(String id) {
-		return appointmentJpaRepository.getDeptType(id);
+		return appointmentRepository.getDeptType(id);
 	}
 	
 	public void saveDeptType(DeptType deptType) {
-		appointmentJpaRepository.saveDeptType(deptType);		
+		appointmentRepository.saveDeptType(deptType);		
 	}
 
 	public void deleteDeptType(DeptType deptType) {
-		appointmentJpaRepository.deleteDeptType(deptType);		
+		appointmentRepository.deleteDeptType(deptType);		
 	}
 
 	public JobType getJobType(String id) {
-		return appointmentJpaRepository.getJobType(id);
+		return appointmentRepository.getJobType(id);
 	}
 
 	public void saveJobType(JobType jobType) {
-		appointmentJpaRepository.saveJobType(jobType);		
+		appointmentRepository.saveJobType(jobType);		
 	}
 
 	public void deleteJobType(JobType jobType) {
-		appointmentJpaRepository.deleteJobType(jobType);		
+		appointmentRepository.deleteJobType(jobType);		
 	}
 
 
