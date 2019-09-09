@@ -1,9 +1,10 @@
 package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -52,7 +52,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	Integer sequence;
 	
 	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL )
-	private List<AppointmentCodeDetails> codeDetails = new ArrayList<>();
+	private Set<AppointmentCodeDetail> codeDetails = new LinkedHashSet<>();
 
 	/**
 	 * @param code
@@ -65,7 +65,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 						  ,String codeName
 						  ,boolean useYn
 						  ,Integer sequence
-						  ,List<AppointmentCodeDetails> codeDetails) {		
+						  ,Set<AppointmentCodeDetail> codeDetails) {		
 		this.code = code;
 		this.codeName = codeName;
 		this.useYn = useYn;
@@ -73,5 +73,12 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.codeDetails = codeDetails;
 	}		
 	
+	
+	public void addAppointmentCodeDetail(AppointmentCodeDetail detail) {
+		if (this.codeDetails == null)
+			this.codeDetails = new LinkedHashSet<>();
+							
+		this.codeDetails.add(detail);		
+	}		
 	
 }

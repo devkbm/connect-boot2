@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
+import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCodeDetails;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaDeptType;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaJobType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,7 +24,11 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	
 	@Autowired
 	private JpaAppointmentCode jpaAppointmentCode;	
-			
+
+	@Autowired
+	private JpaAppointmentCodeDetails jpaAppointmentCodeDetail;	
+
+	
 	@Autowired
 	private JpaDeptType jpaDeptType;
 	
@@ -46,6 +52,13 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 		jpaAppointmentCode.delete(appointmentCode);		
 	}
 
+	@Override
+	public AppointmentCodeDetail getAppointmentCodeDetail(Long pkCodeDetail) {
+		Optional<AppointmentCodeDetail> entity = jpaAppointmentCodeDetail.findById(pkCodeDetail);
+		
+		return entity.isPresent() ? entity.get() : null;
+	}
+	
 	@Override
 	public DeptType getDeptType(String id) {
 		Optional<DeptType> entity = jpaDeptType.findById(id);
@@ -77,5 +90,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	public void deleteJobType(JobType jobType) {
 		jpaJobType.delete(jobType);		
 	}
+
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.AppointmentLedger;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
@@ -54,9 +55,20 @@ public class AppointmentService {
 		appointmentRepository.deleteAppintmentCode(appointmentCode);
 	}
 		
-	public void saveAppointmentCodeDetail(AppointmentCodeDTO.CodeDetailSave dto) {
-		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());
+	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
+		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
+		AppointmentCodeDetail appointmentCodeDetail = appointmentRepository.getAppointmentCodeDetail(dto.getPkCodeDetails());
 		
+		if (appointmentCode == null)
+			throw new IllegalArgumentException(dto.getCode() + " 엔티티가 존재하지 않습니다.");
+		
+		if (appointmentCodeDetail == null) {
+			appointmentCodeDetail = dto.newAppointmentCodeDetail(appointmentCode);
+		} else {
+			
+		}
+						
+		appointmentCode.addAppointmentCodeDetail(appointmentCodeDetail);
 	}
 		
 	public DeptType getDeptType(String id) {

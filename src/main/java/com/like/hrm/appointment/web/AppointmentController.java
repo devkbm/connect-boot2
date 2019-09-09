@@ -20,7 +20,7 @@ import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetails;
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.service.AppointmentService;
@@ -60,7 +60,23 @@ public class AppointmentController {
 											,true
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
-	}	
+	}
+	
+	@RequestMapping(value={"/hrm/appointmentcodedetail"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveCodeDetail(@RequestBody AppointmentCodeDTO.SaveCodeDetail dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {			
+			throw new ControllerException(result.toString());
+		} 
+																	
+		appointmentService.saveAppointmentCodeDetail(dto);						
+								 					
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
 		
 	@GetMapping("/hrm/depttype/{id}")
 	public ResponseEntity<?> getDeptType(@PathVariable(value="id") String id) {

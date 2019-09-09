@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,10 +33,11 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"appointmentCode"})
 @Getter
+@EqualsAndHashCode(of = {"pkCodeDetails"})
 @Entity
-@Table(name = "HRMAPPOINMENTCODEDETAILS")
+@Table(name = "HRMAPPOINTMENTCODEDETAILS")
 @EntityListeners(AuditingEntityListener.class)
-public class AppointmentCodeDetails extends AuditEntity implements Serializable {
+public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 		
 	private static final long serialVersionUID = -9205194638867469788L;
 
@@ -65,7 +67,7 @@ public class AppointmentCodeDetails extends AuditEntity implements Serializable 
 	 * @param changeTypeDetail
 	 * @param sequence
 	 */
-	public AppointmentCodeDetails(AppointmentCode appointmentCode
+	public AppointmentCodeDetail(AppointmentCode appointmentCode
 								 ,String changeType
 								 ,String changeTypeDetail
 								 ,Integer sequence) {
@@ -74,6 +76,10 @@ public class AppointmentCodeDetails extends AuditEntity implements Serializable 
 		this.changeTypeDetail = changeTypeDetail;
 		this.sequence = sequence;		
 	}	
+	
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
 	
 	
 }
