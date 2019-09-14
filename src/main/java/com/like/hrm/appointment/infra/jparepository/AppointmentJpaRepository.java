@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
@@ -50,13 +49,6 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	@Override
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
 		jpaAppointmentCode.delete(appointmentCode);		
-	}
-
-	@Override
-	public AppointmentCodeDetail getAppointmentCodeDetail(Long pkCodeDetail) {
-		Optional<AppointmentCodeDetail> entity = jpaAppointmentCodeDetail.findById(pkCodeDetail);
-		
-		return entity.isPresent() ? entity.get() : null;
 	}
 	
 	@Override

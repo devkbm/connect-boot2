@@ -2,15 +2,19 @@ package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -51,8 +55,9 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	@Column(name="prt_seq")
 	Integer sequence;
 	
-	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL )
-	private Set<AppointmentCodeDetail> codeDetails = new LinkedHashSet<>();
+	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL, orphanRemoval = true )
+	@MapKeyColumn(name="PK_CODE_DETAIL", insertable = false, updatable = false, nullable = false)
+	private Map<Long, AppointmentCodeDetail> codeDetails = new HashMap<Long, AppointmentCodeDetail>();
 
 	/**
 	 * @param code
@@ -65,7 +70,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 						  ,String codeName
 						  ,boolean useYn
 						  ,Integer sequence
-						  ,Set<AppointmentCodeDetail> codeDetails) {		
+						  ,Map<Long, AppointmentCodeDetail> codeDetails) {		
 		this.code = code;
 		this.codeName = codeName;
 		this.useYn = useYn;
@@ -73,12 +78,28 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.codeDetails = codeDetails;
 	}		
 	
+	public AppointmentCodeDetail getCodeDetail(Long pk) {
+		return this.codeDetails.get(pk);
+	}
 	
 	public void addAppointmentCodeDetail(AppointmentCodeDetail detail) {
 		if (this.codeDetails == null)
-			this.codeDetails = new LinkedHashSet<>();
+			this.codeDetails = new HashMap<Long, AppointmentCodeDetail>();
 							
-		this.codeDetails.add(detail);		
-	}		
+		this.codeDetails.put(detail.getPkCodeDetails(), detail);		
+	}
+	
+	public void deleteAppointmentCodeDetail(Long pk) {
+		
+		if (this.codeDetails.containsKey(pk)) {
+			this.codeDetails.remove(pk);
+		} else {
+			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
+		}
+		
+		
+	}
+	
+	
 	
 }

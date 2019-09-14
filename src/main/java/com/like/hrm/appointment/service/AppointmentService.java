@@ -57,18 +57,24 @@ public class AppointmentService {
 		
 	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
 		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
-		AppointmentCodeDetail appointmentCodeDetail = appointmentRepository.getAppointmentCodeDetail(dto.getPkCodeDetails());
+		AppointmentCodeDetail appointmentCodeDetail = appointmentCode.getCodeDetail(dto.getPkCodeDetails());
 		
-		if (appointmentCode == null)
+		if (appointmentCode == null) {
 			throw new IllegalArgumentException(dto.getCode() + " 엔티티가 존재하지 않습니다.");
+		}		
 		
 		if (appointmentCodeDetail == null) {
 			appointmentCodeDetail = dto.newAppointmentCodeDetail(appointmentCode);
+			appointmentCode.addAppointmentCodeDetail(appointmentCodeDetail);
 		} else {
-			
-		}
-						
-		appointmentCode.addAppointmentCodeDetail(appointmentCodeDetail);
+			appointmentCodeDetail.setSequence(dto.getSequence());
+		}						
+		
+	}
+	
+	public void deleteAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
+		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
+		appointmentCode.deleteAppointmentCodeDetail(dto.getPkCodeDetails());			
 	}
 		
 	public DeptType getDeptType(String id) {

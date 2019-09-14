@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,17 +78,29 @@ public class AppointmentController {
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
+	
+	@DeleteMapping("/hrm/appointmentcodedetail")
+	public ResponseEntity<?> delCodeDetail(@RequestBody AppointmentCodeDTO.SaveCodeDetail dto, BindingResult result) {						
+												
+		appointmentService.deleteAppointmentCodeDetail(dto);
+								 						
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}	
 		
 	@GetMapping("/hrm/depttype/{id}")
 	public ResponseEntity<?> getDeptType(@PathVariable(value="id") String id) {
 		
 		DeptType code = appointmentService.getDeptType(id);
 					
-		return WebControllerUtil.getResponse(code, 
-				code == null ? 0 : 1, 
-				true, 
-				String.format("%d 건 조회되었습니다.", code == null ? 0 : 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(code
+											,code == null ? 0 : 1
+											,true
+											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
+											,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/depttype"}, method={RequestMethod.POST,RequestMethod.PUT}) 
@@ -100,11 +113,11 @@ public class AppointmentController {
 																	
 		//appointmentService.saveDeptType(code.getCommonCode());						
 								 					
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
 	
@@ -113,11 +126,11 @@ public class AppointmentController {
 		
 		JobType code = appointmentService.getJobType(id);
 					
-		return WebControllerUtil.getResponse(code, 
-				code == null ? 0 : 1, 
-				true, 
-				String.format("%d 건 조회되었습니다.", code == null ? 0 : 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(code
+											,code == null ? 0 : 1
+											,true
+											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
+											,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/jobtype"}, method={RequestMethod.POST,RequestMethod.PUT}) 
@@ -130,11 +143,11 @@ public class AppointmentController {
 																	
 		//appointmentService.saveJobType(code.getCommonCode());						
 								 					
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
 	

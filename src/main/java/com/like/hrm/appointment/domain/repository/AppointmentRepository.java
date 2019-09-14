@@ -27,7 +27,5 @@ public interface AppointmentRepository {
 	
 	void saveAppintmentCode(AppointmentCode appointmentCode);
 	
-	void deleteAppintmentCode(AppointmentCode appointmentCode);	
-	
-	AppointmentCodeDetail getAppointmentCodeDetail(Long pkCodeDetail);
+	void deleteAppintmentCode(AppointmentCode appointmentCode);		
 }
