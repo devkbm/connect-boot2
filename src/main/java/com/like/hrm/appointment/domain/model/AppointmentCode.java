@@ -3,10 +3,8 @@ package com.like.hrm.appointment.domain.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -79,6 +77,10 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	}		
 	
 	public AppointmentCodeDetail getCodeDetail(Long pk) {
+		if (!this.codeDetails.containsKey(pk)) {
+			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
+		} 
+		
 		return this.codeDetails.get(pk);
 	}
 	
@@ -89,15 +91,12 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.codeDetails.put(detail.getPkCodeDetails(), detail);		
 	}
 	
-	public void deleteAppointmentCodeDetail(Long pk) {
-		
-		if (this.codeDetails.containsKey(pk)) {
-			this.codeDetails.remove(pk);
-		} else {
+	public void deleteAppointmentCodeDetail(Long pk) {		
+		if (!this.codeDetails.containsKey(pk)) {
 			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
-		}
+		} 
 		
-		
+		this.codeDetails.remove(pk);
 	}
 	
 	
