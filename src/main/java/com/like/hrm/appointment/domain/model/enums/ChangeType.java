@@ -29,4 +29,10 @@ public enum ChangeType {
 	public String getName() {
 		return name;
 	}	
+	
+	public static class Values {
+        public static final String DEPT = "DEPT";
+        public static final String JOB = "JOB";
+        public static final String STATUS = "STATUS";
+    }
 }

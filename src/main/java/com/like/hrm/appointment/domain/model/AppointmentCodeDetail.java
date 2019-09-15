@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"appointmentCode"})
 @Getter
-@EqualsAndHashCode(of = {"pkCodeDetails"})
+@EqualsAndHashCode(of = {"pkCodeDetails"}, callSuper = false)
 @Entity
 @Table(name = "HRMAPPOINTMENTCODEDETAILS")
 @EntityListeners(AuditingEntityListener.class)

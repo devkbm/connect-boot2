@@ -10,7 +10,6 @@ import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
-import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCodeDetails;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaDeptType;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaJobType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,11 +22,7 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	
 	@Autowired
 	private JpaAppointmentCode jpaAppointmentCode;	
-
-	@Autowired
-	private JpaAppointmentCodeDetails jpaAppointmentCodeDetail;	
-
-	
+		
 	@Autowired
 	private JpaDeptType jpaDeptType;
 	

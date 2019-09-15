@@ -1,7 +1,6 @@
 package com.like.hrm.appointment.boundary;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.like.hrm.appointment.domain.model.JobType;
 
@@ -13,20 +12,23 @@ public class JobTypeDTO {
 
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class CodeSave implements Serializable {
+	public static class SaveCode implements Serializable {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
 		
-			
 		private String code;
-			
+		
 		private String codeName;					
 			
-		private LocalDate fromDate;
-			
-		private LocalDate toDate;
+		private boolean useYn;
 		
 		private Integer sequence;
+		
+		private String comment;
+		
+		public JobType newJobType() {
+			return new JobType(this.code, this.codeName);
+		}
 													
 	}
 }

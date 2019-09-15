@@ -1,37 +1,42 @@
 package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.like.common.domain.AuditEntity;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  * <p>부서 유형 코드 기준 정보</p> 
  * [상세] <br/>
- * 1. 공통코드 상위코드 : HRMH0002
+ * 1. 
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper=true, includeFieldNames=true)
 @Entity
-@DiscriminatorValue(value = "DEPT")
-public class DeptType extends AuditEntity implements Serializable {
+@DiscriminatorValue(value = ChangeType.Values.DEPT)
+public class DeptType extends ChangeableType implements Serializable {
 	
-	private static final long serialVersionUID = -7607475813346542493L;
-		
+	private static final long serialVersionUID = -7607475813346542493L;		
 
+	/**
+	 * @param id
+	 * @param code
+	 * @param codeName
+	 * @param useYn
+	 */
+	public DeptType(String code, String codeName) {		
+		this.id = ChangeType.Values.DEPT + code;
+		this.code = code;
+		this.codeName = codeName;		
+		this.useYn = true;
+	}
+	
+	
+	
 }

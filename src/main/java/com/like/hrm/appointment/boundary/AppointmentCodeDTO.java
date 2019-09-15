@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,7 +13,7 @@ public class AppointmentCodeDTO {
 
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class CodeSave implements Serializable {
+	public static class SaveCode implements Serializable {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
 					

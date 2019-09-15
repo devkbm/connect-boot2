@@ -3,7 +3,6 @@ package com.like.hrm.appointment.domain.repository;
 import org.springframework.stereotype.Repository;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 
