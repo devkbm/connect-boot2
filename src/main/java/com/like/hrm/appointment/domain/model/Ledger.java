@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class AppointmentLedger {
+public class Ledger {
 
 	/**
 	 * 발령 번호
@@ -21,6 +21,6 @@ public class AppointmentLedger {
 	
 	LocalDate registrationDate;
 		
-	List<AppointmentLedgerDetail> ledgerDetails = new ArrayList<>();
+	List<LedgerList> appointmentList = new ArrayList<>();
 				
 }

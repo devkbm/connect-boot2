@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 import com.like.hrm.appointment.domain.model.Appointable;
-import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
+import com.like.hrm.appointment.domain.model.LedgerList;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -200,7 +200,7 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	}
 
 	@Override
-	public void appoint(AppointmentLedgerDetail ledgerDetail) {
+	public void appoint(LedgerList ledgerDetail) {
 
 	}
 

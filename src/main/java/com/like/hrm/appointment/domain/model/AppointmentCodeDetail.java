@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,18 +31,17 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"appointmentCode"})
 @Getter
-@EqualsAndHashCode(of = {"pkCodeDetails"}, callSuper = false)
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "HRMAPPOINTMENTCODEDETAILS")
+@Table(name = "HRMAPPOINTMENTCODEDETAIL")
 @EntityListeners(AuditingEntityListener.class)
 public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 		
 	private static final long serialVersionUID = -9205194638867469788L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="PK_CODE_DETAIL")
-	private Long pkCodeDetails;	
+	@Id	
+	@Column(name="TYPE_ID")
+	private String id;	
 	
 	// 인사, 부서, 근무상태
 	@Column(name="CHANGE_TYPE")
@@ -71,6 +68,7 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 								 ,String changeType
 								 ,String changeTypeDetail
 								 ,Integer sequence) {
+		this.id = appointmentCode.code + changeType + changeTypeDetail;
 		this.appointmentCode = appointmentCode;
 		this.changeType = changeType;
 		this.changeTypeDetail = changeTypeDetail;

@@ -35,9 +35,7 @@ public class AppointmentCodeDTO {
 		private static final long serialVersionUID = 309168416341042059L;
 
 		private String code;
-			
-		private Long pkCodeDetails; 
-		
+							
 		private String changeType;					
 		
 		private String changeTypeDetail;
@@ -51,6 +49,10 @@ public class AppointmentCodeDTO {
 																	,this.changeTypeDetail
 																	,this.sequence);
 			return detail;
+		}
+		
+		public String getDetailId() {
+			return this.code + this.changeType + this.changeTypeDetail;
 		}
 	}
 }

@@ -2,13 +2,13 @@ package com.like.hrm.appointment.domain.model;
 
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
-public class ChangeInfo {
+public class LedgerChangeInfo {
 
-	private String id;
+	Long id;
 		
-	private String empId;
+	String empId;
 	
-	private ChangeType changeType;
+	ChangeType changeType;
 	
-		
+	String value;	
 }

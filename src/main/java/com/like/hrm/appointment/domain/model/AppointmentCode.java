@@ -1,7 +1,6 @@
 package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ import lombok.ToString;
 /**
  * <p>발령 코드 기준 정보</p> 
  * [상세] <br/>
- * 1. 공통코드 상위코드 : HRMH0001
+ * 1. 
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
@@ -54,8 +53,8 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	Integer sequence;
 	
 	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL, orphanRemoval = true )
-	@MapKeyColumn(name="PK_CODE_DETAIL", insertable = false, updatable = false, nullable = false)
-	private Map<Long, AppointmentCodeDetail> codeDetails = new HashMap<Long, AppointmentCodeDetail>();
+	@MapKeyColumn(name="TYPE_ID", insertable = false, updatable = false, nullable = false)
+	private Map<String, AppointmentCodeDetail> codeDetails = new HashMap<String, AppointmentCodeDetail>();
 
 	/**
 	 * @param code
@@ -68,7 +67,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 						  ,String codeName
 						  ,boolean useYn
 						  ,Integer sequence
-						  ,Map<Long, AppointmentCodeDetail> codeDetails) {		
+						  ,Map<String, AppointmentCodeDetail> codeDetails) {		
 		this.code = code;
 		this.codeName = codeName;
 		this.useYn = useYn;
@@ -76,22 +75,18 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.codeDetails = codeDetails;
 	}		
 	
-	public AppointmentCodeDetail getCodeDetail(Long pk) {
-		if (!this.codeDetails.containsKey(pk)) {
-			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
-		} 
-		
+	public AppointmentCodeDetail getCodeDetail(String pk) {				
 		return this.codeDetails.get(pk);
 	}
 	
 	public void addAppointmentCodeDetail(AppointmentCodeDetail detail) {
 		if (this.codeDetails == null)
-			this.codeDetails = new HashMap<Long, AppointmentCodeDetail>();
+			this.codeDetails = new HashMap<String, AppointmentCodeDetail>();
 							
-		this.codeDetails.put(detail.getPkCodeDetails(), detail);		
+		this.codeDetails.put(detail.getId(), detail);		
 	}
 	
-	public void deleteAppointmentCodeDetail(Long pk) {		
+	public void deleteAppointmentCodeDetail(String pk) {		
 		if (!this.codeDetails.containsKey(pk)) {
 			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
 		} 

@@ -26,19 +26,19 @@ create table if not exists COM.HRMAPPOINTMENTCODE (
 	constraint pk_hrmappointmentcode primary key(APPOINTMENT_CODE)	
 ) COMMENT = '발령코드정보';
 
-create table if not exists COM.HRMAPPOINTMENTCODEDETAILS (
+create table if not exists COM.HRMAPPOINTMENTCODEDETAIL (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    PK_CODE_DETAIL		INT				NOT NULL	AUTO_INCREMENT COMMENT '발령상세키',    
-    APPOINTMENT_CODE	VARCHAR(10) 	NOT NULL 	COMMENT '발령코드',
+    TYPE_ID				VARCHAR(20) 	NOT NULL 	COMMENT '타입ID_변경타입+변경타입상세',    
 	CHANGE_TYPE			VARCHAR(20)		NULL		COMMENT '변경타입',
 	CHANGE_TYPE_DETAIL	VARCHAR(20)		NULL		COMMENT '변경타입상세',
+	APPOINTMENT_CODE	VARCHAR(10) 	NOT NULL 	COMMENT '발령코드',
     PRT_SEQ				INT				NULL		COMMENT '출력순서',	    
-	constraint pk_hrmappointmentcodedetails primary key(PK_CODE_DETAIL),
-	constraint fk_hrmappointmentcodedetails foreign key(APPOINTMENT_CODE) references HRMAPPOINTMENTCODE(APPOINTMENT_CODE) 
-);
+	constraint pk_hrmappointmentcodedetail primary key(TYPE_ID),
+	constraint fk_hrmappointmentcodedetail foreign key(APPOINTMENT_CODE) references HRMAPPOINTMENTCODE(APPOINTMENT_CODE) 
+) COMMENT = '발령코드상세정보';
 
 create table if not exists HRMEMPLOYEE (
 	SYS_DT			DATETIME		null		COMMENT '최초등록일시',

@@ -2,7 +2,7 @@ package com.like.hrm.appointment.domain.event;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.like.hrm.appointment.domain.model.AppointmentLedger;
+import com.like.hrm.appointment.domain.model.Ledger;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ public class ProcessEvent extends ApplicationEvent {
 	
 	private String appointmentId;
 	
-	public ProcessEvent(Object source, AppointmentLedger appointmentLedger) {
+	public ProcessEvent(Object source, Ledger appointmentLedger) {
 		super(source);		
 		this.appointmentId = appointmentLedger.getAppointmentId();
 	}

@@ -13,7 +13,7 @@ import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.appointment.domain.model.AppointmentLedger;
+import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
@@ -34,7 +34,7 @@ public class AppointmentService {
 	
 	public void doSomething() {
 		log.info("서비스 발행");
-		applicationEventPublisher.publishEvent(new ProcessEvent(this, new AppointmentLedger()));
+		applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
@@ -66,8 +66,7 @@ public class AppointmentService {
 			throw new EntityNotFoundException(dto.getCode() + " 엔티티가 존재하지 않습니다.");
 		}
 		
-		AppointmentCodeDetail appointmentCodeDetail = appointmentCode.getCodeDetail(dto.getPkCodeDetails());		
-				
+		AppointmentCodeDetail appointmentCodeDetail = appointmentCode.getCodeDetail(dto.getDetailId());						
 		
 		if (appointmentCodeDetail == null) {
 			appointmentCodeDetail = dto.newAppointmentCodeDetail(appointmentCode);
@@ -80,7 +79,7 @@ public class AppointmentService {
 	
 	public void deleteAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
 		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
-		appointmentCode.deleteAppointmentCodeDetail(dto.getPkCodeDetails());			
+		appointmentCode.deleteAppointmentCodeDetail(dto.getDetailId());			
 	}
 		
 	public DeptType getDeptType(String code) {

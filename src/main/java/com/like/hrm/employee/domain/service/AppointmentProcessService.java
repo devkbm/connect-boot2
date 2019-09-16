@@ -8,8 +8,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import com.like.hrm.appointment.domain.event.ProcessEvent;
-import com.like.hrm.appointment.domain.model.AppointmentLedger;
-import com.like.hrm.appointment.domain.model.AppointmentLedgerDetail;
+import com.like.hrm.appointment.domain.model.Ledger;
+import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
@@ -40,9 +40,9 @@ public class AppointmentProcessService implements ApplicationListener<ProcessEve
 	@Override
 	public void onApplicationEvent(ProcessEvent event) {
 		
-		AppointmentLedger ledger = null; // appointmentRepository.getAppointmentCode(event.getAppointmentId());
+		Ledger ledger = null; // appointmentRepository.getAppointmentCode(event.getAppointmentId());
 		
-		for ( AppointmentLedgerDetail detail : ledger.getLedgerDetails() ) {
+		for ( LedgerList detail : ledger.getAppointmentList() ) {
 			
 			Employee emp = employeeRepository.getEmployee(detail.getEmpId());
 			
