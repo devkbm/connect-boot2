@@ -4,9 +4,15 @@ import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 public class LedgerChangeInfo {
 
-	Long id;
+	/**
+	 * 
+	 */
+	String id;
 		
-	String empId;
+	/**
+	 * 직원 ID
+	 */
+	String empId;	
 	
 	ChangeType changeType;
 	

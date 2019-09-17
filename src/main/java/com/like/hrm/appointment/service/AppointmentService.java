@@ -45,11 +45,9 @@ public class AppointmentService {
 		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());
 		
 		if (appointmentCode == null ) {		
-			appointmentCode = new AppointmentCode(dto.getCode()
-												 ,dto.getCodeName()
-												 ,true
-												 ,dto.getSequence()
-												 ,null);
+			appointmentCode = dto.newAppointmentCode();
+		} else {
+			appointmentCode = dto.changeInfo(appointmentCode);
 		}
 		
 		appointmentRepository.saveAppintmentCode(appointmentCode);
@@ -92,10 +90,7 @@ public class AppointmentService {
 		if (deptType == null) {
 			deptType = dto.newDeptType();
 		} else {					
-			deptType.changeInfo(dto.getCodeName()
-					 		   ,dto.isUseYn()
-					 		   ,dto.getSequence()
-					 		   ,dto.getComment());
+			deptType = dto.changeInfo(deptType);
 		}
 		
 		appointmentRepository.saveDeptType(deptType);		
@@ -121,10 +116,7 @@ public class AppointmentService {
 		if (jobType == null) {
 			jobType = dto.newJobType();
 		} else {
-			jobType.changeInfo(dto.getCode()
-							  ,dto.isUseYn()
-							  ,dto.getSequence()
-							  ,dto.getComment());
+			jobType  = dto.changeInfo(jobType);
 		}
 		
 		appointmentRepository.saveJobType(jobType);		

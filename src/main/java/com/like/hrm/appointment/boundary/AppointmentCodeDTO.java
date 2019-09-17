@@ -25,7 +25,29 @@ public class AppointmentCodeDTO {
 			
 		private boolean useYn;
 		
-		private String cmt;
+		private boolean endDateYn;
+		
+		private String comment;
+		
+		public AppointmentCode newAppointmentCode() {
+			return new AppointmentCode(this.code
+									  ,this.codeName
+									  ,this.useYn
+									  ,this.endDateYn
+									  ,this.sequence
+									  ,this.comment									  
+									  ,null);
+		}
+		
+		public AppointmentCode changeInfo(AppointmentCode entity) {
+			entity.ChangeInfo(this.codeName
+							 ,this.useYn
+							 ,this.endDateYn
+							 ,this.sequence
+							 ,this.comment);
+			
+			return entity;
+		}
 	}
 	
 	@Data

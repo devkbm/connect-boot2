@@ -23,9 +23,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>발령 코드 기준 정보</p> 
+ * <p>발령 코드 상세 정보</p> 
  * [상세] <br/>
- * 
+ * 1. 식별자 : 발령코드 + 변경유형 + 변경유형상세
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -39,6 +39,9 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 		
 	private static final long serialVersionUID = -9205194638867469788L;
 
+	/**
+	 * 코드구성 = 발령코드 + 변경유형 + 변경유형상세
+	 */
 	@Id	
 	@Column(name="TYPE_ID")
 	private String id;	
@@ -51,7 +54,7 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 	@Column(name="CHANGE_TYPE_DETAIL")
 	private String changeTypeDetail;
 		
-	@Column(name="prt_seq")
+	@Column(name="PRT_SEQ")
 	private Integer sequence;									
 	
 	@ManyToOne(fetch=FetchType.LAZY)			

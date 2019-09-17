@@ -29,5 +29,13 @@ public class DeptTypeDTO {
 		public DeptType newDeptType() {
 			return new DeptType(this.code, this.codeName);
 		}
+		
+		public DeptType changeInfo(DeptType entity) {
+			entity.changeInfo(this.code
+							 ,this.useYn
+							 ,this.sequence
+							 ,this.comment);
+			return entity;
+		}
 	}
 }

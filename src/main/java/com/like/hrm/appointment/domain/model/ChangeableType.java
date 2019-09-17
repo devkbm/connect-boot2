@@ -21,22 +21,22 @@ import lombok.NoArgsConstructor;
 public abstract class ChangeableType extends AuditEntity {
 	
 	@Id	
-	@Column(name="type_id")
+	@Column(name="TYPE_ID")
 	protected String id;
 
-	@Column(name="code")
+	@Column(name="CODE")
 	protected String code;
 	
-	@Column(name="code_name")
+	@Column(name="CODE_NAME")
 	protected String codeName;
 		
-	@Column(name="use_yn")
+	@Column(name="USE_YN")
 	protected boolean useYn = true;
 
-	@Column(name="prt_seq")
+	@Column(name="PRT_SEQ")
 	protected Integer sequence;
 	
-	@Column(name="cmt")
+	@Column(name="CMT")
 	protected String comment;		
 
 	/**

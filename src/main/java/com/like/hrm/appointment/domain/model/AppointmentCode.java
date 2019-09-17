@@ -40,40 +40,55 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = -2792716645396219283L;
 	
 	@Id	
-	@Column(name="appointment_code")
+	@Column(name="APPOINTMENT_CODE")
 	String code;
 	
-	@Column(name="appointment_code_name")
+	@Column(name="APPOINTMENT_CODE_NAME")
 	String codeName;
 		
-	@Column(name="use_yn")
+	@Column(name="USE_YN")
 	boolean useYn = true;
-			
-	@Column(name="prt_seq")
+	
+	@Column(name="END_DATE_YN")
+	boolean endDateYn = false;
+	
+	@Column(name="PRT_SEQ")
 	Integer sequence;
+		
+	@Column(name="CMT")
+	String comment;	
 	
 	@OneToMany(mappedBy = "appointmentCode", cascade = CascadeType.ALL, orphanRemoval = true )
 	@MapKeyColumn(name="TYPE_ID", insertable = false, updatable = false, nullable = false)
 	private Map<String, AppointmentCodeDetail> codeDetails = new HashMap<String, AppointmentCodeDetail>();
-
-	/**
-	 * @param code
-	 * @param codeName
-	 * @param useYn
-	 * @param sequence
-	 * @param codeDetails
-	 */
+	
 	public AppointmentCode(String code
 						  ,String codeName
 						  ,boolean useYn
+						  ,boolean endDateYn
 						  ,Integer sequence
+						  ,String comment
 						  ,Map<String, AppointmentCodeDetail> codeDetails) {		
-		this.code = code;
-		this.codeName = codeName;
-		this.useYn = useYn;
-		this.sequence = sequence;
+		this.code 		= code;
+		this.codeName 	= codeName;
+		this.useYn 		= useYn;
+		this.endDateYn 	= endDateYn;
+		this.sequence 	= sequence;
+		this.comment	= comment;
 		this.codeDetails = codeDetails;
 	}		
+	
+	public void ChangeInfo(String codeName
+						  ,boolean useYn
+						  ,boolean endDateYn
+						  ,Integer sequence
+						  ,String comment) {
+		this.codeName 	= codeName;
+		this.useYn 		= useYn;
+		this.endDateYn 	= endDateYn;
+		this.sequence 	= sequence;
+		this.comment	= comment;
+	}
 	
 	public AppointmentCodeDetail getCodeDetail(String pk) {				
 		return this.codeDetails.get(pk);

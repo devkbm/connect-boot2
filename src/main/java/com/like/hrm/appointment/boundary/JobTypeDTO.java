@@ -29,6 +29,13 @@ public class JobTypeDTO {
 		public JobType newJobType() {
 			return new JobType(this.code, this.codeName);
 		}
-													
+			
+		public JobType changeInfo(JobType entity) {
+			entity.changeInfo(this.code
+							 ,this.useYn
+							 ,this.sequence
+							 ,this.comment);
+			return entity;
+		}
 	}
 }

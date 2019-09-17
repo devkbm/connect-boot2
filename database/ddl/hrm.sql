@@ -21,6 +21,7 @@ create table if not exists COM.HRMAPPOINTMENTCODE (
     APPOINTMENT_CODE		VARCHAR(10) 	NOT NULL 	COMMENT '발령코드',
 	APPOINTMENT_CODE_NAME	VARCHAR(255) 	NOT NULL 	COMMENT '발령코드명칭',
 	USE_YN					BOOLEAN			NOT NULL 	COMMENT '사용여부',		
+	END_DATE_YN				BOOLEAN			NOT NULL 	COMMENT '발령종료일여부',		
 	PRT_SEQ					INT				NULL		COMMENT '출력순서',	
 	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_hrmappointmentcode primary key(APPOINTMENT_CODE)	

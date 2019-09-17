@@ -10,17 +10,23 @@ import lombok.Getter;
 public class Ledger {
 
 	/**
-	 * 발령 번호
+	 * 원장 번호
 	 */
-	String AppointmentId;
+	String LedgerId;
 		
 	/**
 	 * 발령 유형(정기, 임의)
 	 */
 	String AppointmentType;
 	
+	/**
+	 * 등록일
+	 */
 	LocalDate registrationDate;
 		
+	/**
+	 * 발령 명단
+	 */
 	List<LedgerList> appointmentList = new ArrayList<>();
 				
 }
