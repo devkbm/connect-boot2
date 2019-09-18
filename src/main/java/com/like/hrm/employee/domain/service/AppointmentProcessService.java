@@ -42,13 +42,13 @@ public class AppointmentProcessService implements ApplicationListener<ProcessEve
 		
 		Ledger ledger = null; // appointmentRepository.getAppointmentCode(event.getAppointmentId());
 		
-		for ( LedgerList detail : ledger.getAppointmentList() ) {
+		/*for ( LedgerList detail : ledger.getAppointmentList() ) {
 			
 			Employee emp = employeeRepository.getEmployee(detail.getEmpId());
 			
 			emp.appoint(detail);
 			
-		}
+		}*/
 		
 		
 	}

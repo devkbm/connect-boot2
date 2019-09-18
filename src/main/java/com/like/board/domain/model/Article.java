@@ -54,8 +54,7 @@ public class Article extends AuditEntity implements Serializable {
 	 */
 	@Column(name="PPK_ARTICLE")
 	Long ppkArticle;		
-		
-	
+			
 	/**
 	 * 제목
 	 */	

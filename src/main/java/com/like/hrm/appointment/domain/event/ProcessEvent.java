@@ -17,7 +17,7 @@ public class ProcessEvent extends ApplicationEvent {
 	
 	public ProcessEvent(Object source, Ledger appointmentLedger) {
 		super(source);		
-		this.appointmentId = appointmentLedger.getAppointmentId();
+		//this.appointmentId = appointmentLedger.getAppointmentId();
 	}
 
 	public String getAppointmentId() {

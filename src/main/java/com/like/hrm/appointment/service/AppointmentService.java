@@ -34,7 +34,7 @@ public class AppointmentService {
 	
 	public void doSomething() {
 		log.info("서비스 발행");
-		applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
+		//applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
