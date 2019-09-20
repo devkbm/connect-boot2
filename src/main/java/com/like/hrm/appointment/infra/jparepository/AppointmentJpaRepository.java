@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaDeptType;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaJobType;
+import com.like.hrm.appointment.infra.jparepository.springdata.JpaLedger;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -28,6 +30,9 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	
 	@Autowired
 	private JpaJobType jpaJobType;
+	
+	@Autowired
+	private JpaLedger jpaLedger;
 	
 	@Override
 	public AppointmentCode getAppointmentCode(String codeId) {
@@ -76,6 +81,22 @@ public class AppointmentJpaRepository implements AppointmentRepository {
 	@Override
 	public void deleteJobType(JobType jobType) {
 		jpaJobType.delete(jobType);		
+	}
+
+	@Override
+	public Ledger getLedger(String id) {
+		Optional<Ledger> entity = jpaLedger.findById(id);
+		return entity.isPresent() ? entity.get() : null;
+	}
+
+	@Override
+	public void saveLedger(Ledger ledger) {
+		jpaLedger.save(ledger);		
+	}
+
+	@Override
+	public void deleteLedger(Ledger ledger) {
+		jpaLedger.delete(ledger);		
 	}
 
 

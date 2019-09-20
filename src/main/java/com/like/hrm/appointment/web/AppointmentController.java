@@ -18,9 +18,11 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
+import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.service.AppointmentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -158,7 +160,7 @@ public class AppointmentController {
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/hrm/jobtype/{code}")
 	public ResponseEntity<?> deleteJobType(@PathVariable(value="code") String code) {				
 																		
@@ -169,7 +171,47 @@ public class AppointmentController {
 											,true
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
+	}	
+	
+	@GetMapping("/hrm/ledger/{id}")
+	public ResponseEntity<?> getLedger(@PathVariable(value="id") String id) {
+		
+		Ledger ledger = appointmentService.getLedger(id);
+					
+		return WebControllerUtil.getResponse(ledger
+											,ledger == null ? 0 : 1
+											,true
+											,String.format("%d 건 조회되었습니다.", ledger == null ? 0 : 1)
+											,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value={"/hrm/ledger"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveLedger(@RequestBody LedgerDTO.SaveCode dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {
+			log.info(result.toString());
+			throw new ControllerException(result.toString());
+		} 
+																	
+		appointmentService.saveLedger(dto);						
+								 					
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/hrm/ledger/{id}")
+	public ResponseEntity<?> deleteLedger(@PathVariable(value="id") String id) {				
+																		
+		appointmentService.deleteLedger(id);						
+								 					
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
 	
 }

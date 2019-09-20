@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.Ledger;
 
 @Repository
 public interface AppointmentRepository {
@@ -26,5 +27,11 @@ public interface AppointmentRepository {
 	
 	void saveAppintmentCode(AppointmentCode appointmentCode);
 	
-	void deleteAppintmentCode(AppointmentCode appointmentCode);		
+	void deleteAppintmentCode(AppointmentCode appointmentCode);
+	
+	Ledger getLedger(String id);
+	
+	void saveLedger(Ledger ledger);
+	
+	void deleteLedger(Ledger ledger);
 }

@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
@@ -45,8 +46,8 @@ public class Ledger extends AuditEntity implements Serializable {
 	/**
 	 * 발령 유형(정기, 임의)
 	 */
-	@Column(name="RGST_DT")
-	String AppointmentType;
+	@Column(name="APPOINTMENT_TYPE")
+	String appointmentType;
 	
 	/**
 	 * 등록일
@@ -66,6 +67,37 @@ public class Ledger extends AuditEntity implements Serializable {
 	@OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true )
 	@MapKeyColumn(name="LEDGER_ID", insertable = false, updatable = false, nullable = false)
 	Map<String, LedgerList> appointmentList = new HashMap<>();
+
+	/**
+	 * @param ledgerId
+	 * @param appointmentType
+	 * @param registrationDate
+	 * @param comment
+	 */
+	public Ledger(String ledgerId
+				, String appointmentType
+				, LocalDate registrationDate
+				, String comment) {
+		this.LedgerId = ledgerId;
+		this.appointmentType = appointmentType;
+		this.registrationDate = registrationDate;
+		this.comment = comment;
+	}
+	
+	public void addAppointmentList(LedgerList list) {
+		if (this.appointmentList == null)
+			this.appointmentList = new HashMap<>();
+		
+		this.appointmentList.put(list.getListId(), list);
+	}
+	
+	public void deleteAppointmentList(String pk) {
+		if (!this.appointmentList.containsKey(pk)) {
+			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
+		}
+		
+		this.appointmentList.remove(pk);
+	}
 			
 	
 }

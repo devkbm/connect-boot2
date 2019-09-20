@@ -43,7 +43,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 	 */
 	@Id	
 	@Column(name="LIST_ID")
-	Long listId;
+	String listId;
 	
 	/**
 	 * 직원 ID

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
+import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
@@ -131,6 +132,29 @@ public class AppointmentService {
 		
 		appointmentRepository.deleteJobType(jobType);		
 	}
-
+	
+	public Ledger getLedger(String id) {
+		return appointmentRepository.getLedger(id);
+	}
+	
+	public void saveLedger(LedgerDTO.SaveCode dto) {
+		Ledger ledger = appointmentRepository.getLedger(dto.getLedgerId());
+		
+		if (ledger == null) {
+			ledger = dto.newEntity();
+		}
+		
+		appointmentRepository.saveLedger(ledger);
+	}
+	
+	public void deleteLedger(String id) {
+		Ledger ledger = appointmentRepository.getLedger(id);
+		
+		if (ledger == null) {
+			throw new EntityNotFoundException(id + " 엔티티가 존재하지 않습니다.");
+		}
+		
+		appointmentRepository.deleteLedger(ledger);
+	}
 
 }
