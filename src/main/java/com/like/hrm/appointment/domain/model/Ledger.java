@@ -65,7 +65,7 @@ public class Ledger extends AuditEntity implements Serializable {
 	 * 발령 명단
 	 */
 	@OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true )
-	@MapKeyColumn(name="LEDGER_ID", insertable = false, updatable = false, nullable = false)
+	@MapKeyColumn(name="LIST_ID", insertable = false, updatable = false, nullable = false)
 	Map<String, LedgerList> appointmentList = new HashMap<>();
 
 	/**
@@ -75,13 +75,23 @@ public class Ledger extends AuditEntity implements Serializable {
 	 * @param comment
 	 */
 	public Ledger(String ledgerId
-				, String appointmentType
-				, LocalDate registrationDate
-				, String comment) {
+				 ,String appointmentType
+				 ,LocalDate registrationDate
+				 ,String comment) {
 		this.LedgerId = ledgerId;
 		this.appointmentType = appointmentType;
 		this.registrationDate = registrationDate;
 		this.comment = comment;
+	}
+	
+	public void changeInfo(String appointmentType
+						  ,String comment) {
+		this.appointmentType = appointmentType;
+		this.comment = comment;		
+	}
+	
+	public LedgerList getAppointmentList(String listId) {			
+		return this.appointmentList.get(listId);
 	}
 	
 	public void addAppointmentList(LedgerList list) {

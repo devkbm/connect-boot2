@@ -186,7 +186,7 @@ public class AppointmentController {
 	}
 	
 	@RequestMapping(value={"/hrm/ledger"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveLedger(@RequestBody LedgerDTO.SaveCode dto, BindingResult result) {				
+	public ResponseEntity<?> saveLedger(@RequestBody LedgerDTO.SaveLedger dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
 			log.info(result.toString());
@@ -211,6 +211,23 @@ public class AppointmentController {
 											,1
 											,true
 											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/ledgerlist"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveLedgerList(@RequestBody LedgerDTO.SaveLedgerList dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {
+			log.info(result.toString());
+			throw new ControllerException(result.toString());
+		} 
+																	
+		appointmentService.saveLedgerList(dto);						
+								 					
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	

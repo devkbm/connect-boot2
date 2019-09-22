@@ -15,6 +15,7 @@ import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
+import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
@@ -48,7 +49,7 @@ public class AppointmentService {
 		if (appointmentCode == null ) {		
 			appointmentCode = dto.newAppointmentCode();
 		} else {
-			appointmentCode = dto.changeInfo(appointmentCode);
+			dto.modifyEntity(appointmentCode);
 		}
 		
 		appointmentRepository.saveAppintmentCode(appointmentCode);
@@ -137,11 +138,13 @@ public class AppointmentService {
 		return appointmentRepository.getLedger(id);
 	}
 	
-	public void saveLedger(LedgerDTO.SaveCode dto) {
+	public void saveLedger(LedgerDTO.SaveLedger dto) {
 		Ledger ledger = appointmentRepository.getLedger(dto.getLedgerId());
 		
 		if (ledger == null) {
 			ledger = dto.newEntity();
+		} else {
+			dto.modifyEntity(ledger);
 		}
 		
 		appointmentRepository.saveLedger(ledger);
@@ -152,9 +155,23 @@ public class AppointmentService {
 		
 		if (ledger == null) {
 			throw new EntityNotFoundException(id + " 엔티티가 존재하지 않습니다.");
-		}
+		} 
 		
 		appointmentRepository.deleteLedger(ledger);
+	}
+	
+	public void saveLedgerList(LedgerDTO.SaveLedgerList dto) {
+		Ledger ledger = appointmentRepository.getLedger(dto.getLedgerId());
+		LedgerList list = ledger.getAppointmentList(dto.getListId());
+		
+		log.info(dto.toString());
+		
+		if (list == null) {			
+			list = dto.newEntity(ledger);
+			ledger.addAppointmentList(list);
+		} else {
+			list = dto.modifyEntity(list);
+		}			
 	}
 
 }

@@ -1,8 +1,6 @@
 package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,10 +16,12 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.like.common.domain.AuditEntity;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -29,6 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Getter
 @Entity
 @Table(name = "HRMAPPOINTMENTINFO")
@@ -39,8 +40,8 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="PK_ARTICLE")
-	String id;
+	@Column(name="ID")
+	Long id;
 				
 	@Column(name="TYPE_ID")
 	String changeType;
@@ -48,7 +49,20 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 	@Column(name="CODE")
 	String changeCode;
 	
+	@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)			
 	@JoinColumn(name="LIST_ID", nullable=false, updatable=false)
 	LedgerList ledgerList;
+	
+	public LedgerChangeInfo(LedgerList ledgerList
+						   ,String changeType
+						   ,String changeCode) {
+		this.changeType = changeType;
+		this.changeCode = changeCode;
+		this.ledgerList = ledgerList;
+	}
+	
+	public void changeCode(String code) {
+		this.changeCode = code;
+	}
 }

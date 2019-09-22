@@ -39,14 +39,12 @@ public class AppointmentCodeDTO {
 									  ,null);
 		}
 		
-		public AppointmentCode changeInfo(AppointmentCode entity) {
-			entity.ChangeInfo(this.codeName
+		public void modifyEntity(AppointmentCode entity) {
+			entity.changeInfo(this.codeName
 							 ,this.useYn
 							 ,this.endDateYn
 							 ,this.sequence
-							 ,this.comment);
-			
-			return entity;
+							 ,this.comment);					
 		}
 	}
 	

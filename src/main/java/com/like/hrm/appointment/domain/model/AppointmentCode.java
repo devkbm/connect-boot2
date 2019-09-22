@@ -78,7 +78,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.codeDetails = codeDetails;
 	}		
 	
-	public void ChangeInfo(String codeName
+	public void changeInfo(String codeName
 						  ,boolean useYn
 						  ,boolean endDateYn
 						  ,Integer sequence
