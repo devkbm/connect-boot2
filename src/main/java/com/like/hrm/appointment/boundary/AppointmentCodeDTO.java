@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -65,7 +66,7 @@ public class AppointmentCodeDTO {
 		public AppointmentCodeDetail newAppointmentCodeDetail(AppointmentCode code) {
 						
 			AppointmentCodeDetail detail = new AppointmentCodeDetail(code
-																	,this.changeType
+																	,ChangeType.valueOf(this.changeType)
 																	,this.changeTypeDetail
 																	,this.sequence);
 			return detail;

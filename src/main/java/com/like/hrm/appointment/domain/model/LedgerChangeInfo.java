@@ -5,12 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"ledgerList"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Getter
@@ -43,11 +46,19 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 	@Column(name="ID")
 	Long id;
 				
-	@Column(name="TYPE_ID")
-	String changeType;
+	@Column(name="CHANGE_TYPE")
+	@Enumerated(EnumType.STRING)
+	ChangeType changeType;
+		
+	@Column(name="CHANGE_TYPE_DETAIL")
+	String changeTypeDetail;
 	
 	@Column(name="CODE")
 	String changeCode;
+	
+	@OrderBy
+	@Column(name="PRT_SEQ")
+	Integer sequence;
 	
 	@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)			
@@ -55,14 +66,20 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 	LedgerList ledgerList;
 	
 	public LedgerChangeInfo(LedgerList ledgerList
-						   ,String changeType
-						   ,String changeCode) {
-		this.changeType = changeType;
-		this.changeCode = changeCode;
+						   ,ChangeType changeType
+						   ,String changeTypeDetail
+						   ,String changeCode
+						   ,Integer sequence) {
 		this.ledgerList = ledgerList;
+		this.changeType = changeType;
+		this.changeTypeDetail = changeTypeDetail;
+		this.changeCode = changeCode;		
+		this.sequence = sequence;
 	}
 	
-	public void changeCode(String code) {
+	public void changeCode(String code
+						  ,Integer sequence) {
 		this.changeCode = code;
+		this.sequence = sequence;
 	}
 }

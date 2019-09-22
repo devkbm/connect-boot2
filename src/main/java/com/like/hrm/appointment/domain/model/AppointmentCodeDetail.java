@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -46,9 +49,10 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 	@Column(name="TYPE_ID")
 	private String id;	
 	
-	// 인사, 부서, 근무상태
+	// 인사, 부서, 근무상태	
 	@Column(name="CHANGE_TYPE")
-	private String changeType;
+	@Enumerated(EnumType.STRING)
+	ChangeType changeType;
 			
 	// 소속부서, 직위 등
 	@Column(name="CHANGE_TYPE_DETAIL")
@@ -68,10 +72,10 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 	 * @param sequence
 	 */
 	public AppointmentCodeDetail(AppointmentCode appointmentCode
-								 ,String changeType
-								 ,String changeTypeDetail
-								 ,Integer sequence) {
-		this.id = appointmentCode.code + changeType + changeTypeDetail;
+								,ChangeType changeType
+								,String changeTypeDetail
+								,Integer sequence) {
+		this.id = appointmentCode.code + changeType.toString() + changeTypeDetail;
 		this.appointmentCode = appointmentCode;
 		this.changeType = changeType;
 		this.changeTypeDetail = changeTypeDetail;

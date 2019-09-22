@@ -29,7 +29,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -124,11 +126,13 @@ public class LedgerList extends AuditEntity implements Serializable {
 	public LedgerChangeInfo getChangeInfo(Long changeId) {			
 		LedgerChangeInfo result = null;
 		
-		for (LedgerChangeInfo info : this.changeInfoList) {
-			if ( info.getId().equals(changeId) ) 
-				result = info;
+		if (!this.changeInfoList.isEmpty()) {
+			for (LedgerChangeInfo info : this.changeInfoList) {
+				log.info(info.toString());
+				if ( changeId.equals(info.getId()) ) 
+					result = info;
+			}
 		}
-		
 		return result;
 	}
 }

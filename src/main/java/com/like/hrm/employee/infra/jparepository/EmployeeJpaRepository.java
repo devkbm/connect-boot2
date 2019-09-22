@@ -10,7 +10,6 @@ import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.infra.jparepository.springdata.JpaEmployee;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

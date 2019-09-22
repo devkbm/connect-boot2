@@ -33,9 +33,9 @@ create table if not exists COM.HRMAPPOINTMENTCODEDETAIL (
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
     TYPE_ID				VARCHAR(20) 	NOT NULL 	COMMENT '타입ID_변경타입+변경타입상세',    
-	CHANGE_TYPE			VARCHAR(20)		NULL		COMMENT '변경타입',
-	CHANGE_TYPE_DETAIL	VARCHAR(20)		NULL		COMMENT '변경타입상세',
 	APPOINTMENT_CODE	VARCHAR(10) 	NOT NULL 	COMMENT '발령코드',
+	CHANGE_TYPE			VARCHAR(20)		NULL		COMMENT '변경타입',
+	CHANGE_TYPE_DETAIL	VARCHAR(20)		NULL		COMMENT '변경타입상세',	
     PRT_SEQ				INT				NULL		COMMENT '출력순서',	    
 	constraint pk_hrmappointmentcodedetail primary key(TYPE_ID),
 	constraint fk_hrmappointmentcodedetail foreign key(APPOINTMENT_CODE) references HRMAPPOINTMENTCODE(APPOINTMENT_CODE) 
@@ -136,9 +136,11 @@ create table if not exists COM.HRMAPPOINTMENTINFO (
 	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
     ID						INT				NOT NULL	COMMENT 'ID'	AUTO_INCREMENT,
-	LIST_ID					VARCHAR(30) 	NOT NULL 	COMMENT '발령대장명단ID',        
-	TYPE_ID					VARCHAR(20) 	NOT NULL 	COMMENT '타입ID_변경타입+변경타입상세',        
+	LIST_ID					VARCHAR(30) 	NOT NULL 	COMMENT '발령대장명단ID',
+	CHANGE_TYPE				VARCHAR(20)		NULL		COMMENT '변경타입',
+	CHANGE_TYPE_DETAIL		VARCHAR(20)		NULL		COMMENT '변경타입상세',	    	    	       
 	CODE					VARCHAR(10)		NULL		COMMENT '변경코드',
+	PRT_SEQ					INT				NULL		COMMENT '출력순서',
 	constraint pk_hrmappointmentinfo 	primary key(ID),	
 	constraint fk_hrmappointmentinfo1 	foreign key(LIST_ID) references HRMAPPOINTMENTLEDGERLIST(LIST_ID)  
 ) COMMENT = '발령대장정보';

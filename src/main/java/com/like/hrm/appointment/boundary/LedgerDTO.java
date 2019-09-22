@@ -8,6 +8,7 @@ import java.util.List;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -75,9 +76,7 @@ public class LedgerDTO {
 											  ,this.toDate);
 						
 			for (ChangeInfo info : changeInfoList ) {
-				entity.addChangeInfo(new LedgerChangeInfo(entity
-						                                , info.getChangeType()
-						                                , info.getChangeCode())	);
+				entity.addChangeInfo(this.newLedgerChangeInfo(entity, info));
 			}
 			
 			return entity;
@@ -89,19 +88,24 @@ public class LedgerDTO {
 			entity.modifyEntity(getToDate());
 						
 			for (ChangeInfo info : changeInfoList ) {
-				
-				LedgerChangeInfo ledgerChangeInfo = entity.getChangeInfo(info.getId());  
-								
-				if (ledgerChangeInfo == null ) {
-					entity.addChangeInfo(new LedgerChangeInfo(entity
-								                            , info.getChangeType()
-								                            , info.getChangeCode())	);
+				if (info.getId() != null) {
+					LedgerChangeInfo ledgerChangeInfo = entity.getChangeInfo(info.getId());  													
+					ledgerChangeInfo.changeCode(info.getChangeCode()
+											   ,info.getSequence());					
 				} else {
-					ledgerChangeInfo.changeCode(info.getChangeCode());
+					entity.addChangeInfo(this.newLedgerChangeInfo(entity, info));
 				}
 			}
 			
 			return entity;
+		}
+		
+		private LedgerChangeInfo newLedgerChangeInfo(LedgerList entity, ChangeInfo info) {
+			return new LedgerChangeInfo(entity
+					                   ,ChangeType.valueOf(info.getChangeType())
+					                   ,info.getChangeTypeDetail()								                            
+					                   ,info.getChangeCode()	
+					                   ,info.getSequence());
 		}
 		
 	}
@@ -116,7 +120,11 @@ public class LedgerDTO {
 		
 		String changeType;
 		
+		String changeTypeDetail;
+		
 		String changeCode;
+		
+		Integer sequence;
 	}
 	
 	
