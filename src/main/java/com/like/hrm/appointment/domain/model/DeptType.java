@@ -30,13 +30,18 @@ public class DeptType extends ChangeableType implements Serializable {
 	 * @param codeName
 	 * @param useYn
 	 */
-	public DeptType(String code, String codeName) {		
+	public DeptType(String code
+				   ,String codeName
+				   ,boolean useYn
+				   ,Integer sequence
+				   ,String comment) {		
 		this.id = ChangeType.Values.DEPT + code;
 		this.code = code;
 		this.codeName = codeName;		
-		this.useYn = true;
+		this.useYn = useYn;
+		this.sequence = sequence;
+		this.comment = comment;
 	}
-	
-	
+		
 	
 }

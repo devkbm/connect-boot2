@@ -16,6 +16,8 @@ public class DeptTypeDTO {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
 					
+		private String id;
+		
 		private String code;
 			
 		private String codeName;					
@@ -27,11 +29,15 @@ public class DeptTypeDTO {
 		private String comment;
 				
 		public DeptType newDeptType() {
-			return new DeptType(this.code, this.codeName);
+			return new DeptType(this.code
+					   		   ,this.codeName
+					   		   ,this.useYn
+					   		   ,this.sequence
+					   		   ,this.comment);
 		}
 		
 		public DeptType changeInfo(DeptType entity) {
-			entity.changeInfo(this.code
+			entity.changeInfo(this.codeName
 							 ,this.useYn
 							 ,this.sequence
 							 ,this.comment);

@@ -16,6 +16,8 @@ public class JobTypeDTO {
 				
 		private static final long serialVersionUID = -4482323353197356218L;
 		
+		private String id;
+		
 		private String code;
 		
 		private String codeName;					
@@ -27,11 +29,15 @@ public class JobTypeDTO {
 		private String comment;
 		
 		public JobType newJobType() {
-			return new JobType(this.code, this.codeName);
+			return new JobType(this.code
+					  		  ,this.codeName
+					  		  ,this.useYn
+					   		  ,this.sequence
+					   		  ,this.comment);
 		}
 			
 		public JobType changeInfo(JobType entity) {
-			entity.changeInfo(this.code
+			entity.changeInfo(this.codeName
 							 ,this.useYn
 							 ,this.sequence
 							 ,this.comment);
