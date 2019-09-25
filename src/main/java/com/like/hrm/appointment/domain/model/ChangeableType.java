@@ -11,9 +11,11 @@ import javax.persistence.Table;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "HRMTYPECODE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

@@ -86,6 +86,12 @@ public class AppointmentService {
 		return appointmentRepository.getDeptType(ChangeType.DEPT.toString() + code);
 	}
 	
+	public DeptTypeDTO.SaveCode getDeptTypeDTO(String code) {
+		DeptType entity = this.getDeptType(code);
+		
+		return DeptTypeDTO.SaveCode.convert(entity);
+	}
+	
 	public void saveDeptType(DeptTypeDTO.SaveCode dto) {
 		DeptType deptType = appointmentRepository.getDeptType(ChangeType.DEPT.toString() + dto.getCode());
 		
@@ -110,6 +116,12 @@ public class AppointmentService {
 
 	public JobType getJobType(String code) {
 		return appointmentRepository.getJobType(ChangeType.JOB.toString() + code);
+	}
+	
+	public JobTypeDTO.SaveCode getJobTypeDTO(String code) {
+		JobType entity = appointmentRepository.getJobType(ChangeType.JOB.toString() + code);				
+		
+		return JobTypeDTO.SaveCode.convert(entity);
 	}
 
 	public void saveJobType(JobTypeDTO.SaveCode dto) {

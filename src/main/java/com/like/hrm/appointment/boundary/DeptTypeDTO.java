@@ -5,12 +5,16 @@ import java.io.Serializable;
 import com.like.hrm.appointment.domain.model.DeptType;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class DeptTypeDTO {
 
-	@Data
+	@Data	
+	@Builder
+	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SaveCode implements Serializable {
 				
@@ -43,5 +47,28 @@ public class DeptTypeDTO {
 							 ,this.comment);
 			return entity;
 		}
+		
+		public static SaveCode convert(DeptType entity) {
+			/*
+			return SaveCode.builder()
+						   .id(entity.getId())
+						   .code(entity.getCode())
+						   .codeName(entity.getCodeName())
+						   .useYn(entity.isUseYn())
+						   .sequence(entity.getSequence())
+						   .code(entity.getComment())
+						   .build();						   
+			*/
+			
+			return new SaveCode(entity.getId()
+							   ,entity.getCode()
+							   ,entity.getCodeName()
+							   ,entity.isUseYn()
+							   ,entity.getSequence()
+							   ,entity.getComment());
+			
+		}
+		
+		
 	}
 }

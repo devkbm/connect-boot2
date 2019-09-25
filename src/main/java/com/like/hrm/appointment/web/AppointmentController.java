@@ -93,7 +93,7 @@ public class AppointmentController {
 	@GetMapping("/hrm/depttype/{code}")
 	public ResponseEntity<?> getDeptType(@PathVariable(value="code") String code) {
 		
-		DeptType deptType = appointmentService.getDeptType(code);
+		DeptTypeDTO.SaveCode deptType = appointmentService.getDeptTypeDTO(code);
 					
 		return WebControllerUtil.getResponse(deptType
 											,deptType == null ? 0 : 1
@@ -135,7 +135,7 @@ public class AppointmentController {
 	@GetMapping("/hrm/jobtype/{code}")
 	public ResponseEntity<?> getJobType(@PathVariable(value="code") String code) {
 		
-		JobType jobType = appointmentService.getJobType(code);
+		JobTypeDTO.SaveCode jobType = appointmentService.getJobTypeDTO(code);
 					
 		return WebControllerUtil.getResponse(jobType
 											,jobType == null ? 0 : 1
