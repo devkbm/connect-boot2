@@ -1,5 +1,8 @@
 package com.like.hrm.appointment.web;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.board.boundary.SearchCondition;
+import com.like.board.domain.model.Article;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
@@ -20,8 +25,7 @@ import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.DeptType;
-import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.service.AppointmentService;
 
@@ -34,6 +38,22 @@ public class AppointmentController {
 	@Resource
 	private AppointmentService appointmentService;	
 
+	@GetMapping("/hrm/appointmentcode")
+	public ResponseEntity<?> getArticleList(AppointmentCodeDTO.CodeSearch search) {
+																	
+		List<AppointmentCode> list = appointmentService.getAppointentCodeList(search);  							
+		
+		List<AppointmentCodeDTO.SaveCode> dtoList = list.stream()
+														.map(r -> AppointmentCodeDTO.SaveCode.convertDTO(r))
+														.collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
 	@RequestMapping(value={"/hrm/appointmentcode/{id}"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getCode(@PathVariable(value="id") String id) {
 		
@@ -59,6 +79,19 @@ public class AppointmentController {
 											,1
 											,true
 											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+		
+	@GetMapping("/hrm/appointmentcodedetail/{id}/{detailId}")
+	public ResponseEntity<?> getCodeDetail(@PathVariable(value="id") String id,
+										   @PathVariable(value="detailId") String detailId) {
+		 		
+		AppointmentCodeDetail code = appointmentService.getAppointmentCodeDetail(id, detailId);
+					
+		return WebControllerUtil.getResponse(code
+											,code == null ? 0 : 1
+											,true
+											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 	

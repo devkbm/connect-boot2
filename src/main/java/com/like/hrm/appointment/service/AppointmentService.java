@@ -1,5 +1,7 @@
 package com.like.hrm.appointment.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,10 @@ public class AppointmentService {
 		//applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
 	}
 	
+	public List<AppointmentCode> getAppointentCodeList(AppointmentCodeDTO.CodeSearch search) {
+		return appointmentRepository.getAppointmentCodeList(search.getBooleanBuilder());
+	}
+	
 	public AppointmentCode getAppointmentCode(String codeId) {
 		return appointmentRepository.getAppointmentCode(codeId);
 	}
@@ -57,6 +63,12 @@ public class AppointmentService {
 	
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
 		appointmentRepository.deleteAppintmentCode(appointmentCode);
+	}
+	
+	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String type) {
+		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);
+		
+		return entity.getCodeDetail(type);
 	}
 		
 	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {

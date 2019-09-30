@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -30,6 +31,7 @@ import lombok.ToString;
  * 1. 
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @ToString(callSuper=true, includeFieldNames=true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
