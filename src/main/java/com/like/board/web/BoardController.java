@@ -77,9 +77,9 @@ public class BoardController {
 	}
 
 	@GetMapping("/grw/board")
-	public ResponseEntity<?> getBoardList(SearchCondition.BoardSearch condition) {						
+	public ResponseEntity<?> getBoardList(BoardDTO.SearchBoard dto) {						
 		
-		List<Board> list = boardQueryService.getBoardList(condition); 										
+		List<Board> list = boardQueryService.getBoardList(dto); 										
 							
 		return WebControllerUtil.getResponse(list,				
 				list.size(), 
@@ -93,7 +93,7 @@ public class BoardController {
 				
 		Board board = boardQueryService.getBoard(id);		
 		
-		BoardDTO.BoardSaveDTO dto = BoardDTOAssembler.convertDTO(board);
+		BoardDTO.SaveBoard dto = BoardDTO.SaveBoard.convertDTO(board);				
 							
 		return WebControllerUtil.getResponse(dto,				
 				board != null ? 1 : 0, 
@@ -103,7 +103,7 @@ public class BoardController {
 	}	
 		
 	@RequestMapping(value={"/grw/board"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.BoardSaveDTO boardDTO, BindingResult result) {
+	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.SaveBoard boardDTO, BindingResult result) {
 							
 		/*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -112,18 +112,16 @@ public class BoardController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 			
+							
+		log.info(boardDTO.toString());
 		
-		Board board = convertEntity(boardDTO);
-				
-		//log.info(board.toString());
-		
-		boardCommandService.saveBoard(board);				
+		boardCommandService.saveBoard(boardDTO);				
 								 					
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}	
 		
 	@DeleteMapping("/grw/board/{id}")
@@ -137,27 +135,5 @@ public class BoardController {
 				String.format("%d 건 삭제되었습니다.", 1), 
 				HttpStatus.OK);
 	}		
-	
-	
-	private Board convertEntity(BoardDTO.BoardSaveDTO dto) {
-		Board board = null;			
-		Board parentBoard = null; 
-		
-		if (dto.getPkBoard() != null) {
-			board = boardQueryService.getBoard(dto.getPkBoard());
-		}
-		
-		if (dto.getPpkBoard() != null) {
-			parentBoard = boardQueryService.getBoard(dto.getPpkBoard());
-		}
-				
-		if (board == null) {
-			board = BoardDTOAssembler.createEntity(dto, parentBoard);
-		} else {
-			board = BoardDTOAssembler.mergeEntity(board, dto, parentBoard);
-		}			
-		
-		return board;
-	}
 			
 }

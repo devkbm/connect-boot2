@@ -7,66 +7,15 @@ import java.util.stream.Collectors;
 
 import com.like.board.boundary.ArticleDTO;
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.BoardDTO.BoardSaveDTO;
+import com.like.board.boundary.BoardDTO.SaveBoard;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
 
 
-public class BoardDTOAssembler {	
-			
-	public static Board createEntity(BoardDTO.BoardSaveDTO dto, Board parentBoard) {
-		
-		return Board.builder()
-					.parent(parentBoard)
-					.boardName(dto.getBoardName())
-					.boardType(BoardType.valueOf(dto.getBoardType()))
-					.boardDescription(dto.getBoardDescription())
-					.fromDate(dto.getFromDate())
-					.toDate(dto.getToDate())
-					.useYn(dto.getUseYn())
-					.sequence(dto.getSequence())
-					.build();
-	}	
-	
-	public static Board mergeEntity(Board entity, BoardDTO.BoardSaveDTO dto, Board parentBoard) {
-						
-		entity.parent			= parentBoard;
-		entity.boardName 		= nvl(dto.getBoardName(), entity.boardName);
-		entity.boardType 		= nvl(BoardType.valueOf(dto.getBoardType()), entity.boardType);
-		entity.boardDescription	= nvl(dto.getBoardDescription(), entity.boardDescription);
-		entity.fromDate			= nvl(dto.getFromDate(), entity.fromDate);
-		entity.toDate			= nvl(dto.getToDate(), entity.toDate);
-		entity.sequence			= nvl(dto.getSequence(), entity.sequence);
-		entity.useYn			= nvl(dto.getUseYn(), entity.useYn);
-		
-		return entity;
-	}
+public class BoardDTOAssembler {				
 	
 	
-	public static BoardDTO.BoardSaveDTO convertDTO(Board entity) {					
-				
-		if (entity == null)
-			return null;
-		
-		BoardSaveDTO dto = BoardSaveDTO.builder()
-								.createdDt(entity.getCreatedDt())
-								.createdBy(entity.getCreatedBy())
-								.modifiedDt(entity.getModifiedDt())
-								.modifiedBy(entity.getModifiedBy())
-								.pkBoard(entity.pkBoard)	
-								.ppkBoard(entity.getParent() == null ? null : entity.getParent().getPkBoard())
-								.boardType(entity.boardType.toString())
-								.boardName(entity.boardName)
-								.boardDescription(entity.boardDescription)
-								.fromDate(entity.fromDate)
-								.toDate(entity.toDate)
-								.useYn(entity.useYn)
-								.articleCount(entity.articleCount)
-								.sequence(entity.sequence)
-								.build();		
-		return dto;
-	}
 	
 	public static Article createEntity(ArticleDTO.ArticleSaveMuiltiPart dto, Board board) {
 						

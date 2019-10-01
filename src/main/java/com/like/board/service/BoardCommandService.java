@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.board.boundary.ArticleDTO;
+import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
@@ -33,10 +34,24 @@ public class BoardCommandService {
 		
     @Resource(name="fileService")
     private FileService fileService;
-    
-	public void saveBoard(Board board) {		
-		boardRepository.saveBoard(board);		
-	}	
+    	
+	public void saveBoard(BoardDTO.SaveBoard dto) {			
+		Board board = null;			
+		Board parentBoard = null;
+		
+		if (dto.getPpkBoard() != null) {
+			parentBoard = boardRepository.getBoard(dto.getPpkBoard());
+		}
+																
+		if (dto.getPkBoard() == null) {
+			board = dto.newBoard(parentBoard);
+		} else {
+			board = boardRepository.getBoard(dto.getPkBoard());
+			dto.modifyBoard(board, parentBoard);			
+		}			
+		
+		boardRepository.saveBoard(board);
+	}
 	
 	public void deleteBoard(Long id) {
 		boardRepository.deleteBoard(id);

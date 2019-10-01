@@ -104,6 +104,36 @@ public class Board extends AuditEntity implements Serializable {
     @OneToMany(mappedBy = "board")          
     List<Article> articles;           
     
+	
+	/**
+	 * @param parent
+	 * @param boardType
+	 * @param boardName
+	 * @param boardDescription
+	 * @param fromDate
+	 * @param toDate
+	 * @param useYn
+	 * @param sequence
+	 * @param articles
+	 */
+	public void modifyEntity(Board parent
+						    ,BoardType boardType
+						    ,String boardName
+						    ,String boardDescription
+						    ,LocalDate fromDate
+						    ,LocalDate toDate
+						    ,Boolean useYn
+						    ,long sequence) {
+		this.parent = parent;
+		this.boardType = boardType;
+		this.boardName = boardName;
+		this.boardDescription = boardDescription;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.useYn = useYn;
+		this.sequence = sequence;		
+	}
+	
     public boolean hasParentBoard() {    	    		    		
     	return this.parent != null ? true : false;
 	}

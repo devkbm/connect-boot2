@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.infra.jparepository.springdata.JpaBoard;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,10 +33,10 @@ public class BoardJpaRepository implements BoardRepository {
 		return entity.isPresent() ? entity.get() : null;
 	}
 	
-	public List<Board> getBoardList(SearchCondition.BoardSearch condition) {		
+	public List<Board> getBoardList(Predicate condition) {		
 		return queryFactory
 					.selectFrom(qBoard)
-					.where(condition.getBooleanBuilder())
+					.where(condition)
 					.fetch(); 		
 	}	
 	

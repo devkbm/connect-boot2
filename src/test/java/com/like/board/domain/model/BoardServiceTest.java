@@ -80,7 +80,7 @@ public class BoardServiceTest {
 						  	.build();
 		
 		//When
-		boardCommandService.saveBoard(board);
+		//boardCommandService.saveBoard(board);
 		
 		//Then
 		Board test = boardQueryService.getBoard(board.getPkBoard());
@@ -103,7 +103,7 @@ public class BoardServiceTest {
 						  	.boardName("테스트 게시판")
 						  	.build();
 		
-		boardCommandService.saveBoard(board);
+		//boardCommandService.saveBoard(board);
 				
 		//when 
 		boardCommandService.deleteBoard(board);
@@ -179,7 +179,7 @@ public class BoardServiceTest {
 						  	.boardName("테스트 게시판")
 						  	.build();
 
-		boardCommandService.saveBoard(board);
+		//boardCommandService.saveBoard(board);
 		
 		return board;
 	}

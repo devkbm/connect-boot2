@@ -8,9 +8,15 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.like.board.domain.model.Board;
+import com.like.board.domain.model.QBoard;
 import com.like.board.domain.model.enums.BoardType;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,6 +27,48 @@ import lombok.NoArgsConstructor;
 public class BoardDTO {
 	
 	/**
+	 * 게시판 조회조건 
+	 */
+	@Data
+	public static class SearchBoard implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QBoard qBoard = QBoard.board;
+		
+		String boardName;
+		
+		String boardType;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder
+				.and(likeBoardName(this.boardName))
+				.and(equalBoardType(this.boardType));
+						
+			
+			return builder;
+		}
+		
+		private BooleanExpression likeBoardName(String boardName) {
+			if (StringUtils.isEmpty(boardName)) {
+				return null;
+			}
+			
+			return qBoard.boardName.like("%"+boardName+"%");
+		}
+		
+		private BooleanExpression equalBoardType(String boardType) {
+			if (StringUtils.isEmpty(boardType)) {
+				return null;
+			}
+			
+			return qBoard.boardType.eq(BoardType.valueOf(boardType));
+		}
+	}
+	
+	/**
 	 * 게시판 저장을 위한 DTO Class
 	 * 	 
 	 */
@@ -28,7 +76,7 @@ public class BoardDTO {
 	@Builder
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	@AllArgsConstructor	
-	public static class BoardSaveDTO implements Serializable {
+	public static class SaveBoard implements Serializable {
 						
 		private static final long serialVersionUID = 1L;
 
@@ -68,7 +116,55 @@ public class BoardDTO {
 	    
 	    long articleCount;
 	            
-	    long sequence;       	    	    	    	    	   
+	    long sequence; 
+	    
+		public Board newBoard(Board parentBoard) {
+			
+			return Board.builder()
+						.parent(parentBoard)
+						.boardName(this.boardName)
+						.boardType(BoardType.valueOf(this.boardType))
+						.boardDescription(this.boardDescription)
+						.fromDate(this.fromDate)
+						.toDate(this.toDate)
+						.useYn(this.useYn)
+						.sequence(this.sequence)
+						.build();
+		}	
+		
+		public void modifyBoard(Board board, Board parentBoard) {
+			board.modifyEntity(parentBoard
+					          ,BoardType.valueOf(this.boardType)
+					          ,this.boardName
+					          ,this.boardDescription
+					          ,this.fromDate
+					          ,this.toDate
+					          ,this.useYn
+					          ,this.sequence);
+		}
+		
+		public static BoardDTO.SaveBoard convertDTO(Board entity) {					
+			
+			if (entity == null)
+				return null;
+						
+			return SaveBoard.builder()
+						    .createdDt(entity.getCreatedDt())
+						    .createdBy(entity.getCreatedBy())
+						    .modifiedDt(entity.getModifiedDt())
+						    .modifiedBy(entity.getModifiedBy())
+						    .pkBoard(entity.getPkBoard())	
+						    .ppkBoard(entity.getParent() == null ? null : entity.getParent().getPkBoard())
+						    .boardType(entity.getBoardType().toString())
+						    .boardName(entity.getBoardName())
+						    .boardDescription(entity.getBoardDescription())
+						    .fromDate(entity.getFromDate())
+						    .toDate(entity.getToDate())
+						    .useYn(entity.getUseYn())
+						    .articleCount(entity.getArticleCount())
+						    .sequence(entity.getSequence())
+						    .build();	
+		}
 	}
 	
 	
