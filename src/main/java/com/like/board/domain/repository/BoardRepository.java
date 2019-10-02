@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Board;
 import com.querydsl.core.types.Predicate;
 

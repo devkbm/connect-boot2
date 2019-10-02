@@ -12,7 +12,6 @@ import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
-import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.domain.service.AttachedFileConverter;
@@ -61,8 +60,7 @@ public class BoardCommandService {
 		boardRepository.deleteBoard(board);
 	}
 	
-	public Article convertEntity(ArticleDTO.ArticleSaveMuiltiPart dto) {
-		log.info(dto.toString());
+	public Article convertEntity(ArticleDTO.SaveArticleByMuiltiPart dto) {		
 		Board board = boardRepository.getBoard(dto.getFkBoard());		
 		Article article = null; 
 		
@@ -71,15 +69,15 @@ public class BoardCommandService {
 		}
 		
 		if (article == null) {
-			article = BoardDTOAssembler.createEntity(dto, board);
+			article = dto.newArticle(board); 
 		} else {
-			article = BoardDTOAssembler.mergeEntity(article, dto);
+			dto.modifyArticle(article);			
 		}
 		
 		return article;
 	}
 		
-	public String saveArticle(ArticleDTO.ArticleSaveMuiltiPart dto) throws Exception {
+	public String saveArticle(ArticleDTO.SaveArticleByMuiltiPart dto) throws Exception {
 		
 		List<FileInfo> fileInfoList = null;
 		List<AttachedFile> attachedFileList = null;					
@@ -101,6 +99,40 @@ public class BoardCommandService {
 		String pkArticle = articleRepository.saveArticle(article).getId().toString(); 						
 		
 		return pkArticle;
+	}
+	
+	public String saveArticle(ArticleDTO.SaveArticleByJson dto) {		 							
+		Board board = boardRepository.getBoard(dto.getFkBoard());
+		Article article = null;
+		List<FileInfo> fileInfoList = null;
+		List<AttachedFile> attachedFileList = null;
+		
+		// 1. 기존 게시글이 있는지 조회한다. 
+		if (dto.getPkArticle() != null) {
+			article = articleRepository.getArticle(dto.getPkArticle());
+		}
+		
+		// 2. 저장된 파일 리스트를 조회한다.
+		if (dto.getAttachFile() != null) {
+			fileInfoList = fileService.getFileInfoList(dto.getAttachFile());			
+		}
+		
+		// 3. 게시글 객체를 생성한다.
+		if (article == null) {
+			article = dto.newArticle(board);
+		} else {
+			dto.modifyArticle(article);
+		}		
+		
+		// 4. FileInfo를 AttachedFile로 변환한다.
+		attachedFileList = AttachedFileConverter.convert(article, fileInfoList);
+		
+		if (attachedFileList != null) {
+			article.setFiles(attachedFileList);
+		}
+				
+		// 5. 게시글 저장 후 id 리턴
+		return articleRepository.saveArticle(article).getId().toString();
 	}
 
 	public void deleteArticle(Article article) {					

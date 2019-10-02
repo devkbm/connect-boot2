@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Board;
-import com.like.board.domain.model.BoardDTOAssembler;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
@@ -57,11 +55,11 @@ public class BoardController {
 			list.add(dto);
 		}				 					
 		
-		return WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/grw/boardHierarchy")
@@ -69,11 +67,11 @@ public class BoardController {
 											
 		List<?> list = boardQueryService.getBoardHierarchy();				 			
 		
-		return WebControllerUtil.getResponse(list,
-				list.size(), 
-				true,
-				String.format("%d 건 조회되었습니다.", list.size()),
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 
 	@GetMapping("/grw/board")
@@ -81,11 +79,11 @@ public class BoardController {
 		
 		List<Board> list = boardQueryService.getBoardList(dto); 										
 							
-		return WebControllerUtil.getResponse(list,				
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 		
 	@GetMapping("/grw/board/{id}")
@@ -95,11 +93,11 @@ public class BoardController {
 		
 		BoardDTO.SaveBoard dto = BoardDTO.SaveBoard.convertDTO(board);				
 							
-		return WebControllerUtil.getResponse(dto,				
-				board != null ? 1 : 0, 
-				true, 
-				String.format("%d 건 조회되었습니다.", board != null ? 1 : 0), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(dto
+											,board != null ? 1 : 0
+											,true
+											,String.format("%d 건 조회되었습니다.", board != null ? 1 : 0)
+											,HttpStatus.OK);
 	}	
 		
 	@RequestMapping(value={"/grw/board"}, method={RequestMethod.POST,RequestMethod.PUT}) 
@@ -129,11 +127,11 @@ public class BoardController {
 												
 		boardCommandService.deleteBoard(id);							
 		
-		return WebControllerUtil.getResponse(null, 
-				1, 
-				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
 	}		
 			
 }

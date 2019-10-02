@@ -9,10 +9,17 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.like.board.domain.model.Article;
+import com.like.board.domain.model.Board;
+import com.like.board.domain.model.QArticle;
+import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,12 +29,55 @@ import lombok.ToString;
 
 public class ArticleDTO {
 	
+	@Data
+	public static class SearchArticle implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QArticle qArticle = QArticle.article;
+		
+		Long fkBoard;
+		
+		String title;
+		
+		String contents;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder
+				.and(qArticle.board.pkBoard.eq(fkBoard))
+				.and(likeTitle(this.title))
+				.and(likeContents(this.contents));											
+			
+			return builder;
+		}
+		
+		private BooleanExpression likeTitle(String title) {
+			if (StringUtils.isEmpty(title)) {
+				return null;
+			}
+			
+			return qArticle.title.like("%"+title+"%");
+		}
+		
+		private BooleanExpression likeContents(String contents) {
+			if (StringUtils.isEmpty(contents)) {
+				return null;
+			}
+			
+			return qArticle.contents.like("%"+contents+"%");
+		}
+		
+		
+	}
+	
 	@Data	
 	@NoArgsConstructor	
 	@AllArgsConstructor
 	@Builder
 	@ToString
-	public static class ArticleSaveMuiltiPart implements Serializable {
+	public static class SaveArticleByMuiltiPart implements Serializable {
 		
 		private static final long serialVersionUID = -6844786437530688768L;
 		
@@ -65,7 +115,29 @@ public class ArticleDTO {
 	    Long fkBoard;
 	            
 	    @JsonIgnore
-	    List<MultipartFile> file = new ArrayList<MultipartFile>();	                	   	    	    	    	  	        
+	    List<MultipartFile> file = new ArrayList<MultipartFile>();	 
+	    
+	    public Article newArticle(Board board) {
+			
+			return Article.builder()	
+						  .board(board)
+						  .ppkArticle(this.ppkArticle)
+						  .title(this.title)
+						  .contents(this.contents)
+						  .fromDate(this.fromDate)
+						  .toDate(this.toDate)
+						  .pwd(this.pwd)
+						  .build();
+		}
+	    
+	    public void modifyArticle(Article entity) {
+			
+	    	entity.modifyEntity(title
+	    					   ,contents
+	    					   ,fromDate
+	    					   ,toDate
+	    					   ,seq);								
+		}
 	}
 	
 	@Data	
@@ -73,7 +145,7 @@ public class ArticleDTO {
 	@AllArgsConstructor
 	@Builder
 	@ToString
-	public static class ArticleSaveJson implements Serializable {
+	public static class SaveArticleByJson implements Serializable {
 						
 		private static final long serialVersionUID = 919127739529051164L;
 
@@ -113,7 +185,29 @@ public class ArticleDTO {
 	    /**
 	     * FileInfo 도메인의 PK 리스트
 	     */
-	    List<String> attachFile;	                	   	    	    	    	  	        
+	    List<String> attachFile;	   
+	    
+	    public Article newArticle(Board board) {
+			
+			return Article.builder()	
+						  .board(board)
+						  .ppkArticle(this.ppkArticle)
+						  .title(this.title)
+						  .contents(this.contents)
+						  .fromDate(this.fromDate)
+						  .toDate(this.toDate)
+						  .pwd(this.pwd)
+						  .build();
+		}
+	    
+	    public void modifyArticle(Article entity) {
+			
+	    	entity.modifyEntity(title
+	    					   ,contents
+	    					   ,fromDate
+	    					   ,toDate
+	    					   ,seq);								
+		}
 	}
 	
 	
@@ -164,5 +258,38 @@ public class ArticleDTO {
 	    List<FileResponseDTO> fileList;	  
 	    
 	    Boolean editable;
+	    
+	    public static ArticleDTO.ArticleResponse converDTO(Article entity) {
+			
+			List<FileInfo> fileInfoList = entity.getAttachedFileInfoList();
+			List<FileResponseDTO> responseList = new ArrayList<>();
+			
+			for (FileInfo fileInfo : fileInfoList) {
+				FileResponseDTO dto = FileResponseDTO.builder()
+													 .url(fileInfo.getPkFile())
+													 .name(fileInfo.getFileName())
+													 .status("done")																									
+													 .url("http://localhost:8090/common/file/"+fileInfo.getPkFile())
+													 .build();
+				
+				responseList.add(dto);				
+			}
+																																															
+			return ArticleDTO.ArticleResponse
+							 .builder()
+							 .createdDt(entity.getCreatedDt())
+							 .createdBy(entity.getCreatedBy())
+							 .modifiedDt(entity.getModifiedDt())
+							 .modifiedBy(entity.getModifiedBy())
+							 .pkArticle(entity.getPkArticle())
+							 .ppkArticle(entity.getPpkArticle())
+							 .userName(entity.getUserName())
+							 .fkBoard(entity.getBoard().getPkBoard())				
+							 .title(entity.getTitle())
+							 .contents(entity.getContents())
+							 .fileList(responseList)			
+							 .editable(entity.getEditable())
+							 .build();
+		}
 	}
 }

@@ -13,7 +13,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.*;
 
 @Repository

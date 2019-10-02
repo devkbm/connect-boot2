@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.ArticleCheck;
 import com.like.board.domain.model.AttachedFile;
 import com.like.file.domain.model.FileInfo;
+import com.querydsl.core.types.Predicate;
 
 @Repository
 public interface ArticleRepository {
@@ -34,7 +34,7 @@ public interface ArticleRepository {
 	 * @param likeContents	내용
 	 * @return	게시글 엔티티 리스트
 	 */
-	List<Article> getArticleList(SearchCondition.ArticleSearch condition);
+	List<Article> getArticleList(Predicate condition);
 		
 	/**
 	 * 게시글 엔티티 저장

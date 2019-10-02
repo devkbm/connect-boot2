@@ -8,8 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.board.boundary.ArticleDTO;
 import com.like.board.boundary.BoardDTO;
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.repository.ArticleRepository;
@@ -45,11 +45,11 @@ public class BoardQueryService {
 		return articleRepository.getArticle(id);		
 	}
 			
-	public List<Article> getAritlceList(SearchCondition.ArticleSearch condition) {
-		return articleRepository.getArticleList(condition);
+	public List<Article> getAritlceList(ArticleDTO.SearchArticle condition) {
+		return articleRepository.getArticleList(condition.getBooleanBuilder());
 	}
 	
-	public List<Map<String,Object>> getArticleList(SearchCondition.ArticleSearch condition) {
+	public List<Map<String,Object>> getArticleList(ArticleDTO.SearchArticle condition) {
 		return boardMapper.getArticleList(condition);
 	}
 }

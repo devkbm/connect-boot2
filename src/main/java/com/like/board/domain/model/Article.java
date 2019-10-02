@@ -10,6 +10,7 @@ import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
@@ -34,6 +35,7 @@ import com.like.file.domain.model.FileInfo;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Getter
 @Entity
 @Table(name = "GRWARTICLE")
 @EntityListeners(AuditingEntityListener.class)
@@ -134,14 +136,30 @@ public class Article extends AuditEntity implements Serializable {
 	@Transient
 	Boolean editable;
 	
+
+	/**
+	 * @param title
+	 * @param contents
+	 * @param fromDate
+	 * @param toDate
+	 * @param seq
+	 */
+	public void modifyEntity(String title
+							,String contents
+							,LocalDate fromDate
+							,LocalDate toDate
+							,Integer seq) {
+		this.title = title;
+		this.contents = contents;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.seq = seq;
+	}
+	
 	public Long getId() {
 		return this.pkArticle;
 	}
-	
-	public Board getBoard() {
-		return board;
-	}	
-	
+				
 	public void setBoard(Board board) {
 		this.board = board;
 		
@@ -153,11 +171,7 @@ public class Article extends AuditEntity implements Serializable {
 	public boolean hasParentArticle() {		
 		return this.ppkArticle != this.pkArticle ? true : false;
 	}
-			
-	public Integer getSeq() {
-		return seq;
-	}
-	
+				
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
@@ -183,5 +197,6 @@ public class Article extends AuditEntity implements Serializable {
 					
 		return sessionId.equals(this.createdBy) ? true : false;
 	}
+
 			
 }

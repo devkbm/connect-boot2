@@ -13,12 +13,12 @@ import com.like.board.infra.jparepository.springdata.JpaAttachedFile;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.domain.model.QFileInfo;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.like.board.boundary.SearchCondition;
 import com.like.board.domain.model.*;
 
 @Slf4j
@@ -67,7 +67,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 							.fetch();				
 	}
 	
-	public List<Article> getArticleList(SearchCondition.ArticleSearch condition) { 	
+	public List<Article> getArticleList(Predicate condition) { 	
 		
 		return queryFactory.select(qArticle).distinct()
 		  				   .from(qArticle)		  				   
@@ -75,7 +75,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 		  				   .fetchJoin()		  				   
 		  				   .leftJoin(qAttachedFile.fileInfo, qFileInfo)
 		  				   .fetchJoin()
-		  				   .where(condition.getBooleanBuilder())
+		  				   .where(condition)
 		  				   .orderBy(qArticle.pkArticle.desc())
 		  				   .fetch();
 		
