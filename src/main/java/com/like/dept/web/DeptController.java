@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.boundary.DeptDTO;
-import com.like.dept.boundary.SearchCondition;
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
-import com.like.dept.boundary.DeptDTO.DeptSave;
+import com.like.dept.boundary.DeptDTO.SaveDept;
 import com.like.dept.domain.model.Dept;
-import com.like.dept.domain.model.DeptDTOAssembler;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.service.DeptService;
 
@@ -40,27 +38,27 @@ public class DeptController {
 	private DeptService deptService;
 	
 	@GetMapping("/common/depttree")
-	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute SearchCondition.DeptSearch searchCondition) {
+	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute DeptDTO.SearchDept searchCondition) {
 							
 		List<DeptHierarchy> list = deptService.getDeptHierarchyList();  						 						
 		
-		return WebControllerUtil.getResponse(list, 
-											list.size(), 
-											true, 
-											String.format("%d 건 조회되었습니다.", list.size()), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/dept")
-	public ResponseEntity<?> getDeptList(@ModelAttribute SearchCondition.DeptSearch searchCondition) {
+	public ResponseEntity<?> getDeptList(@ModelAttribute DeptDTO.SearchDept searchCondition) {
 							
 		List<Dept> list = deptService.getDeptList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list, 
-											list.size(), 
-											true, 
-											String.format("%d 건 조회되었습니다.", list.size()), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 		
 	@GetMapping("/common/dept/{id}")
@@ -68,33 +66,31 @@ public class DeptController {
 							
 		Dept dept = deptService.getDept(id);  	
 		
-		DeptSave dto = DeptDTOAssembler.convertDTO(dept);
+		SaveDept dto = DeptDTO.convertDTO(dept);
 		
-		return WebControllerUtil.getResponse(dto, 
-											dto == null ? 0 : 1, 
-											true, 
-											String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(dto
+											,dto == null ? 0 : 1
+											,true
+											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
+											,HttpStatus.OK);
 	}
 		
 	@RequestMapping(value={"/common/dept"}, method={RequestMethod.POST,RequestMethod.PUT})	
-	public ResponseEntity<?> saveDept(@RequestBody DeptDTO.DeptSave dto, BindingResult result) {			
+	public ResponseEntity<?> saveDept(@RequestBody DeptDTO.SaveDept dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 					
 		
 		log.info(dto.toString());
-		
-		Dept dept = DeptDTOAssembler.toEntity(dto, deptRepository);							
-					
-		deptService.saveDept(dept);		
+														
+		deptService.saveDept(dto);		
 											 				
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}		
 	
 	@DeleteMapping("/common/dept/{code}")
@@ -102,11 +98,11 @@ public class DeptController {
 												
 		deptService.deleteDept(deptCode);							
 		
-		return WebControllerUtil.getResponse(null, 
-				1, 
-				true, 
-				String.format("%d 건 삭제되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
 }

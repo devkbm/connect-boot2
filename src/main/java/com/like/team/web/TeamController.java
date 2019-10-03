@@ -25,7 +25,7 @@ import com.like.team.dto.TeamDTO;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;
-import com.like.user.boundary.SearchCondition;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
 
@@ -97,7 +97,7 @@ public class TeamController {
 	}
 	
 	@GetMapping(value={"/grw/allmember"})
-	public ResponseEntity<?> getAllMemberList(SearchCondition.UserSearch condition) {
+	public ResponseEntity<?> getAllMemberList(UserDTO.SearchUser condition) {
 				
 		List<User> userList = teamService.getAllMember(condition);						 				
 		

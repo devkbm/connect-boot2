@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
-import com.like.commoncode.boundary.SearchCondition;
 import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.domain.model.CodeDTOAssembler;
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
@@ -44,27 +42,27 @@ public class CommonCodeController {
 	
 	
 	@GetMapping("/common/codetree") 
-	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute SearchCondition.CodeSearch searchCondition) {
+	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute CodeDTO.SearchCode searchCondition) {
 							
 		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list, 
-											list.size(), 
-											true, 
-											String.format("%d 건 조회되었습니다.", list.size()), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/code") 
-	public ResponseEntity<?> getCodeList(@ModelAttribute SearchCondition.CodeSearch searchCondition) {
+	public ResponseEntity<?> getCodeList(@ModelAttribute CodeDTO.SearchCode searchCondition) {
 							
 		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list, 
-											list.size(), 
-											true, 
-											String.format("%d 건 조회되었습니다.", list.size()), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(list
+											,list.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/code/{id}") 
@@ -72,32 +70,30 @@ public class CommonCodeController {
 								  						 					
 		Code entity = commonCodeQueryService.getCode(id);
 		
-		CodeDTO.CodeSave dto = CodeDTOAssembler.convertDTO(entity);	
+		CodeDTO.SaveCode dto = CodeDTO.convertDTO(entity);
 		
-		return WebControllerUtil.getResponse(dto, 
-											1, 
-											true, 
-											String.format("%d 건 조회되었습니다.", 1), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(dto
+											,1
+											,true
+											,String.format("%d 건 조회되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(value={"/common/code"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.CodeSave dto, BindingResult result) {			
+	public ResponseEntity<?> saveCode(@RequestBody CodeDTO.SaveCode dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 						
-		
-		Code code = CodeDTOAssembler.createEntity(dto, codeJpaRepository);
+		} 									
 				
-		commonCodeCommandService.saveCode(code);		
+		commonCodeCommandService.saveCode(dto);		
 											 				
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				String.format("%d 건 저장되었습니다.", 1), 
-				HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}	
 		
 	@DeleteMapping("/common/code/{id}")
@@ -105,11 +101,11 @@ public class CommonCodeController {
 												
 		commonCodeCommandService.deleteCode(id);
 								 						
-		return WebControllerUtil.getResponse(null, 
-											1, 
-											true, 
-											String.format("%d 건 삭제되었습니다.", 1), 
-											HttpStatus.OK);
+		return WebControllerUtil.getResponse(null
+											,1
+											,true
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
 	

@@ -20,6 +20,7 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -27,6 +28,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"parentCode"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true)
+@Getter
 @Entity
 @Table(name = "comcode")
 @EntityListeners(AuditingEntityListener.class)
@@ -76,9 +78,16 @@ public class Code extends AuditEntity implements Serializable {
 	Code parentCode;
 
 	@Builder
-	public Code(String code, String codeName, String codeNameAbbreviation, 
-			LocalDateTime fromDate, LocalDateTime toDate, int seq, boolean fixedLengthYn,
-			Integer codeLength, String cmt, Code parentCode) {
+	public Code(String code
+			   ,String codeName
+			   ,String codeNameAbbreviation
+			   ,LocalDateTime fromDate
+			   ,LocalDateTime toDate
+			   ,int seq
+			   ,boolean fixedLengthYn
+			   ,Integer codeLength
+			   ,String cmt
+			   ,Code parentCode) {
 		
 		this.code = code;
 		this.codeName = codeName;
@@ -94,7 +103,35 @@ public class Code extends AuditEntity implements Serializable {
 		this.createId();
 		this.hierarchyLevel();
 	}
-
+	
+	/**
+	 * @param codeName
+	 * @param codeNameAbbreviation
+	 * @param fromDate
+	 * @param toDate
+	 * @param seq
+	 * @param fixedLengthYn
+	 * @param codeLength
+	 * @param cmt
+	 */
+	public void modifyEntity(String codeName
+							,String codeNameAbbreviation
+							,LocalDateTime fromDate
+							,LocalDateTime toDate
+							,int seq
+							,boolean fixedLengthYn
+							,Integer codeLength
+							,String cmt) {
+		this.codeName = codeName;
+		this.codeNameAbbreviation = codeNameAbbreviation;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.seq = seq;
+		this.fixedLengthYn = fixedLengthYn;
+		this.codeLength = codeLength;
+		this.cmt = cmt;
+	}
+	
 
 	private String createId() {
 		

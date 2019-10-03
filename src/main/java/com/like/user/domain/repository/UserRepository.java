@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.like.user.boundary.SearchCondition;
+import com.like.user.boundary.AuthorityDTO;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
 
@@ -25,7 +26,7 @@ public interface UserRepository {
 	 * 유저 도메인 리스트를 조회한다.
 	 * @return	유저 도메인 리스트
 	 */
-	List<User> getUserList(SearchCondition.UserSearch condition);
+	List<User> getUserList(UserDTO.SearchUser condition);
 
 	/**
 	 * 유저 도메인을  저장한다.
@@ -57,7 +58,7 @@ public interface UserRepository {
 	 * 전체 권한 도메인 리스트를 조회한다.
 	 * @return	권한 도메인 리스트
 	 */
-	List<Authority> getAuthorityList(SearchCondition.AuthoritySearch condition);
+	List<Authority> getAuthorityList(AuthorityDTO.SearchAuthority condition);
 	
 	/**
 	 * 

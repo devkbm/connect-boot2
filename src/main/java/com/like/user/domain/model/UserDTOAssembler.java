@@ -10,13 +10,13 @@ import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.repository.MenuRepository;
 import com.like.user.boundary.UserDTO;
-import com.like.user.boundary.UserDTO.UserSave;
+import com.like.user.boundary.UserDTO.SaveUser;
 import com.like.user.domain.repository.UserRepository;
 
 public class UserDTOAssembler {	
 		
 	
-	public static User toEntity(UserDTO.UserSave dto, UserRepository repository, MenuRepository menuRepository, DeptRepository deptRepository) {
+	public static User toEntity(UserDTO.SaveUser dto, UserRepository repository, MenuRepository menuRepository, DeptRepository deptRepository) {
 		User user = repository.getUser(dto.getUserId());
 		
 		List<Authority> authorityList = repository.getAuthorityList(dto.getAuthorityList());		
@@ -37,7 +37,7 @@ public class UserDTOAssembler {
 	}
 	
 	
-	public static User createEntity(UserDTO.UserSave dto, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+	public static User createEntity(UserDTO.SaveUser dto, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 						
 		return User.builder()
 					.userId(dto.getUserId())										
@@ -52,7 +52,7 @@ public class UserDTOAssembler {
 					.build();
 	}
 	
-	public static User mergeEntity(User entity, UserDTO.UserSave dto, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+	public static User mergeEntity(User entity, UserDTO.SaveUser dto, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 		
 		entity.userId		= nvl(dto.getUserId(), 		entity.userId);
 		entity.name			= nvl(dto.getName(),	 	entity.name);
@@ -65,34 +65,7 @@ public class UserDTOAssembler {
 		entity.menuGroupList= menuGroupList;
 		
 		return entity;
-	}	
-	
-	public static UserDTO.UserSave convertDTO(User entity) throws FileNotFoundException, IOException {					
-		
-		UserSave dto = UserSave.builder()
-								.createdDt(entity.getCreatedDt())
-								.createdBy(entity.getCreatedBy())
-								.modifiedDt(entity.getModifiedDt())
-								.modifiedBy(entity.getModifiedBy())
-								.userId(entity.userId)
-								.name(entity.name)
-								.password(entity.password)
-								.deptCode(entity.dept == null ? null : entity.dept.getDeptCode())
-								.mobileNum(entity.mobileNum)
-								.email(entity.email)
-								.enabled(entity.isEnabled)								
-								.authorityList(entity.getAuthorityList()
-													.stream()
-													.map(auth -> auth.getAuthority())
-													.collect(Collectors.toList()))
-								.menuGroupList(entity.getMenuGroupList()
-													.stream()
-													.map(menuGroup -> menuGroup.getMenuGroupCode())
-													.collect(Collectors.toList()))
-								.build();
-		
-		return dto;
-	}
+	}		
 	
 	/**
 	 * 

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.like.user.boundary.AuthorityDTO;
-import com.like.user.boundary.SearchCondition;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.QAuthority;
@@ -58,7 +57,7 @@ public class UserJpaRepository implements UserRepository {
 	}
 	
 	@Override
-	public List<User> getUserList(SearchCondition.UserSearch condition) {
+	public List<User> getUserList(UserDTO.SearchUser condition) {
 		return  queryFactory
 				.selectFrom(qUser)
 				.where(condition.getBooleanBuilder())
@@ -89,7 +88,7 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public List<Authority> getAuthorityList(SearchCondition.AuthoritySearch condition) {
+	public List<Authority> getAuthorityList(AuthorityDTO.SearchAuthority condition) {
 		return queryFactory
 				.selectFrom(qAuthority)
 				.where(condition.getBooleanBuilder())

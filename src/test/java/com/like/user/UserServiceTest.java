@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.domain.model.MenuGroup;
 import com.like.user.boundary.UserDTO;
-import com.like.user.boundary.UserDTO.UserSave;
+import com.like.user.boundary.UserDTO.SaveUser;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
 

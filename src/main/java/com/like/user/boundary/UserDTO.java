@@ -1,14 +1,25 @@
 package com.like.user.boundary;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.util.StringUtils;
+
 import com.like.common.validation.annotation.Id;
+import com.like.user.boundary.UserDTO.SaveUser;
+import com.like.user.domain.model.QUser;
+import com.like.user.domain.model.User;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,11 +28,86 @@ import lombok.NoArgsConstructor;
 
 public class UserDTO {
 	
+	public static UserDTO.SaveUser convertDTO(User entity) throws FileNotFoundException, IOException {					
+		
+		SaveUser dto = SaveUser.builder()
+								.createdDt(entity.getCreatedDt())
+								.createdBy(entity.getCreatedBy())
+								.modifiedDt(entity.getModifiedDt())
+								.modifiedBy(entity.getModifiedBy())
+								.userId(entity.getUserId())
+								.name(entity.getName())
+								.password(entity.getPassword())
+								.deptCode(entity.getDept() == null ? null : entity.getDept().getDeptCode())
+								.mobileNum(entity.getMobileNum())
+								.email(entity.getEmail())
+								.enabled(entity.isEnabled())								
+								.authorityList(entity.getAuthorityList()
+													.stream()
+													.map(auth -> auth.getAuthority())
+													.collect(Collectors.toList()))
+								.menuGroupList(entity.getMenuGroupList()
+													.stream()
+													.map(menuGroup -> menuGroup.getMenuGroupCode())
+													.collect(Collectors.toList()))
+								.build();
+		
+		return dto;
+	}
+
+	@Data
+	public static class SearchUser implements Serializable {
+
+		private static final long serialVersionUID = -7886731992928427538L;
+
+		private final QUser qUser = QUser.user;
+		
+		String userId;
+		
+		String name;
+		
+		String deptCode;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder.and(likeUserId(this.userId))
+			 	   .and(likeUserName(this.name))
+			 	   .and(equalDeptCode(this.deptCode));						
+			
+			return builder;
+		}
+		
+		private BooleanExpression likeUserId(String userId) {
+			if (StringUtils.isEmpty(userId)) {
+				return null;				
+			}
+						
+			return qUser.userId.like("%"+userId+"%");
+		}
+		
+		private BooleanExpression likeUserName(String name) {
+			if (StringUtils.isEmpty(name)) {
+				return null;
+			}
+						
+			return qUser.name.like("%"+name+"%");
+		}
+		
+		private BooleanExpression equalDeptCode(String deptCode) {
+			if (StringUtils.isEmpty(deptCode)) {
+				return null;
+			}
+			
+			return qUser.dept.deptCode.eq(deptCode);
+		}
+	}
+	
 	@Data
 	@Builder
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class UserSave {
+	public static class SaveUser {
 		
 		LocalDateTime createdDt;	
 		
@@ -62,5 +148,7 @@ public class UserDTO {
 		List<String> menuGroupList = new ArrayList<String>(); 
 								
 	}
+
+	
 
 }

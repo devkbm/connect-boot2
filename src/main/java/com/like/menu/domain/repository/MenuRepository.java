@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.like.menu.boundary.MenuDTO;
 import com.like.menu.boundary.MenuGroupDTO;
-import com.like.menu.boundary.SearchCondition;
 import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
@@ -17,7 +16,7 @@ public interface MenuRepository {
 	
 	MenuGroup getMenuGroup(String menuGroupCode);
 	
-	List<MenuGroup> getMenuGroupList(SearchCondition.MenuGroupSearch condition);
+	List<MenuGroup> getMenuGroupList(MenuGroupDTO.SearchMenuGroup condition);
 	
 	List<MenuGroup> getMenuGroupList(String likeMenuGroupName);
 	
@@ -30,7 +29,7 @@ public interface MenuRepository {
 	
 	Menu getMenu(String menuCode);
 			
-	List<Menu> getMenuList(SearchCondition.MenuSearch condition);
+	List<Menu> getMenuList(MenuDTO.SearchMenu condition);
 			
 	void saveMenu(Menu menu);
 	
@@ -39,7 +38,7 @@ public interface MenuRepository {
 	
 	WebResource getResource(String resouceCode);
 	
-	List<WebResource> getResourceList(SearchCondition.WebResourceSearch condition);
+	List<WebResource> getResourceList(WebResourceDTO.SearchWebResource condition);
 	
 	void saveResource(WebResource resource);
 	

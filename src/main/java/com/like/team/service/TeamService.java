@@ -13,7 +13,7 @@ import com.like.team.domain.model.id.TeamMemberId;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.team.dto.TeamDTO;
-import com.like.user.boundary.SearchCondition;
+import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
 
@@ -76,7 +76,7 @@ public class TeamService {
 	 * @param searchCondition 조회 조건
 	 * @return User 
 	 */
-	public List<User> getAllMember(SearchCondition.UserSearch searchCondition) {
+	public List<User> getAllMember(UserDTO.SearchUser searchCondition) {
 		return userService.getUserList(searchCondition);
 	}
 	

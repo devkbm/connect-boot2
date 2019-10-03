@@ -86,6 +86,31 @@ public class Menu extends AuditEntity implements Serializable {
 		this.menuGroup = menuGroup;
 		this.resource = resource;
 	}
+	
+	/**
+	 * @param menuName
+	 * @param menuType
+	 * @param sequence
+	 * @param level
+	 * @param parent
+	 * @param menuGroup
+	 * @param resource
+	 */
+	public void modifyEntity(String menuName
+							,MenuType menuType
+							,long sequence
+							,long level
+							,Menu parent
+							,MenuGroup menuGroup
+							,WebResource resource) {
+		this.menuName = menuName;
+		this.menuType = menuType;
+		this.sequence = sequence;
+		this.level = level;
+		this.parent = parent;
+		this.menuGroup = menuGroup;
+		this.resource = resource;
+	}
 							
 	public void setMenuGroup(MenuGroup menuGroup) {
 		this.menuGroup = menuGroup;
@@ -94,16 +119,5 @@ public class Menu extends AuditEntity implements Serializable {
 	public void registerProgram(WebResource resource) {
 		this.resource = resource;
 	}
-			
-	/*public Menu updateEntity(MenuDTO.MenuSave dto) {
-		this.menuCode	= dto.getMenuCode() != null ? dto.getMenuCode() : this.menuCode;
-		this.menuName 	= dto.getMenuName() != null ? dto.getMenuName() : this.menuName;
-		this.menuType	= MenuType.valueOf(dto.getMenuType());
-		this.sequence 	= dto.getSequence();
-		this.level 		= dto.getLevel();
-		this.parentMenuCode = dto.getParentMenuCode() != null ? dto.getParentMenuCode() : this.parentMenuCode;
-		
-		return this;
-	}*/
 
 }

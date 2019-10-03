@@ -62,6 +62,16 @@ public class WebResource extends AuditEntity implements Serializable{
 		this.url = url;
 		this.description = description;
 	}	
+		
+	public void modifyEntity(String resourceName
+							,String resourceType
+							,String url
+							,String description) {
+		this.resourceName = resourceName;
+		this.resourceType = resourceType;
+		this.url = url;
+		this.description = description;
+	}
 	
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
@@ -70,5 +80,9 @@ public class WebResource extends AuditEntity implements Serializable{
 	public void registerMenu(Menu menu) {
 		this.menuList.add(menu);
 	}
+
+
+
+	
 			
 }

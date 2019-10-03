@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
-import com.like.dept.boundary.SearchCondition;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.infra.jparepository.springdata.JpaDept;
 import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -41,10 +41,10 @@ public class DeptJpaRepository implements DeptRepository {
 	}
 	
 	@Override
-	public List<Dept> getDeptList(SearchCondition.DeptSearch searchCondition) {
+	public List<Dept> getDeptList(Predicate searchCondition) {
 		return queryFactory				
 				.selectFrom(qDept)
-				.where(searchCondition.getCondition())
+				.where(searchCondition)
 				.fetch();
 	}
 	

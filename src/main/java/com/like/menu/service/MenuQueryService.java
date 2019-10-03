@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.boundary.MenuDTO;
-import com.like.menu.boundary.SearchCondition;
+import com.like.menu.boundary.MenuGroupDTO;
+import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
@@ -28,7 +29,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenuGroup(menuGroupCode);
 	}
 	
-	public List<MenuGroup> getMenuGroupList(SearchCondition.MenuGroupSearch condition) {
+	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.SearchMenuGroup condition) {
 		return menuJpaRepository.getMenuGroupList(condition);
 	}
 	
@@ -44,7 +45,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getMenu(menuCode);
 	}
 	
-	public List<Menu> getMenuList(SearchCondition.MenuSearch condition) {
+	public List<Menu> getMenuList(MenuDTO.SearchMenu condition) {
 		return menuJpaRepository.getMenuList(condition);
 	}
 	
@@ -58,7 +59,7 @@ public class MenuQueryService {
 		return menuJpaRepository.getResource(resourceCode);
 	}
 	
-	public List<WebResource> getResourceList(SearchCondition.WebResourceSearch condition) {
+	public List<WebResource> getResourceList(WebResourceDTO.SearchWebResource condition) {
 		return menuJpaRepository.getResourceList(condition);
 	}
 }

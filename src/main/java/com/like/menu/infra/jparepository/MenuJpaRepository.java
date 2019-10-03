@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.menu.boundary.MenuDTO;
-import com.like.menu.boundary.SearchCondition;
+import com.like.menu.boundary.MenuGroupDTO;
+import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
@@ -54,7 +55,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<MenuGroup> getMenuGroupList(SearchCondition.MenuGroupSearch condition) {
+	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.SearchMenuGroup condition) {
 		return queryFactory
 				.selectFrom(qMenuGroup)
 				.where(condition.getBooleanBuilder())
@@ -91,7 +92,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<Menu> getMenuList(SearchCondition.MenuSearch condition) {
+	public List<Menu> getMenuList(MenuDTO.SearchMenu condition) {
 		return queryFactory
 				.selectFrom(qMenu)
 					.innerJoin(qMenu.menuGroup, qMenuGroup)
@@ -174,7 +175,7 @@ public class MenuJpaRepository implements MenuRepository {
 	}
 
 	@Override
-	public List<WebResource> getResourceList(SearchCondition.WebResourceSearch condition) {
+	public List<WebResource> getResourceList(WebResourceDTO.SearchWebResource condition) {
 					
 		return queryFactory
 				.selectFrom(qWebResource)

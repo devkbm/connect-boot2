@@ -20,18 +20,16 @@ import com.like.common.domain.AuditEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * @author 동은정보기술
- *
- */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString(callSuper = true, includeFieldNames = true)
 @Builder
+@Getter
 @Entity
 @Table(name = "comdept")
 @EntityListeners(AuditingEntityListener.class)
@@ -78,6 +76,37 @@ public class Dept extends AuditEntity implements Serializable {
 	
 	public Dept getParentDept() {
 		return parentDept;
+	}
+
+	/**
+	 * @param deptNameKorean
+	 * @param deptAbbreviationKorean
+	 * @param deptNameEnglish
+	 * @param deptAbbreviationEnglish
+	 * @param fromDate
+	 * @param toDate
+	 * @param seq
+	 * @param comment
+	 * @param parentDept
+	 */
+	public void modifyEntity(String deptNameKorean
+							,String deptAbbreviationKorean
+							,String deptNameEnglish
+							,String deptAbbreviationEnglish
+							,LocalDate fromDate
+							,LocalDate toDate
+							,int seq
+							,String comment
+							,Dept parentDept) {
+		this.deptNameKorean = deptNameKorean;
+		this.deptAbbreviationKorean = deptAbbreviationKorean;
+		this.deptNameEnglish = deptNameEnglish;
+		this.deptAbbreviationEnglish = deptAbbreviationEnglish;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.seq = seq;
+		this.comment = comment;
+		this.parentDept = parentDept;
 	}	
 
 	
