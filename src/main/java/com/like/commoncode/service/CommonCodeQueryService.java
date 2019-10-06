@@ -2,8 +2,6 @@ package com.like.commoncode.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +15,12 @@ import com.like.commoncode.domain.repository.CommonCodeRepository;
 @Transactional(readOnly=true)
 public class CommonCodeQueryService {
 
-	@Resource(name="codeJpaRepository")
 	private CommonCodeRepository codeRepository;
 			
+	public CommonCodeQueryService(CommonCodeRepository codeRepository) {
+		this.codeRepository = codeRepository;
+	}
+
 	public Code getCode(String commonCodeId) {
 		return codeRepository.getCode(commonCodeId);
 	}

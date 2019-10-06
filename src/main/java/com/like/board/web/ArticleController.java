@@ -2,7 +2,6 @@ package com.like.board.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
@@ -24,23 +23,23 @@ import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.file.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class ArticleController {	
-	
-	@Resource
-	private BoardCommandService boardCommandService;
-	
-	@Resource
-	private BoardQueryService boardQueryService;
-	
-	@Resource
-	private FileService fileService;	
 		
+	private BoardCommandService boardCommandService;
+		
+	private BoardQueryService boardQueryService;		
+		
+	public ArticleController(BoardCommandService boardCommandService
+							,BoardQueryService boardQueryService) {
+		this.boardCommandService = boardCommandService;
+		this.boardQueryService = boardQueryService;		
+	}
+
 	@GetMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id, HttpSession session) {						
 		

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
-import com.like.hrm.appointment.domain.event.ProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
@@ -30,12 +28,16 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class AppointmentService {
 
-	@Autowired
 	public ApplicationEventPublisher applicationEventPublisher;
 	
-	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
+	public AppointmentService(ApplicationEventPublisher applicationEventPublisher
+							 ,AppointmentRepository appointmentRepository) {
+		this.applicationEventPublisher = applicationEventPublisher;
+		this.appointmentRepository = appointmentRepository;
+	}
+
 	public void doSomething() {
 		log.info("서비스 발행");
 		//applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));

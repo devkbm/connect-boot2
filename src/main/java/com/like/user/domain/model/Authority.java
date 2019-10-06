@@ -33,6 +33,10 @@ public class Authority extends AuditEntity implements GrantedAuthority {
 		this.description = description;
 	}	
 	
+	public void modifyEntity(String description) {
+		this.description = description;
+	}
+	
 	@Override
 	public String getAuthority() {
 		return this.authorityName;

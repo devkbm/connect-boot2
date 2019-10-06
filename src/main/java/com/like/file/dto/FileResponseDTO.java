@@ -1,7 +1,5 @@
 package com.like.file.dto;
 
-import java.util.Map;
-
 import lombok.Builder;
 import lombok.Data;
 

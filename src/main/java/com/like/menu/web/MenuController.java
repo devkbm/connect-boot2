@@ -3,7 +3,6 @@ package com.like.menu.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,6 @@ import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
 import com.like.menu.domain.model.enums.MenuType;
-import com.like.menu.domain.repository.MenuRepository;
 import com.like.menu.service.MenuCommandService;
 import com.like.menu.service.MenuQueryService;
 
@@ -37,16 +35,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class MenuController {
-
-	@Resource(name="menuJpaRepository")
-	private MenuRepository menuRepository;
 	
-	@Resource
 	private MenuCommandService menuCommandService;
 	
-	@Resource
 	private MenuQueryService menuQueryService;
 			
+	public MenuController(MenuCommandService menuCommandService
+						 ,MenuQueryService menuQueryService) {
+		this.menuCommandService = menuCommandService;
+		this.menuQueryService = menuQueryService;
+	}
+
 	@GetMapping("/common/menugroup/{id}")
 	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {				
 		

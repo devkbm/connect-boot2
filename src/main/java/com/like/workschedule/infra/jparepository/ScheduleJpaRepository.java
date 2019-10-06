@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
-import com.like.workschedule.boundary.SearchCondition;
+import com.like.workschedule.boundary.ScheduleDTO;
+import com.like.workschedule.boundary.WorkDTO;
 import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.like.workschedule.domain.model.QWorkGroupMember;
@@ -44,7 +45,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	private final QSchedule qSchedule = QSchedule.schedule;
 	
 	@Override
-	public List<WorkGroup> getWorkGroupList(SearchCondition.WorkGroupSearch searchCondition) {
+	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchWorkGroup searchCondition) {
 		return Lists.newArrayList(jpaWorkGroup.findAll(searchCondition.getBooleanBuilder()));
 	}
 	
@@ -124,7 +125,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	}
 	
 	@Override
-	public List<Schedule> getScheduleList(SearchCondition.ScheduleSearch searchCondition) {
+	public List<Schedule> getScheduleList(ScheduleDTO.SearchSchedule searchCondition) {
 		return Lists.newArrayList(jpaSchedule.findAll(searchCondition.getBooleanBuilder()));
 	}
 

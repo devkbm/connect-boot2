@@ -4,9 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,40 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.util.SessionUtil;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.dept.domain.repository.DeptRepository;
-import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.service.MenuQueryService;
 import com.like.user.boundary.AuthorityDTO;
 import com.like.user.boundary.PasswordRequestDTO;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.User;
-import com.like.user.domain.model.UserDTOAssembler;
-import com.like.user.domain.repository.UserRepository;
 import com.like.user.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
-public class UserController {
+public class UserController {		
+				
+	private UserService userService;
 		
-	@Autowired
-	UserRepository userRepository;
-	
-	@Resource(name="menuJpaRepository")
-	private MenuRepository menuRepository;
-	
-	@Resource(name="deptJpaRepository")
-	private DeptRepository deptRepository;	
-			
-	@Resource
-	UserService userService;
-	
-	@Resource
-	MenuQueryService menuQueryService;	
-	
-	
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@GetMapping(value={"/common/user/myinfo"})
 	public ResponseEntity<?> getUserInfo() throws FileNotFoundException, IOException {
 								
@@ -65,11 +45,12 @@ public class UserController {
 		
 		UserDTO.SaveUser dto = UserDTO.convertDTO(user);					
 		
-		return WebControllerUtil.getResponse(dto
-											,user == null ? 0 : 1
-											,user == null ? false : true
-											,"조회 되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(dto
+							,user == null ? 0 : 1
+							,user == null ? false : true
+							,"조회 되었습니다."
+							,HttpStatus.OK);
 	}
 	
 	@GetMapping(value={"/common/user/{id}"})
@@ -79,11 +60,12 @@ public class UserController {
 		
 		UserDTO.SaveUser dto = UserDTO.convertDTO(user);					
 		
-		return WebControllerUtil.getResponse(dto
-											,user == null ? 0 : 1
-											,user == null ? false : true
-											,"조회 되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(dto
+							,user == null ? 0 : 1
+							,user == null ? false : true
+							,"조회 되었습니다."
+							,HttpStatus.OK);
 	}
 		
 	@GetMapping(value={"/common/user"})
@@ -91,11 +73,12 @@ public class UserController {
 				
 		List<User> userList = userService.getUserList(condition);						
 		
-		return WebControllerUtil.getResponse(userList
-											,userList.size()
-											,userList.size() > 0 ? true : false 
-											,"조회 되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(userList
+							,userList.size()
+							,userList.size() > 0 ? true : false 
+							,"조회 되었습니다."
+							,HttpStatus.OK);
 	}
 	
 	@PostMapping(value={"/common/user"})	
@@ -103,17 +86,16 @@ public class UserController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		}						
-				
-		User user = UserDTOAssembler.toEntity(dto, userRepository, menuRepository, deptRepository);
+		}										
 											
-		userService.createUser(user);					
+		userService.createUser(dto);					
 																					 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}	
 	
 	@DeleteMapping(value={"/common/user/{id}"})
@@ -121,11 +103,12 @@ public class UserController {
 										
 		userService.deleteUser(userId);															
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 삭제되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 		
 	@PostMapping(value={"/common/user/{id}/changePassword"})
@@ -133,11 +116,12 @@ public class UserController {
 						
 		userService.changePassword(dto.getUserId(), dto.getBeforePassword(), dto.getAfterPassword());													
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,"비밀번호가 변경되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,"비밀번호가 변경되었습니다."
+							,HttpStatus.OK);
 	}
 			
 	@PostMapping(value={"/common/user/{id}/initPassword"})
@@ -145,11 +129,12 @@ public class UserController {
 				
 		userService.initPassword(userId);														
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,"비밀번호가 초기화되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,"비밀번호가 초기화되었습니다."
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/common/authority"}, method=RequestMethod.GET) 
@@ -157,11 +142,12 @@ public class UserController {
 		
 		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
 		
-		return WebControllerUtil.getResponse(authorityList
-											,authorityList.size()
-											,authorityList.size() > 0 ? true : false
-											,"조회 되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(authorityList
+							,authorityList.size()
+							,authorityList.size() > 0 ? true : false
+							,"조회 되었습니다."
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/common/authority/{id}"}, method=RequestMethod.GET) 
@@ -169,11 +155,12 @@ public class UserController {
 		
 		Authority authority = userService.getAuthority(authorityName);										
 		
-		return WebControllerUtil.getResponse(authority
-											,authority == null ? 0 : 1
-											,authority == null ? false : true
-											,"조회 되었습니다."
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(authority
+							,authority == null ? 0 : 1
+							,authority == null ? false : true
+							,"조회 되었습니다."
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/common/authority"}, method={RequestMethod.POST,RequestMethod.PUT})	
@@ -181,21 +168,16 @@ public class UserController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		}
+		}		
 		
-		Authority authority = userService.getAuthority(dto.getAuthority());
-		
-		if (authority == null) {
-			authority = new Authority(dto.getAuthority(), dto.getDescription());
-		} 
-		
-		userService.createAuthority(authority);					
+		userService.createAuthority(dto);					
 																				 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}	
 	
 	@DeleteMapping("/common/authority/{id}")
@@ -203,11 +185,12 @@ public class UserController {
 		
 		userService.deleteAuthority(authorityName);					
 			
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 삭제되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 			
 }

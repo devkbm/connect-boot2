@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -38,13 +37,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class BoardController {
-
-	@Resource
-	private BoardCommandService boardCommandService;
 	
-	@Resource
-	private BoardQueryService boardQueryService;		
+	private BoardCommandService boardCommandService;
 		
+	private BoardQueryService boardQueryService;	
+		
+	public BoardController(BoardCommandService boardCommandService, BoardQueryService boardQueryService) {
+		this.boardCommandService = boardCommandService;
+		this.boardQueryService = boardQueryService;
+	}
+
 	@GetMapping("/grw/board/boardType")
 	public ResponseEntity<?> getMenuTypeList() {				
 		

@@ -5,9 +5,7 @@ import org.springframework.context.ApplicationEvent;
 import com.like.hrm.appointment.domain.model.Ledger;
 
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @ToString
 public class ProcessEvent extends ApplicationEvent {
 	

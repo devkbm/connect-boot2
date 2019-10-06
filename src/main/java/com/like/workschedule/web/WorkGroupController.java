@@ -3,10 +3,8 @@ package com.like.workschedule.web;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,43 +20,32 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.util.SessionUtil;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.user.domain.model.User;
-import com.like.user.domain.repository.UserRepository;
-import com.like.workschedule.boundary.SearchCondition;
+import com.like.workschedule.boundary.ScheduleDTO;
 import com.like.workschedule.boundary.WorkDTO;
-import com.like.workschedule.boundary.WorkDTO.ScheduleResponse;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
-import com.like.workschedule.domain.model.WorkGroupMember;
-import com.like.workschedule.domain.model.WorkScheduleDTOAssembler;
-import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.service.WorkGroupService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
-public class WorkGroupController {
-	
-	@Resource(name="scheduleJpaRepository")
-	ScheduleRepository scheduleRepository;	
-	
-	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
-	WorkGroupService workGroupService;
-			
+public class WorkGroupController {	
+		
+	private WorkGroupService workGroupService;	
+				
+	public WorkGroupController(WorkGroupService workGroupService) {
+		this.workGroupService = workGroupService;
+	}
+
 	@GetMapping(value={"/grw/workgroup"})
-	public ResponseEntity<?> getWorkGroupList(@ModelAttribute SearchCondition.WorkGroupSearch searchCondition) {
+	public ResponseEntity<?> getWorkGroupList(@ModelAttribute WorkDTO.SearchWorkGroup searchCondition) {
 						
 		List<WorkGroup> workGroupList = workGroupService.getWorkGroupList(searchCondition);				
 		
-		return WebControllerUtil.getResponse(workGroupList,
-				workGroupList.size(), 
-				workGroupList.isEmpty()? false : true,
-				workGroupList.size() + "건 조회 되었습니다.",
-				HttpStatus.OK);												
+		return WebControllerUtil
+				.getResponse(workGroupList
+							,workGroupList.size()
+							,workGroupList.isEmpty()? false : true
+							,workGroupList.size() + "건 조회 되었습니다."
+							,HttpStatus.OK);												
 	}
 	
 	@GetMapping(value={"/grw/myworkgroup"})
@@ -68,11 +55,12 @@ public class WorkGroupController {
 		
 		List<WorkGroup> workGroupList = workGroupService.getMyWorkGroupList(sessionId);				
 		
-		return WebControllerUtil.getResponse(workGroupList,
-				workGroupList.size(), 
-				workGroupList.isEmpty()? false : true,
-				workGroupList.size() + "건 조회 되었습니다.",
-				HttpStatus.OK);												
+		return WebControllerUtil
+				.getResponse(workGroupList
+							,workGroupList.size()
+							,workGroupList.isEmpty()? false : true
+							,workGroupList.size() + "건 조회 되었습니다."
+							,HttpStatus.OK);												
 	}
 	
 	@GetMapping(value={"/grw/workgroup/{id}"})
@@ -80,58 +68,47 @@ public class WorkGroupController {
 						
 		WorkGroup entity = workGroupService.getWorkGroup(id);										
 		
-		WorkDTO.WorkGroupSave dto = WorkScheduleDTOAssembler.convertDTO(entity);
+		WorkDTO.SaveWorkGroup dto = WorkDTO.convertDTO(entity);
 		
-		return WebControllerUtil.getResponse(dto,
-				dto == null ? 0 : 1, 
-				dto == null ? false : true,
-				"조회 되었습니다.",
-				HttpStatus.OK);													
+		return WebControllerUtil
+				.getResponse(dto
+							,dto == null ? 0 : 1
+							,dto == null ? false : true
+							,"조회 되었습니다."
+							,HttpStatus.OK);													
 	}
 	
 	@RequestMapping(value={"/grw/workgroup"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveWorkGroup(@Valid @RequestBody WorkDTO.WorkGroupSave dto, BindingResult result) {				
+	public ResponseEntity<?> saveWorkGroup(@Valid @RequestBody WorkDTO.SaveWorkGroup dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
+				
+		workGroupService.saveWorkGroup(dto);		
 		
-		WorkGroup entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
-		
-		List<String> dtoMemberList = dto.getMemberList();
-		entity.clearWorkGroupMember();
-		
-		if (dtoMemberList != null) {
-			List<User> userList = userRepository.getUserList(dtoMemberList);
-			
-			for ( User user: userList ) {
-				WorkGroupMember member = new WorkGroupMember(entity, user);				
-				entity.addWorkGroupMember(member);
-			}
-			//workGroupService.saveWorkGroupMember(entity, user);
-		}		
-		workGroupService.saveWorkGroup(entity);		
-		
-		return WebControllerUtil.getResponse(entity,
-				entity != null ? 1 : 0, 
-				true, 
-				String.format("%d 건 저장되었습니다.", entity != null ? 1 : 0), 
-				HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(dto
+							,dto != null ? 1 : 0
+							,true
+							,String.format("%d 건 저장되었습니다.", dto != null ? 1 : 0)
+							,HttpStatus.OK);
 	}
 	
 	
 	@GetMapping(value={"/grw/schedule"})
-	public ResponseEntity<?> getScheduleList(@ModelAttribute SearchCondition.ScheduleSearch searchCondition) {
+	public ResponseEntity<?> getScheduleList(@ModelAttribute ScheduleDTO.SearchSchedule searchCondition) {
 						
 		List<Schedule> workGroupList = workGroupService.getScheduleList(searchCondition);				
 		
-		List<ScheduleResponse> dtoList = workGroupList.stream().map( r -> WorkScheduleDTOAssembler.convertResDTO(r)).collect(Collectors.toList());
+		List<ScheduleDTO.ScheduleResponse> dtoList = workGroupList.stream().map( r -> ScheduleDTO.convertResDTO(r)).collect(Collectors.toList());
 		
-		return WebControllerUtil.getResponse(dtoList,
-				dtoList.size(), 
-				dtoList.isEmpty()? false : true,
-				dtoList.size() + "건 조회 되었습니다.",
-				HttpStatus.OK);												
+		return WebControllerUtil
+				.getResponse(dtoList
+							,dtoList.size()
+							,dtoList.isEmpty()? false : true
+							,dtoList.size() + "건 조회 되었습니다."
+							,HttpStatus.OK);												
 	}
 	
 	@GetMapping(value={"/grw/schedule/{id}"})
@@ -139,30 +116,31 @@ public class WorkGroupController {
 						
 		Schedule entity = workGroupService.getSchedule(id);							
 		
-		ScheduleResponse dto = WorkScheduleDTOAssembler.convertResDTO(entity);
-		return WebControllerUtil.getResponse(dto,
-				dto == null ? 0 : 1, 
-				dto == null ? false : true,
-				"조회 되었습니다.",
-				HttpStatus.OK);													
+		ScheduleDTO.ScheduleResponse dto = ScheduleDTO.convertResDTO(entity);
+		
+		return WebControllerUtil
+				.getResponse(dto
+							,dto == null ? 0 : 1
+							,dto == null ? false : true
+							,"조회 되었습니다."
+							,HttpStatus.OK);													
 	}
 	
 	@RequestMapping(value={"/grw/schedule"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveWorkGroup(@Valid @RequestBody WorkDTO.ScheduleSave dto, BindingResult result) {				
+	public ResponseEntity<?> saveWorkGroup(@Valid @RequestBody ScheduleDTO.SaveSchedule dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.getAllErrors().toString());
 		} 							
-		
-		Schedule entity = WorkScheduleDTOAssembler.toEntity(dto, scheduleRepository);
-		
-		workGroupService.saveSchedule(entity);		
+					
+		workGroupService.saveSchedule(dto);		
 										 					
-		return WebControllerUtil.getResponse(entity,
-				entity != null ? 1 : 0, 
-				true, 
-				String.format("%d 건 저장되었습니다.", entity != null ? 1 : 0), 
-				HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(dto
+							,dto != null ? 1 : 0
+							,true
+							,String.format("%d 건 저장되었습니다.", dto != null ? 1 : 0)
+							,HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value={"/grw/schedule/{id}"})
@@ -170,11 +148,12 @@ public class WorkGroupController {
 						
 		workGroupService.deleteSchedule(id);							
 				
-		return WebControllerUtil.getResponse(null,
-				1, 
-				true,
-				"삭제 되었습니다.",
-				HttpStatus.OK);													
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,"삭제 되었습니다."
+							,HttpStatus.OK);													
 	}
 	
 }

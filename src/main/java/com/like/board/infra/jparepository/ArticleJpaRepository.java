@@ -17,11 +17,8 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import lombok.extern.slf4j.Slf4j;
-
 import com.like.board.domain.model.*;
 
-@Slf4j
 @Repository
 public class ArticleJpaRepository implements ArticleRepository {
 				

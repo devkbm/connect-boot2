@@ -70,8 +70,12 @@ public class AuthorityDTO {
 				
 		String description;
 		
-		public Authority createAuthority() {
+		public Authority newAuthority() {
 			return new Authority(this.authority, this.description);
+		}
+		
+		public void modifyAuthority(Authority authority) {
+			authority.modifyEntity(description);
 		}
 	}
 }

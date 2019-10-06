@@ -2,8 +2,6 @@ package com.like.dept.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +14,12 @@ import com.like.dept.domain.repository.DeptRepository;
 @Transactional
 public class DeptService {
 
-	@Resource(name="deptJpaRepository")
 	private DeptRepository deptRepository;
 	
+	public DeptService(DeptRepository deptRepository) {
+		this.deptRepository = deptRepository;
+	}
+
 	public Dept getDept(String deptCode) {
 		return deptRepository.getDept(deptCode);
 	}

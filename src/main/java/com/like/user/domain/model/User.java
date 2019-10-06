@@ -110,6 +110,24 @@ public class User extends AuditEntity implements UserDetails {
 		this.menuGroupList = menuGroupList;
 	}	
 	
+	public void modifyEntity(String name
+							,String password
+							,Boolean isEnabled
+							,String mobileNum
+							,String email							 
+							,Dept dept
+							,List<Authority> authorities
+							,List<MenuGroup> menuGroupList) {
+		this.name = name;
+		this.password = password;
+		this.isEnabled = isEnabled;
+		this.mobileNum = mobileNum;
+		this.email = email;		
+		this.dept = dept;
+		this.authorities = authorities;
+		this.menuGroupList = menuGroupList;
+	}
+	
 	@Override
 	@JsonIgnore	
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -202,6 +220,5 @@ public class User extends AuditEntity implements UserDetails {
 	public String getImage() {
 		return this.image;
 	}
-				
 	
 }

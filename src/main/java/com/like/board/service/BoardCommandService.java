@@ -2,8 +2,6 @@ package com.like.board.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,22 +16,24 @@ import com.like.board.domain.service.AttachedFileConverter;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 @Transactional
 public class BoardCommandService {
 	
-    @Resource(name="boardJpaRepository")
 	private BoardRepository boardRepository;
     
-    @Resource(name="articleJpaRepository")
 	private ArticleRepository articleRepository;          
-		
-    @Resource(name="fileService")
+		    
     private FileService fileService;
-    	
+    
+	public BoardCommandService(BoardRepository boardRepository
+							  ,ArticleRepository articleRepository
+							  ,FileService fileService) {
+		this.boardRepository = boardRepository;
+		this.articleRepository = articleRepository;
+		this.fileService = fileService;
+	}
+
 	public void saveBoard(BoardDTO.SaveBoard dto) {			
 		Board board = null;			
 		Board parentBoard = null;

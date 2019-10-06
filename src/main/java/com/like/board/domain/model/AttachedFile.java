@@ -3,7 +3,6 @@ package com.like.board.domain.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,10 +22,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 @ToString(exclude= {"article","fileInfo"})
-@Slf4j
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"article","fileInfo"})
 @Getter

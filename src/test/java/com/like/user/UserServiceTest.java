@@ -51,7 +51,7 @@ public class UserServiceTest {
 		
 				
 		//When
-		userService.createUser(user);
+		//userService.createUser(user);
 		
 		//Then
 		User test = userService.getUser(user.getUserId());

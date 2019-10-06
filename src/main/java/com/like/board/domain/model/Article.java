@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,7 +27,6 @@ import com.like.board.domain.model.enums.PasswordType;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
-@Slf4j
 @ToString
 @JsonAutoDetect(fieldVisibility=Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})

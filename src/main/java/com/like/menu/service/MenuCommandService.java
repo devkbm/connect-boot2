@@ -1,7 +1,5 @@
 package com.like.menu.service;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +15,12 @@ import com.like.menu.domain.repository.MenuRepository;
 @Transactional
 public class MenuCommandService {
 
-	@Resource(name="menuJpaRepository")
 	private MenuRepository menuRepository;
 			
+	public MenuCommandService(MenuRepository menuRepository) {
+		this.menuRepository = menuRepository;
+	}
+
 	public void saveMenuGroup(MenuGroup codeGroup) {
 		menuRepository.saveMenuGroup(codeGroup);	
 	}

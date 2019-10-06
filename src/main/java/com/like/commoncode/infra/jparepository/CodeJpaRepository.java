@@ -19,14 +19,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
 public class CodeJpaRepository implements CommonCodeRepository {
-				
+	
+	private final QCode qCode = QCode.code1;
+	
 	@Autowired
 	private JPAQueryFactory	queryFactory;	
 	
 	@Autowired
-	private JpaCommonCode jpaCommonCode;
-		
-	private final QCode qCode = QCode.code1;
+	private JpaCommonCode jpaCommonCode;		
 		
 
 	@Override

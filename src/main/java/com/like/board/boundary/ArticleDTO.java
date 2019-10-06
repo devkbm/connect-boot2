@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 import lombok.ToString;
 
 public class ArticleDTO {
@@ -115,7 +116,8 @@ public class ArticleDTO {
 	    Long fkBoard;
 	            
 	    @JsonIgnore
-	    List<MultipartFile> file = new ArrayList<MultipartFile>();	 
+	    @Singular(value = "file")
+	    List<MultipartFile> file;	 
 	    
 	    public Article newArticle(Board board) {
 			

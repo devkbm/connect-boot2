@@ -128,7 +128,7 @@ public class WorkScheduleServiceTest {
 	}
 	
 	private WorkGroup createWorkGroup() {				
-		return new WorkGroup("인사업무");
+		return null;// new WorkGroup("인사업무");
 	}
 	
 	

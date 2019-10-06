@@ -2,8 +2,6 @@ package com.like.dept.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,6 @@ import com.like.dept.boundary.DeptDTO;
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
 import com.like.dept.boundary.DeptDTO.SaveDept;
 import com.like.dept.domain.model.Dept;
-import com.like.dept.domain.repository.DeptRepository;
 import com.like.dept.service.DeptService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class DeptController {
-
-	@Resource(name="deptJpaRepository")
-	private DeptRepository deptRepository;
 	
-	@Resource(name = "deptService")
 	private DeptService deptService;
 	
+	public DeptController(DeptService deptService) {
+		this.deptService = deptService;
+	}
+
 	@GetMapping("/common/depttree")
 	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute DeptDTO.SearchDept searchCondition) {
 							

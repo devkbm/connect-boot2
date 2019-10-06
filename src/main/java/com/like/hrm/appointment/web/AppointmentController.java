@@ -3,8 +3,6 @@ package com.like.hrm.appointment.web;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -33,8 +31,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AppointmentController {
 
-	@Resource
 	private AppointmentService appointmentService;	
+
+	public AppointmentController(AppointmentService appointmentService) {
+		this.appointmentService = appointmentService;
+	}
 
 	@GetMapping("/hrm/appointmentcode")
 	public ResponseEntity<?> getArticleList(AppointmentCodeDTO.CodeSearch search) {

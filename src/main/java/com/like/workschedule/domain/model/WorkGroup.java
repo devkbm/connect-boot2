@@ -55,10 +55,16 @@ public class WorkGroup extends AuditEntity {
 	@OneToMany(mappedBy = "workGroup", fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	Set<WorkGroupMember> memberList = new LinkedHashSet<>();
 	
-	public WorkGroup(String name) {
+	public WorkGroup(String name, String color) {		
 		this.name = name;
+		this.color = color;
 		this.scheduleList = null;
 		this.memberList = null;
+	}
+	
+	public void modifyEntity(String name, String color) {
+		this.name = name;
+		this.color = color;
 	}
 	
 	public void addWorkGroupMember(WorkGroupMember member) {

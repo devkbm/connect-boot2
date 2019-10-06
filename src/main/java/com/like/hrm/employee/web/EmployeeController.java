@@ -17,9 +17,6 @@ import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.service.EmployeeService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 public class EmployeeController {
 	

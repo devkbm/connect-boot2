@@ -13,8 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.dept.domain.model.Dept;
+import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.service.MenuQueryService;
+import com.like.menu.domain.repository.MenuRepository;
 import com.like.user.boundary.AuthorityDTO;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
@@ -31,9 +33,12 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	UserRepository userRepository;	
+		
+	@Resource(name="menuJpaRepository")
+	private MenuRepository menuRepository;
 	
-	@Resource
-	private MenuQueryService menuQueryService;
+	@Resource(name="deptJpaRepository")
+	private DeptRepository deptRepository;
 	
 	@Autowired
 	UserDomainService userDomainService;
@@ -87,14 +92,31 @@ public class UserService implements UserDetailsService {
 	 * 사용자를 생성한다.
 	 * @param user	사용자 도메인
 	 */
-	public void createUser(User user) {
+	public void createUser(UserDTO.SaveUser dto) {
+		User user = userRepository.getUser(dto.getUserId());
+		Dept dept = null;
+		
+		List<Authority> authorityList = userRepository.getAuthorityList(dto.getAuthorityList());		
+		List<MenuGroup> menuGroupList = menuRepository.getMenuGroupList(dto.getMenuGroupList());
+		 
+		
+		if ( dto.getDeptCode() != null ) {
+			dept = deptRepository.getDept(dto.getDeptCode());
+		}
+		
+		if (user == null) {
+			user = dto.newUser(dept, authorityList, menuGroupList);
+		} else {
+			dto.modifyUser(user, dept, authorityList, menuGroupList);			
+		}
+		
 		//String rawPassword = user.getPassword();
 		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
 		//user.setPassword(encodedPassword);	
 				
 		userDomainService.createUser(user);						
 	}
-	
+		
 	public void saveUser(User user) {
 		userRepository.saveUser(user);
 	}
@@ -170,7 +192,19 @@ public class UserService implements UserDetailsService {
 	 * 권한 도메인을 등록한다.
 	 * @param authority	권한 도메인
 	 */
-	public void createAuthority(Authority authority) {
+	public void createAuthority(AuthorityDTO.SaveAuthority dto) {
+		Authority authority = null;
+		
+		if (dto.getAuthority() != null) {
+			authority = userRepository.getAuthority(dto.getAuthority());
+		} 
+		
+		if (authority == null) {
+			authority = dto.newAuthority();
+		} else {
+			dto.modifyAuthority(authority);
+		}
+		
 		userRepository.createAuthority(authority);
 	}		
 		

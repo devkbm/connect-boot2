@@ -2,8 +2,6 @@ package com.like.commoncode.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,7 +19,6 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
 import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
 
@@ -30,27 +27,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class CommonCodeController {
-
-	@Resource(name="codeJpaRepository")
-	private CodeJpaRepository codeJpaRepository;
 	
-	@Resource
 	private CommonCodeCommandService commonCodeCommandService;
-	
-	@Resource
+		
 	private CommonCodeQueryService commonCodeQueryService;			
-	
-	
+		
+	public CommonCodeController(CommonCodeCommandService commonCodeCommandService
+							   ,CommonCodeQueryService commonCodeQueryService) {
+		this.commonCodeCommandService = commonCodeCommandService;
+		this.commonCodeQueryService = commonCodeQueryService;
+	}
+
 	@GetMapping("/common/codetree") 
 	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute CodeDTO.SearchCode searchCondition) {
 							
 		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(list
+							,list.size()
+							,true
+							,String.format("%d 건 조회되었습니다.", list.size())
+							,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/code") 
@@ -58,11 +56,12 @@ public class CommonCodeController {
 							
 		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(list
+							,list.size()
+							,true
+							,String.format("%d 건 조회되었습니다.", list.size())
+							,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/code/{id}") 
@@ -72,11 +71,12 @@ public class CommonCodeController {
 		
 		CodeDTO.SaveCode dto = CodeDTO.convertDTO(entity);
 		
-		return WebControllerUtil.getResponse(dto
-											,1
-											,true
-											,String.format("%d 건 조회되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(dto
+							,1
+							,true
+							,String.format("%d 건 조회되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 	
@@ -86,14 +86,17 @@ public class CommonCodeController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 									
-				
+		
+		log.info(dto.toString());
+		
 		commonCodeCommandService.saveCode(dto);		
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}	
 		
 	@DeleteMapping("/common/code/{id}")
@@ -101,11 +104,12 @@ public class CommonCodeController {
 												
 		commonCodeCommandService.deleteCode(id);
 								 						
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null
+							,1
+							,true
+							,String.format("%d 건 삭제되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 	

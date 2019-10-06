@@ -1,13 +1,10 @@
 package com.like.user.web;
 
-import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,41 +16,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.dept.domain.repository.DeptRepository;
-import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.repository.MenuRepository;
-import com.like.menu.service.MenuQueryService;
 import com.like.user.boundary.LoginRequestDTO;
 import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
-import com.like.user.domain.repository.UserRepository;
 import com.like.user.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 public class UserLoginController {
+		
+	private AuthenticationManager authenticationManager;
+		
+	private UserService userService;
+				
+	public UserLoginController(AuthenticationManager authenticationManager, UserService userService) {
+		this.authenticationManager = authenticationManager;
+		this.userService = userService;
+	}
 
-	@Autowired
-	UserRepository userRepository;
-	
-	@Resource(name="menuJpaRepository")
-	private MenuRepository menuRepository;
-	
-	@Resource(name="deptJpaRepository")
-	private DeptRepository deptRepository;	
-	
-	@Autowired 
-	AuthenticationManager authenticationManager;
-	
-	@Resource
-	UserService userService;
-	
-	@Resource
-	MenuQueryService menuQueryService;
-	
-	
 	private void authentication(String username, String password, List<GrantedAuthority> authorities, HttpSession session) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
 		
@@ -70,8 +49,7 @@ public class UserLoginController {
 	@PostMapping(value={"/common/user/login"})
 	public AuthenticationToken login(@RequestBody @Valid LoginRequestDTO dto, HttpSession session, BindingResult result) {
 		
-		if ( result.hasErrors() ) {
-			log.info(result.toString());
+		if ( result.hasErrors() ) {			
 			return null;
 		}			
 		

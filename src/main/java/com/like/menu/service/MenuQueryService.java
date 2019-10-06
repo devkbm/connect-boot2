@@ -2,8 +2,6 @@ package com.like.menu.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +13,16 @@ import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
 import com.like.menu.infra.jparepository.MenuJpaRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 @Transactional(readOnly=true)
 public class MenuQueryService {
 
-	@Resource(name="menuJpaRepository")
 	private MenuJpaRepository menuJpaRepository;
-		
+
+	public MenuQueryService(MenuJpaRepository menuJpaRepository) {
+		this.menuJpaRepository = menuJpaRepository;
+	}
+
 	public MenuGroup getMenuGroup(String menuGroupCode) {
 		return menuJpaRepository.getMenuGroup(menuGroupCode);
 	}

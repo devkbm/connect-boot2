@@ -1,57 +1,66 @@
 package com.like.workschedule.boundary;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.like.workschedule.domain.model.QSchedule;
-import com.like.workschedule.domain.model.QWorkGroup;
+import com.like.workschedule.domain.model.Schedule;
+import com.like.workschedule.domain.model.WorkGroup;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.NoArgsConstructor;
 
-@Slf4j
-public class SearchCondition {
+public class ScheduleDTO {
 
-	@Data
-	public static class WorkGroupSearch implements Serializable {
+	public static SaveSchedule convertDTO(Schedule entity) {
+		SaveSchedule dto = SaveSchedule.builder()
+									   .id(entity.getId())
+									   .title(entity.getTitle())
+									   .start(entity.getStart())
+									   .end(entity.getEnd())
+									   .allDay(entity.getAllDay())
+									   .workGroupId(entity.getWorkGroup().getId())
+									   .build();
+														
+		return dto;
+	}
+	
+	public static ScheduleResponse convertResDTO(Schedule entity) {
 		
-		private static final long serialVersionUID = 1L;
-
-		private final QWorkGroup qWorkGroup = QWorkGroup.workGroup;
-						
-		String name;			
-					
-		public BooleanBuilder getBooleanBuilder() {
-			BooleanBuilder builder = new BooleanBuilder();
-			
-			builder.and(likeGroupName(this.name));			
-			
-			return builder;
-		}
+		WorkGroup workGroup = entity.getWorkGroup();
 		
-		private BooleanExpression likeGroupName(String name) {
-			if (StringUtils.isEmpty(name)) {
-				return null;
-			}
-			
-			return qWorkGroup.name.like("%"+this.name+"%");
-		}
+		ScheduleResponse dto = ScheduleResponse.builder()
+											   .workGroupId(workGroup.getId())
+											   .id(entity.getId())
+											   .title(entity.getTitle())
+											   .color(workGroup.getColor())
+											   .start(entity.getStart())
+											   .end(entity.getEnd())
+											   .allDay(entity.getAllDay())																							
+											   .build();
+																
+		return dto;
 	}
 	
 	@Data
-	public static class ScheduleSearch implements Serializable {
+	public static class SearchSchedule implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 
@@ -148,5 +157,82 @@ public class SearchCondition {
 					59, 
 					ZoneOffset.ofHours(9));		
 		}
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class SaveSchedule implements Serializable {
+				
+		private static final long serialVersionUID = -4732165212710032658L;
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+		
+		@Nullable
+		Long id;
+				
+		@NotEmpty
+		String title;
+		
+		OffsetDateTime start;
+		
+		OffsetDateTime end;
+		
+		Boolean allDay;
+		
+		@NotNull
+		Long workGroupId;
+		
+		public Schedule newSchedule(WorkGroup workGroup) {
+			return Schedule.builder()
+						   .title(this.title)
+						   .start(this.start)
+						   .end(this.end)
+						   .allDay(this.allDay)
+						   .workGroup(workGroup)
+						   .build();
+		}
+		
+		public void modifySchedule(Schedule schedule) {
+			schedule.modifyEntity(title, start, end, allDay);
+		}
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class ScheduleResponse implements Serializable {
+				
+		private static final long serialVersionUID = -8101598433251220343L;
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+				
+		Long workGroupId;
+		
+		Long id;
+				
+		String title;
+		
+		String color;
+				
+		OffsetDateTime start;
+				
+		OffsetDateTime end;
+		
+		Boolean allDay;			
 	}
 }

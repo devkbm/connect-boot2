@@ -1,7 +1,5 @@
 package com.like.commoncode.service;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +11,12 @@ import com.like.commoncode.domain.repository.CommonCodeRepository;
 @Transactional
 public class CommonCodeCommandService {
 
-	@Resource(name="codeJpaRepository")
 	private CommonCodeRepository codeRepository;
-				
+					
+	public CommonCodeCommandService(CommonCodeRepository codeRepository) {
+		this.codeRepository = codeRepository;
+	}
+
 	public void saveCode(Code code) {		
 		codeRepository.saveCode(code);		
 	}
@@ -28,10 +29,12 @@ public class CommonCodeCommandService {
 			parentCode = codeRepository.getCode(dto.getParentId());
 		}
 		
-		code = codeRepository.getCode(dto.getCode());
+		if (dto.getId() != null) {
+			code = codeRepository.getCode(dto.getId());
+		}
 		
 		if (code == null) {
-			dto.newCode(parentCode);
+			code = dto.newCode(parentCode);
 		} else {
 			dto.modifyCode(code);
 		}

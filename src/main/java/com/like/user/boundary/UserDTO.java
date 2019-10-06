@@ -15,7 +15,10 @@ import javax.validation.constraints.Size;
 import org.springframework.util.StringUtils;
 
 import com.like.common.validation.annotation.Id;
+import com.like.dept.domain.model.Dept;
+import com.like.menu.domain.model.MenuGroup;
 import com.like.user.boundary.UserDTO.SaveUser;
+import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
 import com.querydsl.core.BooleanBuilder;
@@ -146,6 +149,32 @@ public class UserDTO {
 		List<String> authorityList = new ArrayList<String>();
 
 		List<String> menuGroupList = new ArrayList<String>(); 
+		
+		public User newUser(Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+			return User.builder()
+					   .userId(this.userId)										
+					   .name(this.name)
+					   .password(this.password)	
+					   .dept(dept)				
+					   .mobileNum(this.mobileNum)
+					   .email(this.email)
+					   .isEnabled(this.enabled)	
+					   .authorities(authorityList)
+					   .menuGroupList(menuGroupList)					
+					   .build();
+			
+		}
+		
+		public void modifyUser(User user, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
+			user.modifyEntity(name
+							 ,password
+							 ,enabled
+							 ,mobileNum
+							 ,email							  
+							 ,dept
+							 ,authorityList
+							 ,menuGroupList);	
+		}
 								
 	}
 

@@ -68,6 +68,16 @@ public class Schedule extends AuditEntity implements Serializable {
 		this.allDay = allDay;
 		this.workGroup = workGroup;		
 	}
+
+	public void modifyEntity(String title
+							,OffsetDateTime start
+							,OffsetDateTime end
+							,Boolean allDay) {
+		this.title = title;
+		this.start = start;
+		this.end = end;
+		this.allDay = allDay;
+	}
 	
 	
 }

@@ -1,7 +1,5 @@
 package com.like.menu.web;
 
-import javax.annotation.Resource;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +15,12 @@ import com.like.menu.service.MenuQueryService;
 @RestController
 public class MenuValidController {
 
-	@Resource
 	private MenuQueryService menuQueryService;
 	
+	public MenuValidController(MenuQueryService menuQueryService) {
+		this.menuQueryService = menuQueryService;
+	}
+
 	@GetMapping("/common/menugroup/{id}/check")
 	public ResponseEntity<?> getMenuGroupValid(@PathVariable(value="id") String menuGroupCode) {							
 		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupCode);
