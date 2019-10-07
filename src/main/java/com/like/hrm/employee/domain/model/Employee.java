@@ -3,7 +3,9 @@ package com.like.hrm.employee.domain.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -97,6 +99,12 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<StatusChangeHistory> statusHistory = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	Set<License> licenseList = new LinkedHashSet<>();
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	Set<Education> educationList = new LinkedHashSet<>();
 	
 	public Employee(String id
 				   ,String name
@@ -216,6 +224,17 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 
 	}
 
+	public void addLicense(License license) {
+		if (this.licenseList == null) {
+			this.licenseList = new LinkedHashSet<>();
+		}
+		
+		this.licenseList.add(license);
+	}
+	
+	public License getLicense(Long id) {
+		return null;
+	}
 
 
 	

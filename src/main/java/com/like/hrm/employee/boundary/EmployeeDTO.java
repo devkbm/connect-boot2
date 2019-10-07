@@ -3,7 +3,12 @@ package com.like.hrm.employee.boundary;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
+
+import com.like.hrm.employee.domain.model.Education;
+import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.model.License;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -108,4 +113,73 @@ public class EmployeeDTO {
 		private LocalDate toDate;
 		
 	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class SaveEducation implements Serializable {					
+
+		private static final long serialVersionUID = -8768170007000992707L;
+
+		@NotEmpty
+		private String employeeId;
+		
+		@NotEmpty
+		private String eduType;
+				
+		@NotEmpty
+		private String schoolCode;
+				
+		@Nullable
+		private String comment;
+		
+		public Education newEducation(Employee employee) {
+			return new Education(employee
+								,this.eduType
+								,this.schoolCode
+								,this.comment);
+		}
+		
+		public void modifyEducation(Education entity) {
+			entity.modifyEntity(eduType
+							   ,schoolCode
+							   ,comment);	
+		}	
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class SaveLicense implements Serializable {						
+
+		private static final long serialVersionUID = -4765555653271244793L;
+
+		@NotEmpty
+		private String employeeId;
+		
+		@NotEmpty
+		private String licenseType;
+				
+		@NotEmpty
+		private String licenseCode;
+				
+		@Nullable
+		private String comment;
+		
+		public License newEducation(Employee employee) {
+			return new License(employee
+							  ,this.licenseType
+							  ,this.licenseCode
+							  ,this.comment);
+		}
+		
+		public void modifyEducation(License entity) {
+			entity.modifyEntity(licenseType
+							   ,licenseCode
+							   ,comment);	
+		}	
+	}	
+	
 }

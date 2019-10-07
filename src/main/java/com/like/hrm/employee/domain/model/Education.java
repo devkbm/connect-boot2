@@ -36,9 +36,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "HRMEMPLICENSE")
+@Table(name = "HRMEMPEDUCATION")
 @EntityListeners(AuditingEntityListener.class)
-public class License extends AuditEntity implements Serializable {
+public class Education extends AuditEntity implements Serializable {
 	
 	private static final long serialVersionUID = 5879415854289672377L;
 
@@ -48,16 +48,16 @@ public class License extends AuditEntity implements Serializable {
 	private Long id;
 		
 	/**
-	 * 자격면허유형
+	 * 학력유형
 	 */
-	@Column(name="LICENSE_TYPE")
-	private String licenseType;
+	@Column(name="EDU_TYPE")
+	private String eduType;
 	
 	/**
-	 * 자격면허코드
+	 * 학교코드
 	 */
-	@Column(name="LICENSE_CODE")
-	private String licenseCode;
+	@Column(name="SCHOOL_CODE")
+	private String schoolCode;
 	
 	/**
 	 * 설명
@@ -69,21 +69,21 @@ public class License extends AuditEntity implements Serializable {
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
 	
-	public License(Employee employee
-				  ,String licenseType
-				  ,String licenseCode
-				  ,String comment) {
+	public Education(Employee employee
+				    ,String eduType
+				    ,String schoolCode
+				    ,String comment) {
 		this.employee = employee;
-		this.licenseType = licenseType;
-		this.licenseCode = licenseCode;
+		this.eduType = eduType;
+		this.schoolCode = schoolCode;
 		this.comment = comment;
 	}
 	
-	public void modifyEntity(String licenseType
-							,String licenseCode
+	public void modifyEntity(String eduType
+		    				,String schoolCode
 							,String comment) {
-		this.licenseType = licenseType;
-		this.licenseCode = licenseCode;
+		this.eduType = eduType;
+		this.schoolCode = schoolCode;
 		this.comment = comment;		
 	}
 				
