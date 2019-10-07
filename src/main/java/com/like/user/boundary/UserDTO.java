@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import com.like.common.validation.annotation.Id;
 import com.like.dept.domain.model.Dept;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.user.boundary.UserDTO.SaveUser;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
@@ -28,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 public class UserDTO {
 	
@@ -145,10 +145,12 @@ public class UserDTO {
 		Boolean credentialsNonExpired;
 			
 		Boolean enabled;
-						
-		List<String> authorityList = new ArrayList<String>();
+					
+		@Singular(value = "authorityList")
+		List<String> authorityList;
 
-		List<String> menuGroupList = new ArrayList<String>(); 
+		@Singular(value = "menuGroupList")
+		List<String> menuGroupList; 
 		
 		public User newUser(Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 			return User.builder()

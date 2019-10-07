@@ -21,10 +21,12 @@ import com.like.hrm.appointment.domain.model.Appointable;
 import com.like.hrm.appointment.domain.model.LedgerList;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "HRMEMPLOYEE")
 @EntityListeners(AuditingEntityListener.class)
@@ -80,6 +82,12 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	 */
 	@Column(name="WORK_CONDITION")
 	String workCondition;
+	
+	/**
+	 * 이미지경로
+	 */
+	@Column(name="IMG_PATH")
+	String imagePath;
 		
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<DeptChangeHistory> deptHistory = new ArrayList<>();
@@ -90,11 +98,11 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<StatusChangeHistory> statusHistory = new ArrayList<>();
 	
-	public Employee(String id, 
-					String name, 
-					String nameEng, 
-					String nameChi, 
-					String residentRegistrationNumber) {
+	public Employee(String id
+				   ,String name
+				   ,String nameEng
+				   ,String nameChi
+				   ,String residentRegistrationNumber) {
 		this.id = id;
 		this.name = name;
 		this.nameEng = nameEng;
@@ -199,6 +207,10 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		this.statusHistory.add(new StatusChangeHistory(this, appointmentCode, statusCode, fromDate, toDate));
 	}
 
+	public void changeImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
 	@Override
 	public void appoint(LedgerList ledgerDetail) {
 

@@ -32,11 +32,10 @@ public class EmployeeController {
 				
 		Employee emp = employeeService.getEmployee(id);  									
 		
-		return WebControllerUtil.getResponse(emp
-											,emp == null ? 0 : 1
-											,true
-											,String.format("%d 건 조회되었습니다.", emp == null ? 0 : 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(emp											
+							,String.format("%d 건 조회되었습니다.", emp == null ? 0 : 1)
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/employee/create"}, method={RequestMethod.POST,RequestMethod.PUT})	
@@ -48,11 +47,10 @@ public class EmployeeController {
 						
 		employeeService.newEmployee(dto);
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null											
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/employee/changedept"}, method={RequestMethod.POST,RequestMethod.PUT})	
@@ -64,11 +62,10 @@ public class EmployeeController {
 				
 		employeeService.saveDeptChangeHistory(dto);
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null											
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/employee/changejob"}, method={RequestMethod.POST,RequestMethod.PUT})	
@@ -80,11 +77,10 @@ public class EmployeeController {
 				
 		employeeService.saveJobChangeHistory(dto);
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null											
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/employee/changestatus"}, method={RequestMethod.POST,RequestMethod.PUT})	
@@ -96,11 +92,10 @@ public class EmployeeController {
 				
 		employeeService.saveStatusChangeHistory(dto);
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
+		return WebControllerUtil
+				.getResponse(null							
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
 	}
 	
 }

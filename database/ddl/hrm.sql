@@ -54,6 +54,7 @@ create table if not exists HRMEMPLOYEE (
 	GENDER			VARCHAR(1)		null		COMMENT '성별',
 	BIRTHDAY		DATE			null		COMMENT '생일',
 	WORK_CONDITION	VARCHAR(2)		null		COMMENT '근무상태',
+	IMG_PATH		VARCHAR(2000)  	null 		COMMENT '이미지경로',
 	constraint pk_hrmemployee primary key(EMP_ID)
 ) COMMENT = '직원기본';
 
@@ -102,6 +103,34 @@ create table if not exists HRMEMPSTATUSHISTORY (
 	constraint fk_hrmempstatushistory foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 )  COMMENT = '직원상태이력';
 
+create table if not exists HRMEMPEDUCATION (
+	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT			DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER		VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID				INT				not null	COMMENT '직원학력ID'	AUTO_INCREMENT,
+	EMP_ID			VARCHAR(10) 	not null  	COMMENT '사원ID',
+	EDU_TYPE		VARCHAR(2)		not null	COMMENT '학력유형',
+	SCHOOL_CODE		VARCHAR(5)		not null	COMMENT '학교코드',	
+	CMT				VARCHAR(2000) 	null 		COMMENT '비고',
+	constraint pk_hrmempeducation primary key(ID),
+	constraint fk_hrmempeducation foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+) COMMENT = '직원학력정보';
+
+create table if not exists HRMEMPLICENSE (
+	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT			DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER		VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID				INT				not null	COMMENT '직원자격면허ID'	AUTO_INCREMENT,
+	EMP_ID			VARCHAR(10) 	not null  	COMMENT '사원ID',
+	LICENSE_TYPE	VARCHAR(2)		not null	COMMENT '자격면허유형',
+	LICENSE_CODE	VARCHAR(5)		not null	COMMENT '자격면허코드',	
+	CMT				VARCHAR(2000) 	null 		COMMENT '비고',
+	constraint pk_hrmempeducation primary key(ID),
+	constraint fk_hrmempeducation foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+) COMMENT = '직원자격면허';
+
 create table if not exists COM.HRMAPPOINTMENTLEDGER (
 	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
@@ -144,3 +173,5 @@ create table if not exists COM.HRMAPPOINTMENTINFO (
 	constraint pk_hrmappointmentinfo 	primary key(ID),	
 	constraint fk_hrmappointmentinfo1 	foreign key(LIST_ID) references HRMAPPOINTMENTLEDGERLIST(LIST_ID)  
 ) COMMENT = '발령대장정보';
+
+
