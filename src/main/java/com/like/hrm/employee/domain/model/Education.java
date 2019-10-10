@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"employee"})
+@EqualsAndHashCode(callSuper = false, of = {"educationId"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -45,7 +47,7 @@ public class Education extends AuditEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
-	private Long id;
+	private Long educationId;
 		
 	/**
 	 * 학력유형

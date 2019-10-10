@@ -127,8 +127,8 @@ create table if not exists HRMEMPLICENSE (
 	LICENSE_TYPE	VARCHAR(2)		not null	COMMENT '자격면허유형',
 	LICENSE_CODE	VARCHAR(5)		not null	COMMENT '자격면허코드',	
 	CMT				VARCHAR(2000) 	null 		COMMENT '비고',
-	constraint pk_hrmempeducation primary key(ID),
-	constraint fk_hrmempeducation foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+	constraint pk_hrmemplicense primary key(ID),
+	constraint fk_hrmemplicense foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 ) COMMENT = '직원자격면허';
 
 create table if not exists COM.HRMAPPOINTMENTLEDGER (

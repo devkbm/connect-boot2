@@ -125,6 +125,9 @@ public class EmployeeDTO {
 		@NotEmpty
 		private String employeeId;
 		
+		@Nullable
+		private Long educationId;
+		
 		@NotEmpty
 		private String eduType;
 				
@@ -159,6 +162,9 @@ public class EmployeeDTO {
 		@NotEmpty
 		private String employeeId;
 		
+		@Nullable
+		private Long licenseId;
+		
 		@NotEmpty
 		private String licenseType;
 				
@@ -168,14 +174,14 @@ public class EmployeeDTO {
 		@Nullable
 		private String comment;
 		
-		public License newEducation(Employee employee) {
+		public License newLicense(Employee employee) {
 			return new License(employee
 							  ,this.licenseType
 							  ,this.licenseCode
 							  ,this.comment);
 		}
 		
-		public void modifyEducation(License entity) {
+		public void modifyLicense(License entity) {
 			entity.modifyEntity(licenseType
 							   ,licenseCode
 							   ,comment);	

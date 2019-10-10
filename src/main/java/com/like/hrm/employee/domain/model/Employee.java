@@ -224,6 +224,13 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 
 	}
 
+	public License getLicense(Long id) {
+		return this.licenseList.stream()
+							   .filter(e -> e.getLicenseId().equals(id))
+							   .findFirst()
+							   .orElse(null);
+	}
+	
 	public void addLicense(License license) {
 		if (this.licenseList == null) {
 			this.licenseList = new LinkedHashSet<>();
@@ -232,8 +239,20 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 		this.licenseList.add(license);
 	}
 	
-	public License getLicense(Long id) {
-		return null;
+	
+	public Education getEducation(Long id) {
+		return this.educationList.stream()
+								 .filter(e -> e.getEducationId().equals(id))
+								 .findFirst()
+								 .orElse(null);
+	}
+	
+	public void addEducation(Education education) {
+		if (this.educationList == null) {
+			this.educationList = new LinkedHashSet<>();
+		}
+		
+		this.educationList.add(education);
 	}
 
 

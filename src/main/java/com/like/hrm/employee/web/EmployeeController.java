@@ -1,5 +1,7 @@
 package com.like.hrm.employee.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.employee.boundary.EmployeeDTO;
+import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.model.License;
 import com.like.hrm.employee.service.EmployeeService;
 
 @RestController
@@ -97,5 +101,60 @@ public class EmployeeController {
 							,String.format("%d 건 저장되었습니다.", 1)
 							,HttpStatus.OK);
 	}
+	
+	@GetMapping("/hrm/employee/{empId}/license/{id}")
+	public ResponseEntity<?> getLicense(@PathVariable String empId,
+										@PathVariable Long id) {
+				
+		License license = employeeService.getLicense(empId, id);  									
+		
+		return WebControllerUtil
+				.getResponse(license											
+							,String.format("%d 건 조회되었습니다.", license == null ? 0 : 1)
+							,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/employee/license"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	public ResponseEntity<?> saveLicense(@RequestBody EmployeeDTO.SaveLicense dto, BindingResult result) {			
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+				
+		employeeService.saveLicense(dto);
+											 				
+		return WebControllerUtil
+				.getResponse(null							
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/employee/{empId}/education/{id}")
+	public ResponseEntity<?> getEducation(@PathVariable String empId,
+										  @PathVariable Long id) {
+				
+		Education education = employeeService.getEducation(empId, id);  									
+		
+		return WebControllerUtil
+				.getResponse(education											
+							,String.format("%d 건 조회되었습니다.", education == null ? 0 : 1)
+							,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/employee/education"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	public ResponseEntity<?> saveEducation(@RequestBody @Valid EmployeeDTO.SaveEducation dto, BindingResult result) {			
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+				
+		employeeService.saveEducation(dto);
+											 				
+		return WebControllerUtil
+				.getResponse(null							
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
+	}
+	
 	
 }

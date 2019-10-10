@@ -55,7 +55,7 @@ public abstract class WebControllerUtil {
 	
 	public static ResponseEntity<ResponseObjectList> getResponse(List<?> data, String message, HttpStatus httpStatus) {
 		
-		ResponseObjectList obj = new ResponseObjectList(data, data.size(), true, message);			      
+		ResponseObjectList obj = new ResponseObjectList(data, data == null ? 0 : data.size(), true, message);			      
 	    
 	    return new ResponseEntity<ResponseObjectList>(obj, getResponseHeaders(), httpStatus);	    	    	    	    	
 	}
