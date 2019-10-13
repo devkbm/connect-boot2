@@ -38,7 +38,7 @@ public class AppointmentController {
 	}
 
 	@GetMapping("/hrm/appointmentcode")
-	public ResponseEntity<?> getArticleList(AppointmentCodeDTO.CodeSearch search) {
+	public ResponseEntity<?> getArticleList(AppointmentCodeDTO.SearchCode search) {
 																	
 		List<AppointmentCode> list = appointmentService.getAppointentCodeList(search);  							
 		
@@ -46,9 +46,7 @@ public class AppointmentController {
 														.map(r -> AppointmentCodeDTO.SaveCode.convertDTO(r))
 														.collect(Collectors.toList());
 		
-		return WebControllerUtil.getResponse(dtoList
-											,list.size()
-											,true
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
@@ -58,9 +56,7 @@ public class AppointmentController {
 		
 		AppointmentCode code = appointmentService.getAppointmentCode(id);
 					
-		return WebControllerUtil.getResponse(code
-											,code == null ? 0 : 1
-											,true
+		return WebControllerUtil.getResponse(code											
 											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
@@ -74,23 +70,35 @@ public class AppointmentController {
 																	
 		appointmentService.saveAppointmentCode(code);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
+	
+	@GetMapping("/hrm/appointmentcodedetail")
+	public ResponseEntity<?> getCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto) {
+		 				
+		List<AppointmentCodeDetail> list = appointmentService.getAppointmentCodeDetailList(dto);
+
+		List<AppointmentCodeDTO.SaveCodeDetail> dtoList = list.stream()
+															  .map(r -> AppointmentCodeDTO.convertDTO(r))
+															  .collect(Collectors.toList());
 		
+		return WebControllerUtil.getResponse(dtoList											
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/hrm/appointmentcodedetail/{id}/{detailId}")
 	public ResponseEntity<?> getCodeDetail(@PathVariable(value="id") String id,
 										   @PathVariable(value="detailId") String detailId) {
 		 		
 		AppointmentCodeDetail code = appointmentService.getAppointmentCodeDetail(id, detailId);
 					
-		return WebControllerUtil.getResponse(code
-											,code == null ? 0 : 1
-											,true
-											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
+		AppointmentCodeDTO.SaveCodeDetail dto = AppointmentCodeDTO.convertDTO(code);
+				
+		return WebControllerUtil.getResponse(dto										
+											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 	
@@ -103,9 +111,7 @@ public class AppointmentController {
 																	
 		appointmentService.saveAppointmentCodeDetail(dto);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -115,9 +121,7 @@ public class AppointmentController {
 												
 		appointmentService.deleteAppointmentCodeDetail(dto);
 								 						
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}	
@@ -127,9 +131,7 @@ public class AppointmentController {
 		
 		DeptTypeDTO.SaveCode deptType = appointmentService.getDeptTypeDTO(code);
 					
-		return WebControllerUtil.getResponse(deptType
-											,deptType == null ? 0 : 1
-											,true
+		return WebControllerUtil.getResponse(deptType											
 											,String.format("%d 건 조회되었습니다.", deptType == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
@@ -144,9 +146,7 @@ public class AppointmentController {
 																	
 		appointmentService.saveDeptType(dto);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -157,9 +157,7 @@ public class AppointmentController {
 																		
 		appointmentService.deleteDeptType(code);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -170,8 +168,6 @@ public class AppointmentController {
 		JobTypeDTO.SaveCode jobType = appointmentService.getJobTypeDTO(code);
 					
 		return WebControllerUtil.getResponse(jobType
-											,jobType == null ? 0 : 1
-											,true
 											,String.format("%d 건 조회되었습니다.", jobType == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
@@ -186,9 +182,7 @@ public class AppointmentController {
 																	
 		appointmentService.saveJobType(dto);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -198,9 +192,7 @@ public class AppointmentController {
 																		
 		appointmentService.deleteJobType(code);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}	
@@ -210,9 +202,7 @@ public class AppointmentController {
 		
 		Ledger ledger = appointmentService.getLedger(id);
 					
-		return WebControllerUtil.getResponse(ledger
-											,ledger == null ? 0 : 1
-											,true
+		return WebControllerUtil.getResponse(ledger											
 											,String.format("%d 건 조회되었습니다.", ledger == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
@@ -227,9 +217,7 @@ public class AppointmentController {
 																	
 		appointmentService.saveLedger(dto);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -239,9 +227,7 @@ public class AppointmentController {
 																		
 		appointmentService.deleteLedger(id);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -256,9 +242,7 @@ public class AppointmentController {
 																	
 		appointmentService.saveLedgerList(dto);						
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}

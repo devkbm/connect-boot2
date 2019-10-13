@@ -12,6 +12,7 @@ import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
+import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
@@ -43,8 +44,8 @@ public class AppointmentService {
 		//applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
 	}
 	
-	public List<AppointmentCode> getAppointentCodeList(AppointmentCodeDTO.CodeSearch search) {
-		return appointmentRepository.getAppointmentCodeList(search.getBooleanBuilder());
+	public List<AppointmentCode> getAppointentCodeList(AppointmentCodeDTO.SearchCode search) {
+		return appointmentRepository.getAppointmentCodeList(search);
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
@@ -66,6 +67,10 @@ public class AppointmentService {
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
 		appointmentRepository.deleteAppintmentCode(appointmentCode);
 	}
+	
+	public List<AppointmentCodeDetail> getAppointmentCodeDetailList(SearchCodeDetail dto) {
+		return appointmentRepository.getAppointmentCodeDetailList(dto);
+	}	
 	
 	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String type) {
 		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);

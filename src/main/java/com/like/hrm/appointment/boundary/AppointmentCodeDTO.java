@@ -2,11 +2,14 @@ package com.like.hrm.appointment.boundary;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.util.StringUtils;
 
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.QAppointmentCode;
+import com.like.hrm.appointment.domain.model.QAppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -19,11 +22,18 @@ import lombok.NoArgsConstructor;
 
 public class AppointmentCodeDTO {
 
+	public static SaveCodeDetail convertDTO(AppointmentCodeDetail entity) {
+		return new SaveCodeDetail(entity.getAppointmentCode().getCode()
+				                 ,entity.getChangeType().toString()
+				                 ,entity.getChangeTypeDetail()
+				                 ,entity.getSequence());
+	}
+	
 	/**
 	 * 발령코드 조회조건 
 	 */
 	@Data
-	public static class CodeSearch implements Serializable {
+	public static class SearchCode implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 
@@ -112,7 +122,44 @@ public class AppointmentCodeDTO {
 	}
 	
 	@Data
+	public static class SearchCodeDetail implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QAppointmentCodeDetail qType = QAppointmentCodeDetail.appointmentCodeDetail;
+		
+		@NotEmpty(message = "발령코드는 필수 값입니다.")
+		private String appointmentCode;
+		
+		private String changeType;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder
+				.and(equalAppointmentCode(this.appointmentCode))
+				.and(equalChangeType(this.changeType));
+									
+			return builder;
+		}
+		
+		private BooleanExpression equalAppointmentCode(String appointmentCode) {			
+			
+			return qType.appointmentCode.code.eq(appointmentCode);
+		}
+		
+		private BooleanExpression equalChangeType(String changeType) {
+			if (StringUtils.isEmpty(changeType)) {
+				return null;
+			}
+			
+			return qType.changeType.eq(ChangeType.valueOf(changeType));
+		}
+	}
+	
+	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
 	public static class SaveCodeDetail implements Serializable {					
 					
 		private static final long serialVersionUID = 309168416341042059L;
