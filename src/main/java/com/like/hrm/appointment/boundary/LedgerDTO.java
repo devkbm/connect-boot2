@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
@@ -50,10 +52,14 @@ public class LedgerDTO {
 												
 		private static final long serialVersionUID = -339266416839829125L;
 
+		@NotEmpty
 		private String ledgerId;
 		
 		private String listId;
+				
+		private Long sequence;
 			
+		@NotEmpty
 		private String empId;					
 							
 		private String appointmentCode;

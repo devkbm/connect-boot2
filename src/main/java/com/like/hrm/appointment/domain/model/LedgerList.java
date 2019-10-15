@@ -2,7 +2,6 @@ package com.like.hrm.appointment.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"changeInfoList","ledger"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @EqualsAndHashCode(of = {"listId"}, callSuper = false)
 @Getter
@@ -45,11 +45,18 @@ public class LedgerList extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = 8498392159292587566L;
 
 	/**
-	 * 식별자 : 직원ID + 발령코드 + 발령일자
+	 * 식별자 : 발령장번호 + 순번(생성시)
 	 */
 	@Id	
 	@Column(name="LIST_ID")
 	String listId;
+	
+	/**
+	 * 순번
+	 */
+	@OrderBy
+	@Column(name="SEQ")
+	Long sequence;
 	
 	/**
 	 * 직원 ID
@@ -86,19 +93,21 @@ public class LedgerList extends AuditEntity implements Serializable {
 	@JoinColumn(name="LEDGER_ID", nullable=false, updatable=false)
 	private Ledger ledger;
 	
-	public LedgerList(Ledger ledger
+	public LedgerList(Ledger ledger					 
 					 ,String empId
 					 ,String appointmentCode
 				 	 ,LocalDate appointmentFromDate
-					 ,LocalDate appointmentToDate) {
+					 ,LocalDate appointmentToDate) {				
+		Integer size = ledger.getAppointmentList().size() + 1;
+		
 		this.ledger = ledger;		
+		this.sequence = size.longValue();
 		this.empId = empId;
 		this.appointmentCode = appointmentCode;
 		this.appointmentFromDate = appointmentFromDate;
 		this.appointmentToDate = appointmentToDate;		
-		
-		// 식별자 생성
-		this.listId = this.empId + this.appointmentCode + this.appointmentFromDate.format(DateTimeFormatter.ofPattern("YYYYMMDD"));
+						
+		this.listId = this.getLedger().getLedgerId() + size.toString();
 	}
 	
 	public void modifyEntity(LocalDate appointmentToDate) {
@@ -128,7 +137,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 		
 		if (!this.changeInfoList.isEmpty()) {
 			for (LedgerChangeInfo info : this.changeInfoList) {
-				log.info(info.toString());
+				
 				if ( changeId.equals(info.getId()) ) 
 					result = info;
 			}

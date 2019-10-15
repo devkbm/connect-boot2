@@ -41,7 +41,7 @@ public class Ledger extends AuditEntity implements Serializable {
 	 */
 	@Id	
 	@Column(name="LEDGER_ID")
-	String LedgerId;
+	String ledgerId;
 		
 	/**
 	 * 발령 유형(정기, 임의)
@@ -78,7 +78,7 @@ public class Ledger extends AuditEntity implements Serializable {
 				 ,String appointmentType
 				 ,LocalDate registrationDate
 				 ,String comment) {
-		this.LedgerId = ledgerId;
+		this.ledgerId = ledgerId;
 		this.appointmentType = appointmentType;
 		this.registrationDate = registrationDate;
 		this.comment = comment;

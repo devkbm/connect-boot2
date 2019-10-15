@@ -1,5 +1,6 @@
 package com.like.hrm.appointment.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,12 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
+import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
+import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.like.hrm.appointment.service.AppointmentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -126,6 +130,20 @@ public class AppointmentController {
 											,HttpStatus.OK);
 	}	
 		
+	@GetMapping("/hrm/typelist")
+	public ResponseEntity<?> getTypeList() {
+		
+		List<ChangeableTypeDTO.EnumDTO> list = new ArrayList<ChangeableTypeDTO.EnumDTO>();
+		
+		for (ChangeType menuType : ChangeType.values()) {			
+			list.add(new EnumDTO(menuType.getCode(), menuType.getName()));
+		}										
+					
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/hrm/depttype/{code}")
 	public ResponseEntity<?> getDeptType(@PathVariable(value="code") String code) {
 		
@@ -229,6 +247,16 @@ public class AppointmentController {
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/ledgerlist/{id}")
+	public ResponseEntity<?> getLedgerList(@PathVariable(value="id") String id) {
+		
+		Ledger ledger = appointmentService.getLedger(id);
+					
+		return WebControllerUtil.getResponse(ledger											
+											,String.format("%d 건 조회되었습니다.", ledger == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 	

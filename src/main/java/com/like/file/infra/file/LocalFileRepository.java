@@ -27,6 +27,8 @@ public class LocalFileRepository {
 	
 	@Value("${staticUploadPath}")
 	private String staticUploadPath;
+		
+	public static String fileDownLoadUrl;
 	
 	private int BUFFER_SIZE = 4096;
 	
@@ -44,6 +46,11 @@ public class LocalFileRepository {
 	public String getStaticUploadPath() {
 		return this.staticUploadPath;
 	}
+	
+	@Value("${fileDownLoadUrl}")
+	private void setFileDownLoadUrl(String url) {
+		this.fileDownLoadUrl = url;
+	}	
 	
 	public String fileTransfer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
 		String path = null;

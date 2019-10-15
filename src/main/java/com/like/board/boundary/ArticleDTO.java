@@ -18,6 +18,7 @@ import com.like.board.domain.model.Board;
 import com.like.board.domain.model.QArticle;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
+import com.like.file.infra.file.LocalFileRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -271,7 +272,7 @@ public class ArticleDTO {
 													 .url(fileInfo.getPkFile())
 													 .name(fileInfo.getFileName())
 													 .status("done")																									
-													 .url("http://localhost:8090/common/file/"+fileInfo.getPkFile())
+													 .url(LocalFileRepository.fileDownLoadUrl+fileInfo.getPkFile())
 													 .build();
 				
 				responseList.add(dto);				

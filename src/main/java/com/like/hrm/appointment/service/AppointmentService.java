@@ -193,9 +193,7 @@ public class AppointmentService {
 	
 	public void saveLedgerList(LedgerDTO.SaveLedgerList dto) {
 		Ledger ledger = appointmentRepository.getLedger(dto.getLedgerId());
-		LedgerList list = ledger.getAppointmentList(dto.getListId());
-		
-		log.info(dto.toString());
+		LedgerList list = ledger.getAppointmentList(dto.getListId());			
 		
 		if (list == null) {			
 			list = dto.newEntity(ledger);

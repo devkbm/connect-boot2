@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.like.board.service.BoardCommandService;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
+import com.like.file.infra.file.LocalFileRepository;
 import com.like.file.service.FileService;
 
 @Controller
@@ -88,7 +89,7 @@ public class FileController {
 			res.put("status", "success");
 			
 			Map<String, String> link = new HashMap<>();
-			link.put("download", "http://localhost:8090/common/file/"+info.getPkFile());
+			link.put("download", LocalFileRepository.fileDownLoadUrl+info.getPkFile());
 			
 			FileResponseDTO response = FileResponseDTO.builder()
 														.uid(info.getPkFile())
@@ -96,7 +97,7 @@ public class FileController {
 														.status("done")
 														.response("success")
 														//.linkProps("http://localhost:8090/common/file/"+info.getPkFile())
-														.url("http://localhost:8090/common/file/"+info.getPkFile())
+														.url(LocalFileRepository.fileDownLoadUrl+info.getPkFile())
 														//.thumbUrl("http://localhost:8090/common/file/"+info.getPkFile())
 														.build();
 			fileList.add(response);
