@@ -26,8 +26,6 @@ public class UserValidController {
 				
 		return WebControllerUtil
 				.getResponse(isDuplicated ? false : true
-						    ,isDuplicated ? 1 : 0
-						    ,isDuplicated ? false : true
 						    ,isDuplicated ? "기존 아이디가 존재합니다." : "신규 등록 가능합니다."
 						    ,HttpStatus.OK); 
 	}
@@ -41,8 +39,6 @@ public class UserValidController {
 						
 		return WebControllerUtil
 				.getResponse(rtn
-							,1
-							,true
 							,rtn == false? "기존에 등록된 권한이 존재합니다." : "신규 등록 가능합니다."
 							,HttpStatus.OK);
 	}

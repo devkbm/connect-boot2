@@ -153,7 +153,7 @@ public class AppointmentCodeDTO {
 				return null;
 			}
 			
-			return qType.changeType.eq(ChangeType.valueOf(changeType));
+			return qType.changeType.eq(changeType);
 		}
 	}
 	

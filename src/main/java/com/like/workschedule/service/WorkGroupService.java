@@ -32,10 +32,6 @@ public class WorkGroupService {
 	}
 				
 	
-	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchWorkGroup searchCondition) {
-		return scheduleRepository.getWorkGroupList(searchCondition);		
-	}
-	
 	public List<WorkGroup> getMyWorkGroupList(String userId) {
 		return scheduleRepository.getMyWorkGroupList(userId);	
 	}
@@ -110,11 +106,6 @@ public class WorkGroupService {
 		scheduleRepository.deleteWorkGroupMember(workGroupMember);
 	}
 		
-	
-	public List<Schedule> getScheduleList(ScheduleDTO.SearchSchedule searchCondition) {
-		return scheduleRepository.getScheduleList(searchCondition);		
-	}
-	
 	public Schedule getSchedule(Long id) {
 		return scheduleRepository.getSchedule(id);
 	}

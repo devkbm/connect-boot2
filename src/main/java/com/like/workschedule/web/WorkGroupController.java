@@ -24,21 +24,26 @@ import com.like.workschedule.boundary.ScheduleDTO;
 import com.like.workschedule.boundary.WorkDTO;
 import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
+import com.like.workschedule.service.WorkGroupQueryService;
 import com.like.workschedule.service.WorkGroupService;
 
 @RestController
 public class WorkGroupController {	
 		
 	private WorkGroupService workGroupService;	
-				
-	public WorkGroupController(WorkGroupService workGroupService) {
+			
+	private WorkGroupQueryService workGroupQueryService;
+		
+	public WorkGroupController(WorkGroupService workGroupService
+							  ,WorkGroupQueryService workGroupQueryService) {
 		this.workGroupService = workGroupService;
+		this.workGroupQueryService = workGroupQueryService;
 	}
 
 	@GetMapping(value={"/grw/workgroup"})
 	public ResponseEntity<?> getWorkGroupList(@ModelAttribute WorkDTO.SearchWorkGroup searchCondition) {
 						
-		List<WorkGroup> workGroupList = workGroupService.getWorkGroupList(searchCondition);				
+		List<WorkGroup> workGroupList = workGroupQueryService.getWorkGroupList(searchCondition);				
 		
 		return WebControllerUtil
 				.getResponse(workGroupList
@@ -99,7 +104,7 @@ public class WorkGroupController {
 	@GetMapping(value={"/grw/schedule"})
 	public ResponseEntity<?> getScheduleList(@ModelAttribute ScheduleDTO.SearchSchedule searchCondition) {
 						
-		List<Schedule> workGroupList = workGroupService.getScheduleList(searchCondition);				
+		List<Schedule> workGroupList = workGroupQueryService.getScheduleList(searchCondition);				
 		
 		List<ScheduleDTO.ScheduleResponse> dtoList = workGroupList.stream().map( r -> ScheduleDTO.convertResDTO(r)).collect(Collectors.toList());
 		
