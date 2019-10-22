@@ -7,16 +7,38 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.util.StringUtils;
+
+import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.QLedgerList;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class LedgerDTO {
+	
+	public static List<ChangeInfo> convertDTO(List<AppointmentCodeDetail> detailList) {
+		
+		List<ChangeInfo> list = new ArrayList<>();
+		
+		for (AppointmentCodeDetail detail : detailList) {
+			list.add(new ChangeInfo(null
+								   ,detail.getChangeType().getCode()
+								   ,detail.getChangeTypeDetail()
+								   ,null
+								   ,detail.getSequence()));
+		}
+		
+		return list;
+	}
 	
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,6 +66,42 @@ public class LedgerDTO {
 							 ,this.comment);
 			
 			return entity;
+		}
+	}
+	
+	@Data
+	public static class SearchLedgerList implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QLedgerList qType = QLedgerList.ledgerList;
+		
+		@NotEmpty(message = "발령번호는 필수 값입니다.")
+		private String ledgerId;
+		
+		private String codeName;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder
+				.and(equalLedgerId(ledgerId));
+				//.and(likeCodeName(this.codeName));
+			
+			
+			return builder;
+		}
+		
+		private BooleanExpression equalLedgerId(String ledgerId) {						
+			return qType.ledger.ledgerId.eq(ledgerId);
+		}
+		
+		private BooleanExpression likeCodeName(String codeName) {
+			if (StringUtils.isEmpty(codeName)) {
+				return null;
+			}
+			
+			return null; //qType.codeName.like("%"+codeName+"%");
 		}
 	}
 	
@@ -118,6 +176,7 @@ public class LedgerDTO {
 	
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
 	public static class ChangeInfo implements Serializable {
 		
 		private static final long serialVersionUID = -83012562627190252L;

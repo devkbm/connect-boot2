@@ -132,7 +132,11 @@ public class AppointmentCodeDTO {
 		private String appointmentCode;
 		
 		private String changeType;
-					
+		
+		public SearchCodeDetail(String appointmentCode) {
+			this.appointmentCode = appointmentCode;
+		}
+		
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
@@ -143,8 +147,7 @@ public class AppointmentCodeDTO {
 			return builder;
 		}
 		
-		private BooleanExpression equalAppointmentCode(String appointmentCode) {			
-			
+		private BooleanExpression equalAppointmentCode(String appointmentCode) {						
 			return qType.appointmentCode.code.eq(appointmentCode);
 		}
 		
@@ -153,14 +156,14 @@ public class AppointmentCodeDTO {
 				return null;
 			}
 			
-			return qType.changeType.eq(changeType);
+			return qType.changeType.eq(ChangeType.valueOf(changeType));
 		}
 	}
 	
 	@Data
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	@AllArgsConstructor
-	public static class SaveCodeDetail implements Serializable {					
+	public static class SaveCodeDetail implements Serializable {
 					
 		private static final long serialVersionUID = 309168416341042059L;
 
