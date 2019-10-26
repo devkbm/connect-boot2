@@ -20,8 +20,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 public class LedgerDTO {
 	
@@ -38,6 +40,33 @@ public class LedgerDTO {
 		}
 		
 		return list;
+	}
+	
+	public static SaveLedgerList convertDTO(LedgerList entity) {
+		
+		List<ChangeInfo> list = new ArrayList<>();
+		
+		if (entity.getChangeInfoList() != null) {
+			for (LedgerChangeInfo info : entity.getChangeInfoList()) {
+				list.add(new ChangeInfo(info.getId()
+									   ,info.getChangeType().toString()
+									   ,info.getChangeTypeDetail()
+									   ,info.getChangeCode()
+									   ,info.getSequence()));
+			}
+		}
+		
+		return SaveLedgerList
+				.builder()
+				.ledgerId(entity.getLedger().getLedgerId())
+				.listId(entity.getListId())
+				.sequence(entity.getSequence())
+				.appointmentCode(entity.getAppointmentCode())
+				.empId(entity.getEmpId())
+				.fromDate(entity.getAppointmentFromDate())
+				.toDate(entity.getAppointmentToDate())
+				.changeInfoList(list)
+				.build();		
 	}
 	
 	@Data
@@ -79,14 +108,14 @@ public class LedgerDTO {
 		@NotEmpty(message = "발령번호는 필수 값입니다.")
 		private String ledgerId;
 		
-		private String codeName;
+		private String listId;
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
 			builder
-				.and(equalLedgerId(ledgerId));
-				//.and(likeCodeName(this.codeName));
+				.and(equalLedgerId(ledgerId))
+				.and(equalListId(listId));
 			
 			
 			return builder;
@@ -96,16 +125,18 @@ public class LedgerDTO {
 			return qType.ledger.ledgerId.eq(ledgerId);
 		}
 		
-		private BooleanExpression likeCodeName(String codeName) {
-			if (StringUtils.isEmpty(codeName)) {
+		private BooleanExpression equalListId(String listId) {
+			if (StringUtils.isEmpty(listId)) {
 				return null;
 			}
 			
-			return null; //qType.codeName.like("%"+codeName+"%");
+			return qType.listId.eq(listId);
 		}
 	}
 	
 	@Data	
+	@AllArgsConstructor
+	@Builder
 	public static class SaveLedgerList implements Serializable {
 												
 		private static final long serialVersionUID = -339266416839829125L;
@@ -146,8 +177,7 @@ public class LedgerDTO {
 			return entity;
 		}
 
-		
-		
+				
 		public LedgerList modifyEntity(LedgerList entity) {
 			entity.modifyEntity(getToDate());
 						

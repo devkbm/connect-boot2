@@ -10,6 +10,7 @@ import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
+import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 
@@ -31,7 +32,9 @@ public class AppointmentQueryService {
 		return appointmentRepository.getAppointmentCodeDetailList(dto);
 	}
 	
-	public List<LedgerList> getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {
-		return null;
+	public LedgerList getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {
+		Ledger ledger = appointmentRepository.getLedger(searchCondition.getLedgerId());		
+		
+		return ledger.getAppointmentList(searchCondition.getListId());
 	}
 }

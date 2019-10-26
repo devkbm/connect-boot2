@@ -19,6 +19,7 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO.ChangeInfo;
+import com.like.hrm.appointment.boundary.LedgerDTO.SaveLedgerList;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
@@ -79,10 +80,12 @@ public class AppointmentController {
 	@GetMapping("/hrm/ledgerlist")
 	public ResponseEntity<?> getLedgerList2(LedgerDTO.SearchLedgerList dto) {
 		
-		List<LedgerList> ledger = appointmentQueryService.getLedgerList(dto);
+		LedgerList list = appointmentQueryService.getLedgerList(dto);
 					
-		return WebControllerUtil.getResponse(ledger											
-											,String.format("%d 건 조회되었습니다.", ledger.size())
+		SaveLedgerList rtn = LedgerDTO.convertDTO(list);
+		
+		return WebControllerUtil.getResponse(rtn											
+											,String.format("%d 건 조회되었습니다.", rtn != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
 	
