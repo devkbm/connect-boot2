@@ -110,7 +110,16 @@ public class LedgerList extends AuditEntity implements Serializable {
 		this.listId = this.getLedger().getLedgerId() + size.toString();
 	}
 	
-	public void modifyEntity(LocalDate appointmentToDate) {
+	public void modifyEntity(String appointmentCode
+							,LocalDate appointmentFromDate
+			           		,LocalDate appointmentToDate) {
+		
+		if (this.appointmentCode.equals(appointmentCode) != true) {
+			this.clearChangeInfo();
+		}
+		
+		this.appointmentCode = appointmentCode;
+		this.appointmentFromDate = appointmentFromDate;
 		this.appointmentToDate = appointmentToDate;		
 	}
 	
@@ -143,5 +152,9 @@ public class LedgerList extends AuditEntity implements Serializable {
 			}
 		}
 		return result;
+	}
+	
+	public void clearChangeInfo() {
+		this.changeInfoList.clear();
 	}
 }

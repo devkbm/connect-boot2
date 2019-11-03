@@ -1,16 +1,15 @@
 package com.like.hrm.employee.domain.service;
 
-import java.util.List;
+import java.time.LocalDate;
 
-import javax.annotation.Resource;
-
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import com.like.hrm.appointment.domain.event.ProcessEvent;
-import com.like.hrm.appointment.domain.model.Ledger;
+import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
+import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
@@ -18,38 +17,41 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AppointmentProcessService implements ApplicationListener<ProcessEvent> {
+public class AppointmentProcessService {
 
-	private AppointmentRepository appointmentRepository;
-	
 	private EmployeeRepository employeeRepository;
 		
-	public void Appoinment(String AppointmentId) {
-		/*
-		AppointmentMemorandum memorandum = appointmentRepository.getAppointmentMemorandum();
-				
-		List<AppointmentDetails> appointmentList = memorandum.getDetails();
-		
-		for (AppointmentDetails appointment : appointmentList) {
-			
-		}
-		*/
-			
+	public AppointmentProcessService(EmployeeRepository employeeRepository) {		
+		this.employeeRepository = employeeRepository;		
 	}
+		
+	@EventListener
+	public void onApplicationEvent(AppointmentProcessEvent event) {
+						
+		LedgerList list = event.getLedgerList();
+		
+		Employee employee = employeeRepository.getEmployee(list.getEmpId());
 
-	@Override
-	public void onApplicationEvent(ProcessEvent event) {
-		
-		Ledger ledger = null; // appointmentRepository.getAppointmentCode(event.getAppointmentId());
-		
-		/*for ( LedgerList detail : ledger.getAppointmentList() ) {
+		for (LedgerChangeInfo ledgerChangeInfo : list.getChangeInfoList()) {
+								
+			if (ChangeType.DEPT.equals(ledgerChangeInfo.getChangeType())) {
+				AppointDeptInfo(employee, list.getAppointmentFromDate(), ledgerChangeInfo);
+				
+			} else if (ChangeType.JOB.equals(ledgerChangeInfo.getChangeType())) {
 			
-			Employee emp = employeeRepository.getEmployee(detail.getEmpId());
+			} 
+		}
+							
+	}
+	
+	private void AppointDeptInfo(Employee employee, LocalDate appointmentDate, LedgerChangeInfo info) {
+		for ( DeptChangeHistory history : employee.getDeptHistory() ) {
 			
-			emp.appoint(detail);
-			
-		}*/
-		
+			if (info.getChangeTypeDetail().equals(history.getDeptType())) {
+				
+				employee.terminateDept(info.getChangeTypeDetail(), appointmentDate.minusDays(1));								
+			}
+		}
 		
 	}
 	

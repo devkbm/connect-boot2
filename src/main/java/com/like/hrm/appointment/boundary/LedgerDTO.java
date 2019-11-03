@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Singular;
 
 public class LedgerDTO {
 	
@@ -63,8 +62,8 @@ public class LedgerDTO {
 				.sequence(entity.getSequence())
 				.appointmentCode(entity.getAppointmentCode())
 				.empId(entity.getEmpId())
-				.fromDate(entity.getAppointmentFromDate())
-				.toDate(entity.getAppointmentToDate())
+				.appointmentFromDate(entity.getAppointmentFromDate())
+				.appointmentToDate(entity.getAppointmentToDate())
 				.changeInfoList(list)
 				.build();		
 	}
@@ -153,9 +152,9 @@ public class LedgerDTO {
 							
 		private String appointmentCode;
 		
-		private LocalDate fromDate;
+		private LocalDate appointmentFromDate;
 						
-		private LocalDate toDate;		
+		private LocalDate appointmentToDate;		
 		
 		private List<ChangeInfo> changeInfoList = new ArrayList<>();
 				
@@ -167,8 +166,8 @@ public class LedgerDTO {
 			LedgerList entity = new LedgerList(ledger
 											  ,this.empId
 											  ,this.appointmentCode							  
-											  ,this.fromDate
-											  ,this.toDate);
+											  ,this.appointmentFromDate
+											  ,this.appointmentToDate);
 						
 			for (ChangeInfo info : changeInfoList ) {
 				entity.addChangeInfo(this.newLedgerChangeInfo(entity, info));
@@ -179,8 +178,12 @@ public class LedgerDTO {
 
 				
 		public LedgerList modifyEntity(LedgerList entity) {
-			entity.modifyEntity(getToDate());
-						
+			entity.modifyEntity(getAppointmentCode()
+							   ,getAppointmentFromDate()
+							   ,getAppointmentToDate());
+					
+			
+			
 			for (ChangeInfo info : changeInfoList ) {
 				if (info.getId() != null) {
 					LedgerChangeInfo ledgerChangeInfo = entity.getChangeInfo(info.getId());  													

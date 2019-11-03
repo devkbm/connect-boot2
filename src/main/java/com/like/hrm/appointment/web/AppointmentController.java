@@ -1,7 +1,6 @@
 package com.like.hrm.appointment.web;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO.ChangeInfo;
 import com.like.hrm.appointment.boundary.LedgerDTO.SaveLedgerList;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.service.AppointmentQueryService;
@@ -77,7 +74,7 @@ public class AppointmentController {
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledgerlist")
+	@GetMapping("/hrm/ledger/list")
 	public ResponseEntity<?> getLedgerList2(LedgerDTO.SearchLedgerList dto) {
 		
 		LedgerList list = appointmentQueryService.getLedgerList(dto);
@@ -88,18 +85,8 @@ public class AppointmentController {
 											,String.format("%d 건 조회되었습니다.", rtn != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
-	
-	@GetMapping("/hrm/ledgerlist/{id}")
-	public ResponseEntity<?> getLedgerList(@PathVariable(value="id") String id) {
 		
-		Ledger ledger = appointmentService.getLedger(id);
-					
-		return WebControllerUtil.getResponse(ledger											
-											,String.format("%d 건 조회되었습니다.", ledger == null ? 0 : 1)
-											,HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/hrm/ledgerlist"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/hrm/ledger/list"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveLedgerList(@RequestBody LedgerDTO.SaveLedgerList dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
@@ -114,7 +101,18 @@ public class AppointmentController {
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledgerlist/changeinfo/{code}")
+	@DeleteMapping("/hrm/ledger/{id}/list/{id2}")
+	public ResponseEntity<?> deleteLedgerList(@PathVariable(value="id") String id
+			                                 ,@PathVariable(value="id2") String id2 ) {				
+																		
+		appointmentService.deleteLedgerList(id, id2);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/ledger/list/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
 		
 		List<ChangeInfo> list = appointmentService.getChangeInfoList(code);

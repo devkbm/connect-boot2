@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "HRMEMPLOYEE")
 @EntityListeners(AuditingEntityListener.class)
-public class Employee extends AuditEntity implements Serializable, Appointable {
+public class Employee extends AuditEntity implements Serializable {
 
 	private static final long serialVersionUID = -3164713918774455925L;
 
@@ -217,12 +217,7 @@ public class Employee extends AuditEntity implements Serializable, Appointable {
 
 	public void changeImagePath(String imagePath) {
 		this.imagePath = imagePath;
-	}
-	
-	@Override
-	public void appoint(LedgerList ledgerDetail) {
-
-	}
+	}	
 
 	public License getLicense(Long id) {
 		return this.licenseList.stream()

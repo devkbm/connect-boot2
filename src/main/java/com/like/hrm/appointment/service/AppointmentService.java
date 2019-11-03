@@ -83,6 +83,12 @@ public class AppointmentService {
 		}			
 	}
 	
+	public void deleteLedgerList(String ledgerId, String listId) {
+		Ledger ledger = appointmentRepository.getLedger(ledgerId);
+		
+		ledger.deleteAppointmentList(listId);
+	}
+	
 	public List<LedgerDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
 		List<AppointmentCodeDetail> list = appointmentRepository.getAppointmentCodeDetailList(new SearchCodeDetail(appointmentCode));
 		//log.info(list.toString());
