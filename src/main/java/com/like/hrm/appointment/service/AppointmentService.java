@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.boundary.LedgerDTO;
+import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
@@ -33,9 +34,11 @@ public class AppointmentService {
 		this.appointmentRepository = appointmentRepository;
 	}
 
-	public void doSomething() {
-		log.info("서비스 발행");
-		//applicationEventPublisher.publishEvent(new ProcessEvent(this, new Ledger()));
+	public void appoint(String ledgerId, String listId) {
+		//log.info("서비스 발행");
+		Ledger ledger = appointmentRepository.getLedger(ledgerId);
+		LedgerList list = ledger.getAppointmentList(listId);
+		applicationEventPublisher.publishEvent(new AppointmentProcessEvent(this, list));
 	}
 		
 	public Ledger getLedger(String id) {
