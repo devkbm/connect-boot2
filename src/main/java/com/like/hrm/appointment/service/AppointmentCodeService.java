@@ -1,5 +1,7 @@
 package com.like.hrm.appointment.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
@@ -74,6 +76,10 @@ public class AppointmentCodeService {
 		appointmentCode.deleteAppointmentCodeDetail(dto.getDetailId());			
 	}
 		
+	public List<DeptType> getDeptTypeList() {
+		return appointmentRepository.getDeptTypeList();
+	}
+	
 	public DeptType getDeptType(String code) {
 		return appointmentRepository.getDeptType(ChangeType.DEPT.toString() + code);
 	}
@@ -106,6 +112,10 @@ public class AppointmentCodeService {
 		appointmentRepository.deleteDeptType(deptType);					
 	}
 
+	public List<JobType> getJobTypeList() {
+		return appointmentRepository.getJobTypeList();
+	}
+	
 	public JobType getJobType(String code) {
 		return appointmentRepository.getJobType(ChangeType.JOB.toString() + code);
 	}

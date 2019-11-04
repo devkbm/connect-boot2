@@ -102,23 +102,24 @@ public class AppointmentController {
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledger/{id}/list/{id2}/appoint")
-	public ResponseEntity<?> appointProcess(@PathVariable(value="id") String id
-            							   ,@PathVariable(value="id2") String id2) {
+	//@GetMapping("/hrm/ledger/{id}/list/{id2}/appoint")
+	@PostMapping(value={"/hrm/ledger/{ledgerId}/list/{listId}/appoint"})
+	public ResponseEntity<?> appointProcess(@PathVariable(value="ledgerId") String ledgerId
+            							   ,@PathVariable(value="listId") String listId) {
 		
 		
-		appointmentService.appoint(id, id2);
+		appointmentService.appoint(ledgerId, listId);
 		
 		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 조회되었습니다.", 1)
+											,String.format("%d 건 처리되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/hrm/ledger/{id}/list/{id2}")
-	public ResponseEntity<?> deleteLedgerList(@PathVariable(value="id") String id
-			                                 ,@PathVariable(value="id2") String id2 ) {				
+	@DeleteMapping("/hrm/ledger/{ledgerId}/list/{listId}")
+	public ResponseEntity<?> deleteLedgerList(@PathVariable(value="ledgerId") String ledgerId
+			   								 ,@PathVariable(value="listId") String listId) {				
 																		
-		appointmentService.deleteLedgerList(id, id2);						
+		appointmentService.deleteLedgerList(ledgerId, listId);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
@@ -128,9 +129,7 @@ public class AppointmentController {
 	@GetMapping("/hrm/ledger/list/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
 		
-		List<ChangeInfo> list = appointmentService.getChangeInfoList(code);
-		
-		//log.info(list.toString());
+		List<ChangeInfo> list = appointmentService.getChangeInfoList(code);			
 		
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())

@@ -16,6 +16,12 @@ public interface AppointmentRepository {
 
 	/**
 	 * 부서 유형을 조회한다.
+	 * @return
+	 */
+	List<DeptType> getDeptTypeList();
+	
+	/**
+	 * 부서 유형을 조회한다.
 	 * @param id
 	 * @return
 	 */
@@ -32,6 +38,9 @@ public interface AppointmentRepository {
 	 * @param deptType
 	 */
 	void deleteDeptType(DeptType deptType);	
+	
+	
+	List<JobType> getJobTypeList();
 	
 	/**
 	 * 인사 유형을 조회한다.
