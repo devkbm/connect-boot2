@@ -1,5 +1,6 @@
 package com.like.hrm.appointment.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -93,8 +94,9 @@ public class AppointmentService {
 	}
 	
 	public List<LedgerDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
-		List<AppointmentCodeDetail> list = appointmentRepository.getAppointmentCodeDetailList(new SearchCodeDetail(appointmentCode));
+		List<AppointmentCodeDetail> list = new ArrayList<>(appointmentRepository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
 		//log.info(list.toString());
+		
 		return LedgerDTO.convertDTO(list);
 	}
 

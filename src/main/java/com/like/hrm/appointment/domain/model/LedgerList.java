@@ -107,7 +107,8 @@ public class LedgerList extends AuditEntity implements Serializable {
 		this.appointmentFromDate = appointmentFromDate;
 		this.appointmentToDate = appointmentToDate;		
 						
-		this.listId = this.getLedger().getLedgerId() + size.toString();
+		//this.listId = this.getLedger().getLedgerId() + size.toString();
+		this.listId = this.getLedger().getLedgerId() + empId + appointmentCode;
 	}
 	
 	public void modifyEntity(String appointmentCode

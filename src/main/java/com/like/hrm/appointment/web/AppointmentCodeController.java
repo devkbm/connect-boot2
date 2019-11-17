@@ -25,18 +25,18 @@ import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.appointment.service.AppointmentCodeQueryService;
 import com.like.hrm.appointment.service.AppointmentCodeService;
-import com.like.hrm.appointment.service.AppointmentQueryService;
 
 @RestController
 public class AppointmentCodeController {
 
 	private AppointmentCodeService appointmentService;	
 	
-	private AppointmentQueryService appointmentQueryService;
+	private AppointmentCodeQueryService appointmentQueryService;
 
 	public AppointmentCodeController(AppointmentCodeService appointmentService
-								,AppointmentQueryService appointmentQueryService) {
+									,AppointmentCodeQueryService appointmentQueryService) {
 		this.appointmentService = appointmentService;
 		this.appointmentQueryService = appointmentQueryService;
 	}

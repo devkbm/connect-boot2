@@ -5,36 +5,26 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
-import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.boundary.LedgerDTO;
-import com.like.hrm.appointment.domain.model.AppointmentCode;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentQueryRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class AppointmentQueryService {
 
-	private AppointmentRepository appointmentRepository;
+	private AppointmentQueryRepository appointmentQueryRepository;
 	
-	public AppointmentQueryService(AppointmentRepository appointmentRepository) {		
-		this.appointmentRepository = appointmentRepository;
+	public AppointmentQueryService(AppointmentQueryRepository appointmentQueryRepository) {		
+		this.appointmentQueryRepository = appointmentQueryRepository;
 	}
 	
-	public List<AppointmentCode> getAppointentCodeList(AppointmentCodeDTO.SearchCode search) {
-		return appointmentRepository.getAppointmentCodeList(search);
+	public List<Ledger> getLedger(LedgerDTO.SearchLedger searchCondition) {
+		return appointmentQueryRepository.getLedger(searchCondition);
 	}
 	
-	public List<AppointmentCodeDetail> getAppointmentCodeDetailList(SearchCodeDetail dto) {
-		return appointmentRepository.getAppointmentCodeDetailList(dto);
-	}
-	
-	public LedgerList getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {
-		Ledger ledger = appointmentRepository.getLedger(searchCondition.getLedgerId());		
-		
-		return ledger.getAppointmentList(searchCondition.getListId());
+	public List<LedgerList> getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {					
+		return appointmentQueryRepository.getLedgerList(searchCondition);
 	}
 }

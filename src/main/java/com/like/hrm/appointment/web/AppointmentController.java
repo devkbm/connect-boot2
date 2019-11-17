@@ -40,6 +40,18 @@ public class AppointmentController {
 		this.appointmentQueryService = appointmentQueryService;
 	}
 	
+	@GetMapping("/hrm/ledger")
+	public ResponseEntity<?> getLedger(LedgerDTO.SearchLedger dto) {
+		
+		List<Ledger> list = appointmentQueryService.getLedger(dto);
+					
+		//SaveLedgerList rtn = LedgerDTO.convertDTO(list);
+		
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/hrm/ledger/{id}")
 	public ResponseEntity<?> getLedger(@PathVariable(value="id") String id) {
 		
@@ -78,14 +90,33 @@ public class AppointmentController {
 	@GetMapping("/hrm/ledger/list")
 	public ResponseEntity<?> getLedgerList(LedgerDTO.SearchLedgerList dto) {
 		
-		LedgerList list = appointmentQueryService.getLedgerList(dto);
+		List<LedgerList> list = appointmentQueryService.getLedgerList(dto);
 					
-		SaveLedgerList rtn = LedgerDTO.convertDTO(list);
+		//SaveLedgerList rtn = LedgerDTO.convertDTO(list);
+		
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/ledger/{ledgerId}/list/{listId}")
+	public ResponseEntity<?> getLedgerList(@PathVariable(value="ledgerId") String ledgerId
+			   							  ,@PathVariable(value="listId") String listId) {
+		
+		LedgerList list = appointmentService.getLedgerList(ledgerId, listId);
+					
+		SaveLedgerList rtn = null; 
+		
+		if (list != null) {
+			rtn = LedgerDTO.convertDTO(list);
+		} else {
+			rtn = new SaveLedgerList();
+		}
 		
 		return WebControllerUtil.getResponse(rtn											
 											,String.format("%d 건 조회되었습니다.", rtn != null ? 1 : 0)
 											,HttpStatus.OK);
-	}	
+	}
 		
 	@RequestMapping(value={"/hrm/ledger/list"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveLedgerList(@RequestBody LedgerDTO.SaveLedgerList dto, BindingResult result) {				

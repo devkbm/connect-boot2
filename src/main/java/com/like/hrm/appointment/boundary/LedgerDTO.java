@@ -13,6 +13,7 @@ import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.QLedger;
 import com.like.hrm.appointment.domain.model.QLedgerList;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.querydsl.core.BooleanBuilder;
@@ -66,6 +67,35 @@ public class LedgerDTO {
 				.appointmentToDate(entity.getAppointmentToDate())
 				.changeInfoList(list)
 				.build();		
+	}
+	
+	@Data
+	public static class SearchLedger implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QLedger qType = QLedger.ledger;
+				
+		private String ledgerId;
+				
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder
+				.and(likeLedgerId(ledgerId));
+						
+			return builder;
+		}
+		
+		private BooleanExpression likeLedgerId(String ledgerId) {
+			if (StringUtils.isEmpty(ledgerId)) {
+				return null;
+			}
+			
+			return qType.ledgerId.like(ledgerId);
+		}
+				
 	}
 	
 	@Data

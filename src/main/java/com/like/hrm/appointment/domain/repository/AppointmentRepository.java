@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
+import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
 import com.like.hrm.appointment.domain.model.Ledger;
+import com.like.hrm.appointment.domain.model.LedgerList;
 
 @Repository
 public interface AppointmentRepository {
@@ -62,13 +64,6 @@ public interface AppointmentRepository {
 	void deleteJobType(JobType jobType);	
 	
 	/**
-	 * 발령코드 명단을 조회한다.
-	 * @param condition
-	 * @return
-	 */
-	List<AppointmentCode> getAppointmentCodeList(AppointmentCodeDTO.SearchCode dto);
-	
-	/**
 	 * 발령코드를 조회한다.
 	 * @param codeId
 	 * @return
@@ -85,18 +80,12 @@ public interface AppointmentRepository {
 	 * 발령코드를 삭제한다.
 	 * @param appointmentCode
 	 */
-	void deleteAppintmentCode(AppointmentCode appointmentCode);
-	
-	/**
-	 * 발령코드 상세정보 명단을 조회한다.
-	 * @param dto
-	 * @return
-	 */
-	List<AppointmentCodeDetail> getAppointmentCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto);
-	
+	void deleteAppintmentCode(AppointmentCode appointmentCode);	
+		
 	Ledger getLedger(String id);
 	
 	void saveLedger(Ledger ledger);
 	
-	void deleteLedger(Ledger ledger);
+	void deleteLedger(Ledger ledger);	
+	
 }
