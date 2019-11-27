@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.License;
@@ -33,9 +34,40 @@ public class EmployeeDTO {
 		private String nameChi;
 				
 		@NotEmpty
-		private String residentRegistrationNumber;
-		
+		private String residentRegistrationNumber;	
 	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class SaveEmployee implements Serializable {
+								
+		private static final long serialVersionUID = -3475382902805357777L;
+
+		@NotEmpty
+		private String id;
+				
+		private String name;
+
+		private String nameEng;
+		
+		private String nameChi;			
+						
+		private String gender;	
+		
+		private LocalDate birthday;
+		
+		public void modifyEntity(Employee entity) {
+			entity.modifyEntity(this.name
+					 		   ,this.nameEng
+					 		   ,this.nameChi
+					 		   ,this.gender
+					 		   ,this.birthday);
+		}
+	}
+		
 	
 	@Data
 	@NoArgsConstructor

@@ -116,7 +116,11 @@ public class WorkGroupService {
 	
 	public void saveSchedule(ScheduleDTO.SaveSchedule dto) {
 		WorkGroup workGroup = scheduleRepository.getWorkGroup(dto.getWorkGroupId());
-		Schedule entity = scheduleRepository.getSchedule(dto.getId());
+		Schedule entity = null; 
+		
+		if (dto.getId() != null) {
+			entity = scheduleRepository.getSchedule(dto.getId());
+		}
 		
 		if (entity == null) {
 			entity = dto.newSchedule(workGroup);

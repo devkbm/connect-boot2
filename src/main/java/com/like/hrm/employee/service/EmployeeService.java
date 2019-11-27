@@ -31,18 +31,19 @@ public class EmployeeService {
 		return employeeRepository.getEmployee(id);										
 	}
 	
-	public void saveEmployee(Employee employee) {
+	public void saveEmployee(Employee employee) {				
 		employeeRepository.saveEmployee(employee);
 	}
 	
-	public void newEmployee(EmployeeDTO.NewEmployee dto) {								
-		/*
-		Employee emp = Employee.builder()
-							   .id(idGenerator.generateEmpId())
-							   .name(dto.getName())
-							   .residentRegistrationNumber(dto.getResidentRegistrationNumber())
-							   .build();	
-		*/
+	public void saveEmployee(EmployeeDTO.SaveEmployee dto) {
+		Employee employee = employeeRepository.getEmployee(dto.getId());
+		
+		dto.modifyEntity(employee);
+		
+		employeeRepository.saveEmployee(employee);
+	}
+	
+	public void newEmployee(EmployeeDTO.NewEmployee dto) {										
 		
 		Employee emp = new Employee(idGenerator.generateEmpId()
 				                   ,dto.getName()

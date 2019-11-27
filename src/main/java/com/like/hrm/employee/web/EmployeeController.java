@@ -43,13 +43,28 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value={"/hrm/employee/create"}, method={RequestMethod.POST,RequestMethod.PUT})	
-	public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDTO.NewEmployee dto, BindingResult result) {			
+	public ResponseEntity<?> newEmployee(@RequestBody @Valid EmployeeDTO.NewEmployee dto, BindingResult result) {			
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		} 											
 						
 		employeeService.newEmployee(dto);
+											 				
+		return WebControllerUtil
+				.getResponse(null											
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/employee"}, method={RequestMethod.POST,RequestMethod.PUT})	
+	public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDTO.SaveEmployee dto, BindingResult result) {			
+		
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+						
+		employeeService.saveEmployee(dto);
 											 				
 		return WebControllerUtil
 				.getResponse(null											

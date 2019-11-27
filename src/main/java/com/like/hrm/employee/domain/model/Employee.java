@@ -116,6 +116,18 @@ public class Employee extends AuditEntity implements Serializable {
 		this.residentRegistrationNumber = residentRegistrationNumber;
 		this.workCondition = "Z";
 	}
+	
+	public void modifyEntity(String name
+						    ,String nameEng
+						    ,String nameChi
+						    ,String gender
+						    ,LocalDate birthday) {
+		this.name 		= name;
+		this.nameEng 	= nameEng;
+		this.nameChi 	= nameChi;
+		this.gender 	= gender;
+		this.birthday 	= birthday;
+	}
 		
 	public String getEmployeeId() {
 		return this.id;
