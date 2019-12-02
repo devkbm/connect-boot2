@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
  * @author 김병민
  * 
  */
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"employee"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
