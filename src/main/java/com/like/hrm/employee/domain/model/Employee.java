@@ -39,7 +39,7 @@ public class Employee extends AuditEntity implements Serializable {
 	 */
 	@Id
 	@Column(name="EMP_ID")
-	String id;
+	String id;	
 	
 	/**
 	 * 한글 성명
@@ -58,6 +58,12 @@ public class Employee extends AuditEntity implements Serializable {
 	 */
 	@Column(name="EMP_NAME_CHI")
 	String nameChi;
+	
+	/**
+	 * 법적 이름
+	 */
+	@Column(name="EMP_NAME_LEGAL")
+	String legalName;
 		
 	/**
 	 * 주민번호
@@ -89,18 +95,33 @@ public class Employee extends AuditEntity implements Serializable {
 	@Column(name="IMG_PATH")
 	String imagePath;
 		
+	/**
+	 * 부서이력
+	 */
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<DeptChangeHistory> deptHistory = new ArrayList<>();
 		
+	/**
+	 * 직위 직급 등 인사정보 이력
+	 */
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<JobChangeHistory> jobHistory = new ArrayList<>();		
 	
+	/**
+	 * 근무상태 이력
+	 */
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	List<StatusChangeHistory> statusHistory = new ArrayList<>();
 	
+	/**
+	 * 자격면허
+	 */
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	Set<License> licenseList = new LinkedHashSet<>();
 	
+	/**
+	 * 교육이력
+	 */
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	Set<Education> educationList = new LinkedHashSet<>();
 	

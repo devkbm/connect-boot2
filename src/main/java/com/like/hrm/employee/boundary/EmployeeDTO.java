@@ -6,10 +6,15 @@ import java.time.LocalDate;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.License;
+import com.like.hrm.employee.domain.model.QEmployee;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +22,47 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class EmployeeDTO {
+	
+	@Data
+	public static class SearchEmployee implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
 
+		private final QEmployee qEmployee = QEmployee.employee;
+						
+		String id;
+		
+		String name;
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder				
+				.and(likeId(this.id))
+				.and(likeName(this.name));											
+			
+			return builder;
+		}
+		
+		private BooleanExpression likeId(String id) {
+			if (StringUtils.isEmpty(id)) {
+				return null;
+			}
+			
+			return qEmployee.id.like("%"+id+"%");
+		}
+		
+		private BooleanExpression likeName(String name) {
+			if (StringUtils.isEmpty(name)) {
+				return null;
+			}
+			
+			return qEmployee.name.like("%"+name+"%");
+		}
+					
+		
+	}
+	
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor

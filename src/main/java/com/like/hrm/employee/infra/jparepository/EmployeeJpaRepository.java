@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.hrm.employee.boundary.EmployeeDTO.SearchEmployee;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
@@ -44,9 +45,12 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	}
 
 	@Override
-	public List<Employee> getEmployeeList() {
+	public List<Employee> getEmployeeList(SearchEmployee dto) {
 		
-		return jpaEmployee.findAll();
+		return queryFactory.select(qEmployee)
+				.from(qEmployee)					
+				.where(dto.getBooleanBuilder())
+				.fetch();
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.like.hrm.employee.boundary.EmployeeDTO.SearchEmployee;
 import com.like.hrm.employee.domain.model.Employee;
 
 @Repository
@@ -24,7 +25,7 @@ public interface EmployeeRepository {
 	 */
 	Employee getLastEmployee(String yyyy);
 	
-	List<Employee> getEmployeeList();
+	List<Employee> getEmployeeList(SearchEmployee dto);
 	
 	/**
 	 * <p>Employee 엔티티를 저장한다.</p>

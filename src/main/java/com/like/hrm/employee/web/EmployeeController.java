@@ -1,5 +1,7 @@
 package com.like.hrm.employee.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,16 @@ public class EmployeeController {
 	@Autowired
 	public EmployeeController(EmployeeService employeeService) {
 		this.employeeService = employeeService;
+	}
+	
+	@GetMapping("/hrm/employee")
+	public ResponseEntity<?> getEmployeeList(EmployeeDTO.SearchEmployee dto) {
+		
+		List<Employee> list = employeeService.getEmployeeList(dto);					
+		
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/hrm/employee/{id}")
