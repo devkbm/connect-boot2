@@ -9,6 +9,8 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.License;
@@ -22,8 +24,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class EmployeeDTO {
-	
+		
 	@Data
+	@JsonInclude(Include.NON_EMPTY)	
 	public static class SearchEmployee implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -36,7 +39,7 @@ public class EmployeeDTO {
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-			
+				
 			builder				
 				.and(likeId(this.id))
 				.and(likeName(this.name));											
