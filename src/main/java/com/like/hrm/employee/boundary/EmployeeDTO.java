@@ -36,6 +36,8 @@ public class EmployeeDTO {
 		String id;
 		
 		String name;
+		
+		String deptCode;
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
@@ -62,6 +64,8 @@ public class EmployeeDTO {
 			
 			return qEmployee.name.like("%"+name+"%");
 		}
+		
+		
 					
 		
 	}

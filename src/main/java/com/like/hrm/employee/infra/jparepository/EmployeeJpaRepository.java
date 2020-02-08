@@ -49,7 +49,7 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 		
 		return queryFactory.select(qEmployee)
 				.from(qEmployee)					
-				.where(dto.getBooleanBuilder())
+				.where(dto.getBooleanBuilder())				
 				.fetch();
 	}
 
