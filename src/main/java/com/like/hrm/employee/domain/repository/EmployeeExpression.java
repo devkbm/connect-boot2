@@ -48,15 +48,16 @@ public class EmployeeExpression {
 	 * @return
 	 */
 	@QueryDelegate(Employee.class)
-	public static BooleanExpression equalDeptName(QEmployee employee, String deptName) {
+	public static BooleanExpression likeDeptName(QEmployee employee, String deptName) {
 		
 		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
 		QDept qDept = QDept.dept;
 		
 		return JPAExpressions.select(Expressions.constant(1))
 				  			 .from(qDeptChangeHistory)				  			
-				  			 //.innerJoin(qDeptChangeHistory.deptCode, qDept)
-				             .where(qDeptChangeHistory.deptCode.like("%"+deptName+"%")).exists();
+				  			 .join(qDept)
+				  			 .on(qDeptChangeHistory.deptCode.eq(qDept.deptCode))				  			 				  			 				  		
+				             .where(qDept.deptNameKorean.like(deptName)).exists();
 	}
 	
 	/*

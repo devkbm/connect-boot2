@@ -39,12 +39,16 @@ public class EmployeeDTO {
 		
 		String deptCode;
 					
+		String deptName;
+		
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 				
 			builder				
 				.and(likeId(this.id))
-				.and(likeName(this.name));											
+				.and(likeName(this.name))
+				.and(eqDeptCode(this.deptCode))
+				.and(likeDeptName(this.deptName));
 			
 			return builder;
 		}
@@ -65,7 +69,21 @@ public class EmployeeDTO {
 			return qEmployee.name.like("%"+name+"%");
 		}
 		
+		private BooleanExpression eqDeptCode(String deptCode) {
+			if (StringUtils.isEmpty(deptCode)) {
+				return null;
+			}
+			
+			return qEmployee.equalDeptCode(deptCode);
+		}
 		
+		private BooleanExpression likeDeptName(String deptName) {
+			if (StringUtils.isEmpty(deptName)) {
+				return null;
+			}
+			
+			return qEmployee.likeDeptName("%"+deptName+"%");
+		}
 					
 		
 	}
