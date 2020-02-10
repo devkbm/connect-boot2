@@ -82,7 +82,7 @@ public class EmployeeDTO {
 				return null;
 			}
 			
-			return qEmployee.likeDeptName("%"+deptName+"%");
+			return qEmployee.likeDeptName("%"+deptName+"%", LocalDate.now());
 		}
 					
 		

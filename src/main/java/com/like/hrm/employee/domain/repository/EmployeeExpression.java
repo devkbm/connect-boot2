@@ -40,24 +40,21 @@ public class EmployeeExpression {
 				  			 .from(qDeptChangeHistory)
 				             .where(qDeptChangeHistory.deptCode.eq(deptCode)).exists();
 	}
-	
-	/**
-	 * jpql에서 key가 아닌 컬럼 조인 어떻게 해야하는지 검색필요
-	 * @param employee
-	 * @param deptName
-	 * @return
-	 */
+		
 	@QueryDelegate(Employee.class)
-	public static BooleanExpression likeDeptName(QEmployee employee, String deptName) {
+	public static BooleanExpression likeDeptName(QEmployee employee, String deptName, LocalDate date) {
 		
 		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
+		DateExpression<LocalDate> dateExpression = Expressions.asDate(date);
 		QDept qDept = QDept.dept;
 		
 		return JPAExpressions.select(Expressions.constant(1))
 				  			 .from(qDeptChangeHistory)				  			
 				  			 .join(qDept)
 				  			 .on(qDeptChangeHistory.deptCode.eq(qDept.deptCode))				  			 				  			 				  		
-				             .where(qDept.deptNameKorean.like(deptName)).exists();
+				             .where(qDept.deptNameKorean.like(deptName)
+				               .and(dateExpression.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)))
+				             .exists();
 	}
 	
 	/*

@@ -47,8 +47,9 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	@Override
 	public List<Employee> getEmployeeList(SearchEmployee dto) {
 		
-		return queryFactory.select(qEmployee)
-				.from(qEmployee)					
+		return queryFactory
+				.select(qEmployee)
+				.from(qEmployee)				
 				.where(dto.getBooleanBuilder())				
 				.fetch();
 	}
