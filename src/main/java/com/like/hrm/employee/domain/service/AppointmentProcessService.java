@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
@@ -26,7 +28,8 @@ public class AppointmentProcessService {
 		this.employeeRepository = employeeRepository;		
 	}
 		
-	@EventListener
+	//@EventListener
+	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void onApplicationEvent(AppointmentProcessEvent event) {					
 		LedgerList list = event.getLedgerList();		
 		Employee employee = employeeRepository.getEmployee(list.getEmpId());
@@ -47,6 +50,8 @@ public class AppointmentProcessService {
 			} 
 			
 		}
+		
+		list.finish();
 							
 	}
 	

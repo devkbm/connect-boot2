@@ -45,7 +45,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = 8498392159292587566L;
 
 	/**
-	 * 식별자 : 발령장번호 + 순번(생성시)
+	 * 식별자 : 발령장번호 + 직원번호+ 발령코드
 	 */
 	@Id	
 	@Column(name="LIST_ID")
@@ -82,6 +82,9 @@ public class LedgerList extends AuditEntity implements Serializable {
 	@Column(name="TO_DT")
 	LocalDate appointmentToDate;
 	
+	@Column(name="FINISH_YN")
+	Boolean finishYn;
+	
 	/**
 	 * 발령변경정보
 	 */
@@ -106,6 +109,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 		this.appointmentCode = appointmentCode;
 		this.appointmentFromDate = appointmentFromDate;
 		this.appointmentToDate = appointmentToDate;		
+		this.finishYn = false;
 						
 		//this.listId = this.getLedger().getLedgerId() + size.toString();
 		this.listId = this.getLedger().getLedgerId() + empId + appointmentCode;
@@ -158,4 +162,9 @@ public class LedgerList extends AuditEntity implements Serializable {
 	public void clearChangeInfo() {
 		this.changeInfoList.clear();
 	}
+	
+	public void finish() {
+		this.finishYn = true;
+	}
+	
 }

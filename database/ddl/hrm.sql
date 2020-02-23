@@ -156,6 +156,7 @@ create table if not exists COM.HRMAPPOINTMENTLEDGERLIST (
 	APPOINTMENT_CODE		VARCHAR(10)		NOT NULL	COMMENT '발령코드',    
 	FROM_DT					DATETIME		NOT NULL 	COMMENT '발령일',			
 	TO_DT					DATETIME	 	NULL 		COMMENT '발령종료일',
+	FINISH_YN				BOOLEAN			NULL 		COMMENT '완료여부',
 	constraint pk_hrmappointmentledgerlist 	primary key(LIST_ID),	
 	constraint fk_hrmappointmentledgerlist1 foreign key(LEDGER_ID) references HRMAPPOINTMENTLEDGER(LEDGER_ID)  
 ) COMMENT = '발령대장명단';
