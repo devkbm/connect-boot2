@@ -47,10 +47,10 @@ public class AppointmentCodeService {
 		appointmentRepository.deleteAppintmentCode(appointmentCode);
 	}	
 	
-	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String type) {
+	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String typeId) {
 		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);
 		
-		return entity.getCodeDetail(type);
+		return entity.getCodeDetail(typeId);
 	}
 		
 	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
@@ -71,9 +71,9 @@ public class AppointmentCodeService {
 		
 	}
 	
-	public void deleteAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
-		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
-		appointmentCode.deleteAppointmentCodeDetail(dto.getDetailId());			
+	public void deleteAppointmentCodeDetail(String appointmentCode, String typeId) {
+		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);			
+		entity.deleteAppointmentCodeDetail(typeId);			
 	}
 		
 	public List<DeptType> getDeptTypeList() {

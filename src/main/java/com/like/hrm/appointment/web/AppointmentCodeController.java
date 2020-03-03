@@ -120,10 +120,11 @@ public class AppointmentCodeController {
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/hrm/appointmentcodedetail")
-	public ResponseEntity<?> delCodeDetail(@RequestBody AppointmentCodeDTO.SaveCodeDetail dto, BindingResult result) {						
+	@DeleteMapping("/hrm/appointmentcodedetail/{id}/{detailId}")
+	public ResponseEntity<?> delCodeDetail(@PathVariable(value="id") String id,
+			   							   @PathVariable(value="detailId") String detailId) {						
 												
-		appointmentService.deleteAppointmentCodeDetail(dto);
+		appointmentService.deleteAppointmentCodeDetail(id, detailId);
 								 						
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

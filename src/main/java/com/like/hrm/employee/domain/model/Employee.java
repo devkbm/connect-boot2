@@ -168,6 +168,8 @@ public class Employee extends AuditEntity implements Serializable {
 	
 	/**
 	 * <p>부서변경이력을 추가한다.</p>
+	 * 1. 동일 부서 유형의 유효한 부서 정보 종료
+	 * 2. 신규 부서 정보 입력
 	 * @param deptChangeHistory
 	 */
 	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
@@ -202,6 +204,8 @@ public class Employee extends AuditEntity implements Serializable {
 	
 	/**
 	 * <p>인사정보이력을 추가한다.</p>
+	 * 1. 동일 인사 유형의 유효한 인사 정보 종료
+	 * 2. 신규 인사 정보 입력
 	 * @param jobChangeHistory
 	 */
 	public void addJobChange(JobChangeHistory jobChangeHistory) {

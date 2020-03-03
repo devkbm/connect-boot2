@@ -23,7 +23,8 @@ import lombok.NoArgsConstructor;
 public class AppointmentCodeDTO {
 
 	public static SaveCodeDetail convertDTO(AppointmentCodeDetail entity) {
-		return new SaveCodeDetail(entity.getAppointmentCode().getCode()
+		return new SaveCodeDetail(entity.getId()
+				                 ,entity.getAppointmentCode().getCode()
 				                 ,entity.getChangeType().toString()
 				                 ,entity.getChangeTypeDetail()
 				                 ,entity.getSequence());
@@ -167,6 +168,8 @@ public class AppointmentCodeDTO {
 					
 		private static final long serialVersionUID = 309168416341042059L;
 
+		private String detailId;
+		
 		private String code;
 							
 		private String changeType;					
@@ -184,8 +187,8 @@ public class AppointmentCodeDTO {
 			return detail;
 		}
 		
-		public String getDetailId() {
+		/*public String getDetailId() {
 			return this.code + this.changeType + this.changeTypeDetail;
-		}
+		}*/
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.common.web.exception.ControllerException;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.boundary.LedgerDTO;
@@ -39,6 +40,11 @@ public class AppointmentService {
 		//log.info("서비스 발행");
 		Ledger ledger = appointmentRepository.getLedger(ledgerId);
 		LedgerList list = ledger.getAppointmentList(listId);
+		
+		if (list.getFinishYn()) {
+			throw new ControllerException("처리가 완료된 발령입니다.");
+		}
+			
 		applicationEventPublisher.publishEvent(new AppointmentProcessEvent(this, list));
 	}
 		
