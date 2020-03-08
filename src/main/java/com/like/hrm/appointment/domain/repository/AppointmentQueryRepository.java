@@ -9,7 +9,7 @@ import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 
-public interface AppointmentQueryRepository {
+public interface AppointmentQueryRepository {	
 	
 	/**
 	 * 발령코드 명단을 조회한다.

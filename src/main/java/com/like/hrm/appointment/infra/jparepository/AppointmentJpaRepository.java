@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
+import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedger;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedgerList;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
@@ -22,6 +24,7 @@ import com.like.hrm.appointment.domain.model.QDeptType;
 import com.like.hrm.appointment.domain.model.QJobType;
 import com.like.hrm.appointment.domain.model.QLedger;
 import com.like.hrm.appointment.domain.model.QLedgerList;
+import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.like.hrm.appointment.domain.repository.AppointmentQueryRepository;
 import com.like.hrm.appointment.domain.repository.AppointmentRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
@@ -34,7 +37,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 public class AppointmentJpaRepository implements AppointmentRepository, AppointmentQueryRepository {
 
 	@Autowired
-	private JPAQueryFactory	queryFactory;
+	private JPAQueryFactory	queryFactory;	
 	
 	@Autowired
 	private JpaAppointmentCode jpaAppointmentCode;	

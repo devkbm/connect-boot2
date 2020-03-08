@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
+import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
@@ -139,6 +140,18 @@ public class AppointmentCodeController {
 		for (ChangeType menuType : ChangeType.values()) {			
 			list.add(new EnumDTO(menuType.getCode(), menuType.getName()));
 		}										
+					
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/codelist/{code}")
+	public ResponseEntity<?> getTypeCodeList(@PathVariable(value="code") String code) {
+		
+		List<ChangeableCodeDTO.EnumDTO> list = null;
+		
+		list = appointmentQueryService.getChangeableCodeDTO(ChangeType.valueOf(code));		
 					
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())

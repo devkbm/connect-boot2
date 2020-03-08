@@ -105,6 +105,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 				.from(qCode)
 				.where(qCode.parentCode.id.eq(parentId)
 					.and(qCode.enabled()))
+				.orderBy(qCode.seq.asc())
 				.fetch();
 	}
 	
