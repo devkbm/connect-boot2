@@ -52,6 +52,10 @@ public class LocalFileRepository {
 		this.fileDownLoadUrl = url;
 	}	
 	
+	public File getStaticPathFile(String uuid) {
+		return new File(this.staticUploadPath, uuid);
+	}
+	
 	public String fileTransfer(MultipartFile sourceFile, String fileName, FileUploadLocation location) throws FileNotFoundException, IOException {
 		String path = null;
 		File file = null;

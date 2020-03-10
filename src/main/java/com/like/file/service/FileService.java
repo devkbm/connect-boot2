@@ -60,7 +60,11 @@ public class FileService {
 		return rtn; 		
 	}
 		
-		
+	
+	public void downloadFile(File file, HttpServletResponse response) throws FileNotFoundException, IOException {				
+		localFileRepository.fileToStream(file, response.getOutputStream());			
+	}
+	
 	public FileInfo downloadFile(HttpServletResponse response, String pk) throws FileNotFoundException, IOException {
 		
 		FileInfo file = getFileInfo(pk);
@@ -106,6 +110,10 @@ public class FileService {
 		FileInfo info = fileInfoRepository.getFileInfo(id);
 					
 		return localFileRepository.fileToBase64String(info.getPath(), info.getUuid());		
+	}
+	
+	public File getStaticPathFile(String uuid) {
+		return localFileRepository.getStaticPathFile(uuid);
 	}
 	
 	private FileInfo createFileInfo(MultipartFile sourceFile, String uuid, String userId, String pgmId) {
