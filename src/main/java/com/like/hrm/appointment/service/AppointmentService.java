@@ -17,7 +17,7 @@ import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,10 +28,10 @@ public class AppointmentService {
 
 	public ApplicationEventPublisher applicationEventPublisher;
 	
-	private AppointmentRepository appointmentRepository;
+	private AppointmentLedgerRepository appointmentRepository;
 	
 	public AppointmentService(ApplicationEventPublisher applicationEventPublisher
-							 ,AppointmentRepository appointmentRepository) {
+							 ,AppointmentLedgerRepository appointmentRepository) {
 		this.applicationEventPublisher = applicationEventPublisher;
 		this.appointmentRepository = appointmentRepository;
 	}
@@ -97,13 +97,6 @@ public class AppointmentService {
 		Ledger ledger = appointmentRepository.getLedger(ledgerId);
 		
 		ledger.deleteAppointmentList(listId);
-	}
-	
-	public List<LedgerDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
-		List<AppointmentCodeDetail> list = new ArrayList<>(appointmentRepository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
-		//log.info(list.toString());
-		
-		return LedgerDTO.convertDTO(list);
-	}
+	}	
 
 }

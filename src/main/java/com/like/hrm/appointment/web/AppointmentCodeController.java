@@ -22,6 +22,7 @@ import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
+import com.like.hrm.appointment.boundary.TypeDetailCodeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
@@ -226,4 +227,28 @@ public class AppointmentCodeController {
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}	
+	
+	@GetMapping("/hrm/typedetailcode/{id}")
+	public ResponseEntity<?> getTypeDetailCode(@PathVariable(value="id") String id) {
+		
+		TypeDetailCodeDTO.SaveCode dto = appointmentService.getTypeDetailCodeDTO(id);
+					
+		return WebControllerUtil.getResponse(dto
+											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
+											,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/typedetailcode"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveTypeDetailCode(@RequestBody TypeDetailCodeDTO.SaveCode dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {			
+			throw new ControllerException(result.toString());
+		} 
+																	
+		appointmentService.saveTypeDetailCode(dto);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
 }

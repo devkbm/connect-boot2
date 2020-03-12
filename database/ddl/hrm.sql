@@ -3,15 +3,31 @@ create table if not exists COM.HRMTYPECODE (
 	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
 	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    TYPE_ID					VARCHAR(20) 	NOT NULL 	COMMENT '타입ID_타입+코드',
-    TYPE_CODE				VARCHAR(10) 	NOT NULL 	COMMENT '타입',
+    TYPE_ID					VARCHAR(20) 	NOT NULL 	COMMENT '인사유형ID_타입+코드',
+    TYPE_CODE				VARCHAR(10) 	NOT NULL 	COMMENT '유형코드',
     CODE					VARCHAR(10) 	NOT NULL 	COMMENT '코드',
 	CODE_NAME				VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭',
 	USE_YN					BOOLEAN			NOT NULL 	COMMENT '사용여부',		
 	PRT_SEQ					INT				NULL		COMMENT '출력순서',	
 	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_hrmtypecode primary key(TYPE_ID)	
-) COMMENT = '발령구분정보';
+) COMMENT = '인사유형코드정보';
+
+create table if not exists COM.HRMTYPECODEDETAIL (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	DETAIL_ID				VARCHAR(20)		NOT NULL	COMMENT '인사유형상세ID_인사유형ID+코드',
+    TYPE_ID					VARCHAR(20) 	NOT NULL 	COMMENT '인사유형ID_FK',       
+    CODE					VARCHAR(10) 	NOT NULL 	COMMENT '코드',
+	CODE_NAME				VARCHAR(255) 	NOT NULL 	COMMENT '코드명칭',
+	USE_YN					BOOLEAN			NOT NULL 	COMMENT '사용여부',		
+	PRT_SEQ					INT				NULL		COMMENT '출력순서',	
+	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
+	constraint pk_hrmtypecodedetail primary key(DETAIL_ID),
+	constraint fk_hrmtypecodedetail foreign key(TYPE_ID) references HRMTYPECODE(TYPE_ID)
+) COMMENT = '인사유형상세정보';
 
 create table if not exists COM.HRMAPPOINTMENTCODE (
 	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',

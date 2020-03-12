@@ -10,29 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.DeptTypeDTO;
 import com.like.hrm.appointment.boundary.JobTypeDTO;
+import com.like.hrm.appointment.boundary.TypeDetailCodeDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
+import com.like.hrm.appointment.domain.model.TypeDetailCode;
 import com.like.hrm.appointment.domain.model.enums.ChangeType;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
 
 @Service
 @Transactional
 public class AppointmentCodeService {
 
-	private AppointmentRepository appointmentRepository;
-	
-	public AppointmentCodeService(AppointmentRepository appointmentRepository) {		
-		this.appointmentRepository = appointmentRepository;
+	private AppointmentCodeRepository appointmentCodeRepository;
+		
+	public AppointmentCodeService(AppointmentCodeRepository appointmentCodeRepository) {		
+		this.appointmentCodeRepository = appointmentCodeRepository;
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
-		return appointmentRepository.getAppointmentCode(codeId);
+		return appointmentCodeRepository.getAppointmentCode(codeId);
 	}
 	
 	public void saveAppointmentCode(AppointmentCodeDTO.SaveCode dto) {
-		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());
+		AppointmentCode appointmentCode = appointmentCodeRepository.getAppointmentCode(dto.getCode());
 		
 		if (appointmentCode == null ) {		
 			appointmentCode = dto.newAppointmentCode();
@@ -40,21 +42,21 @@ public class AppointmentCodeService {
 			dto.modifyEntity(appointmentCode);
 		}
 		
-		appointmentRepository.saveAppintmentCode(appointmentCode);
+		appointmentCodeRepository.saveAppintmentCode(appointmentCode);
 	}
 	
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
-		appointmentRepository.deleteAppintmentCode(appointmentCode);
+		appointmentCodeRepository.deleteAppintmentCode(appointmentCode);
 	}	
 	
 	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String typeId) {
-		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);
+		AppointmentCode entity = appointmentCodeRepository.getAppointmentCode(appointmentCode);
 		
 		return entity.getCodeDetail(typeId);
 	}
 		
 	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
-		AppointmentCode appointmentCode = appointmentRepository.getAppointmentCode(dto.getCode());			
+		AppointmentCode appointmentCode = appointmentCodeRepository.getAppointmentCode(dto.getCode());			
 		
 		if (appointmentCode == null) {
 			throw new EntityNotFoundException(dto.getCode() + " 엔티티가 존재하지 않습니다.");
@@ -72,16 +74,16 @@ public class AppointmentCodeService {
 	}
 	
 	public void deleteAppointmentCodeDetail(String appointmentCode, String typeId) {
-		AppointmentCode entity = appointmentRepository.getAppointmentCode(appointmentCode);			
+		AppointmentCode entity = appointmentCodeRepository.getAppointmentCode(appointmentCode);			
 		entity.deleteAppointmentCodeDetail(typeId);			
 	}
 		
 	public List<DeptType> getDeptTypeList() {
-		return appointmentRepository.getDeptTypeList();
+		return appointmentCodeRepository.getDeptTypeList();
 	}
 	
 	public DeptType getDeptType(String code) {
-		return appointmentRepository.getDeptType(ChangeType.DEPT.toString() + code);
+		return appointmentCodeRepository.getDeptType(ChangeType.DEPT.toString() + code);
 	}
 	
 	public DeptTypeDTO.SaveCode getDeptTypeDTO(String code) {
@@ -91,7 +93,7 @@ public class AppointmentCodeService {
 	}
 	
 	public void saveDeptType(DeptTypeDTO.SaveCode dto) {
-		DeptType deptType = appointmentRepository.getDeptType(ChangeType.DEPT.toString() + dto.getCode());
+		DeptType deptType = appointmentCodeRepository.getDeptType(ChangeType.DEPT.toString() + dto.getCode());
 		
 		if (deptType == null) {
 			deptType = dto.newDeptType();
@@ -99,35 +101,35 @@ public class AppointmentCodeService {
 			deptType = dto.changeInfo(deptType);
 		}
 		
-		appointmentRepository.saveDeptType(deptType);		
+		appointmentCodeRepository.saveDeptType(deptType);		
 	}
 
 	public void deleteDeptType(String code) {
-		DeptType deptType = appointmentRepository.getDeptType(ChangeType.DEPT.toString() + code);
+		DeptType deptType = appointmentCodeRepository.getDeptType(ChangeType.DEPT.toString() + code);
 		
 		if (deptType == null) {
 			throw new EntityNotFoundException(code + " 엔티티가 존재하지 않습니다.");
 		}
 		
-		appointmentRepository.deleteDeptType(deptType);					
+		appointmentCodeRepository.deleteDeptType(deptType);					
 	}
 
 	public List<JobType> getJobTypeList() {
-		return appointmentRepository.getJobTypeList();
+		return appointmentCodeRepository.getJobTypeList();
 	}
 	
 	public JobType getJobType(String code) {
-		return appointmentRepository.getJobType(ChangeType.JOB.toString() + code);
+		return appointmentCodeRepository.getJobType(ChangeType.JOB.toString() + code);
 	}
 	
 	public JobTypeDTO.SaveCode getJobTypeDTO(String code) {
-		JobType entity = appointmentRepository.getJobType(ChangeType.JOB.toString() + code);				
+		JobType entity = appointmentCodeRepository.getJobType(ChangeType.JOB.toString() + code);				
 		
 		return JobTypeDTO.SaveCode.convert(entity);
 	}
 
 	public void saveJobType(JobTypeDTO.SaveCode dto) {
-		JobType jobType = appointmentRepository.getJobType(ChangeType.JOB.toString() + dto.getCode());
+		JobType jobType = appointmentCodeRepository.getJobType(ChangeType.JOB.toString() + dto.getCode());
 		
 		if (jobType == null) {
 			jobType = dto.newJobType();
@@ -135,16 +137,49 @@ public class AppointmentCodeService {
 			jobType  = dto.changeInfo(jobType);
 		}
 		
-		appointmentRepository.saveJobType(jobType);		
+		appointmentCodeRepository.saveJobType(jobType);		
 	}
 
 	public void deleteJobType(String code) {
-		JobType jobType = appointmentRepository.getJobType(ChangeType.JOB.toString() + code);
+		JobType jobType = appointmentCodeRepository.getJobType(ChangeType.JOB.toString() + code);
 		
 		if (jobType == null) {
 			throw new EntityNotFoundException(code + " 엔티티가 존재하지 않습니다.");
 		}
 		
-		appointmentRepository.deleteJobType(jobType);		
+		appointmentCodeRepository.deleteJobType(jobType);		
 	}
+	
+	public TypeDetailCode getTypeDetailCode(String id) {
+		return appointmentCodeRepository.getTypeDetailCode(id);
+	}
+	
+	public TypeDetailCodeDTO.SaveCode getTypeDetailCodeDTO(String id) {
+		TypeDetailCode entity = appointmentCodeRepository.getTypeDetailCode(id);				
+		
+		return TypeDetailCodeDTO.SaveCode.convert(entity);
+	}
+	
+	public void saveTypeDetailCode(TypeDetailCodeDTO.SaveCode dto) {
+		TypeDetailCode typeDetailCode = appointmentCodeRepository.getTypeDetailCode(dto.getId());
+		
+		if (typeDetailCode == null) {
+			typeDetailCode = dto.newTypeDetailCode();
+		} else {
+			typeDetailCode = dto.changeInfo(typeDetailCode);
+		}
+		
+		appointmentCodeRepository.saveTypeDetailCode(typeDetailCode);
+	}
+	
+	public void deleteTypeDetailCode(String id) {
+		TypeDetailCode typeDetailCode = appointmentCodeRepository.getTypeDetailCode(id);
+		
+		if (typeDetailCode == null) {
+			throw new EntityNotFoundException(id + " 엔티티가 존재하지 않습니다.");
+		}
+		
+		appointmentCodeRepository.deleteTypeDetailCode(typeDetailCode);
+	}
+	
 }

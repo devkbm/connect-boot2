@@ -2,19 +2,14 @@ package com.like.hrm.appointment.domain.repository;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
-import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.DeptType;
 import com.like.hrm.appointment.domain.model.JobType;
-import com.like.hrm.appointment.domain.model.Ledger;
-import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.TypeDetailCode;
 
-@Repository
-public interface AppointmentRepository {
+public interface AppointmentCodeRepository {
 
 	/**
 	 * 부서 유형을 조회한다.
@@ -63,12 +58,34 @@ public interface AppointmentRepository {
 	 */
 	void deleteJobType(JobType jobType);	
 	
+	TypeDetailCode getTypeDetailCode(String id);
+	
+	List<TypeDetailCode> getTypeDetailCodeList(String typeId);
+	
+	void saveTypeDetailCode(TypeDetailCode typeDetailCode);
+	
+	void deleteTypeDetailCode(TypeDetailCode typeDetailCode);
+	
 	/**
 	 * 발령코드를 조회한다.
 	 * @param codeId
 	 * @return
 	 */
 	AppointmentCode getAppointmentCode(String codeId);
+	
+	/**
+	 * 발령코드 명단을 조회한다.
+	 * @param condition
+	 * @return
+	 */
+	List<AppointmentCode> getAppointmentCodeList(AppointmentCodeDTO.SearchCode dto);
+	
+	/**
+	 * 발령코드 상세정보 명단을 조회한다.
+	 * @param dto
+	 * @return
+	 */
+	List<AppointmentCodeDetail> getAppointmentCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto);
 	
 	/**
 	 * 발령코드를 저장한다.
@@ -80,12 +97,5 @@ public interface AppointmentRepository {
 	 * 발령코드를 삭제한다.
 	 * @param appointmentCode
 	 */
-	void deleteAppintmentCode(AppointmentCode appointmentCode);	
-		
-	Ledger getLedger(String id);
-	
-	void saveLedger(Ledger ledger);
-	
-	void deleteLedger(Ledger ledger);	
-	
+	void deleteAppintmentCode(AppointmentCode appointmentCode);
 }

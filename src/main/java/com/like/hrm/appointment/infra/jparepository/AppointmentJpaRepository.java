@@ -6,10 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.like.commoncode.infra.jparepository.CodeJpaRepository;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
-import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedger;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedgerList;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
@@ -24,17 +22,19 @@ import com.like.hrm.appointment.domain.model.QDeptType;
 import com.like.hrm.appointment.domain.model.QJobType;
 import com.like.hrm.appointment.domain.model.QLedger;
 import com.like.hrm.appointment.domain.model.QLedgerList;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
-import com.like.hrm.appointment.domain.repository.AppointmentQueryRepository;
-import com.like.hrm.appointment.domain.repository.AppointmentRepository;
+import com.like.hrm.appointment.domain.model.QTypeDetailCode;
+import com.like.hrm.appointment.domain.model.TypeDetailCode;
+import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaDeptType;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaJobType;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaLedger;
+import com.like.hrm.appointment.infra.jparepository.springdata.JpaTypeDetailCode;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
-public class AppointmentJpaRepository implements AppointmentRepository, AppointmentQueryRepository {
+public class AppointmentJpaRepository implements AppointmentLedgerRepository, AppointmentCodeRepository {
 
 	@Autowired
 	private JPAQueryFactory	queryFactory;	
@@ -47,6 +47,9 @@ public class AppointmentJpaRepository implements AppointmentRepository, Appointm
 	
 	@Autowired
 	private JpaJobType jpaJobType;
+	
+	@Autowired
+	private JpaTypeDetailCode jpaTypeDetailCode;
 	
 	@Autowired
 	private JpaLedger jpaLedger;
@@ -165,6 +168,30 @@ public class AppointmentJpaRepository implements AppointmentRepository, Appointm
 				.selectFrom(QLedgerList.ledgerList)
 				.where(searchCondition.getBooleanBuilder())
 				.fetch();
+	}
+
+	@Override
+	public TypeDetailCode getTypeDetailCode(String id) {		 
+		Optional<TypeDetailCode> entity = jpaTypeDetailCode.findById(id);
+		return entity.orElse(null);
+	}
+
+	@Override
+	public List<TypeDetailCode> getTypeDetailCodeList(String typeId) {		
+		return queryFactory
+				.selectFrom(QTypeDetailCode.typeDetailCode)
+				.where(QTypeDetailCode.typeDetailCode.typeId.eq(typeId))
+				.fetch();
+	}
+
+	@Override
+	public void saveTypeDetailCode(TypeDetailCode typeDetailCode) {
+		jpaTypeDetailCode.save(typeDetailCode);		
+	}
+
+	@Override
+	public void deleteTypeDetailCode(TypeDetailCode typeDetailCode) {				
+		jpaTypeDetailCode.delete(typeDetailCode);		
 	}
 	
 }

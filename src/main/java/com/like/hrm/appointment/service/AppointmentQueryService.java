@@ -8,23 +8,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
-import com.like.hrm.appointment.domain.repository.AppointmentQueryRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class AppointmentQueryService {
 
-	private AppointmentQueryRepository appointmentQueryRepository;
+	private AppointmentLedgerRepository appointmentLedgerRepository;
 	
-	public AppointmentQueryService(AppointmentQueryRepository appointmentQueryRepository) {		
-		this.appointmentQueryRepository = appointmentQueryRepository;
+	public AppointmentQueryService(AppointmentLedgerRepository appointmentLedgerRepository) {		
+		this.appointmentLedgerRepository = appointmentLedgerRepository;
 	}
 	
 	public List<Ledger> getLedger(LedgerDTO.SearchLedger searchCondition) {
-		return appointmentQueryRepository.getLedger(searchCondition);
+		return appointmentLedgerRepository.getLedger(searchCondition);
 	}
 	
 	public List<LedgerList> getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {					
-		return appointmentQueryRepository.getLedgerList(searchCondition);
+		return appointmentLedgerRepository.getLedgerList(searchCondition);
 	}
 }

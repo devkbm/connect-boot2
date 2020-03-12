@@ -21,6 +21,7 @@ import com.like.hrm.appointment.boundary.LedgerDTO.ChangeInfo;
 import com.like.hrm.appointment.boundary.LedgerDTO.SaveLedgerList;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.service.AppointmentCodeQueryService;
 import com.like.hrm.appointment.service.AppointmentQueryService;
 import com.like.hrm.appointment.service.AppointmentService;
 
@@ -33,11 +34,15 @@ public class AppointmentController {
 	private AppointmentService appointmentService;	
 	
 	private AppointmentQueryService appointmentQueryService;
+	
+	private AppointmentCodeQueryService appointmentCodeQueryService;
 
 	public AppointmentController(AppointmentService appointmentService
-								,AppointmentQueryService appointmentQueryService) {
+								,AppointmentQueryService appointmentQueryService
+								,AppointmentCodeQueryService appointmentCodeQueryService) {
 		this.appointmentService = appointmentService;
 		this.appointmentQueryService = appointmentQueryService;
+		this.appointmentCodeQueryService = appointmentCodeQueryService; 
 	}
 	
 	@GetMapping("/hrm/ledger")
@@ -160,7 +165,7 @@ public class AppointmentController {
 	@GetMapping("/hrm/ledger/list/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
 		
-		List<ChangeInfo> list = appointmentService.getChangeInfoList(code);			
+		List<ChangeInfo> list = appointmentCodeQueryService.getChangeInfoList(code);			
 		
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
