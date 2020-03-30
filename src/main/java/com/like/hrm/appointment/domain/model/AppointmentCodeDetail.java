@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -52,7 +52,7 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 	// 인사, 부서, 근무상태	
 	@Column(name="CHANGE_TYPE")
 	@Enumerated(EnumType.STRING)
-	ChangeType changeType;
+	HrmTypeEnum changeType;
 			
 	// 소속부서, 직위 등
 	@Column(name="CHANGE_TYPE_DETAIL")
@@ -72,7 +72,7 @@ public class AppointmentCodeDetail extends AuditEntity implements Serializable {
 	 * @param sequence
 	 */
 	public AppointmentCodeDetail(AppointmentCode appointmentCode
-								,ChangeType changeType
+								,HrmTypeEnum changeType
 								,String changeTypeDetail
 								,Integer sequence) {
 		this.id = appointmentCode.code + changeType.toString() + changeTypeDetail;

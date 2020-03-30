@@ -15,8 +15,8 @@ import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,7 +41,7 @@ public class AppointmentCodeQueryService {
 		return appointmentQueryRepository.getAppointmentCodeDetailList(dto);
 	}
 	
-	public List<ChangeableCodeDTO.EnumDTO> getChangeableCodeDTO(ChangeType type) {
+	public List<ChangeableCodeDTO.EnumDTO> getChangeableCodeDTO(HrmTypeEnum type) {
 		return this.codeJpaRepository.getCodeList(type.getParentCommonCodeId())
 									 .stream()
 									 .map( r -> ChangeableCodeDTO.EnumDTO.builder().code(r.getCode()).name(r.getCodeName()).build())

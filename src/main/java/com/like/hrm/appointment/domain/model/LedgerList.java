@@ -110,8 +110,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 		this.appointmentFromDate = appointmentFromDate;
 		this.appointmentToDate = appointmentToDate;		
 		this.finishYn = false;
-						
-		//this.listId = this.getLedger().getLedgerId() + size.toString();
+		
 		this.listId = this.getLedger().getLedgerId() + empId + appointmentCode;
 	}
 	
@@ -119,8 +118,9 @@ public class LedgerList extends AuditEntity implements Serializable {
 							,LocalDate appointmentFromDate
 			           		,LocalDate appointmentToDate) {
 		
+		// 발령 코드 변경시 상세내역 삭제
 		if (this.appointmentCode.equals(appointmentCode) != true) {
-			this.clearChangeInfo();
+			this.clearChangeInfo();			
 		}
 		
 		this.appointmentCode = appointmentCode;

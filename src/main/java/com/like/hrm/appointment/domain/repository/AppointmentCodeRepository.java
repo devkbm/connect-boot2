@@ -5,66 +5,9 @@ import java.util.List;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.appointment.domain.model.DeptType;
-import com.like.hrm.appointment.domain.model.JobType;
-import com.like.hrm.appointment.domain.model.TypeDetailCode;
+import com.like.hrm.code.domain.model.HrmTypeDetailCode;
 
-public interface AppointmentCodeRepository {
-
-	/**
-	 * 부서 유형을 조회한다.
-	 * @return
-	 */
-	List<DeptType> getDeptTypeList();
-	
-	/**
-	 * 부서 유형을 조회한다.
-	 * @param id
-	 * @return
-	 */
-	DeptType getDeptType(String id);
-	
-	/**
-	 * 부서 유형을 저장한다.
-	 * @param deptType
-	 */
-	void saveDeptType(DeptType deptType);
-	
-	/**
-	 * 부서 유형을 삭제한다.
-	 * @param deptType
-	 */
-	void deleteDeptType(DeptType deptType);	
-	
-	
-	List<JobType> getJobTypeList();
-	
-	/**
-	 * 인사 유형을 조회한다.
-	 * @param id
-	 * @return
-	 */
-	JobType getJobType(String id);
-	
-	/**
-	 * 인사 유형을 저장한다.
-	 * @param jobType
-	 */
-	void saveJobType(JobType jobType);
-	
-	/**
-	 * 인사 유형을 삭제한다.
-	 * @param jobType
-	 */
-	void deleteJobType(JobType jobType);	
-	
-	TypeDetailCode getTypeDetailCode(String id);
-	
-	List<TypeDetailCode> getTypeDetailCodeList(String typeId);
-	
-	void saveTypeDetailCode(TypeDetailCode typeDetailCode);
-	
-	void deleteTypeDetailCode(TypeDetailCode typeDetailCode);
+public interface AppointmentCodeRepository {	
 	
 	/**
 	 * 발령코드를 조회한다.

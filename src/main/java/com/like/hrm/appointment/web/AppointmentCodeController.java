@@ -1,6 +1,5 @@
 package com.like.hrm.appointment.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,15 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
-import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
-import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
-import com.like.hrm.appointment.boundary.DeptTypeDTO;
-import com.like.hrm.appointment.boundary.JobTypeDTO;
-import com.like.hrm.appointment.boundary.TypeDetailCodeDTO;
-import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
 import com.like.hrm.appointment.service.AppointmentCodeQueryService;
 import com.like.hrm.appointment.service.AppointmentCodeService;
 
@@ -44,7 +36,7 @@ public class AppointmentCodeController {
 	}
 	
 	@GetMapping("/hrm/appointmentcode")
-	public ResponseEntity<?> getArticleList(AppointmentCodeDTO.SearchCode search) {
+	public ResponseEntity<?> getCodeList(AppointmentCodeDTO.SearchCode search) {
 																	
 		List<AppointmentCode> list = appointmentQueryService.getAppointentCodeList(search);  							
 		
@@ -78,6 +70,16 @@ public class AppointmentCodeController {
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/hrm/appointmentcode/{id}")
+	public ResponseEntity<?> delCode(@PathVariable(value="id") String id) {						
+												
+		appointmentService.deleteAppintmentCode(id);
+								 						
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	
@@ -131,124 +133,6 @@ public class AppointmentCodeController {
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
-	}	
-		
-	@GetMapping("/hrm/typelist")
-	public ResponseEntity<?> getTypeList() {
-		
-		List<ChangeableTypeDTO.EnumDTO> list = new ArrayList<ChangeableTypeDTO.EnumDTO>();
-		
-		for (ChangeType menuType : ChangeType.values()) {			
-			list.add(new EnumDTO(menuType.getCode(), menuType.getName()));
-		}										
-					
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
+	}				
 	
-	@GetMapping("/hrm/codelist/{code}")
-	public ResponseEntity<?> getTypeCodeList(@PathVariable(value="code") String code) {
-		
-		List<ChangeableCodeDTO.EnumDTO> list = null;
-		
-		list = appointmentQueryService.getChangeableCodeDTO(ChangeType.valueOf(code));		
-					
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-	
-	@GetMapping("/hrm/depttype/{code}")
-	public ResponseEntity<?> getDeptType(@PathVariable(value="code") String code) {
-		
-		DeptTypeDTO.SaveCode deptType = appointmentService.getDeptTypeDTO(code);
-					
-		return WebControllerUtil.getResponse(deptType											
-											,String.format("%d 건 조회되었습니다.", deptType == null ? 0 : 1)
-											,HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/hrm/depttype"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDeptType(@RequestBody DeptTypeDTO.SaveCode dto, BindingResult result) {				
-		
-		if ( result.hasErrors()) {			
-			throw new ControllerException(result.toString());
-		} 
-																	
-		appointmentService.saveDeptType(dto);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
-	}
-	
-		
-	@DeleteMapping("/hrm/depttype/{code}")
-	public ResponseEntity<?> deleteDeptType(@PathVariable(value="code") String code) {				
-																		
-		appointmentService.deleteDeptType(code);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
-	}
-	
-	@GetMapping("/hrm/jobtype/{code}")
-	public ResponseEntity<?> getJobType(@PathVariable(value="code") String code) {
-		
-		JobTypeDTO.SaveCode jobType = appointmentService.getJobTypeDTO(code);
-					
-		return WebControllerUtil.getResponse(jobType
-											,String.format("%d 건 조회되었습니다.", jobType == null ? 0 : 1)
-											,HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/hrm/jobtype"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveJobType(@RequestBody JobTypeDTO.SaveCode dto, BindingResult result) {				
-		
-		if ( result.hasErrors()) {			
-			throw new ControllerException(result.toString());
-		} 
-																	
-		appointmentService.saveJobType(dto);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
-	}
-
-	@DeleteMapping("/hrm/jobtype/{code}")
-	public ResponseEntity<?> deleteJobType(@PathVariable(value="code") String code) {				
-																		
-		appointmentService.deleteJobType(code);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
-	}	
-	
-	@GetMapping("/hrm/typedetailcode/{id}")
-	public ResponseEntity<?> getTypeDetailCode(@PathVariable(value="id") String id) {
-		
-		TypeDetailCodeDTO.SaveCode dto = appointmentService.getTypeDetailCodeDTO(id);
-					
-		return WebControllerUtil.getResponse(dto
-											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
-											,HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/hrm/typedetailcode"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveTypeDetailCode(@RequestBody TypeDetailCodeDTO.SaveCode dto, BindingResult result) {				
-		
-		if ( result.hasErrors()) {			
-			throw new ControllerException(result.toString());
-		} 
-																	
-		appointmentService.saveTypeDetailCode(dto);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
-	}
 }

@@ -10,7 +10,7 @@ import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.QAppointmentCode;
 import com.like.hrm.appointment.domain.model.QAppointmentCodeDetail;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -157,7 +157,7 @@ public class AppointmentCodeDTO {
 				return null;
 			}
 			
-			return qType.changeType.eq(ChangeType.valueOf(changeType));
+			return qType.changeType.eq(HrmTypeEnum.valueOf(changeType));
 		}
 	}
 	
@@ -181,7 +181,7 @@ public class AppointmentCodeDTO {
 		public AppointmentCodeDetail newAppointmentCodeDetail(AppointmentCode code) {
 						
 			AppointmentCodeDetail detail = new AppointmentCodeDetail(code
-																	,ChangeType.valueOf(this.changeType)
+																	,HrmTypeEnum.valueOf(this.changeType)
 																	,this.changeTypeDetail
 																	,this.sequence);
 			return detail;

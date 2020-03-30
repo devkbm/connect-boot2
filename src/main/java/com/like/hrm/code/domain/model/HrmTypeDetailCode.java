@@ -1,4 +1,4 @@
-package com.like.hrm.appointment.domain.model;
+package com.like.hrm.code.domain.model;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +24,7 @@ import lombok.ToString;
 @Getter
 @Entity
 @Table(name = "HRMTYPECODEDETAIL")
-public class TypeDetailCode implements Serializable {		
+public class HrmTypeDetailCode implements Serializable {		
 	
 	private static final long serialVersionUID = 5468996305272335478L;
 
@@ -59,7 +59,7 @@ public class TypeDetailCode implements Serializable {
 	 * @param sequence
 	 * @param comment
 	 */
-	public TypeDetailCode(String typeId
+	public HrmTypeDetailCode(String typeId
 						 ,String code
 						 ,String codeName
 						 ,boolean useYn

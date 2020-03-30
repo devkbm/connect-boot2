@@ -1,14 +1,14 @@
-package com.like.hrm.appointment.domain.model;
+package com.like.hrm.code.domain.model;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import com.like.common.domain.AuditEntity;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,28 +18,30 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "HRMTYPECODE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type_code")
-public abstract class ChangeableType extends AuditEntity {
+public class HrmType extends AuditEntity {
 	
 	@Id	
 	@Column(name="TYPE_ID")
-	protected String id;
+	private String id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="TYPE_CODE")
+	private HrmTypeEnum hrmType;
+		
 	@Column(name="CODE")
-	protected String code;
+	private String code;
 	
 	@Column(name="CODE_NAME")
-	protected String codeName;
+	private String codeName;
 		
 	@Column(name="USE_YN")
-	protected boolean useYn = true;
+	private boolean useYn = true;
 
 	@Column(name="PRT_SEQ")
-	protected Integer sequence;
+	private Integer sequence;
 	
 	@Column(name="CMT")
-	protected String comment;		
+	private String comment;		
 
 	/**
 	 * @param id
@@ -49,13 +51,14 @@ public abstract class ChangeableType extends AuditEntity {
 	 * @param sequence
 	 * @param comment
 	 */
-	protected ChangeableType(String id
-							,String code
-							,String codeName
-							,boolean useYn
-							,Integer sequence
-							,String comment) {
-		this.id = id;
+	public HrmType(HrmTypeEnum hrmType
+				  ,String code
+				  ,String codeName
+				  ,boolean useYn
+				  ,Integer sequence
+				  ,String comment) {
+		this.id = hrmType + code;
+		this.hrmType = hrmType;
 		this.code = code;
 		this.codeName = codeName;
 		this.useYn = useYn;
@@ -66,8 +69,7 @@ public abstract class ChangeableType extends AuditEntity {
 	public void changeInfo(String codeName
 						  ,boolean useYn
 						  ,Integer sequence
-						  ,String comment ) {
-		
+						  ,String comment ) {		
 		this.codeName = codeName;
 		this.useYn = useYn;
 		this.sequence = sequence;

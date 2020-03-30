@@ -10,7 +10,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.JobChangeHistory;
@@ -36,13 +36,13 @@ public class AppointmentProcessService {
 
 		for (LedgerChangeInfo ledgerChangeInfo : list.getChangeInfoList()) {
 								
-			if (ChangeType.DEPT.equals(ledgerChangeInfo.getChangeType())) {				
+			if (HrmTypeEnum.DEPT.equals(ledgerChangeInfo.getChangeType())) {				
 				appointDeptInfo(employee
 							   ,ledgerChangeInfo
 							   ,list.getAppointmentFromDate()
 							   ,list.getAppointmentToDate());
 				
-			} else if (ChangeType.JOB.equals(ledgerChangeInfo.getChangeType())) {
+			} else if (HrmTypeEnum.JOB.equals(ledgerChangeInfo.getChangeType())) {
 				appointJobInfo(employee
 							  ,ledgerChangeInfo
 							  ,list.getAppointmentFromDate()

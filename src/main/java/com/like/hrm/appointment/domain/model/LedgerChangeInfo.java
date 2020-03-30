@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -48,7 +48,7 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 				
 	@Column(name="CHANGE_TYPE")
 	@Enumerated(EnumType.STRING)
-	ChangeType changeType;
+	HrmTypeEnum changeType;
 		
 	@Column(name="CHANGE_TYPE_DETAIL")
 	String changeTypeDetail;
@@ -66,7 +66,7 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 	LedgerList ledgerList;
 	
 	public LedgerChangeInfo(LedgerList ledgerList
-						   ,ChangeType changeType
+						   ,HrmTypeEnum changeType
 						   ,String changeTypeDetail
 						   ,String changeCode
 						   ,Integer sequence) {

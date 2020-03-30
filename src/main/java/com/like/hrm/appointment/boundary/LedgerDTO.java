@@ -15,7 +15,7 @@ import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.model.QLedger;
 import com.like.hrm.appointment.domain.model.QLedgerList;
-import com.like.hrm.appointment.domain.model.enums.ChangeType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -211,9 +211,7 @@ public class LedgerDTO {
 			entity.modifyEntity(getAppointmentCode()
 							   ,getAppointmentFromDate()
 							   ,getAppointmentToDate());
-					
-			
-			
+										
 			for (ChangeInfo info : changeInfoList ) {
 				if (info.getId() != null) {
 					LedgerChangeInfo ledgerChangeInfo = entity.getChangeInfo(info.getId());  													
@@ -229,7 +227,7 @@ public class LedgerDTO {
 		
 		private LedgerChangeInfo newLedgerChangeInfo(LedgerList entity, ChangeInfo info) {
 			return new LedgerChangeInfo(entity
-					                   ,ChangeType.valueOf(info.getChangeType())
+					                   ,HrmTypeEnum.valueOf(info.getChangeType())
 					                   ,info.getChangeTypeDetail()								                            
 					                   ,info.getChangeCode()	
 					                   ,info.getSequence());

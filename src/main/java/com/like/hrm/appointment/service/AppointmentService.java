@@ -10,11 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.common.web.exception.ControllerException;
-import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
-import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
-import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;

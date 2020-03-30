@@ -1,9 +1,9 @@
-package com.like.hrm.appointment.domain.model.enums;
+package com.like.hrm.code.domain.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ChangeType {
+public enum HrmTypeEnum {
 
 	// 부서정보	
 	DEPT("DEPT",		"부서", "HRMAP002"), 
@@ -18,7 +18,7 @@ public enum ChangeType {
 	private String name;
 	private String parentCommonCodeId;
 	
-	private ChangeType(final String code, final String name, final String parentCommonCodeId) {
+	private HrmTypeEnum(final String code, final String name, final String parentCommonCodeId) {
 		this.code = code;
 		this.name = name;
 		this.parentCommonCodeId = parentCommonCodeId;
