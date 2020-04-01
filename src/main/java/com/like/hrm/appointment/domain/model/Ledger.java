@@ -106,6 +106,12 @@ public class Ledger extends AuditEntity implements Serializable {
 			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
 		}
 		
+		LedgerList list = this.getAppointmentList(pk);
+		
+		if (list.getFinishYn()) {
+			throw new IllegalStateException("처리가 왼료된 발령입니다.");
+		}
+		
 		this.appointmentList.remove(pk);
 	}
 			
