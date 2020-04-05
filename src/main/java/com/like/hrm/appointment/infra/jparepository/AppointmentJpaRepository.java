@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
+import com.like.hrm.appointment.boundary.LedgerDTO.QueryLedgerList;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedger;
 import com.like.hrm.appointment.boundary.LedgerDTO.SearchLedgerList;
+import com.like.hrm.appointment.boundary.QLedgerDTO_QueryLedgerList;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.Ledger;
@@ -22,6 +24,8 @@ import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
 import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentCode;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaLedger;
+import com.like.hrm.employee.domain.model.QEmployee;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -101,6 +105,30 @@ public class AppointmentJpaRepository implements AppointmentLedgerRepository, Ap
 				.selectFrom(QLedgerList.ledgerList)
 				.where(searchCondition.getBooleanBuilder())
 				.fetch();
+	}
+
+	@Override
+	public List<QueryLedgerList> getLedgerListDTO(SearchLedgerList searchCondition) {
+		 //QLedgerList.ledgerList
+		
+		return queryFactory
+				.select(new QLedgerDTO_QueryLedgerList(QLedgerList.ledgerList.ledger.ledgerId
+									                  ,QLedgerList.ledgerList.listId
+									                  ,QLedgerList.ledgerList.sequence
+									                  ,QLedgerList.ledgerList.empId
+									                  ,QEmployee.employee.name
+									                  ,QLedgerList.ledgerList.appointmentCode
+									                  ,QAppointmentCode.appointmentCode.codeName
+									                  ,QLedgerList.ledgerList.appointmentFromDate
+									                  ,QLedgerList.ledgerList.appointmentToDate
+									                  ,QLedgerList.ledgerList.finishYn)
+						)
+				.from(QLedgerList.ledgerList)
+				.join(QEmployee.employee).on(QLedgerList.ledgerList.empId.eq(QEmployee.employee.id))
+				.join(QAppointmentCode.appointmentCode).on(QLedgerList.ledgerList.appointmentCode.eq(QAppointmentCode.appointmentCode.code))
+				.where(searchCondition.getBooleanBuilder())
+				.fetch();
+		//return null;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.appointment.boundary.LedgerDTO;
+import com.like.hrm.appointment.boundary.LedgerDTO.QueryLedgerList;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
@@ -26,5 +27,9 @@ public class AppointmentQueryService {
 	
 	public List<LedgerList> getLedgerList(LedgerDTO.SearchLedgerList searchCondition) {					
 		return appointmentLedgerRepository.getLedgerList(searchCondition);
+	}
+	
+	public List<QueryLedgerList> getLedgerListDTO(LedgerDTO.SearchLedgerList searchCondition) {					
+		return appointmentLedgerRepository.getLedgerListDTO(searchCondition);
 	}
 }

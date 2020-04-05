@@ -82,6 +82,9 @@ public class LedgerList extends AuditEntity implements Serializable {
 	@Column(name="TO_DT")
 	LocalDate appointmentToDate;
 	
+	/**
+	 * 완료여부
+	 */
 	@Column(name="FINISH_YN")
 	Boolean finishYn;
 	

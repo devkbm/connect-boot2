@@ -21,4 +21,6 @@ public interface AppointmentLedgerRepository {
 	
 	void deleteLedger(Ledger ledger);	
 	
+	
+	List<LedgerDTO.QueryLedgerList> getLedgerListDTO(LedgerDTO.SearchLedgerList searchCondition);
 }

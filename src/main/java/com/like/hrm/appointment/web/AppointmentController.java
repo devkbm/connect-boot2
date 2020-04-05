@@ -18,6 +18,7 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.boundary.LedgerDTO.ChangeInfo;
+import com.like.hrm.appointment.boundary.LedgerDTO.QueryLedgerList;
 import com.like.hrm.appointment.boundary.LedgerDTO.SaveLedgerList;
 import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
@@ -95,7 +96,8 @@ public class AppointmentController {
 	@GetMapping("/hrm/ledger/list")
 	public ResponseEntity<?> getLedgerList(LedgerDTO.SearchLedgerList dto) {
 		
-		List<LedgerList> list = appointmentQueryService.getLedgerList(dto);
+		//List<LedgerList> list = appointmentQueryService.getLedgerList(dto);
+		List<QueryLedgerList> list = appointmentQueryService.getLedgerListDTO(dto);
 					
 		//SaveLedgerList rtn = LedgerDTO.convertDTO(list);
 		
