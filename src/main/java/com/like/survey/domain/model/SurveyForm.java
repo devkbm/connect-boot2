@@ -1,6 +1,5 @@
 package com.like.survey.domain.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,12 @@ public class SurveyForm {
 	
 	private List<SurveyItem> items;
 	
+	public void modifyEntity(String title
+							,String comment) {
+		this.title = title;
+		this.comment = comment;
+	}
+	
 	public void addItem(SurveyItem item) {
 		if (this.items == null)
 			this.items = new ArrayList<>();
@@ -30,4 +35,5 @@ public class SurveyForm {
 	public void removeItem(SurveyItem item) {
 		this.items.remove(item);
 	}
+	
 }
