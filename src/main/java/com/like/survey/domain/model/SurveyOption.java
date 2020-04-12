@@ -2,13 +2,14 @@ package com.like.survey.domain.model;
 
 public class SurveyOption {
 
-	private String label;
+	private Long id;
 	
-	private String value;
+	private SurveyItem referItem;
 	
-	/**
-	 * CheckBox일 경우 사용
-	 */
-	private Boolean checked;
+	private String propertyName;
+	
+	private String propertyValue;
+	
+	private String condition;
 	
 }
