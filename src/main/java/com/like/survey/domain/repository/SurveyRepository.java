@@ -10,10 +10,5 @@ public interface SurveyRepository {
 	void saveSureyForm(SurveyForm surveyForm);
 	
 	void deleteSurveyForm(SurveyForm surveyForm);
-	
-	SurveyItem getSurveyItem(Long id);
-	
-	void saveSurveyItem(SurveyItem surveyItem);
-	
-	void deleteSurveyItem(SurveyItem surveyItem);
+		
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
-import com.like.hrm.code.domain.model.HrmTypeDetailCode;
 
 public interface AppointmentCodeRepository {	
 	
@@ -21,14 +20,7 @@ public interface AppointmentCodeRepository {
 	 * @param condition
 	 * @return
 	 */
-	List<AppointmentCode> getAppointmentCodeList(AppointmentCodeDTO.SearchCode dto);
-	
-	/**
-	 * 발령코드 상세정보 명단을 조회한다.
-	 * @param dto
-	 * @return
-	 */
-	List<AppointmentCodeDetail> getAppointmentCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto);
+	List<AppointmentCode> getAppointmentCodeList(AppointmentCodeDTO.SearchCode dto);	
 	
 	/**
 	 * 발령코드를 저장한다.
@@ -41,4 +33,11 @@ public interface AppointmentCodeRepository {
 	 * @param appointmentCode
 	 */
 	void deleteAppintmentCode(AppointmentCode appointmentCode);
+	
+	/**
+	 * 발령코드 상세정보 명단을 조회한다.
+	 * @param dto
+	 * @return
+	 */
+	List<AppointmentCodeDetail> getAppointmentCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto);
 }

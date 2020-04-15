@@ -74,6 +74,7 @@ public class MenuCommandService {
 	}
 	
 	public void deleteMenu(String menuCode) {
+		
 		menuRepository.deleteMenu(menuCode);
 	}
 	

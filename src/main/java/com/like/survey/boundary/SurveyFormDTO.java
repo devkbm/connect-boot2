@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.like.menu.domain.model.QMenuGroup;
 import com.like.survey.domain.model.SurveyForm;
+import com.like.survey.domain.model.SurveyItem;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -75,7 +76,7 @@ public class SurveyFormDTO {
 		
 		String modifiedBy;
 				
-		private String id;
+		private Long id;
 		
 		@NotEmpty	
 		private String title;
@@ -83,12 +84,58 @@ public class SurveyFormDTO {
 		private String comment;		
 		
 		public SurveyForm newSurveyForm() {
-			return null;	
+			return new SurveyForm(null
+								 ,this.title
+								 ,this.comment
+								 ,null);		
 		}
 		
 		public void modifySurveyForm(SurveyForm surveyForm) {
 			surveyForm.modifyEntity(this.getTitle()
 								   ,this.getComment());			
+		}
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class SaveSurveyItem implements Serializable {					
+		
+		private static final long serialVersionUID = -1998861542555719154L;
+
+		LocalDateTime createdDt;	
+		
+		String createdBy;
+		
+		LocalDateTime modifiedDt;
+		
+		String modifiedBy;
+				
+		private Long id;
+		
+		private Long formId;
+		
+		private String itemType;
+		
+		private String label;
+		
+		private String value;
+		
+		private Boolean required;
+		
+		private Boolean visible;	
+		
+		public SurveyItem newSaveSurveyItem(SurveyForm form) {
+			return null;		
+		}
+		
+		public void modifySaveSurveyItem(SurveyItem surveyItem) {
+			surveyItem.modifyEntity(itemType
+								   ,label
+								   ,value
+								   ,required
+								   ,visible);			
 		}
 	}
 }

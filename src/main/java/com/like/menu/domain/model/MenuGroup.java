@@ -45,7 +45,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "menuGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE})          
+	@OneToMany(mappedBy = "menuGroup", cascade = CascadeType.ALL, orphanRemoval = true)          
     List<Menu> menuList = new ArrayList<Menu>();
 			
 	@Builder
@@ -53,7 +53,7 @@ public class MenuGroup extends AuditEntity implements Serializable {
 		this.menuGroupCode = menuGroupCode;
 		this.menuGroupName = menuGroupName;
 		this.description = description;
-	}
+	}	
 	
 	/**
 	 * @param menuGroupName
@@ -71,16 +71,10 @@ public class MenuGroup extends AuditEntity implements Serializable {
 	
 	public void addMenu(Menu menu) {
 		this.menuList.add(menu);
-	}	
-	
-	public MenuGroup updateEntity(MenuGroupDTO.SaveMenuGroup dto) {
-		this.menuGroupCode 	= dto.getMenuGroupCode() != null ? dto.getMenuGroupCode() : this.menuGroupCode;
-		this.menuGroupName 	= dto.getMenuGroupName() != null ? dto.getMenuGroupName() : this.menuGroupName;
-		this.description 	= dto.getDescription() != null 	? dto.getDescription() : this.description;
-		
-		return this;
 	}
-
 	
+	public void deleteMenu(Menu menu) {
+		this.menuList.remove(menu);
+	}
 	
 }

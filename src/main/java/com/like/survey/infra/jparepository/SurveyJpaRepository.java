@@ -3,10 +3,8 @@ package com.like.survey.infra.jparepository;
 import org.springframework.stereotype.Repository;
 
 import com.like.survey.domain.model.SurveyForm;
-import com.like.survey.domain.model.SurveyItem;
 import com.like.survey.domain.repository.SurveyRepository;
 import com.like.survey.infra.jparepository.springdata.JpaSurveyForm;
-import com.like.survey.infra.jparepository.springdata.JpaSurveyItem;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -14,16 +12,12 @@ public class SurveyJpaRepository implements SurveyRepository {
 	
 	private JPAQueryFactory queryFactory;
 	
-	private JpaSurveyForm jpaSurveyForm;
-	
-	private JpaSurveyItem jpaSurveyItem;
+	private JpaSurveyForm jpaSurveyForm;	
 	
 	public SurveyJpaRepository(JPAQueryFactory queryFactory
-			 				  ,JpaSurveyForm jpaSurveyForm
-			 				  ,JpaSurveyItem jpaSurveyItem) {
+			 				  ,JpaSurveyForm jpaSurveyForm) {
 		this.queryFactory = queryFactory;
-		this.jpaSurveyForm = jpaSurveyForm;
-		this.jpaSurveyItem = jpaSurveyItem;		
+		this.jpaSurveyForm = jpaSurveyForm;			
 	}
 	
 	@Override
@@ -39,22 +33,6 @@ public class SurveyJpaRepository implements SurveyRepository {
 	@Override
 	public void deleteSurveyForm(SurveyForm surveyForm) {
 		jpaSurveyForm.delete(surveyForm);		
-	}
-
-	@Override
-	public SurveyItem getSurveyItem(Long id) {		
-		return jpaSurveyItem.findById(id).orElse(null);
-	}
-
-	@Override
-	public void saveSurveyItem(SurveyItem surveyItem) {
-		jpaSurveyItem.save(surveyItem);
-		
-	}
-
-	@Override
-	public void deleteSurveyItem(SurveyItem surveyItem) {
-		jpaSurveyItem.delete(surveyItem);		
 	}
 
 }
