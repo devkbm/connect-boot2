@@ -1,10 +1,10 @@
-package com.like.survey.domain.repository;
+package com.like.survey.surveyform.domain.repository;
 
 import java.util.List;
 
-import com.like.survey.boundary.SurveyFormDTO;
-import com.like.survey.domain.model.SurveyForm;
-import com.like.survey.domain.model.SurveyItem;
+import com.like.survey.surveyform.boundary.SurveyFormDTO;
+import com.like.survey.surveyform.domain.model.SurveyForm;
+import com.like.survey.surveyform.domain.model.SurveyItem;
 
 public interface SurveyRepository {
 

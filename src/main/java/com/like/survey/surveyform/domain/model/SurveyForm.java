@@ -1,4 +1,4 @@
-package com.like.survey.domain.model;
+package com.like.survey.surveyform.domain.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

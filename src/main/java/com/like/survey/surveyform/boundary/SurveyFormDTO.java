@@ -1,4 +1,4 @@
-package com.like.survey.boundary;
+package com.like.survey.surveyform.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,10 +7,10 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
 
-import com.like.survey.domain.model.QSurveyForm;
-import com.like.survey.domain.model.QSurveyItem;
-import com.like.survey.domain.model.SurveyForm;
-import com.like.survey.domain.model.SurveyItem;
+import com.like.survey.surveyform.domain.model.QSurveyForm;
+import com.like.survey.surveyform.domain.model.QSurveyItem;
+import com.like.survey.surveyform.domain.model.SurveyForm;
+import com.like.survey.surveyform.domain.model.SurveyItem;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 

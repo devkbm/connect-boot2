@@ -1,14 +1,14 @@
-package com.like.survey.infra.jparepository;
+package com.like.survey.surveyform.infra.jparepository;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.like.survey.boundary.SurveyFormDTO.SearchSurveyForm;
-import com.like.survey.domain.model.QSurveyForm;
-import com.like.survey.domain.model.SurveyForm;
-import com.like.survey.domain.repository.SurveyRepository;
-import com.like.survey.infra.jparepository.springdata.JpaSurveyForm;
+import com.like.survey.surveyform.boundary.SurveyFormDTO.SearchSurveyForm;
+import com.like.survey.surveyform.domain.model.QSurveyForm;
+import com.like.survey.surveyform.domain.model.SurveyForm;
+import com.like.survey.surveyform.domain.repository.SurveyRepository;
+import com.like.survey.surveyform.infra.jparepository.springdata.JpaSurveyForm;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository

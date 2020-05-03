@@ -1,13 +1,13 @@
-package com.like.survey.service;
+package com.like.survey.surveyform.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.survey.boundary.SurveyFormDTO;
-import com.like.survey.domain.model.SurveyForm;
-import com.like.survey.domain.repository.SurveyRepository;
+import com.like.survey.surveyform.boundary.SurveyFormDTO;
+import com.like.survey.surveyform.domain.model.SurveyForm;
+import com.like.survey.surveyform.domain.repository.SurveyRepository;
 
 @Service
 @Transactional(readOnly = true)
