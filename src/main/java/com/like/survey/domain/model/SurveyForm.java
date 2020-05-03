@@ -20,12 +20,13 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
 @ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Table(name = "GRWSURVEYFORM")
@@ -36,8 +37,8 @@ public class SurveyForm extends AuditEntity implements Serializable {
 
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
-	private Long id;
+	@Column(name="FORM_ID")
+	private Long formId;
 	
 	@Column(name="TITLE")
 	private String title;
@@ -55,7 +56,7 @@ public class SurveyForm extends AuditEntity implements Serializable {
 	}
 	
 	public SurveyItem getItem(Long id) {
-		return null;
+		return this.items.stream().filter(o -> o.getItemId().equals(id)).findFirst().orElse(null);		
 	}
 	
 	public void addItem(SurveyItem item) {
@@ -64,9 +65,21 @@ public class SurveyForm extends AuditEntity implements Serializable {
 		
 		this.items.add(item);
 	}
-	
+	   	
 	public void removeItem(SurveyItem item) {
 		this.items.remove(item);
 	}
 	
+	public void removeItem(Long id) {
+		this.items.remove(this.getItem(id));
+	}
+	
+	public static void main(String[] args) {
+		SurveyForm form = new SurveyForm(1L, "title", "comment", null);
+		
+		form.addItem(new SurveyItem(1L, "itemType", "label1", "value", true, "comment", form));
+		form.addItem(new SurveyItem(2L, "itemType", "label2", "value", true, "comment", form));
+		System.out.println(form.getItem(3L).getLabel());		
+		
+	}
 }

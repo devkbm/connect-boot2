@@ -1,7 +1,11 @@
 package com.like.survey.infra.jparepository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
+import com.like.survey.boundary.SurveyFormDTO.SearchSurveyForm;
+import com.like.survey.domain.model.QSurveyForm;
 import com.like.survey.domain.model.SurveyForm;
 import com.like.survey.domain.repository.SurveyRepository;
 import com.like.survey.infra.jparepository.springdata.JpaSurveyForm;
@@ -33,6 +37,14 @@ public class SurveyJpaRepository implements SurveyRepository {
 	@Override
 	public void deleteSurveyForm(SurveyForm surveyForm) {
 		jpaSurveyForm.delete(surveyForm);		
+	}
+
+	@Override
+	public List<SurveyForm> getSurveyFormList(SearchSurveyForm dto) {
+
+		return queryFactory.selectFrom(QSurveyForm.surveyForm)
+						   .where(dto.getBooleanBuilder())
+						   .fetch();
 	}
 
 }

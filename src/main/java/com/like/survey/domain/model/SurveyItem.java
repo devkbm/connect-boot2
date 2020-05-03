@@ -22,6 +22,7 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -29,8 +30,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"surveyForm"})
 @ToString(callSuper=true, includeFieldNames=true)
+@Getter
 @Entity
-@Table(name = "GRWSURVEYFORM")
+@Table(name = "GRWSURVEYITEM")
 @EntityListeners(AuditingEntityListener.class)
 public class SurveyItem extends AuditEntity implements Serializable {
 	
@@ -38,8 +40,8 @@ public class SurveyItem extends AuditEntity implements Serializable {
 
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
-	private Long id;
+	@Column(name="ITEM_ID")
+	private Long itemId;
 	
 	/**
 	 * Radio, Checkbox, Text
@@ -61,9 +63,24 @@ public class SurveyItem extends AuditEntity implements Serializable {
 	
 	//private List<SurveyOption> options;
 		
-	@ManyToOne(fetch=FetchType.LAZY)			
+	@ManyToOne(optional = false)			
 	@JoinColumn(name="form_id", nullable=false, updatable=false)
 	private SurveyForm surveyForm;
+	
+	public SurveyItem(SurveyForm surveyForm
+					 ,String itemType
+					 ,String label
+					 ,String value
+					 ,Boolean required
+					 ,String comment) {
+		this.surveyForm = surveyForm;
+		this.itemType = itemType;
+		this.label = label;
+		this.value = value;
+		this.required = required;
+		this.comment = comment;
+	}
+	
 	
 	public void modifyEntity(String itemType
 							,String label

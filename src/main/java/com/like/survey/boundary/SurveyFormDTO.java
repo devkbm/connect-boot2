@@ -7,7 +7,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
 
-import com.like.menu.domain.model.QMenuGroup;
+import com.like.survey.domain.model.QSurveyForm;
+import com.like.survey.domain.model.QSurveyItem;
 import com.like.survey.domain.model.SurveyForm;
 import com.like.survey.domain.model.SurveyItem;
 import com.querydsl.core.BooleanBuilder;
@@ -22,41 +23,40 @@ public class SurveyFormDTO {
 
 	@Data
 	public static class SearchSurveyForm implements Serializable {
-
-		private static final long serialVersionUID = 4855967336075857695L;
-
-		private final QMenuGroup qMenuGroup = QMenuGroup.menuGroup;
 		
-		String menuGroupCode;
+		private static final long serialVersionUID = 1130919600828169085L;
+
+		private final QSurveyForm qSurveyForm = QSurveyForm.surveyForm;			
 		
-		String menuGroupName;
+		Long formId;
+		
+		String title;			
 				
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
 			
 			builder
-				.and(likeMenGroupCode(this.menuGroupCode))
-				.and(likeMenGroupName(this.menuGroupName));
+				.and(eqFormId(this.formId))
+				.and(likeTitle(this.title));
 											
 			return builder;
 		}
 		
-		private BooleanExpression likeMenGroupCode(String menuGroupCode) {
-			if (StringUtils.isEmpty(menuGroupCode)) {
+		private BooleanExpression eqFormId(Long formId) {
+			if (formId == null || formId < 0L) {
 				return null;
 			}
 			
-			return qMenuGroup.menuGroupCode.like("%"+menuGroupCode+"%");
+			return qSurveyForm.formId.eq(formId);
 		}
 		
-		private BooleanExpression likeMenGroupName(String menuGroupName) {
-			if (StringUtils.isEmpty(menuGroupName)) {
+		private BooleanExpression likeTitle(String title) {
+			if (StringUtils.isEmpty(title)) {
 				return null;
 			}
 			
-			return qMenuGroup.menuGroupName.like("%"+menuGroupName+"%");
-		}
-		
+			return qSurveyForm.title.like("%"+title+"%");
+		}			
 		
 	}
 	
@@ -76,7 +76,7 @@ public class SurveyFormDTO {
 		
 		String modifiedBy;
 				
-		private Long id;
+		private Long formId;
 		
 		@NotEmpty	
 		private String title;
@@ -112,7 +112,7 @@ public class SurveyFormDTO {
 		
 		String modifiedBy;
 				
-		private Long id;
+		private Long itemId;
 		
 		private Long formId;
 		
@@ -126,8 +126,10 @@ public class SurveyFormDTO {
 		
 		private Boolean visible;	
 		
+		private String comment;
+		
 		public SurveyItem newSaveSurveyItem(SurveyForm form) {
-			return null;		
+			return new SurveyItem(form, itemType, label, value, required, null);		
 		}
 		
 		public void modifySaveSurveyItem(SurveyItem surveyItem) {

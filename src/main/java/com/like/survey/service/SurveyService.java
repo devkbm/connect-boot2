@@ -25,10 +25,10 @@ public class SurveyService {
 	public void saveSurveyForm(SurveyFormDTO.SaveSurveyForm dto) {
 		SurveyForm entity = null;
 		
-		if (dto.getId() == null) {
+		if (dto.getFormId() == null) {
 			entity = dto.newSurveyForm();
 		} else {
-			entity = surveyRepository.getSurveyForm(dto.getId());
+			entity = surveyRepository.getSurveyForm(dto.getFormId());
 			
 			dto.modifySurveyForm(entity);
 		}
@@ -41,19 +41,27 @@ public class SurveyService {
 		surveyRepository.deleteSurveyForm(entity);
 	}
 	
+	public SurveyItem getSurveyItem(Long formId, Long itemId) {
+		return surveyRepository.getSurveyForm(formId).getItem(itemId);
+	}
+		
 	public void saveSurveyItem(SurveyFormDTO.SaveSurveyItem dto) {
 		SurveyForm form = surveyRepository.getSurveyForm(dto.getFormId());
 		SurveyItem item = null;
 		
-		if (dto.getId() == null) {
+		if (dto.getItemId() == null) {
 			item = dto.newSaveSurveyItem(form);
 			form.addItem(item);
 		} else {
-			item = form.getItem(dto.getId());
+			item = form.getItem(dto.getItemId());
 			dto.modifySaveSurveyItem(item);
 		}
 		
 		surveyRepository.saveSureyForm(form);
 	}
 	
+	public void deleteSurveyItem(Long formId, Long itemId) {
+		SurveyForm entity = surveyRepository.getSurveyForm(formId);		
+		entity.removeItem(itemId);				
+	}
 }
