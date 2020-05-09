@@ -11,34 +11,46 @@ import com.querydsl.jpa.JPAExpressions;
 import com.like.dept.domain.model.QDept;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QDeptChangeHistory;
+import com.like.hrm.employee.domain.model.QEducation;
 import com.like.hrm.employee.domain.model.QEmployee;
+import com.like.hrm.employee.domain.model.QJobChangeHistory;
+import com.like.hrm.employee.domain.model.QLicense;
+import com.like.hrm.employee.domain.model.QStatusChangeHistory;
 
 public class EmployeeExpression {
 
-	/**
-	 * 현재 사용중인 부서만 검색
-	 * @return
-	 */
+		
 	@QueryDelegate(Employee.class)
-	public static BooleanExpression containCurrentDept(QEmployee employee) {
+	public static BooleanExpression referenceDate(QEmployee employee, LocalDate referenceDate) {
+		//DateExpression<LocalDate> now = DateExpression.currentDate(LocalDate.class);
+		DateExpression<LocalDate> date = Expressions.asDate(referenceDate);
 		
-		DateExpression<LocalDate> now = DateExpression.currentDate(LocalDate.class);
 		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
+		QJobChangeHistory qJobChangeHistory = QJobChangeHistory.jobChangeHistory;
+		QStatusChangeHistory qStatusChangeHistory = QStatusChangeHistory.statusChangeHistory;				
 		
-		//return now.between(employee.deptHistory..fromDate, code.toDate);
-		return JPAExpressions.select(Expressions.constant(1))
-				  			 .from(qDeptChangeHistory)
-				             .where(now.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)).exists();
+		return date.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)
+		  .and(date.between(qJobChangeHistory.fromDate, qJobChangeHistory.toDate))
+		  .and(date.between(qStatusChangeHistory.fromDate, qStatusChangeHistory.toDate));
+		  
 	}
 	
 	@QueryDelegate(Employee.class)
-	public static BooleanExpression equalDeptCode(QEmployee employee, String deptCode) {
+	public static BooleanExpression equalDeptCode(QEmployee employee, String deptType, String deptCode) {		
 		
-		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
+		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;				
 		
-		return JPAExpressions.select(Expressions.constant(1))
-				  			 .from(qDeptChangeHistory)
-				             .where(qDeptChangeHistory.deptCode.eq(deptCode)).exists();
+		return qDeptChangeHistory.deptType.eq(deptType)
+		  .and(qDeptChangeHistory.deptCode.eq(deptCode));			
+	}
+	
+	@QueryDelegate(Employee.class)
+	public static BooleanExpression equalJobCode(QEmployee employee, String jobType, String jobCode) {		
+		
+		QJobChangeHistory qJobChangeHistory = QJobChangeHistory.jobChangeHistory;				
+		
+		return qJobChangeHistory.jobType.eq(jobType)
+		  .and(qJobChangeHistory.jobCode.eq(jobCode));			
 	}
 		
 	@QueryDelegate(Employee.class)
@@ -53,10 +65,12 @@ public class EmployeeExpression {
 				  			 .join(qDept)
 				  			 .on(qDeptChangeHistory.deptCode.eq(qDept.deptCode))				  			 				  			 				  		
 				             .where(qDept.deptNameKorean.like(deptName)
+				               .and(qDeptChangeHistory.employee.eq(employee))
 				               .and(dateExpression.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)))
 				             .exists();
 	}
 	
+
 	/*
 	@QueryDelegate(Code.class)
 	public static BooleanExpression isRootNode(QCode code) {							

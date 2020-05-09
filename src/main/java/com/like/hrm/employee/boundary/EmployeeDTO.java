@@ -31,11 +31,15 @@ public class EmployeeDTO {
 		
 		private static final long serialVersionUID = 1L;
 
-		private final QEmployee qEmployee = QEmployee.employee;
-						
+		private final QEmployee qEmployee = QEmployee.employee;		
+
+		LocalDate referenceDate;
+		
 		String id;
 		
 		String name;
+		
+		String deptType;
 		
 		String deptCode;
 					
@@ -47,8 +51,9 @@ public class EmployeeDTO {
 			builder				
 				.and(likeId(this.id))
 				.and(likeName(this.name))
-				.and(eqDeptCode(this.deptCode))
-				.and(likeDeptName(this.deptName));
+				.and(eqDeptCode(this.deptType, this.deptCode))
+				.and(likeDeptName(this.deptName))
+				.and(eqReferenceDate(this.referenceDate));				
 			
 			return builder;
 		}
@@ -69,12 +74,12 @@ public class EmployeeDTO {
 			return qEmployee.name.like("%"+name+"%");
 		}
 		
-		private BooleanExpression eqDeptCode(String deptCode) {
+		private BooleanExpression eqDeptCode(String deptType, String deptCode) {
 			if (StringUtils.isEmpty(deptCode)) {
 				return null;
 			}
-			
-			return qEmployee.equalDeptCode(deptCode);
+						
+			return qEmployee.equalDeptCode(deptType, deptCode);
 		}
 		
 		private BooleanExpression likeDeptName(String deptName) {
@@ -83,6 +88,13 @@ public class EmployeeDTO {
 			}
 			
 			return qEmployee.likeDeptName("%"+deptName+"%", LocalDate.now());
+		}
+		
+		private BooleanExpression eqReferenceDate(LocalDate date) {
+			if (date == null)
+				return null;
+			
+			return qEmployee.referenceDate(date);
 		}
 					
 		

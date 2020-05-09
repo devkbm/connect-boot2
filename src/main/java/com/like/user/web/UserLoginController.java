@@ -1,6 +1,7 @@
 package com.like.user.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -66,7 +67,7 @@ public class UserLoginController {
 				.userId(user.getUsername())
 				.userName(user.getName())
 				.imageUrl(user.getImage())
-				.collection(user.getAuthorities())
+				.collection(user.getAuthorities().stream().map(o -> o.getAuthority()).collect(Collectors.toList()))
 				.menuGroupList(user.getMenuGroupList())
 				.token(session.getId())
 				.build();

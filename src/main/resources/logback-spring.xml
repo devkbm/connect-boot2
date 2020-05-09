@@ -53,7 +53,7 @@
     	<appender-ref ref="TEXT_CONSOLE" />
   	</logger>
   	
-  	<logger name="jdbc.resultsettable" level="DEBUG" additivity="false">> 
+  	<logger name="jdbc.resultsettable" level="OFF" additivity="false">> 
     	<appender-ref ref="TEXT_CONSOLE" />
   	</logger>
   	

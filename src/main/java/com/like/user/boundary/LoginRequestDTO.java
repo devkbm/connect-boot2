@@ -4,9 +4,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class LoginRequestDTO {
 
 	@NotBlank(message="아이디를 입력해주세요")

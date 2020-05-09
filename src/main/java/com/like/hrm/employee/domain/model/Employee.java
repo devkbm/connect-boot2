@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -98,31 +99,31 @@ public class Employee extends AuditEntity implements Serializable {
 	/**
 	 * 부서이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	List<DeptChangeHistory> deptHistory = new ArrayList<>();
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	Set<DeptChangeHistory> deptHistory = new LinkedHashSet<>();
 		
 	/**
 	 * 직위 직급 등 인사정보 이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	List<JobChangeHistory> jobHistory = new ArrayList<>();		
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	Set<JobChangeHistory> jobHistory = new LinkedHashSet<>();		
 	
 	/**
 	 * 근무상태 이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	List<StatusChangeHistory> statusHistory = new ArrayList<>();
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	Set<StatusChangeHistory> statusHistory = new LinkedHashSet<>();
 	
 	/**
 	 * 자격면허
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	Set<License> licenseList = new LinkedHashSet<>();
 	
 	/**
 	 * 교육이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	Set<Education> educationList = new LinkedHashSet<>();
 	
 	public Employee(String id
@@ -154,15 +155,15 @@ public class Employee extends AuditEntity implements Serializable {
 		return this.id;
 	}
 	
-	public List<DeptChangeHistory> getDeptChangeHistory() {
+	public Set<DeptChangeHistory> getDeptChangeHistory() {
 		return this.deptHistory;
 	}
 	
-	public List<JobChangeHistory> getJobChangeHistory() {
+	public Set<JobChangeHistory> getJobChangeHistory() {
 		return this.jobHistory;
 	}
 	
-	public List<StatusChangeHistory> getStatusChangeHistory() {
+	public Set<StatusChangeHistory> getStatusChangeHistory() {
 		return this.statusHistory;
 	}
 	

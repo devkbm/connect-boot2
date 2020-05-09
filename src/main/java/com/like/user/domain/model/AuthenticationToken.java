@@ -16,7 +16,8 @@ public class AuthenticationToken {
 	private String userId;
 	private String userName;
 	private String imageUrl;
-    private Collection<? extends GrantedAuthority> authorities;
+    //private Collection<? extends GrantedAuthority> authorities;
+	private List<String> authorities;
     private List<MenuGroup> menuGroupList;
     private String token;
        
@@ -25,7 +26,7 @@ public class AuthenticationToken {
     		String userId, 
     		String userName, 
     		String imageUrl,
-    		Collection<? extends GrantedAuthority> collection,
+    		List<String> collection,
     		List<MenuGroup> menuGroupList,
     		String token) {
     	this.userId = userId;

@@ -2,6 +2,7 @@ package com.like.common.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -23,6 +24,9 @@ import com.like.user.domain.model.AuthenticationToken;
 import com.like.user.domain.model.User;
 import com.like.user.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	
@@ -45,7 +49,7 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
 			HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 
-        // log.info(authentication.getName());        
+        log.info(authentication.getName() + "로그인 성공");        
  		// log.info(SecurityContextHolder.getContext().getAuthentication().getName());		
  						
  		response.setContentType("application/json;charset=UTF-8");
@@ -58,7 +62,7 @@ public class RestLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
  										.userId(user.getUsername())
  										.userName(user.getName())
  										.imageUrl(user.getImage())
- 										.collection(user.getAuthorities())
+ 										.collection(user.getAuthorities().stream().map(o -> o.getAuthority()).collect(Collectors.toList()))
  										.menuGroupList(user.getMenuGroupList())
  										.token(this.session.getId())
  										.build();

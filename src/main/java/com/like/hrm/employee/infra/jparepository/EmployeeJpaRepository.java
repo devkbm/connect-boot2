@@ -6,9 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
 import com.like.hrm.employee.boundary.EmployeeDTO.SearchEmployee;
 import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.model.QDeptChangeHistory;
+import com.like.hrm.employee.domain.model.QEducation;
 import com.like.hrm.employee.domain.model.QEmployee;
+import com.like.hrm.employee.domain.model.QJobChangeHistory;
+import com.like.hrm.employee.domain.model.QLicense;
+import com.like.hrm.employee.domain.model.QStatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.infra.jparepository.springdata.JpaEmployee;
 import com.querydsl.jpa.JPAExpressions;
@@ -24,6 +30,12 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	private JpaEmployee jpaEmployee;
 	
 	private static final QEmployee qEmployee = QEmployee.employee;
+	private static final QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
+	private static final QJobChangeHistory qJobChangeHistory = QJobChangeHistory.jobChangeHistory;
+	private static final QStatusChangeHistory qStatusChangeHistory = QStatusChangeHistory.statusChangeHistory;
+	private static final QEducation qEducation = QEducation.education;
+	private static final QLicense qLicense = QLicense.license;
+	
 	
 	@Override
 	public Employee getEmployee(String id) {
@@ -47,9 +59,21 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	@Override
 	public List<Employee> getEmployeeList(SearchEmployee dto) {
 		
+		//return Lists.newArrayList(jpaEmployee.findAll(dto.getBooleanBuilder()));
+		
 		return queryFactory
-				.select(qEmployee)
-				.from(qEmployee)				
+				.select(qEmployee).distinct()
+				.from(qEmployee)
+				.leftJoin(qEmployee.deptHistory, qDeptChangeHistory)
+				.fetchJoin()
+				.leftJoin(qEmployee.jobHistory, qJobChangeHistory)
+				.fetchJoin()
+				.leftJoin(qEmployee.statusHistory, qStatusChangeHistory)
+				.fetchJoin()
+				.leftJoin(qEmployee.educationList, qEducation)
+				.fetchJoin()
+				.leftJoin(qEmployee.licenseList, qLicense)
+				.fetchJoin()
 				.where(dto.getBooleanBuilder())				
 				.fetch();
 	}
