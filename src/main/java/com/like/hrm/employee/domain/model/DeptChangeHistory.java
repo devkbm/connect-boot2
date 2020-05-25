@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -59,6 +60,10 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	 */
 	@Column(name="DEPT_CODE")
 	private String deptCode;
+	
+	@Formula("(select x.DEPT_NM_KOR from com.comdept x where x.dept_cd = dept_code)")
+	private String deptName;
+	
 	
 	/**
 	 * 시작일

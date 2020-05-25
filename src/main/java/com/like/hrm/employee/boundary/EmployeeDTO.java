@@ -2,6 +2,7 @@ package com.like.hrm.employee.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
@@ -22,14 +23,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 public class EmployeeDTO {
 		
+	@Slf4j
 	@Data
 	@JsonInclude(Include.NON_EMPTY)	
-	public static class SearchEmployee implements Serializable {
+	public static class SearchEmployee implements Serializable {			
 		
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = -3725100691674283297L;
 
 		private final QEmployee qEmployee = QEmployee.employee;		
 
@@ -42,16 +45,25 @@ public class EmployeeDTO {
 		String deptType;
 		
 		String deptCode;
+		
+		List<String> deptCodeList;
 					
 		String deptName;
 		
+		String jobType;
+		
+		String jobCode;
+		
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
-				
+			
+			log.info(this.deptType + " : "+ this.deptCodeList);
+			
 			builder				
 				.and(likeId(this.id))
 				.and(likeName(this.name))
 				.and(eqDeptCode(this.deptType, this.deptCode))
+				.and(inDeptCodeList(this.deptType, this.deptCodeList))
 				.and(likeDeptName(this.deptName))
 				.and(eqReferenceDate(this.referenceDate));				
 			
@@ -74,12 +86,20 @@ public class EmployeeDTO {
 			return qEmployee.name.like("%"+name+"%");
 		}
 		
-		private BooleanExpression eqDeptCode(String deptType, String deptCode) {
+		private BooleanExpression eqDeptCode(String deptType, String deptCodeL) {
 			if (StringUtils.isEmpty(deptCode)) {
 				return null;
 			}
-						
+					
 			return qEmployee.equalDeptCode(deptType, deptCode);
+		}
+		
+		private BooleanExpression inDeptCodeList(String deptType, List<String> deptCodeList) {
+			if (deptCodeList == null) {
+				return null;
+			}
+					
+			return qEmployee.inDeptCode(deptType, deptCodeList);
 		}
 		
 		private BooleanExpression likeDeptName(String deptName) {

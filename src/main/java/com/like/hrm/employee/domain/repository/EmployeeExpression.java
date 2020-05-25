@@ -1,7 +1,7 @@
 package com.like.hrm.employee.domain.repository;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -43,6 +43,17 @@ public class EmployeeExpression {
 		return qDeptChangeHistory.deptType.eq(deptType)
 		  .and(qDeptChangeHistory.deptCode.eq(deptCode));			
 	}
+	
+	@QueryDelegate(Employee.class)
+	public static BooleanExpression inDeptCode(QEmployee employee, String deptType, List<String> deptCode) {		
+		
+		QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;				
+		
+		return qDeptChangeHistory.deptType.eq(deptType)
+		  .and(qDeptChangeHistory.deptCode.in(deptCode));			
+	}
+	
+	
 	
 	@QueryDelegate(Employee.class)
 	public static BooleanExpression equalJobCode(QEmployee employee, String jobType, String jobCode) {		

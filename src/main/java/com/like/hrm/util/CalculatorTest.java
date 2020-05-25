@@ -85,6 +85,9 @@ package com.like.hrm.util;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.mXparser;
+
 // github에서 소스 가져옴
 // https://github.com/simnalamburt/snucse/tree/master/Data%20Stucture/Stack%20Calculator
 
@@ -115,6 +118,11 @@ public class CalculatorTest {
     	System.out.println(eval(test));    	    
     	
     	System.out.println(UUID.randomUUID().version());
+    	
+    	Expression e = new Expression("2-(32-4)/(23+4/5)-(2-4)*(4+6-98.2)+4");
+    	mXparser.consolePrintln("Res: " + e.getExpressionString() + " = " + e.calculate());
+    	
+    	
     	
     	/*for (int i=0; i<10000; i++) {
     		//System.out.println(UUID.randomUUID().toString());
