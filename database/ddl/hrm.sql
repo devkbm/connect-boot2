@@ -29,6 +29,18 @@ create table if not exists COM.HRMTYPECODEDETAIL (
 	constraint fk_hrmtypecodedetail foreign key(TYPE_ID) references HRMTYPECODE(TYPE_ID)
 ) COMMENT = '인사유형상세정보';
 
+create table if not exists COM.HRMRELATIONCODE (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	RELATION_ID				INT				NOT NULL	COMMENT '인사연관코드ID' AUTO_INCREMENT,    
+    REL_CODE				VARCHAR(20)		NOT NULL	COMMENT '연관코드',
+	PARENT_ID				VARCHAR(20) 	NOT NULL 	COMMENT '코드',
+	CHILD_ID				VARCHAR(20) 	NOT NULL 	COMMENT '코드명칭',	
+	constraint pk_HRMRELATIONCODE primary key(RELATION_ID)
+) COMMENT = '인사연관코드정보';
+
 create table if not exists COM.HRMAPPOINTMENTCODE (
 	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
 	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',

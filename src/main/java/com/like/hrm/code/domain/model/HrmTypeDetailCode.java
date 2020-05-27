@@ -1,13 +1,18 @@
 package com.like.hrm.code.domain.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.like.common.domain.jpaconverter.StringListConverter;
 import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 
 import lombok.AccessLevel;
@@ -48,7 +53,10 @@ public class HrmTypeDetailCode implements Serializable {
 	private Integer sequence;
 	
 	@Column(name="CMT")
-	private String comment;		
+	private String comment;			
+	
+	@Transient
+	private String relCode;
 	
 	/**
 	 * 
