@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
 import com.like.hrm.code.domain.model.QHrmType;
 import com.like.hrm.code.domain.model.QHrmTypeDetailCode;
 import com.like.hrm.code.domain.repository.HrmCodeRepository;
+import com.like.hrm.code.infra.jparepository.springdata.JpaHrmRelationCode;
 import com.like.hrm.code.infra.jparepository.springdata.JpaHrmType;
 import com.like.hrm.code.infra.jparepository.springdata.JpaTypeDetailCode;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,6 +31,9 @@ public class HrmCodeJpaRepository implements HrmCodeRepository {
 	@Autowired
 	private JpaTypeDetailCode jpaTypeDetailCode;				
 
+	@Autowired
+	private JpaHrmRelationCode jpaHrmRelationCode; 
+	
 	@Override
 	public List<HrmType> getHrmTypeList(HrmTypeDTO.SearchHrmType condition) {
 		return queryFactory
@@ -76,6 +81,22 @@ public class HrmCodeJpaRepository implements HrmCodeRepository {
 	@Override
 	public void deleteTypeDetailCode(HrmTypeDetailCode typeDetailCode) {				
 		jpaTypeDetailCode.delete(typeDetailCode);		
+	}
+
+	@Override
+	public HrmRelationCode getRelationCode(Long id) {
+		Optional<HrmRelationCode> entity = jpaHrmRelationCode.findById(id);
+		return entity.orElse(null);
+	}
+
+	@Override
+	public void saveRelationCode(HrmRelationCode entity) {
+		jpaHrmRelationCode.save(entity);
+	}
+
+	@Override
+	public void deleteRelationCode(HrmRelationCode entity) {		
+		jpaHrmRelationCode.delete(entity);
 	}
 	
 }

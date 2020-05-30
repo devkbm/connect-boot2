@@ -20,12 +20,16 @@ import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
 import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.like.hrm.code.service.HrmCodeQueryService;
 import com.like.hrm.code.service.HrmCodeService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class HrmCodeController {
 
@@ -151,6 +155,42 @@ public class HrmCodeController {
 	public ResponseEntity<?> deleteTypeDetailCode(@PathVariable(value="id") String id) {				
 																		
 		hrmCodeService.deleteTypeDetailCode(id);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/hrmrelation/{id}")
+	public ResponseEntity<?> getHrmRelationCode(@PathVariable(value="id") Long id) {
+		
+		log.info(id.toString());
+		
+		HrmRelationCode hrmType = hrmCodeService.getRelationCode(id);
+					
+		return WebControllerUtil.getResponse(hrmType											
+											,String.format("%d 건 조회되었습니다.", hrmType == null ? 0 : 1)
+											,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/hrmrelation"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveHrmRelationCode(@RequestBody HrmRelationCode dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {			
+			throw new ControllerException(result.toString());
+		} 
+																	
+		hrmCodeService.saveRelationCode(dto);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/hrm/hrmrelation/{id}")
+	public ResponseEntity<?> deleteHrmRelationCode(@PathVariable(value="id") Long id) {				
+						
+		hrmCodeService.deleteRelationCode(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

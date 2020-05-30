@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
 import com.like.hrm.code.domain.repository.HrmCodeRepository;
@@ -97,6 +98,19 @@ public class HrmCodeService {
 		}
 		
 		hrmCodeRepository.deleteTypeDetailCode(typeDetailCode);
+	}
+	
+	public HrmRelationCode getRelationCode(Long id) {
+		return hrmCodeRepository.getRelationCode(id);
+	}
+	
+	public void saveRelationCode(HrmRelationCode entity) {
+		hrmCodeRepository.saveRelationCode(entity);
+	}
+	
+	public void deleteRelationCode(Long id) {
+		HrmRelationCode entity = hrmCodeRepository.getRelationCode(id);
+		hrmCodeRepository.deleteRelationCode(entity);
 	}
 	
 }
