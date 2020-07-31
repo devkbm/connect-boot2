@@ -1,8 +1,8 @@
 create table if not exists COM.COMCODE (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     CODE_ID				VARCHAR(255) 	NOT NULL 	COMMENT '코드ID',
     P_CODE_ID			VARCHAR(255)	NULL 		COMMENT '상위코드ID',
    	CODE				VARCHAR(10) 	NOT NULL 	COMMENT '공통코드',
@@ -20,9 +20,9 @@ create table if not exists COM.COMCODE (
 
 create table if not exists COM.COMDEPT (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     DEPT_CD				VARCHAR(10) 	NOT NULL 	COMMENT '부서코드',
     P_DEPT_CD			VARCHAR(255)	NULL 		COMMENT '상위부서코드',
     DEPT_NM_KOR			VARCHAR(255) 	NOT NULL 	COMMENT '부서명(한글)',
@@ -38,9 +38,9 @@ create table if not exists COM.COMDEPT (
 
 create table if not exists COM.COMFILEINFO (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     PK_FILE				VARCHAR(40) 	NOT NULL 	COMMENT '키',
     PGM_ID				VARCHAR(10)		NOT NULL 	COMMENT '유저아이디',
     USER_ID				VARCHAR(20)		NULL		COMMENT '발령코드',
@@ -55,10 +55,10 @@ create table if not exists COM.COMFILEINFO (
 
 create table if not exists COM.COMUSER (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
+    USER_ID				VARCHAR(50)		NOT NULL	COMMENT '유저ID',
     USER_NAME			VARCHAR(100)	NULL		COMMENT '유저명',
     DEPT_CD				VARCHAR(10) 	NULL 		COMMENT '부서코드',
     MOBILE_NUM 			VARCHAR(20) 	NULL		COMMENT '핸드폰번호',
@@ -75,9 +75,9 @@ create table if not exists COM.COMUSER (
 
 create table if not exists COM.COMAUTHORITY (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     AUTHORITY_NAME		VARCHAR(50)		NOT NULL	COMMENT '권한명',
     DESCRIPTION			VARCHAR(500)	NULL		COMMENT '권한설명',
 	constraint pk_comauthority primary key(AUTHORITY_NAME)
@@ -85,11 +85,11 @@ create table if not exists COM.COMAUTHORITY (
 
 create table if not exists COM.COMUSERAUTHORITY (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-    USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
-    AUTHORITY_NAME		VARCHAR(50)		NOT NULL	COMMENT '권한명',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
+    USER_ID				VARCHAR(50)		NOT NULL	COMMENT '유저ID',
+    AUTHORITY_NAME		VARCHAR(2000)	NOT NULL	COMMENT '권한명',
 	constraint pk_comuserauthority 	primary key(USER_ID, AUTHORITY_NAME),
 	constraint fk_comuserauthority1	foreign key(USER_ID) references COMUSER(USER_ID),
 	constraint fk_comuserauthority2	foreign key(AUTHORITY_NAME) references COMAUTHORITY(AUTHORITY_NAME)
@@ -97,9 +97,9 @@ create table if not exists COM.COMUSERAUTHORITY (
 
 create table if not exists COM.COMRESOURCE (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',	
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',	
     RESOURCE_CODE		VARCHAR(10)		NOT NULL	COMMENT '리소스코드',    
     RESOURCE_NAME		VARCHAR(50)		NOT NULL	COMMENT '리소스명',
     RESOURCE_TYPE		VARCHAR(10)		NOT NULL	COMMENT '리소스타입',
@@ -110,9 +110,9 @@ create table if not exists COM.COMRESOURCE (
 
 create table if not exists COM.COMMENUGROUP (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
     MENU_GROUP_CODE		VARCHAR(10)		NOT NULL	COMMENT '메뉴그룹코드',
     MENU_GROUP_NAME		VARCHAR(50)		NOT NULL	COMMENT '메뉴그룹명',
     DESCRIPTION			VARCHAR(500)	NULL		COMMENT '설명',
@@ -121,9 +121,9 @@ create table if not exists COM.COMMENUGROUP (
 
 create table if not exists COM.COMMENU (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
 	MENU_CODE			VARCHAR(10)		NOT NULL	COMMENT '메뉴코드',
 	MENU_NAME			VARCHAR(50)		NOT NULL	COMMENT '메뉴명',
     MENU_TYPE			VARCHAR(10)		NOT NULL	COMMENT '메뉴타입',
@@ -140,13 +140,26 @@ create table if not exists COM.COMMENU (
 
 create table if not exists COM.COMUSERMENUGROUP (
 	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
-	SYS_USER 			VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
 	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
-	UPD_USER			VARCHAR(20)		NULL		COMMENT '최종수정유저',
-	USER_ID				VARCHAR(20)		NOT NULL	COMMENT '유저ID',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
+	USER_ID				VARCHAR(50)		NOT NULL	COMMENT '유저ID',
     MENU_GROUP_CODE		VARCHAR(10)		NOT NULL	COMMENT '메뉴그룹코드',
 	constraint pk_comusermenugroup 		primary key(USER_ID, MENU_GROUP_CODE),
 	constraint fk_comusermenugroup1 	foreign key(USER_ID) references COMUSER(USER_ID),
 	constraint fk_comusermenugroup2 	foreign key(MENU_GROUP_CODE) references COMMENUGROUP(MENU_GROUP_CODE)
 ) COMMENT = '사용자메뉴그룹매핑관리';
 
+create table if not exists COM.COMLOGINHISTORY (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
+	ID					INT				NOT NULL	COMMENT 'ID' 		AUTO_INCREMENT,
+	USER_ID				VARCHAR(50)		NOT NULL	COMMENT '유저ID',
+	EVENT_TYPE			VARCHAR(500)	NOT NULL	COMMENT '로그인구분',
+	EVENT_DT			DATETIME		NOT NULL	COMMENT '이벤트일시',	
+	CLIENT_IP			VARCHAR(500)	NOT NULL	COMMENT '클라이언트IP',
+	SUCCESS_YN			BOOLEAN			NOT NULL	COMMENT '성공여부',
+	constraint pk_comloginhistory primary key(ID) 	
+) COMMENT = '로그인이력';

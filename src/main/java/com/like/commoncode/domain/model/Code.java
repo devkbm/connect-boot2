@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -69,6 +70,15 @@ public class Code extends AuditEntity implements Serializable {
 	
 	@Column(name="code_length")
 	Integer codeLength;
+	
+	@Transient
+	String subGroup1;
+	
+	@Transient
+	String subGroup2;
+	
+	@Transient
+	String subGroup3;
 	
 	@Column(name="cmt")
 	String cmt;

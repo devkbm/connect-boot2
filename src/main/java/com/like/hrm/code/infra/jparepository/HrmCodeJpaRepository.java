@@ -6,11 +6,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.hrm.code.boundary.HrmRelationCodeDTO.SearchHrmRelationCode;
+import com.like.commoncode.domain.model.QCode;
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.boundary.QSaveHrmRelationCode;
+import com.like.hrm.code.boundary.SaveHrmRelationCode;
 import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
+import com.like.hrm.code.domain.model.QHrmRelationCode;
 import com.like.hrm.code.domain.model.QHrmType;
 import com.like.hrm.code.domain.model.QHrmTypeDetailCode;
 import com.like.hrm.code.domain.repository.HrmCodeRepository;
@@ -33,6 +38,11 @@ public class HrmCodeJpaRepository implements HrmCodeRepository {
 
 	@Autowired
 	private JpaHrmRelationCode jpaHrmRelationCode; 
+	
+	private static final QCode qCode = QCode.code1;
+	private static final QHrmType qHrmType = QHrmType.hrmType1;
+	private static final QHrmTypeDetailCode qHrmTypeDetailCode = QHrmTypeDetailCode.hrmTypeDetailCode;
+	private static final QHrmRelationCode qHrmRelationCode = QHrmRelationCode.hrmRelationCode;
 	
 	@Override
 	public List<HrmType> getHrmTypeList(HrmTypeDTO.SearchHrmType condition) {
@@ -97,6 +107,41 @@ public class HrmCodeJpaRepository implements HrmCodeRepository {
 	@Override
 	public void deleteRelationCode(HrmRelationCode entity) {		
 		jpaHrmRelationCode.delete(entity);
+	}
+
+	@Override
+	public List<SaveHrmRelationCode> getRelationCodeList(SearchHrmRelationCode condition) {
+		
+		QHrmType qHrmType2 = QHrmType.hrmType1;
+		QHrmTypeDetailCode qHrmTypeDetailCode2 = QHrmTypeDetailCode.hrmTypeDetailCode;
+		
+		return queryFactory
+				.select(new QSaveHrmRelationCode(
+						qHrmRelationCode.relationId
+					   ,qHrmRelationCode.relCode
+					   ,qCode.codeName
+					   ,qHrmRelationCode.parentTypeId
+					   ,qHrmType.codeName
+					   ,qHrmRelationCode.parentDetailId
+					   ,qHrmTypeDetailCode.codeName
+					   ,qHrmRelationCode.childTypeId
+					   ,qHrmType2.codeName
+					   ,qHrmRelationCode.childDetailId
+					   ,qHrmTypeDetailCode2.codeName
+						))
+				.from(qHrmRelationCode)
+				.join(qCode)
+					.on(qHrmRelationCode.relCode.eq(qCode.id))
+				.join(qHrmType)
+					.on(qHrmRelationCode.parentTypeId.eq(qHrmType.id))
+				.join(qHrmTypeDetailCode)
+					.on(qHrmRelationCode.parentDetailId.eq(qHrmTypeDetailCode.id))
+				.join(qHrmType2)
+					.on(qHrmRelationCode.childTypeId.eq(qHrmType2.id))
+				.join(qHrmTypeDetailCode2)
+					.on(qHrmRelationCode.childDetailId.eq(qHrmTypeDetailCode2.id))
+				.where(condition.getBooleanBuilder())
+				.fetch();			
 	}
 	
 }

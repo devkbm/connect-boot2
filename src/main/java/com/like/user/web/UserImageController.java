@@ -52,4 +52,6 @@ public class UserImageController {
 							
 		return new ResponseEntity<Map<String,Object>>(response, responseHeaders, HttpStatus.OK);
 	}
+	
+	
 }

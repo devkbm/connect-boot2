@@ -29,6 +29,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
 				<exclusion>
@@ -124,6 +129,7 @@
 		    <artifactId>MathParser.org-mXparser</artifactId>
 		    <version>4.4.2</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>

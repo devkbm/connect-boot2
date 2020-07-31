@@ -12,6 +12,8 @@ import com.querydsl.core.types.Predicate;
 @Repository
 public interface DeptRepository {
 	
+	boolean isDept(String deptCode);
+	
 	Dept getDept(String deptCode);
 	
 	List<Dept> getAllDeptList();

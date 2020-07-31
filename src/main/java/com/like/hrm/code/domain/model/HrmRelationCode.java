@@ -30,18 +30,28 @@ public class HrmRelationCode extends AuditEntity {
 	@Column(name="REL_CODE")
 	private String relCode;
 	
-	@Column(name="PARENT_ID")
-	private String parentId;
+	@Column(name="PARENT_TYPE_ID")
+	private String parentTypeId;
 	
-	@Column(name="CHILD_ID")
-	private String childId;
+	@Column(name="PARENT_DETAIL_ID")
+	private String parentDetailId;
+	
+	@Column(name="CHILD_TYPE_ID")
+	private String childTypeId;
+	
+	@Column(name="CHILD_DETAIL_ID")
+	private String childDetailId;
 	
 	public HrmRelationCode(String relCode
-						  ,String parentId
-						  ,String childId) {
+						  ,String parentTypeId
+						  ,String parentDetailId
+						  ,String childTypeId
+						  ,String childDetailId) {
 		this.relCode = relCode;
-		this.parentId = parentId;
-		this.childId = childId;		
-	}
+		this.parentTypeId = parentTypeId;
+		this.parentDetailId = parentDetailId;
+		this.childTypeId = childTypeId;		
+		this.childDetailId = childDetailId;
+	}	
 	
 }

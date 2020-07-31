@@ -28,6 +28,11 @@ public class DeptJpaRepository implements DeptRepository {
 	private static final QDept qDept = QDept.dept;
 	
 	@Override
+	public boolean isDept(String deptCode) {
+		return jpaDept.existsById(deptCode);
+	}
+	
+	@Override
 	public Dept getDept(String deptCode) {
 		Optional<Dept> entity = jpaDept.findById(deptCode);
 		
@@ -127,6 +132,5 @@ public class DeptJpaRepository implements DeptRepository {
 				qDept.seq,
 				qDept.comment);
 	}
-	
 
 }

@@ -2,8 +2,10 @@ package com.like.hrm.code.domain.repository;
 
 import java.util.List;
 
+import com.like.hrm.code.boundary.HrmRelationCodeDTO;
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.boundary.SaveHrmRelationCode;
 import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
@@ -60,10 +62,30 @@ public interface HrmCodeRepository {
 	 * @param typeDetailCode
 	 */
 	void deleteTypeDetailCode(HrmTypeDetailCode typeDetailCode);
-		
+	
+	/**
+	 * 연관코드리스트를 조회한다.
+	 * @param condition
+	 * @return
+	 */
+	List<SaveHrmRelationCode> getRelationCodeList(HrmRelationCodeDTO.SearchHrmRelationCode condition);
+	
+	/**
+	 * 연관코드를 조회한다.
+	 * @param id
+	 * @return
+	 */
 	HrmRelationCode getRelationCode(Long id);
 	
+	/**
+	 * 연관코드를 저장한다.
+	 * @param entity
+	 */
 	void saveRelationCode(HrmRelationCode entity);
 	
+	/**
+	 * 연관코드를 삭제한다.
+	 * @param entity
+	 */
 	void deleteRelationCode(HrmRelationCode entity);	
 }

@@ -7,8 +7,10 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.hrm.code.boundary.HrmRelationCodeDTO;
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.boundary.SaveHrmRelationCode;
 import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
@@ -104,7 +106,15 @@ public class HrmCodeService {
 		return hrmCodeRepository.getRelationCode(id);
 	}
 	
-	public void saveRelationCode(HrmRelationCode entity) {
+	public void saveRelationCode(SaveHrmRelationCode dto) {
+		HrmRelationCode entity = null;
+		
+		if (dto.getRelationId() != null) {
+			entity = hrmCodeRepository.getRelationCode(dto.getRelationId());
+		} else {
+			entity = dto.newHrmRelationCode();
+		}
+		
 		hrmCodeRepository.saveRelationCode(entity);
 	}
 	

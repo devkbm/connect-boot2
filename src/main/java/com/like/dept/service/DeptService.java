@@ -20,6 +20,10 @@ public class DeptService {
 		this.deptRepository = deptRepository;
 	}
 
+	public boolean isDept(String deptCode) {
+		return deptRepository.isDept(deptCode);
+	}
+	
 	public Dept getDept(String deptCode) {
 		return deptRepository.getDept(deptCode);
 	}

@@ -18,8 +18,10 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
+import com.like.hrm.code.boundary.HrmRelationCodeDTO;
 import com.like.hrm.code.boundary.HrmTypeDTO;
 import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
+import com.like.hrm.code.boundary.SaveHrmRelationCode;
 import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.HrmType;
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
@@ -161,6 +163,16 @@ public class HrmCodeController {
 											,HttpStatus.OK);
 	}
 	
+	@GetMapping("/hrm/hrmrelation")
+	public ResponseEntity<?> getHrmRelationCode(HrmRelationCodeDTO.SearchHrmRelationCode dto) {
+						
+		List<?> list = hrmCodeQueryService.getHrmRelationCodeList(dto);
+					
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/hrm/hrmrelation/{id}")
 	public ResponseEntity<?> getHrmRelationCode(@PathVariable(value="id") Long id) {
 		
@@ -174,7 +186,7 @@ public class HrmCodeController {
 	}
 	
 	@RequestMapping(value={"/hrm/hrmrelation"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveHrmRelationCode(@RequestBody HrmRelationCode dto, BindingResult result) {				
+	public ResponseEntity<?> saveHrmRelationCode(@RequestBody SaveHrmRelationCode dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());

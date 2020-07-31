@@ -20,7 +20,9 @@ import com.like.menu.domain.repository.MenuRepository;
 import com.like.user.boundary.AuthorityDTO;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
+import com.like.user.domain.model.LogInOutHistory;
 import com.like.user.domain.model.User;
+import com.like.user.domain.repository.LogInOutHistoryRepository;
 import com.like.user.domain.repository.UserRepository;
 import com.like.user.domain.service.UserDomainService;
 
@@ -39,6 +41,9 @@ public class UserService implements UserDetailsService {
 	
 	@Resource(name="deptJpaRepository")
 	private DeptRepository deptRepository;
+	
+	@Autowired
+	private LogInOutHistoryRepository logInOutHistoryRepository;
 	
 	@Autowired
 	UserDomainService userDomainService;
@@ -227,4 +232,8 @@ public class UserService implements UserDetailsService {
 	public PasswordEncoder passwordEncoder(){
 		return this.passwordEncoder;
 	}	
+	
+	public void saveLogInOutHistory(LogInOutHistory entity) {
+		logInOutHistoryRepository.saveLogHistory(entity);
+	}
 }
