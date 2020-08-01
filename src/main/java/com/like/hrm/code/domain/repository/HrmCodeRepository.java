@@ -18,6 +18,8 @@ public interface HrmCodeRepository {
 	 */
 	List<HrmType> getHrmTypeList(HrmTypeDTO.SearchHrmType condition);
 	
+	boolean isHrmType(String id);
+	
 	/**
 	 * 인사 유형을 조회한다.
 	 * @param id
@@ -44,6 +46,8 @@ public interface HrmCodeRepository {
 	 */
 	List<HrmTypeDetailCode> getTypeDetailCodeList(HrmTypeDetailCodeDTO.SearchHrmTypeDetailCode condition);
 	
+	boolean isTypeDetailCode(String id);
+	
 	/**
 	 * 인사 유형 상세 코드를 조회한다.
 	 * @param id
@@ -69,6 +73,8 @@ public interface HrmCodeRepository {
 	 * @return
 	 */
 	List<SaveHrmRelationCode> getRelationCodeList(HrmRelationCodeDTO.SearchHrmRelationCode condition);
+	
+	boolean isRelationCode(Long id);
 	
 	/**
 	 * 연관코드를 조회한다.

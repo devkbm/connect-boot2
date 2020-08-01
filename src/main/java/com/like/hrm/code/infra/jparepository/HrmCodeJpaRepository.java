@@ -143,5 +143,20 @@ public class HrmCodeJpaRepository implements HrmCodeRepository {
 				.where(condition.getBooleanBuilder())
 				.fetch();			
 	}
+
+	@Override
+	public boolean isHrmType(String id) { 
+		return japHrmType.existsById(id);
+	}
+
+	@Override
+	public boolean isTypeDetailCode(String id) {
+		return jpaTypeDetailCode.existsById(id);
+	}
+
+	@Override
+	public boolean isRelationCode(Long id) {
+		return jpaHrmRelationCode.existsById(id);
+	}
 	
 }
