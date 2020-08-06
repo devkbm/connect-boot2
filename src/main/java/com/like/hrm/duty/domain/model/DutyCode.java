@@ -27,6 +27,6 @@ public class DutyCode extends AuditEntity {
 	private String dutyName;
 	
 	@Column(name="ENABLE_YN")
-	private Boolean isEnabled;
+	private Boolean enabled;
 	
 }

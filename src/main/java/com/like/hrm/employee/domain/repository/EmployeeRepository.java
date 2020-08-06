@@ -10,6 +10,7 @@ import com.like.hrm.employee.domain.model.Employee;
 @Repository
 public interface EmployeeRepository {
 
+	boolean isEmployee(String id);
 	
 	/**
 	 * <p>Employee 엔티티를 조회한다.</p>

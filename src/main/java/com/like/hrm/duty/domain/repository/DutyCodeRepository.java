@@ -4,6 +4,8 @@ import com.like.hrm.duty.domain.model.DutyCode;
 
 public interface DutyCodeRepository {
 
+	boolean isDutyCode(String dutyCode);
+	
 	DutyCode getDutyCode(String dutyCode);
 	
 	void saveDutyCode(DutyCode entity);

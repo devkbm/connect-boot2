@@ -1,5 +1,7 @@
 package com.like.hrm.duty.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,8 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyCodeCommandService;
+import com.like.hrm.employee.boundary.EmployeeDTO;
+import com.like.hrm.employee.domain.model.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +30,17 @@ public class DutyCodeController {
 	
 	public DutyCodeController(DutyCodeCommandService dutyCodeCommandService) {
 		this.dutyCodeCommandService = dutyCodeCommandService;
+	}
+	
+	@GetMapping("/hrm/dutycode")
+	public ResponseEntity<?> getDutyCodeList(EmployeeDTO.SearchEmployee dto) {
+		
+		//List<Employee> list = employeeService.getEmployeeList(dto);					
+		List<DutyCode> list = null;
+		
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/hrm/dutycode/{id}")

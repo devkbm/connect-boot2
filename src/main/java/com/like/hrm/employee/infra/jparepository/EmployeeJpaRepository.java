@@ -38,6 +38,12 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	
 	
 	@Override
+	public boolean isEmployee(String id) { 
+		return jpaEmployee.existsById(id);
+	}
+
+	
+	@Override
 	public Employee getEmployee(String id) {
 		Optional<Employee> entity = jpaEmployee.findById(id);
 		

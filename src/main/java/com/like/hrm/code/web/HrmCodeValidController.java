@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.code.boundary.HrmTypeDTO;
+import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
 import com.like.hrm.code.domain.repository.HrmCodeRepository;
 import com.like.hrm.code.service.HrmCodeQueryService;
 import com.like.hrm.code.service.HrmCodeService;
@@ -30,6 +31,16 @@ public class HrmCodeValidController {
 		boolean exist = hrmCodeRepository.isHrmType(id);
 					
 		return WebControllerUtil.getResponse(exist											
+											,exist ? "중복된 인사유형 코드가 있습니다." : "사용가능한 코드입니다."
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/typedetailcode/{id}/valid")
+	public ResponseEntity<?> getTypeDetailCode(@PathVariable(value="id") String id) {
+		
+		boolean exist = hrmCodeRepository.isTypeDetailCode(id);
+					
+		return WebControllerUtil.getResponse(exist
 											,exist ? "중복된 인사유형 코드가 있습니다." : "사용가능한 코드입니다."
 											,HttpStatus.OK);
 	}

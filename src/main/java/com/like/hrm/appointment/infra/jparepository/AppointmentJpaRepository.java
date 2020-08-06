@@ -131,4 +131,9 @@ public class AppointmentJpaRepository implements AppointmentLedgerRepository, Ap
 		//return null;
 	}
 
+	@Override
+	public boolean isAppointmentCode(String codeId) {
+		return jpaAppointmentCode.existsById(codeId);
+	}
+
 }

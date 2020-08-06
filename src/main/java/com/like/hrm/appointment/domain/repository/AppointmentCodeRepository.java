@@ -8,6 +8,9 @@ import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 
 public interface AppointmentCodeRepository {	
 	
+	
+	boolean isAppointmentCode(String codeId);
+	
 	/**
 	 * 발령코드를 조회한다.
 	 * @param codeId

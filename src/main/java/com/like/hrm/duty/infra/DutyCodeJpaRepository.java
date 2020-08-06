@@ -16,6 +16,11 @@ public class DutyCodeJpaRepository implements DutyCodeRepository {
 	}
 	
 	@Override
+	public boolean isDutyCode(String dutyCode) {
+		return jpaDutyCode.existsById(dutyCode);
+	}
+	
+	@Override
 	public DutyCode getDutyCode(String dutyCode) {		
 		return this.jpaDutyCode.findById(dutyCode).orElse(null);
 	}
@@ -29,5 +34,7 @@ public class DutyCodeJpaRepository implements DutyCodeRepository {
 	public void deleteDutyCode(DutyCode entity) {
 		this.jpaDutyCode.delete(entity);		
 	}
+
+	
 
 }
