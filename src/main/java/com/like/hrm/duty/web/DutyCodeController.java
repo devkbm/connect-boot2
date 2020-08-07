@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyCodeCommandService;
+import com.like.hrm.duty.service.DutyCodeQueryService;
 import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.Employee;
 
@@ -28,15 +30,18 @@ public class DutyCodeController {
 
 	private DutyCodeCommandService dutyCodeCommandService;
 	
-	public DutyCodeController(DutyCodeCommandService dutyCodeCommandService) {
+	private DutyCodeQueryService dutyCodeQueryService;
+	
+	public DutyCodeController(DutyCodeCommandService dutyCodeCommandService
+			 				 ,DutyCodeQueryService dutyCodeQueryService) {
 		this.dutyCodeCommandService = dutyCodeCommandService;
+		this.dutyCodeQueryService = dutyCodeQueryService;
 	}
 	
 	@GetMapping("/hrm/dutycode")
-	public ResponseEntity<?> getDutyCodeList(EmployeeDTO.SearchEmployee dto) {
+	public ResponseEntity<?> getDutyCodeList(DutyCodeDTO.SearchDutyCode dto) {
 		
-		//List<Employee> list = employeeService.getEmployeeList(dto);					
-		List<DutyCode> list = null;
+		List<DutyCode> list = dutyCodeQueryService.getDutyCodeList(dto);					
 		
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())

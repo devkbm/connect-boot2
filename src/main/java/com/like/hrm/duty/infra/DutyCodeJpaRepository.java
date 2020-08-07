@@ -1,7 +1,11 @@
 package com.like.hrm.duty.infra;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
+import com.like.hrm.duty.boundary.DutyCodeDTO.SearchDutyCode;
 import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 import com.like.hrm.duty.infra.spingdata.JpaDutyCode;
@@ -33,6 +37,11 @@ public class DutyCodeJpaRepository implements DutyCodeRepository {
 	@Override
 	public void deleteDutyCode(DutyCode entity) {
 		this.jpaDutyCode.delete(entity);		
+	}
+
+	@Override
+	public List<DutyCode> getDutyCodeList(SearchDutyCode condition) {		
+		return Lists.newArrayList(jpaDutyCode.findAll(condition.getBooleanBuilder()));
 	}
 
 	

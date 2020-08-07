@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
-import com.like.hrm.duty.domain.model.DutyCode;
+import com.like.hrm.duty.domain.model.DutyApplication;
 
 @Repository
-public interface JpaDutyCode extends JpaRepository<DutyCode, String>, QuerydslPredicateExecutor<DutyCode> {
+public interface JpaDutyApplication extends JpaRepository<DutyApplication, String>, QuerydslPredicateExecutor<DutyApplication> {
 
 }
