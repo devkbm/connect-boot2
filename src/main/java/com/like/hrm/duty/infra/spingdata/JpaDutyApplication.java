@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.like.hrm.duty.domain.model.DutyApplication;
 
 @Repository
-public interface JpaDutyApplication extends JpaRepository<DutyApplication, String>, QuerydslPredicateExecutor<DutyApplication> {
+public interface JpaDutyApplication extends JpaRepository<DutyApplication, Long>, QuerydslPredicateExecutor<DutyApplication> {
 
 }

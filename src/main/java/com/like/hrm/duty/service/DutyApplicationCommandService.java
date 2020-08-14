@@ -16,7 +16,7 @@ public class DutyApplicationCommandService {
 		this.dutyApplicationRepository = dutyApplicationRepository;
 	}
 	
-	public DutyApplication getDutyApplication(String dutyId) {
+	public DutyApplication getDutyApplication(Long dutyId) {
 		return dutyApplicationRepository.getDutyApplication(dutyId);
 	}
 	
@@ -24,7 +24,7 @@ public class DutyApplicationCommandService {
 		dutyApplicationRepository.saveDutyApplication(entity);
 	}
 	
-	public void deleteDutyApplication(String dutyId) {
+	public void deleteDutyApplication(Long dutyId) {
 		DutyApplication entity = dutyApplicationRepository.getDutyApplication(dutyId);
 		dutyApplicationRepository.deleteDutyApplication(entity);		
 	}

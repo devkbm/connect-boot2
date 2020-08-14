@@ -22,7 +22,7 @@ public class DutyApplicationValidController {
 	}
 	
 	@GetMapping("/hrm/dutyapplication/{id}/valid")
-	public ResponseEntity<?> getDutyCode(@PathVariable(value="id") String id) {
+	public ResponseEntity<?> getDutyCode(@PathVariable(value="id") Long id) {
 		
 		boolean exist = dutyApplicationRepository.isDutyApplication(id);
 					

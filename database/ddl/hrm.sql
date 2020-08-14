@@ -218,3 +218,17 @@ create table HRMDUTYCODE (
 	constraint pk_hrmdutycode primary key(DUTY_CODE)
 ) COMMENT = '근무코드정보';
 
+create table HRMDUTYAPPLICATION (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(50)		NULL		COMMENT '최종수정유저',	   
+    DUTY_ID					INT				NOT NULL	COMMENT '근태신청ID' AUTO_INCREMENT,
+	EMP_ID					VARCHAR(50) 	NOT NULL 	COMMENT '사원번호',
+	DUTY_CODE				VARCHAR(20)		NOT NULL	COMMENT '근무코드',
+	DUTY_REASON				VARCHAR(2000) 	NOT NULL 	COMMENT '근태사유',
+	DUTY_START_DT			DATETIME		NOT NULL 	COMMENT '근태시작일',
+	DUTY_END_DT				DATETIME		NOT NULL 	COMMENT '근태종료일',
+	constraint pk_hrmdutyapplication primary key(DUTY_ID),
+	constraint fk_hrmdutyapplication1 foreign key(DUTY_CODE) references HRMDUTYCODE(DUTY_CODE)
+) COMMENT = '근태신청정보';

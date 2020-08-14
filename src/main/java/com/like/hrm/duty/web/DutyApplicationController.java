@@ -1,5 +1,7 @@
 package com.like.hrm.duty.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.hrm.duty.boundary.DutyApplicationDTO;
+import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
+import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyApplicationCommandService;
+import com.like.hrm.duty.service.DutyApplicationQueryService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,12 +30,26 @@ public class DutyApplicationController {
 
 	private DutyApplicationCommandService dutyApplicationCommandService;
 	
-	public DutyApplicationController(DutyApplicationCommandService dutyApplicationCommandService) {
+	private DutyApplicationQueryService dutyApplicationQueryService;
+	
+	public DutyApplicationController(DutyApplicationCommandService dutyApplicationCommandService
+									,DutyApplicationQueryService dutyApplicationQueryService) {
 		this.dutyApplicationCommandService = dutyApplicationCommandService;
+		this.dutyApplicationQueryService = dutyApplicationQueryService;
+	}
+	
+	@GetMapping("/hrm/dutyapplication")
+	public ResponseEntity<?> getDutyApplicationList(DutyApplicationDTO.SearchDutyApplication dto) {
+		
+		List<DutyApplication> list = dutyApplicationQueryService.getDutyApplicationList(dto);					
+		
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/hrm/dutyapplication/{id}")
-	public ResponseEntity<?> getDutyApplication(@PathVariable(value="id") String id) {
+	public ResponseEntity<?> getDutyApplication(@PathVariable(value="id") Long id) {
 		
 		DutyApplication entity = dutyApplicationCommandService.getDutyApplication(id);
 					
@@ -53,7 +73,7 @@ public class DutyApplicationController {
 	}
 	
 	@DeleteMapping("/hrm/dutyapplication/{id}")
-	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="id") String id) {				
+	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="id") Long id) {				
 																		
 		dutyApplicationCommandService.deleteDutyApplication(id);						
 								 					

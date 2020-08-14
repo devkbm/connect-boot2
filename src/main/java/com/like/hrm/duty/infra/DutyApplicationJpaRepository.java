@@ -1,9 +1,16 @@
 package com.like.hrm.duty.infra;
 
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.Lists;
+import com.like.hrm.duty.boundary.DutyApplicationDTO.SearchDutyApplication;
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 import com.like.hrm.duty.infra.spingdata.JpaDutyApplication;
 
+@Repository
 public class DutyApplicationJpaRepository implements DutyApplicationRepository {
 
 	private JpaDutyApplication jpaDutyApplication;
@@ -13,12 +20,12 @@ public class DutyApplicationJpaRepository implements DutyApplicationRepository {
 	}
 
 	@Override
-	public boolean isDutyApplication(String dutyId) {
+	public boolean isDutyApplication(Long dutyId) {
 		return jpaDutyApplication.existsById(dutyId);
 	}
 
 	@Override
-	public DutyApplication getDutyApplication(String dutyId) {
+	public DutyApplication getDutyApplication(Long dutyId) {
 		return jpaDutyApplication.findById(dutyId).orElse(null);
 	}
 
@@ -31,5 +38,10 @@ public class DutyApplicationJpaRepository implements DutyApplicationRepository {
 	public void deleteDutyApplication(DutyApplication entity) {
 		jpaDutyApplication.delete(entity);
 		
+	}
+
+	@Override
+	public List<DutyApplication> getDutyApplicationList(SearchDutyApplication condition) {
+		return Lists.newArrayList(jpaDutyApplication.findAll(condition.getBooleanBuilder()));
 	}
 }
