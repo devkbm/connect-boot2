@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.BoardBookmark;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.service.BoardCommandService;
 import com.like.board.service.BoardQueryService;
@@ -42,7 +43,8 @@ public class BoardController {
 		
 	private BoardQueryService boardQueryService;	
 		
-	public BoardController(BoardCommandService boardCommandService, BoardQueryService boardQueryService) {
+	public BoardController(BoardCommandService boardCommandService
+						  ,BoardQueryService boardQueryService) {
 		this.boardCommandService = boardCommandService;
 		this.boardQueryService = boardQueryService;
 	}
@@ -135,5 +137,42 @@ public class BoardController {
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}		
+	
+	@GetMapping("/grw/board/bookmark/{userId}")
+	public ResponseEntity<?> getBoardList(@PathVariable(value="userId") String userId) {						
+		
+		List<BoardBookmark> list = boardCommandService.getBookmarkList(userId); 										
+							
+		return WebControllerUtil
+				.getResponse(list											
+							,String.format("%d 건 조회되었습니다.", list.size())
+							,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/grw/board/bookmark"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveBoardBookmark(@RequestBody final BoardBookmark entity, BindingResult result) {
+									
+		if ( result.hasErrors()) {
+			throw new ControllerException("오류");
+		} 											
+		
+		boardCommandService.saveBookmark(entity);				
+								 					
+		return WebControllerUtil
+				.getResponse(null											
+							,String.format("%d 건 저장되었습니다.", 1)
+							,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/grw/board/bookmark/{id}")
+	public ResponseEntity<?> delBoardBookmark(@PathVariable(value="id") Long id) {					
+												
+		boardCommandService.deleteBookmark(id);							
+		
+		return WebControllerUtil
+				.getResponse(null											
+						,String.format("%d 건 삭제되었습니다.", 1)
+						,HttpStatus.OK);
+	}	
 			
 }

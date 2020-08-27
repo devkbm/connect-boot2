@@ -10,7 +10,9 @@ import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.AttachedFile;
 import com.like.board.domain.model.Board;
+import com.like.board.domain.model.BoardBookmark;
 import com.like.board.domain.repository.ArticleRepository;
+import com.like.board.domain.repository.BoardBookmarkRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.domain.service.AttachedFileConverter;
 import com.like.file.domain.model.FileInfo;
@@ -21,15 +23,19 @@ import com.like.file.service.FileService;
 public class BoardCommandService {
 	
 	private BoardRepository boardRepository;
+	
+	private BoardBookmarkRepository boardBookmarkRepository; 
     
 	private ArticleRepository articleRepository;          
 		    
     private FileService fileService;
     
 	public BoardCommandService(BoardRepository boardRepository
+							  ,BoardBookmarkRepository boardBookmarkRepository
 							  ,ArticleRepository articleRepository
 							  ,FileService fileService) {
 		this.boardRepository = boardRepository;
+		this.boardBookmarkRepository = boardBookmarkRepository;
 		this.articleRepository = articleRepository;
 		this.fileService = fileService;
 	}
@@ -58,6 +64,20 @@ public class BoardCommandService {
 	
 	public void deleteBoard(Board board) {
 		boardRepository.deleteBoard(board);
+	}
+	
+	public List<BoardBookmark> getBookmarkList(String userId) {
+		return boardBookmarkRepository.getBookmarkList(userId);
+	}	
+	
+	public void saveBookmark(BoardBookmark entity) {
+		boardBookmarkRepository.saveBookmark(entity);
+	}
+	
+	public void deleteBookmark(Long id) {
+		BoardBookmark entity = boardBookmarkRepository.getBookmark(id);
+		
+		boardBookmarkRepository.deleteBookmark(entity);
 	}
 	
 	public Article convertEntity(ArticleDTO.SaveArticleByMuiltiPart dto) {		
