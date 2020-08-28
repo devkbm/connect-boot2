@@ -1,7 +1,5 @@
 package com.like.board.domain.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,17 +17,12 @@ import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.board.domain.model.enums.PasswordType;
+import com.like.board.domain.model.vo.Period;
 import com.like.common.domain.AuditEntity;
 import com.like.file.domain.model.FileInfo;
 
 @ToString
-@JsonAutoDetect(fieldVisibility=Visibility.ANY)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"board","articleChecks","files"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -37,9 +30,7 @@ import com.like.file.domain.model.FileInfo;
 @Entity
 @Table(name = "GRWARTICLE")
 @EntityListeners(AuditingEntityListener.class)
-public class Article extends AuditEntity implements Serializable {
-	
-	private static final long serialVersionUID = -6554446667428677065L;
+public class Article extends AuditEntity {		
 	
 	/**
 	 * 게시글 키
@@ -73,20 +64,9 @@ public class Article extends AuditEntity implements Serializable {
 	@Column(name="HIT_CNT")
     int hitCount;
         
-    /**
-     * 시작일자
-     */
-	@Builder.Default
-	@Column(name="FROM_DT")
-    LocalDate fromDate = LocalDate.now();
-    
-    /**
-     * 종료일자
-     */
-	@Builder.Default
-	@Column(name="TO_DT")
-    LocalDate toDate = LocalDate.of(9999,12,31);
-    
+	@Embedded
+    Period period;
+	
     /**
      * 출력순서
      */
@@ -102,8 +82,7 @@ public class Article extends AuditEntity implements Serializable {
 	@Column(name="PWD_YN")
 	Boolean pwdYn;
 	
-	@Enumerated(EnumType.STRING)
-	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+	@Enumerated(EnumType.STRING)	
 	@Column(name="HASH_METHOD")
 	PasswordType pwdMethod;
 	
@@ -144,13 +123,11 @@ public class Article extends AuditEntity implements Serializable {
 	 */
 	public void modifyEntity(String title
 							,String contents
-							,LocalDate fromDate
-							,LocalDate toDate
+							,Period period
 							,Integer seq) {
 		this.title = title;
 		this.contents = contents;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
+		this.period = period;
 		this.seq = seq;
 	}
 	
@@ -190,9 +167,17 @@ public class Article extends AuditEntity implements Serializable {
 	}
 	
 	public Boolean getEditable() {
+		boolean rtn = false;
 		
+		if (isWriter())
+			rtn = true;
+		
+		return rtn;
+	}
+	
+	private boolean isWriter() {		
 		String sessionId = SecurityContextHolder.getContext().getAuthentication().getName();
-					
+		
 		return sessionId.equals(this.createdBy) ? true : false;
 	}
 

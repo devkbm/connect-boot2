@@ -1,7 +1,5 @@
 package com.like.board.domain.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.*;
 
 import javax.persistence.*;
@@ -10,8 +8,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
+import com.like.board.domain.model.vo.Period;
 import com.like.common.domain.AuditEntity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,18 +19,15 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"articles","parent"})
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @ToString(callSuper=true, includeFieldNames=true)
 @Entity
 @Table(name = "GRWBOARD")
 @EntityListeners(AuditingEntityListener.class)
-public class Board extends AuditEntity implements Serializable {
-	
-	private static final long serialVersionUID = -9079904581069883219L;			
+public class Board extends AuditEntity {		
 	
 	/**
 	 * 게시판 키
@@ -65,20 +62,9 @@ public class Board extends AuditEntity implements Serializable {
 	@Column(name="BOARD_DESC")
 	String boardDescription;
     
-    /**
-     * 시작일자
-     */	
-	@Builder.Default
-	@Column(name="FROM_DT")
-	LocalDate fromDate = LocalDate.now();
-    
-    /**
-     * 종료일자
-     */	
-	@Builder.Default
-	@Column(name="TO_DT")
-	LocalDate toDate = LocalDate.of(9999, 12, 31);    
-    
+	@Embedded
+    Period period;
+	
     /**
      * 사용여부
      */
@@ -105,31 +91,18 @@ public class Board extends AuditEntity implements Serializable {
     List<Article> articles;           
     
 	
-	/**
-	 * @param parent
-	 * @param boardType
-	 * @param boardName
-	 * @param boardDescription
-	 * @param fromDate
-	 * @param toDate
-	 * @param useYn
-	 * @param sequence
-	 * @param articles
-	 */
 	public void modifyEntity(Board parent
 						    ,BoardType boardType
 						    ,String boardName
 						    ,String boardDescription
-						    ,LocalDate fromDate
-						    ,LocalDate toDate
+						    ,Period period
 						    ,Boolean useYn
 						    ,long sequence) {
 		this.parent = parent;
 		this.boardType = boardType;
 		this.boardName = boardName;
 		this.boardDescription = boardDescription;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
+		this.period = period;
 		this.useYn = useYn;
 		this.sequence = sequence;		
 	}

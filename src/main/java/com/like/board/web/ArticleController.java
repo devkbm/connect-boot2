@@ -1,5 +1,6 @@
 package com.like.board.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -40,6 +41,24 @@ public class ArticleController {
 		this.boardQueryService = boardQueryService;		
 	}
 
+	@GetMapping("/grw/board/article")
+	public ResponseEntity<?> getArticleList(ArticleDTO.SearchArticle condition) {
+																	
+		List<Article> list = boardQueryService.getAritlceList(condition);  							
+		
+		List<ArticleDTO.ArticleResponse> dtoList = new ArrayList<>();
+		
+		for (Article article : list) {
+			dtoList.add(ArticleDTO.ArticleResponse.converDTO(article));
+		}
+		
+		return WebControllerUtil.getResponse(dtoList
+											,dtoList.size()
+											,true
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id, HttpSession session) {						
 		
@@ -67,20 +86,7 @@ public class ArticleController {
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
-		
-	@GetMapping("/grw/board/article")
-	public ResponseEntity<?> getArticleList(ArticleDTO.SearchArticle condition) {
-																	
-		List<Article> list = boardQueryService.getAritlceList(condition);  							
-				
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-				
-		
+			
 	@DeleteMapping(value={"/grw/board/article"})
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {						
 		

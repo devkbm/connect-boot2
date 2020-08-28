@@ -82,11 +82,15 @@ public class BoardController {
 	public ResponseEntity<?> getBoardList(BoardDTO.SearchBoard dto) {						
 		
 		List<Board> list = boardQueryService.getBoardList(dto); 										
-							
-		return WebControllerUtil.getResponse(list
-											,list.size()
+		List<BoardDTO.SaveBoard> dtoList = new ArrayList<>();
+		
+		for (Board board : list) {
+			dtoList.add(BoardDTO.SaveBoard.convertDTO(board));
+		}
+		return WebControllerUtil.getResponse(dtoList
+											,dtoList.size()
 											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 		

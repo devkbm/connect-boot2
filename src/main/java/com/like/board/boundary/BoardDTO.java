@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.QBoard;
 import com.like.board.domain.model.enums.BoardType;
+import com.like.board.domain.model.vo.Period;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -125,8 +127,7 @@ public class BoardDTO {
 						.boardName(this.boardName)
 						.boardType(BoardType.valueOf(this.boardType))
 						.boardDescription(this.boardDescription)
-						.fromDate(this.fromDate)
-						.toDate(this.toDate)
+						.period(new Period(this.fromDate, this.toDate))
 						.useYn(this.useYn)
 						.sequence(this.sequence)
 						.build();
@@ -137,8 +138,7 @@ public class BoardDTO {
 					          ,BoardType.valueOf(this.boardType)
 					          ,this.boardName
 					          ,this.boardDescription
-					          ,this.fromDate
-					          ,this.toDate
+					          ,new Period(this.fromDate, this.toDate)
 					          ,this.useYn
 					          ,this.sequence);
 		}
@@ -147,19 +147,22 @@ public class BoardDTO {
 			
 			if (entity == null)
 				return null;
-						
+			
+			Optional<Board> parent = Optional.ofNullable(entity.getParent());
+			Optional<Period> period = Optional.ofNullable(entity.getPeriod());
+			
 			return SaveBoard.builder()
 						    .createdDt(entity.getCreatedDt())
 						    .createdBy(entity.getCreatedBy())
 						    .modifiedDt(entity.getModifiedDt())
 						    .modifiedBy(entity.getModifiedBy())
 						    .pkBoard(entity.getPkBoard())	
-						    .ppkBoard(entity.getParent() == null ? null : entity.getParent().getPkBoard())
+						    .ppkBoard(parent.map(Board::getPkBoard).orElse(null))
 						    .boardType(entity.getBoardType().toString())
 						    .boardName(entity.getBoardName())
-						    .boardDescription(entity.getBoardDescription())
-						    .fromDate(entity.getFromDate())
-						    .toDate(entity.getToDate())
+						    .boardDescription(entity.getBoardDescription())						   
+						    .fromDate(period.map(Period::getFromDate).orElse(null))
+						    .toDate(period.map(Period::getToDate).orElse(null))
 						    .useYn(entity.getUseYn())
 						    .articleCount(entity.getArticleCount())
 						    .sequence(entity.getSequence())

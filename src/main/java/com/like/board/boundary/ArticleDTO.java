@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.board.domain.model.Article;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.QArticle;
+import com.like.board.domain.model.vo.Period;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
 import com.like.file.infra.file.LocalFileRepository;
@@ -127,8 +129,7 @@ public class ArticleDTO {
 						  .ppkArticle(this.ppkArticle)
 						  .title(this.title)
 						  .contents(this.contents)
-						  .fromDate(this.fromDate)
-						  .toDate(this.toDate)
+						  .period(new Period(this.fromDate, this.toDate))						  
 						  .pwd(this.pwd)
 						  .build();
 		}
@@ -137,8 +138,7 @@ public class ArticleDTO {
 			
 	    	entity.modifyEntity(title
 	    					   ,contents
-	    					   ,fromDate
-	    					   ,toDate
+	    					   ,new Period(fromDate, toDate)
 	    					   ,seq);								
 		}
 	}
@@ -197,8 +197,7 @@ public class ArticleDTO {
 						  .ppkArticle(this.ppkArticle)
 						  .title(this.title)
 						  .contents(this.contents)
-						  .fromDate(this.fromDate)
-						  .toDate(this.toDate)
+						  .period(new Period(this.fromDate, this.toDate))	
 						  .pwd(this.pwd)
 						  .build();
 		}
@@ -207,8 +206,7 @@ public class ArticleDTO {
 			
 	    	entity.modifyEntity(title
 	    					   ,contents
-	    					   ,fromDate
-	    					   ,toDate
+	    					   ,new Period(fromDate, toDate)
 	    					   ,seq);								
 		}
 	}
@@ -265,9 +263,33 @@ public class ArticleDTO {
 	    public static ArticleDTO.ArticleResponse converDTO(Article entity) {
 			
 			List<FileInfo> fileInfoList = entity.getAttachedFileInfoList();
-			List<FileResponseDTO> responseList = new ArrayList<>();
+			List<FileResponseDTO> responseList = convertFileResponseDTO(fileInfoList);
 			
-			for (FileInfo fileInfo : fileInfoList) {
+			Optional<Period> period = Optional.ofNullable(entity.getPeriod());
+			
+			return ArticleDTO.ArticleResponse
+							 .builder()
+							 .createdDt(entity.getCreatedDt())
+							 .createdBy(entity.getCreatedBy())
+							 .modifiedDt(entity.getModifiedDt())
+							 .modifiedBy(entity.getModifiedBy())
+							 .pkArticle(entity.getPkArticle())
+							 .ppkArticle(entity.getPpkArticle())
+							 .fromDate(period.map(Period::getFromDate).orElse(null))
+							 .toDate(period.map(Period::getToDate).orElse(null))
+							 .userName(entity.getUserName())
+							 .fkBoard(entity.getBoard().getPkBoard())				
+							 .title(entity.getTitle())
+							 .contents(entity.getContents())
+							 .fileList(responseList)			
+							 .editable(entity.getEditable())
+							 .build();
+		}
+	    
+	    private static List<FileResponseDTO> convertFileResponseDTO(List<FileInfo> fileInfoList) {
+	    	List<FileResponseDTO> responseList = new ArrayList<>();	
+	    	
+	    	for (FileInfo fileInfo : fileInfoList) {
 				FileResponseDTO dto = FileResponseDTO.builder()
 													 .url(fileInfo.getPkFile())
 													 .name(fileInfo.getFileName())
@@ -277,22 +299,9 @@ public class ArticleDTO {
 				
 				responseList.add(dto);				
 			}
-																																															
-			return ArticleDTO.ArticleResponse
-							 .builder()
-							 .createdDt(entity.getCreatedDt())
-							 .createdBy(entity.getCreatedBy())
-							 .modifiedDt(entity.getModifiedDt())
-							 .modifiedBy(entity.getModifiedBy())
-							 .pkArticle(entity.getPkArticle())
-							 .ppkArticle(entity.getPpkArticle())
-							 .userName(entity.getUserName())
-							 .fkBoard(entity.getBoard().getPkBoard())				
-							 .title(entity.getTitle())
-							 .contents(entity.getContents())
-							 .fileList(responseList)			
-							 .editable(entity.getEditable())
-							 .build();
-		}
+	    	
+	    	return responseList;
+	    }
+
 	}
 }
