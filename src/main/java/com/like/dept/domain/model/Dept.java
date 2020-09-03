@@ -1,9 +1,9 @@
 package com.like.dept.domain.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
+import com.like.common.vo.Period;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,11 +54,8 @@ public class Dept extends AuditEntity implements Serializable {
 	@Column(name = "dept_abbr_eng")
 	String deptAbbreviationEnglish;
 	
-	@Column(name = "from_dt")
-	LocalDate fromDate;
-
-	@Column(name = "to_dt")
-	LocalDate toDate;
+	@Embedded
+	Period period;
 	
 	@Builder.Default
 	@Column(name="prt_seq")
@@ -93,8 +91,7 @@ public class Dept extends AuditEntity implements Serializable {
 							,String deptAbbreviationKorean
 							,String deptNameEnglish
 							,String deptAbbreviationEnglish
-							,LocalDate fromDate
-							,LocalDate toDate
+							,Period period
 							,int seq
 							,String comment
 							,Dept parentDept) {
@@ -102,8 +99,7 @@ public class Dept extends AuditEntity implements Serializable {
 		this.deptAbbreviationKorean = deptAbbreviationKorean;
 		this.deptNameEnglish = deptNameEnglish;
 		this.deptAbbreviationEnglish = deptAbbreviationEnglish;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
+		this.period = period;
 		this.seq = seq;
 		this.comment = comment;
 		this.parentDept = parentDept;

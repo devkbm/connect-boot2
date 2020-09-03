@@ -2,8 +2,9 @@ package com.like.user.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,14 +70,20 @@ public class UserController {
 	}
 		
 	@GetMapping(value={"/common/user"})
-	public ResponseEntity<?> getUserList(UserDTO.SearchUser condition) {
+	public ResponseEntity<?> getUserList(UserDTO.SearchUser condition) throws FileNotFoundException, IOException {
 				
 		List<User> userList = userService.getUserList(condition);						
 		
+		List<UserDTO.SaveUser> dtoList = new ArrayList<>();
+		
+		for (User user : userList) {
+			dtoList.add(UserDTO.convertDTO(user));
+		}
+		
 		return WebControllerUtil
-				.getResponse(userList
-							,userList.size()
-							,userList.size() > 0 ? true : false 
+				.getResponse(dtoList
+							,dtoList.size()
+							,dtoList.size() > 0 ? true : false 
 							,"조회 되었습니다."
 							,HttpStatus.OK);
 	}

@@ -18,11 +18,6 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.domain.AuditEntity;
 import com.like.dept.domain.model.Dept;
 import com.like.menu.domain.model.MenuGroup;
@@ -35,14 +30,12 @@ import lombok.ToString;
 
 @ToString(callSuper=true, includeFieldNames=true, exclude = {"menuGroupList"})
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"authorities","comusermenugroup"})
 @Getter
 @Entity
 @Table(name = "comuser")
-public class User extends AuditEntity implements UserDetails {
+public class User extends AuditEntity implements UserDetails {	
 	
-	private static final long serialVersionUID = 2601682947639908458L;
+	private static final long serialVersionUID = -4328973281359262612L;
 
 	@Id	
 	@Column(name="user_id")
@@ -50,8 +43,7 @@ public class User extends AuditEntity implements UserDetails {
 	
 	@Column(name="user_name")
 	String name;
-	
-	@JsonProperty(access = Access.WRITE_ONLY)	
+		
 	@Column(name="pwd")
 	String password;	
 		
@@ -128,14 +120,12 @@ public class User extends AuditEntity implements UserDetails {
 		this.menuGroupList = menuGroupList;
 	}
 	
-	@Override
-	@JsonIgnore	
+	@Override	
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
 			
-	@Override
-	@JsonProperty("userId")
+	@Override	
 	public String getUsername() {		
 		return userId;
 	}

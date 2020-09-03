@@ -1,15 +1,14 @@
-package com.like.board.domain.model.vo;
+package com.like.common.vo;
 
 import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @Embeddable
 public class Period {

@@ -127,8 +127,7 @@ public class DeptJpaRepository implements DeptRepository {
 				qDept.deptAbbreviationKorean,
 				qDept.deptNameEnglish,
 				qDept.deptAbbreviationEnglish,
-				qDept.fromDate,
-				qDept.toDate,
+				qDept.period,
 				qDept.seq,
 				qDept.comment);
 	}
