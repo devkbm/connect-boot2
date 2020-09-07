@@ -1,14 +1,21 @@
 package com.like.user.domain.model.vo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
-public class LoginSpec {
-	
+public class AccountSpec implements Serializable {
+		
+	private static final long serialVersionUID = 5321100631628293509L;
+
 	@Column(name="non_expired_yn")
 	Boolean isAccountNonExpired = true;
 		
@@ -21,10 +28,10 @@ public class LoginSpec {
 	@Column(name="enabled_yn")
 	Boolean isEnabled = true;
 	
-	public LoginSpec(Boolean isAccountNonExpired
-					,Boolean isAccountNonLocked
-					,Boolean isCredentialsNonExpired
-					,Boolean isEnabled) {
+	public AccountSpec(Boolean isAccountNonExpired
+					  ,Boolean isAccountNonLocked
+					  ,Boolean isCredentialsNonExpired
+					  ,Boolean isEnabled) {
 		
 		this.isAccountNonExpired = isAccountNonExpired;
 		this.isAccountNonLocked = isAccountNonLocked;

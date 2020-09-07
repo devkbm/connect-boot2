@@ -108,8 +108,7 @@ public class DeptDTO {
 				new IllegalArgumentException("부서코드가 없습니다.");
 			}
 			
-			return Dept.builder()
-					   .deptCode(this.deptCode)
+			return Dept.builder(this.deptCode)					   
 					   .deptNameKorean(this.deptNameKorean)
 					   .deptAbbreviationKorean(this.deptAbbreviationKorean)
 					   .deptNameEnglish(this.deptNameEnglish)
@@ -136,7 +135,7 @@ public class DeptDTO {
 	
 	public static DeptDTO.SaveDept convertDTO(Dept entity) {							
 												
-		Optional<Dept> parent2 = Optional.ofNullable(entity.getParentDept());
+		Optional<Dept> parent = Optional.ofNullable(entity.getParentDept());
 		Optional<Period> period= Optional.ofNullable(entity.getPeriod());
 		
 		SaveDept dto = SaveDept.builder()
@@ -145,7 +144,7 @@ public class DeptDTO {
 								.modifiedDt(entity.getModifiedDt())
 								.modifiedBy(entity.getModifiedBy())
 								.deptCode(entity.getDeptCode())
-								.parentDeptCode(parent2.map(Dept::getDeptCode).orElse(null))
+								.parentDeptCode(parent.map(Dept::getDeptCode).orElse(null))
 								.deptNameKorean(entity.getDeptNameKorean())
 								.deptAbbreviationKorean(entity.getDeptAbbreviationKorean())
 								.deptNameEnglish(entity.getDeptNameEnglish())

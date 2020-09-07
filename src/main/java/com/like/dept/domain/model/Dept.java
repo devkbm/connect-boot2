@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 import com.like.common.vo.Period;
 
@@ -25,11 +25,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString(callSuper = true, includeFieldNames = true)
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(builderMethodName = "hiddenBuilder")
 @Getter
 @Entity
 @Table(name = "comdept")
@@ -67,14 +66,12 @@ public class Dept extends AuditEntity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "p_dept_cd", nullable = true)
 	Dept parentDept;
-
-	public String getDeptCode() {
-		return this.deptCode;
-	}
 	
-	public Dept getParentDept() {
-		return parentDept;
-	}
+	public static DeptBuilder builder(String deptCode) {
+		Assert.hasText(deptCode, "deptCode must not be empty!");
+		
+		return hiddenBuilder().deptCode(deptCode);
+	}	
 
 	/**
 	 * @param deptNameKorean
@@ -105,5 +102,11 @@ public class Dept extends AuditEntity implements Serializable {
 		this.parentDept = parentDept;
 	}	
 
+	public String getDeptCode() {
+		return this.deptCode;
+	}
 	
+	public Dept getParentDept() {
+		return parentDept;
+	}
 }

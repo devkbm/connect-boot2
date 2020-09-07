@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
@@ -20,6 +20,8 @@ import com.like.menu.domain.model.MenuGroup;
 import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
+import com.like.user.domain.model.vo.AccountSpec;
+import com.like.user.domain.model.vo.UserPassword;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -33,6 +35,8 @@ public class UserDTO {
 	
 	public static UserDTO.SaveUser convertDTO(User entity) throws FileNotFoundException, IOException {					
 		
+		Optional<Dept> dept = Optional.ofNullable(entity.getDept());
+		
 		SaveUser dto = SaveUser.builder()
 								.createdDt(entity.getCreatedDt())
 								.createdBy(entity.getCreatedBy())
@@ -41,10 +45,13 @@ public class UserDTO {
 								.userId(entity.getUserId())
 								.name(entity.getName())
 								.password(entity.getPassword())
-								.deptCode(entity.getDept() == null ? null : entity.getDept().getDeptCode())
+								.deptCode(dept.map(Dept::getDeptCode).orElse(null))
 								.mobileNum(entity.getMobileNum())
 								.email(entity.getEmail())
-								.enabled(entity.isEnabled())								
+								.enabled(entity.isEnabled())	
+								.accountNonExpired(entity.isAccountNonExpired())
+								.accountNonLocked(entity.isAccountNonLocked())
+								.credentialsNonExpired(entity.isCredentialsNonExpired())
 								.authorityList(entity.getAuthorityList()
 													.stream()
 													.map(auth -> auth.getAuthority())
@@ -154,13 +161,13 @@ public class UserDTO {
 		
 		public User newUser(Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 			return User.builder()
-					   .userId(this.userId)										
+					   .userId(this.userId)
 					   .name(this.name)
-					   .password(this.password)	
+					   .password(new UserPassword(this.password))	
 					   .dept(dept)				
 					   .mobileNum(this.mobileNum)
 					   .email(this.email)
-					   .isEnabled(this.enabled)	
+					   .accountSpec(new AccountSpec(accountNonExpired, accountNonLocked, credentialsNonExpired, enabled))					   
 					   .authorities(authorityList)
 					   .menuGroupList(menuGroupList)					
 					   .build();
@@ -168,9 +175,8 @@ public class UserDTO {
 		}
 		
 		public void modifyUser(User user, Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
-			user.modifyEntity(name
-							 ,password
-							 ,enabled
+			user.modifyEntity(name							 
+							 //,enabled
 							 ,mobileNum
 							 ,email							  
 							 ,dept

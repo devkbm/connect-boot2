@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -21,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.like.common.domain.AuditEntity;
 import com.like.dept.domain.model.Dept;
 import com.like.menu.domain.model.MenuGroup;
+import com.like.user.domain.model.vo.AccountSpec;
+import com.like.user.domain.model.vo.UserPassword;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,10 +46,14 @@ public class User extends AuditEntity implements UserDetails {
 	
 	@Column(name="user_name")
 	String name;
-		
+	/*	
 	@Column(name="pwd")
 	String password;	
-		
+	*/
+	@Embedded
+	UserPassword password;
+	
+	/*
 	@Column(name="non_expired_yn")
 	Boolean isAccountNonExpired = true;
 		
@@ -58,6 +65,9 @@ public class User extends AuditEntity implements UserDetails {
 		
 	@Column(name="enabled_yn")
 	Boolean isEnabled = true;
+	*/
+	@Embedded
+	AccountSpec accountSpec;
 	
 	@Column(name="mobile_num")
 	String mobileNum;
@@ -85,34 +95,26 @@ public class User extends AuditEntity implements UserDetails {
 	List<MenuGroup> menuGroupList = new ArrayList<>();		
 		
 	@Builder
-	public User(String userId, String name, String password, Dept dept, String mobileNum, String email,
-			Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, 
-			Boolean isEnabled, List<Authority> authorities,	List<MenuGroup> menuGroupList) {		
+	public User(String userId, String name, UserPassword password, Dept dept, String mobileNum, String email,
+			AccountSpec accountSpec, List<Authority> authorities,	List<MenuGroup> menuGroupList) {		
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
 		this.dept = dept;
 		this.mobileNum = mobileNum;
 		this.email = email;
-		this.isAccountNonExpired = isAccountNonExpired == null ? true : isAccountNonExpired;
-		this.isAccountNonLocked = isAccountNonLocked == null ? true : isAccountNonLocked;
-		this.isCredentialsNonExpired = isCredentialsNonExpired == null ? true : isCredentialsNonExpired;
-		this.isEnabled = isEnabled == null ? true : isEnabled;
+		this.accountSpec = accountSpec;		
 		this.authorities = authorities;
 		this.menuGroupList = menuGroupList;
 	}	
 	
-	public void modifyEntity(String name
-							,String password
-							,Boolean isEnabled
+	public void modifyEntity(String name														
 							,String mobileNum
 							,String email							 
 							,Dept dept
 							,List<Authority> authorities
 							,List<MenuGroup> menuGroupList) {
-		this.name = name;
-		this.password = password;
-		this.isEnabled = isEnabled;
+		this.name = name;				
 		this.mobileNum = mobileNum;
 		this.email = email;		
 		this.dept = dept;
@@ -132,27 +134,27 @@ public class User extends AuditEntity implements UserDetails {
 
 	@Override		
 	public String getPassword() {
-		return password;
+		return password.getPassword();
 	}		
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return isAccountNonExpired;
+		return accountSpec.getIsAccountNonExpired();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return isAccountNonLocked;
+		return accountSpec.getIsAccountNonLocked();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return isCredentialsNonExpired;
+		return accountSpec.getIsCredentialsNonExpired();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return isEnabled;
+		return accountSpec.getIsEnabled();
 	}
 			
 	public String getUserId() {
@@ -164,7 +166,7 @@ public class User extends AuditEntity implements UserDetails {
 	}
 	
 	public boolean isVaild(String password) {
-		return this.password.equals(password) ? true : false;
+		return this.password.matchPassword(password);
 	}		
 	
 	public List<Authority> getAuthorityList() {
@@ -192,7 +194,7 @@ public class User extends AuditEntity implements UserDetails {
 	}
 	
 	public void changePassword(String password) {
-		this.password = password;
+		this.password = new UserPassword(password);
 	}
 	
 	/**
@@ -200,7 +202,7 @@ public class User extends AuditEntity implements UserDetails {
 	 * 초기화 비밀번호 : 12345678
 	 */
 	public void initPassword() {
-		this.password = "12345678";	
+		this.password = new UserPassword("12345678");	
 	}
 	
 	public void ChangeImage(String imageFileInfo) {
