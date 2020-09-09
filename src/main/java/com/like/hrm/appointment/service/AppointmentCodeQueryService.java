@@ -52,6 +52,6 @@ public class AppointmentCodeQueryService {
 		List<AppointmentCodeDetail> list = new ArrayList<>(appointmentQueryRepository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
 		//log.info(list.toString());
 		
-		return LedgerDTO.convertDTO(list);
+		return LedgerDTO.ChangeInfo.convert(list);
 	}
 }

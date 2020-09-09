@@ -115,7 +115,7 @@ public class AppointmentController {
 		SaveLedgerList rtn = null; 
 		
 		if (list != null) {
-			rtn = LedgerDTO.convertDTO(list);
+			rtn = LedgerDTO.SaveLedgerList.convert(list);
 		} else {
 			rtn = new SaveLedgerList();
 		}

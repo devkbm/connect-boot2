@@ -89,7 +89,7 @@ public class AppointmentCodeController {
 		List<AppointmentCodeDetail> list = appointmentQueryService.getAppointmentCodeDetailList(dto);
 
 		List<AppointmentCodeDTO.SaveCodeDetail> dtoList = list.stream()
-															  .map(r -> AppointmentCodeDTO.convertDTO(r))
+															  .map(r -> AppointmentCodeDTO.SaveCodeDetail.convert(r))
 															  .collect(Collectors.toList());
 		
 		return WebControllerUtil.getResponse(dtoList											
@@ -103,7 +103,7 @@ public class AppointmentCodeController {
 		 		
 		AppointmentCodeDetail code = appointmentService.getAppointmentCodeDetail(id, detailId);
 					
-		AppointmentCodeDTO.SaveCodeDetail dto = AppointmentCodeDTO.convertDTO(code);
+		AppointmentCodeDTO.SaveCodeDetail dto = AppointmentCodeDTO.SaveCodeDetail.convert(code);
 				
 		return WebControllerUtil.getResponse(dto										
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)

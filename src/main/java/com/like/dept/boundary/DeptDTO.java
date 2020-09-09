@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.like.common.vo.Period;
+import com.like.common.vo.DatePeriod;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.querydsl.core.BooleanBuilder;
@@ -113,7 +113,7 @@ public class DeptDTO {
 					   .deptAbbreviationKorean(this.deptAbbreviationKorean)
 					   .deptNameEnglish(this.deptNameEnglish)
 					   .deptAbbreviationEnglish(this.deptAbbreviationEnglish)
-					   .period(new Period(this.fromDate, this.toDate))					   
+					   .period(new DatePeriod(this.fromDate, this.toDate))					   
 					   .seq(this.seq)
 					   .comment(this.comment)
 					   .parentDept(parentDept)
@@ -125,7 +125,7 @@ public class DeptDTO {
 							 ,deptAbbreviationKorean
 							 ,deptNameEnglish
 							 ,deptAbbreviationEnglish
-							 ,new Period(this.fromDate, this.toDate)
+							 ,new DatePeriod(this.fromDate, this.toDate)
 							 ,seq
 							 ,comment
 							 ,parentDept);
@@ -136,7 +136,7 @@ public class DeptDTO {
 	public static DeptDTO.SaveDept convertDTO(Dept entity) {							
 												
 		Optional<Dept> parent = Optional.ofNullable(entity.getParentDept());
-		Optional<Period> period= Optional.ofNullable(entity.getPeriod());
+		Optional<DatePeriod> period= Optional.ofNullable(entity.getPeriod());
 		
 		SaveDept dto = SaveDept.builder()
 								.createdDt(entity.getCreatedDt())
@@ -149,8 +149,8 @@ public class DeptDTO {
 								.deptAbbreviationKorean(entity.getDeptAbbreviationKorean())
 								.deptNameEnglish(entity.getDeptNameEnglish())
 								.deptAbbreviationEnglish(entity.getDeptAbbreviationEnglish())
-								.fromDate(period.map(Period::getFromDate).orElse(null))
-								.toDate(period.map(Period::getToDate).orElse(null))
+								.fromDate(period.map(DatePeriod::getFrom).orElse(null))
+								.toDate(period.map(DatePeriod::getTo).orElse(null))
 								.seq(entity.getSeq())
 								.comment(entity.getComment())
 								.build();		
@@ -208,7 +208,7 @@ public class DeptDTO {
 
 		public DeptHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
 				String parentDeptCode, String deptCode, String deptNameKorean, String deptAbbreviationKorean,
-				String deptNameEnglish, String deptAbbreviationEnglish, Period period,
+				String deptNameEnglish, String deptAbbreviationEnglish, DatePeriod period,
 				Integer seq, String comment) {
 			super();
 			this.createdDt = createdDt;
@@ -221,8 +221,8 @@ public class DeptDTO {
 			this.deptAbbreviationKorean = deptAbbreviationKorean;
 			this.deptNameEnglish = deptNameEnglish;
 			this.deptAbbreviationEnglish = deptAbbreviationEnglish;
-			this.fromDate = period.getFromDate();
-			this.toDate = period.getToDate();
+			this.fromDate = period.getFrom();
+			this.toDate = period.getTo();
 			this.seq = seq;
 			this.comment = comment;
 			

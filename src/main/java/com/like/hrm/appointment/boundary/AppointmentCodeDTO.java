@@ -21,14 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class AppointmentCodeDTO {
-
-	public static SaveCodeDetail convertDTO(AppointmentCodeDetail entity) {
-		return new SaveCodeDetail(entity.getId()
-				                 ,entity.getAppointmentCode().getCode()
-				                 ,entity.getChangeType().toString()
-				                 ,entity.getChangeTypeDetail()
-				                 ,entity.getSequence());
-	}
 	
 	/**
 	 * 발령코드 조회조건 
@@ -187,6 +179,13 @@ public class AppointmentCodeDTO {
 			return detail;
 		}
 		
+		public static SaveCodeDetail convert(AppointmentCodeDetail entity) {
+			return new SaveCodeDetail(entity.getId()
+					                 ,entity.getAppointmentCode().getCode()
+					                 ,entity.getChangeType().toString()
+					                 ,entity.getChangeTypeDetail()
+					                 ,entity.getSequence());
+		}
 		/*public String getDetailId() {
 			return this.code + this.changeType + this.changeTypeDetail;
 		}*/

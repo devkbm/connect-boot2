@@ -1,6 +1,7 @@
 package com.like.hrm.duty.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.boundary.DutyApplicationDTO;
-import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
-import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyApplicationCommandService;
 import com.like.hrm.duty.service.DutyApplicationQueryService;
 
@@ -43,8 +42,12 @@ public class DutyApplicationController {
 		
 		List<DutyApplication> list = dutyApplicationQueryService.getDutyApplicationList(dto);					
 		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
+		List<DutyApplicationDTO.SaveDutyApplication> dtoList = list.stream()
+																   .map(e -> DutyApplicationDTO.SaveDutyApplication.convert(e))
+																   .collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList											
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 	
@@ -53,13 +56,15 @@ public class DutyApplicationController {
 		
 		DutyApplication entity = dutyApplicationCommandService.getDutyApplication(id);
 					
-		return WebControllerUtil.getResponse(entity											
-											,String.format("%d 건 조회되었습니다.", entity == null ? 0 : 1)
+		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity);
+		
+		return WebControllerUtil.getResponse(dto											
+											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/dutyapplication"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDutyApplication(@RequestBody DutyApplication dto, BindingResult result) {				
+	public ResponseEntity<?> saveDutyApplication(@RequestBody DutyApplicationDTO.SaveDutyApplication dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());

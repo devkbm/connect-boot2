@@ -1,6 +1,6 @@
 package com.like.common.vo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Embeddable
-public class Period {
+public class DatePeriod {
 
 	@Column(name="FROM_DT")
-	private LocalDateTime from;
+	private LocalDate from;
 	
 	@Column(name="TO_DT")
-	private LocalDateTime to;
+	private LocalDate to;
 	
-	public Period(LocalDateTime from
-				 ,LocalDateTime to) {
+	public DatePeriod(LocalDate from
+				 	 ,LocalDate to) {
 		this.from = from;
 		this.to = to;
 		
@@ -38,8 +38,8 @@ public class Period {
 	}
 	
 	public static void main(String[] args) {
-		Period p1 = new Period(LocalDateTime.of(1991, 1, 1, 1, 1 ,0), LocalDateTime.of(1991, 1, 2, 1, 1 ,0));
-		Period p2 = new Period(LocalDateTime.of(1990, 1, 1, 1, 1 ,0), LocalDateTime.of(1991, 1, 2, 1, 1 ,0));
+		DatePeriod p1 = new DatePeriod(LocalDate.of(1991, 1, 1), LocalDate.of(1991, 1, 2));
+		DatePeriod p2 = new DatePeriod(LocalDate.of(1990, 1, 1), LocalDate.of(1991, 1, 2));
 		
 		System.out.println(p1.toString());
 		System.out.println(p2.toString());

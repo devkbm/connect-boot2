@@ -26,49 +26,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class LedgerDTO {
-	
-	public static List<ChangeInfo> convertDTO(List<AppointmentCodeDetail> detailList) {
-		
-		List<ChangeInfo> list = new ArrayList<>();
-		
-		for (AppointmentCodeDetail detail : detailList) {
-			list.add(new ChangeInfo(null
-								   ,detail.getChangeType().getCode()
-								   ,detail.getChangeTypeDetail()
-								   ,null
-								   ,detail.getSequence()));
-		}
-		
-		return list;
-	}
-	
-	public static SaveLedgerList convertDTO(LedgerList entity) {
-		
-		List<ChangeInfo> list = new ArrayList<>();
-		
-		if (entity.getChangeInfoList() != null) {
-			for (LedgerChangeInfo info : entity.getChangeInfoList()) {
-				list.add(new ChangeInfo(info.getId()
-									   ,info.getChangeType().toString()
-									   ,info.getChangeTypeDetail()
-									   ,info.getChangeCode()
-									   ,info.getSequence()));
-			}
-		}
-		
-		return SaveLedgerList
-				.builder()
-				.ledgerId(entity.getLedger().getLedgerId())
-				.listId(entity.getListId())
-				.sequence(entity.getSequence())
-				.appointmentCode(entity.getAppointmentCode())
-				.empId(entity.getEmpId())
-				.appointmentFromDate(entity.getAppointmentFromDate())
-				.appointmentToDate(entity.getAppointmentToDate())
-				.changeInfoList(list)
-				.build();		
-	}
+public class LedgerDTO {		
 	
 	@Data
 	public static class SearchLedger implements Serializable {
@@ -226,6 +184,33 @@ public class LedgerDTO {
 			return entity;
 		}
 		
+		public static SaveLedgerList convert(LedgerList entity) {
+			
+			List<ChangeInfo> list = new ArrayList<>();
+			
+			if (entity.getChangeInfoList() != null) {
+				for (LedgerChangeInfo info : entity.getChangeInfoList()) {
+					list.add(new ChangeInfo(info.getId()
+										   ,info.getChangeType().toString()
+										   ,info.getChangeTypeDetail()
+										   ,info.getChangeCode()
+										   ,info.getSequence()));
+				}
+			}
+			
+			return SaveLedgerList
+					.builder()
+					.ledgerId(entity.getLedger().getLedgerId())
+					.listId(entity.getListId())
+					.sequence(entity.getSequence())
+					.appointmentCode(entity.getAppointmentCode())
+					.empId(entity.getEmpId())
+					.appointmentFromDate(entity.getAppointmentFromDate())
+					.appointmentToDate(entity.getAppointmentToDate())
+					.changeInfoList(list)
+					.build();		
+		}
+		
 		private LedgerChangeInfo newLedgerChangeInfo(LedgerList entity, ChangeInfo info) {
 			return new LedgerChangeInfo(entity
 					                   ,HrmTypeEnum.valueOf(info.getChangeType())
@@ -308,6 +293,21 @@ public class LedgerDTO {
 		String changeCode;
 		
 		Integer sequence;
+		
+		public static List<ChangeInfo> convert(List<AppointmentCodeDetail> detailList) {
+			
+			List<ChangeInfo> list = new ArrayList<>();
+			
+			for (AppointmentCodeDetail detail : detailList) {
+				list.add(new ChangeInfo(null
+									   ,detail.getChangeType().getCode()
+									   ,detail.getChangeTypeDetail()
+									   ,null
+									   ,detail.getSequence()));
+			}
+			
+			return list;
+		}
 	}
 	
 	

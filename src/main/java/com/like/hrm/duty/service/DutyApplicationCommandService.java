@@ -3,6 +3,7 @@ package com.like.hrm.duty.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.hrm.duty.boundary.DutyApplicationDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 
@@ -20,7 +21,16 @@ public class DutyApplicationCommandService {
 		return dutyApplicationRepository.getDutyApplication(dutyId);
 	}
 	
-	public void saveDutyApplication(DutyApplication entity) {
+	public void saveDutyApplication(DutyApplicationDTO.SaveDutyApplication dto) {
+		DutyApplication entity = null;
+		
+		if (dto.getDutyId() == null) {
+			entity = dto.newEntity();
+		} else {
+			entity = dutyApplicationRepository.getDutyApplication(dto.getDutyId());
+			dto.modifyEntity(entity);
+		}
+		
 		dutyApplicationRepository.saveDutyApplication(entity);
 	}
 	

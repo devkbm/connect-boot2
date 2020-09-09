@@ -1,8 +1,9 @@
 package com.like.hrm.duty.domain.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,12 +14,16 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.common.vo.Period;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -39,26 +44,44 @@ public class DutyApplication extends AuditEntity {
 	@Column(name="DUTY_REASON")
 	private String dutyReason;
 	
+	/*
 	@Column(name="DUTY_START_DT")
 	private LocalDateTime dutyStartDateTime;
 	
 	@Column(name="DUTY_END_DT")
 	private LocalDateTime dutyEndDateTime;
+	*/
+		
+	@AttributeOverrides({
+		@AttributeOverride(name = "from", column = @Column(name = "DUTY_START_DT")),
+		@AttributeOverride(name = "to", column = @Column(name = "DUTY_END_DT"))
+	})
+	Period period;
 	
 	@Transient
 	private List<DutyApplicationAttachedFile> fileList;
 	
 	public DutyApplication(String employeeId
-			, String dutyCode
-			, String dutyReason
-			, LocalDateTime dutyStartDateTime
-			,LocalDateTime dutyEndDateTime) {
+						  ,String dutyCode
+						  ,String dutyReason
+						  //,LocalDateTime dutyStartDateTime
+						  //,LocalDateTime dutyEndDateTime
+						  ,Period period) {
 		this.employeeId = employeeId;
 		this.dutyCode = dutyCode;
 		this.dutyReason = dutyReason;
-		this.dutyStartDateTime = dutyStartDateTime;
-		this.dutyEndDateTime = dutyEndDateTime;
+		this.period = period;
+		//this.dutyStartDateTime = dutyStartDateTime;
+		//this.dutyEndDateTime = dutyEndDateTime;
 	}	
+	
+	public void modifyEntity(String dutyCode
+							,String dutyReason
+							,Period period) {
+		this.dutyCode = dutyCode;
+		this.dutyReason = dutyReason;
+		this.period = period;
+	}
 	
 	public void addFile(DutyApplicationAttachedFile file) {
 		this.fileList.add(file);
