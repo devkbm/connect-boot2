@@ -211,7 +211,7 @@ public class Employee extends AuditEntity implements Serializable {
 	 */
 	public void addJobChange(JobChangeHistory jobChangeHistory) {
 		this.terminateJob(jobChangeHistory.getJobType()
-						 ,jobChangeHistory.getFromDate());
+						 ,jobChangeHistory.getPeriod().getFrom());
 		
 		jobHistory.add(jobChangeHistory);
 	}
@@ -226,8 +226,8 @@ public class Employee extends AuditEntity implements Serializable {
 		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
 			
 			if (jobHistory.equalJobType(jobType) 
-			 && referenceDate.isBefore(jobHistory.getFromDate())) {
-				throw new IllegalArgumentException(jobHistory.getFromDate() + "일로 시작하는 이력이 존재합니다.");
+			 && referenceDate.isBefore(jobHistory.getPeriod().getFrom())) {
+				throw new IllegalArgumentException(jobHistory.getPeriod().getFrom() + "일로 시작하는 이력이 존재합니다.");
 			}
 			
 			if ( jobHistory.equalJobType(jobType) 			  

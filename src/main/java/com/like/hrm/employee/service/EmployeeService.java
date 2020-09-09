@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.common.vo.DatePeriod;
 import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Education;
@@ -84,8 +85,7 @@ public class EmployeeService {
 		JobChangeHistory jobChangeHistory = new JobChangeHistory(emp
 																,dto.getJobType()
 																,dto.getJobCode()
-																,dto.getFromDate()
-																,dto.getToDate());
+																,new DatePeriod(dto.getFromDate(),dto.getToDate()));
 		emp.addJobChange(jobChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);

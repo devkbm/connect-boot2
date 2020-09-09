@@ -34,9 +34,15 @@ public class DutyCode extends AuditEntity {
 	@Column(name="DUTY_GROUP", nullable = true)
 	private String dutyGroup;
 		
+	@Column(name = "CMT")
+	private String comment;
+	
 	public void modifyEntity(String dutyName
 							,Boolean enabled
-							,String dutyGroup) {
-		
+							,String dutyGroup
+							,String comment) {
+		this.dutyName = dutyName;
+		this.enabled = enabled;
+		this.dutyGroup = dutyGroup;
 	}
 }

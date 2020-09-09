@@ -213,8 +213,10 @@ create table HRMDUTYCODE (
 	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
 	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',	   
     DUTY_CODE				VARCHAR(20)		NOT NULL	COMMENT '근무코드',
-	DUTY_NAME				VARCHAR(20) 	NOT NULL 	COMMENT '코드',
-	ENABLE_YN				BOOLEAN 		NOT NULL 	COMMENT '코드명칭',	
+	DUTY_NAME				VARCHAR(50) 	NOT NULL 	COMMENT '근무명',
+	DUTY_GROUP				VARCHAR(20) 	NOT NULL 	COMMENT '근무그룹',
+	ENABLE_YN				BOOLEAN 		NOT NULL 	COMMENT '사용여부',	
+	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_hrmdutycode primary key(DUTY_CODE)
 ) COMMENT = '근무코드정보';
 

@@ -11,10 +11,8 @@ import com.querydsl.jpa.JPAExpressions;
 import com.like.dept.domain.model.QDept;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QDeptChangeHistory;
-import com.like.hrm.employee.domain.model.QEducation;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.like.hrm.employee.domain.model.QJobChangeHistory;
-import com.like.hrm.employee.domain.model.QLicense;
 import com.like.hrm.employee.domain.model.QStatusChangeHistory;
 
 public class EmployeeExpression {
@@ -30,7 +28,7 @@ public class EmployeeExpression {
 		QStatusChangeHistory qStatusChangeHistory = QStatusChangeHistory.statusChangeHistory;				
 		
 		return date.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)
-		  .and(date.between(qJobChangeHistory.fromDate, qJobChangeHistory.toDate))
+		  .and(date.between(qJobChangeHistory.period.from, qJobChangeHistory.period.to))
 		  .and(date.between(qStatusChangeHistory.fromDate, qStatusChangeHistory.toDate));
 		  
 	}
