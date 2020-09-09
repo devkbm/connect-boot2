@@ -136,5 +136,19 @@ public class WebResourceDTO {
 							   ,description);
 		}
 		
+		public static SaveWebResource convertDTO(WebResource entity) {
+			return SaveWebResource.builder()
+								  .createdDt(entity.getCreatedDt())	
+								  .createdBy(entity.getCreatedBy())
+								  .modifiedDt(entity.getCreatedDt())
+								  .modifiedBy(entity.getModifiedBy())
+								  .resourceCode(entity.getResourceCode())
+								  .resourceName(entity.getResourceName())
+								  .resourceType(entity.getResourceType())
+								  .url(entity.getUrl())
+								  .description(entity.getDescription())
+								  .build();
+		}
+		
 	}
 }

@@ -44,7 +44,7 @@ public class UserServiceTest {
 		User user = User.builder()
 						.userId("test01")
 						.name("테스트")
-						.password("12345678")
+						//.password("12345678")
 						.authorities(null)
 						.menuGroupList(null)											
 						.build();

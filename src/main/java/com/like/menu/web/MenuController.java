@@ -2,6 +2,7 @@ package com.like.menu.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,8 @@ import com.like.menu.boundary.EnumDTO;
 import com.like.menu.boundary.MenuDTO;
 import com.like.menu.boundary.MenuGroupDTO;
 import com.like.menu.boundary.WebResourceDTO;
+import com.like.menu.boundary.MenuGroupDTO.SaveMenuGroup;
+import com.like.menu.boundary.WebResourceDTO.SaveWebResource;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
@@ -44,18 +47,6 @@ public class MenuController {
 						 ,MenuQueryService menuQueryService) {
 		this.menuCommandService = menuCommandService;
 		this.menuQueryService = menuQueryService;
-	}
-
-	@GetMapping("/common/menugroup/{id}")
-	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {				
-		
-		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupCode); 		
-								
-		return WebControllerUtil.getResponse(menuGroup
-											,menuGroup != null ? 1 : 0
-											,true
-											,String.format("%d 건 조회되었습니다.", menuGroup != null ? 1 : 0)
-											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/common/menutest/{menuGroupCode}")
@@ -84,15 +75,31 @@ public class MenuController {
 											,HttpStatus.OK);
 	}
 	
+	@GetMapping("/common/menugroup/{id}")
+	public ResponseEntity<?> getMenuGroup(@PathVariable(value="id") String menuGroupCode) {				
+		
+		MenuGroup menuGroup = menuQueryService.getMenuGroup(menuGroupCode);
+		
+		MenuGroupDTO.SaveMenuGroup dto = SaveMenuGroup.convert(menuGroup);
+								
+		return WebControllerUtil.getResponse(dto
+											,dto != null ? 1 : 0
+											,true
+											,String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0)
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/common/menugroup")
 	public ResponseEntity<?> getMenuGroupList(MenuGroupDTO.SearchMenuGroup dto) {				
 		
 		List<MenuGroup> list = menuQueryService.getMenuGroupList(dto); 							
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
+		List<MenuGroupDTO.SaveMenuGroup> dtoList = list.stream().map(e -> SaveMenuGroup.convert(e)).collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList
+											,dtoList.size()
 											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 	
@@ -130,7 +137,7 @@ public class MenuController {
 		
 		Menu menu = menuQueryService.getMenu(menuCode); 		
 		
-		MenuDTO.SaveMenu dto = MenuDTO.convertDTO(menu);			
+		MenuDTO.SaveMenu dto = MenuDTO.SaveMenu.convert(menu);			
 		
 		return WebControllerUtil.getResponse(dto
 											,dto != null ? 1 : 0
@@ -144,10 +151,12 @@ public class MenuController {
 		
 		List<Menu> list = menuQueryService.getMenuList(dto);			
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
+		List<MenuDTO.SaveMenu> dtoList = list.stream().map(e -> MenuDTO.SaveMenu.convert(e)).collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList
+											,dtoList.size()
 											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 	
@@ -204,10 +213,12 @@ public class MenuController {
 		
 		List<WebResource> list = menuQueryService.getResourceList(condition);
 										
-		return WebControllerUtil.getResponse(list
-											,list.size()
+		List<WebResourceDTO.SaveWebResource> dtoList = list.stream().map(e -> SaveWebResource.convertDTO(e)).collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList
+											,dtoList.size()
 											,true
-											,String.format("%d 건 조회되었습니다.", list.size())
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK); 
 	}
 	
@@ -216,10 +227,12 @@ public class MenuController {
 		
 		WebResource resource = menuQueryService.getResource(code); 							
 		
-		return WebControllerUtil.getResponse(resource
-											,resource != null ? 1 : 0
+		WebResourceDTO.SaveWebResource dto = SaveWebResource.convertDTO(resource);
+		
+		return WebControllerUtil.getResponse(dto
+											,dto != null ? 1 : 0
 											,true
-											,String.format("%d 건 조회되었습니다.", resource != null ? 1 : 0)
+											,String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
 	

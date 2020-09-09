@@ -29,9 +29,9 @@ import lombok.ToString;
 @Entity
 @Table(name = "comresource")
 @EntityListeners(AuditingEntityListener.class)
-public class WebResource extends AuditEntity implements Serializable{
+public class WebResource extends AuditEntity implements Serializable{	
 	
-	private static final long serialVersionUID = -3215673518471434299L;
+	private static final long serialVersionUID = 4402275274864737663L;
 
 	@Id
 	@Column(name="resource_code")

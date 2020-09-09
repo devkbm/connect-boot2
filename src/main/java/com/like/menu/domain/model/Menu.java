@@ -35,9 +35,9 @@ import lombok.ToString;
 @Getter
 @Table(name = "commenu")
 @EntityListeners(AuditingEntityListener.class)
-public class Menu extends AuditEntity implements Serializable {
-			
-	private static final long serialVersionUID = -6069806707460127190L;
+public class Menu extends AuditEntity implements Serializable {			
+	
+	private static final long serialVersionUID = -8469789281288988098L;
 
 	@Id
 	@Column(name = "menu_code")

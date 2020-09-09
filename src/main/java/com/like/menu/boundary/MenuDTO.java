@@ -23,25 +23,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class MenuDTO {
-		
-	public static SaveMenu convertDTO(Menu menu) {
-						
-		return SaveMenu.builder()
-				   	   .createdDt(menu.getCreatedDt())
-				   	   .createdBy(menu.getCreatedBy())
-				   	   .modifiedDt(menu.getModifiedDt())
-				   	   .modifiedBy(menu.getModifiedBy())
-				   	   .menuGroupCode(menu.getMenuGroup().getMenuGroupCode())
-				   	   .menuCode(menu.getMenuCode())
-				   	   .menuName(menu.getMenuName())
-				   	   .menuType(menu.getMenuType().toString())
-				   	   .sequence(menu.getSequence())
-				   	   .level(menu.getLevel())
-				   	   .parentMenuCode(menu.getParent() == null ? null : menu.getParent().getMenuCode())
-				   	   .resource(menu.getResource() == null ? null : menu.getResource().getResourceCode())
-				   	   .build();
-	}
+public class MenuDTO {		
 	
 	@Data
 	public static class SearchMenu implements Serializable {
@@ -141,6 +123,24 @@ public class MenuDTO {
 					         ,menuGroup
 					         ,resource);
 			
+		}
+		
+		public static SaveMenu convert(Menu menu) {
+			
+			return SaveMenu.builder()
+					   	   .createdDt(menu.getCreatedDt())
+					   	   .createdBy(menu.getCreatedBy())
+					   	   .modifiedDt(menu.getModifiedDt())
+					   	   .modifiedBy(menu.getModifiedBy())
+					   	   .menuGroupCode(menu.getMenuGroup().getMenuGroupCode())
+					   	   .menuCode(menu.getMenuCode())
+					   	   .menuName(menu.getMenuName())
+					   	   .menuType(menu.getMenuType().toString())
+					   	   .sequence(menu.getSequence())
+					   	   .level(menu.getLevel())
+					   	   .parentMenuCode(menu.getParent() == null ? null : menu.getParent().getMenuCode())
+					   	   .resource(menu.getResource() == null ? null : menu.getResource().getResourceCode())
+					   	   .build();
 		}
 	}
 	

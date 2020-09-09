@@ -94,5 +94,17 @@ public class MenuGroupDTO {
 		public void modifyMenuGroup(MenuGroup menuGroup) {
 			menuGroup.modifyEntity(this.menuGroupName, this.description);
 		}
+		
+		public static SaveMenuGroup convert(MenuGroup entity) {
+			return SaveMenuGroup.builder()
+								.createdDt(entity.getCreatedDt())
+								.createdBy(entity.getCreatedBy())
+								.modifiedDt(entity.getModifiedDt())
+								.modifiedBy(entity.getModifiedBy())
+								.menuGroupCode(entity.getMenuGroupCode())
+								.menuGroupName(entity.getMenuGroupName())
+								.description(entity.getDescription())
+								.build();
+		}
 	}
 }
