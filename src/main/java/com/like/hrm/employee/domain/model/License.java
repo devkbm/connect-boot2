@@ -66,7 +66,10 @@ public class License extends AuditEntity implements Serializable {
 	 */
 	@Column(name="CMT")
 	private String comment;
+	
+	// 취득일자, 자격면허, 자격면허인가번호, 발행기관, 필수면허번호여부, 이미지
 		
+	// 가족 - 가족성명, 주민등록번호, 가족관계, 직업, 학력, 비고, 건강보험등재
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;

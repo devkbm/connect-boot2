@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.common.vo.DatePeriod;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -64,29 +66,28 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	@Formula("(select x.DEPT_NM_KOR from com.comdept x where x.dept_cd = dept_code)")
 	private String deptName;
 	
-	
-	/**
-	 * 시작일
-	 */
+	/*
 	@Column(name="FROM_DT")
 	private LocalDate fromDate;
-	
-	/**
-	 * 종료일
-	 */
+		
 	@Column(name="TO_DT")
 	private LocalDate toDate;
+	*/
+	
+	@Embedded
+	private DatePeriod period;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
 	
-	public DeptChangeHistory(Employee employee, String deptType, String deptCode, LocalDate fromDate, LocalDate toDate) {
+	public DeptChangeHistory(Employee employee, String deptType, String deptCode, DatePeriod period) {
 		this.employee = employee;
 		this.deptType = deptType;
 		this.deptCode = deptCode;
-		this.fromDate = fromDate;
-		this.toDate = toDate;		
+		//this.fromDate = fromDate;
+		//this.toDate = toDate;
+		this.period = period;
 	}
 	
 	/**
@@ -95,8 +96,8 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	 * @return
 	 */
 	public boolean isEnabled(LocalDate date) {		
-		return ( date.isAfter(fromDate) || date.isEqual(fromDate) ) 
-		 	&& ( date.isBefore(toDate) || date.isEqual(toDate) ) ? true : false;		
+		return ( date.isAfter(this.period.getFrom()) || date.isEqual(this.period.getFrom()) ) 
+		 	&& ( date.isBefore(this.period.getTo()) || date.isEqual(this.period.getTo()) ) ? true : false;		
 	}
 	
 	/**
@@ -104,11 +105,11 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	 * 예외) 종료일이 시작일보다 이전일 경우 시작일로 변경
 	 * @param date 종료일
 	 */
-	public void terminateHistory(LocalDate date) {
-		if (date.isAfter(this.fromDate)) {
-			this.toDate = date;
+	public void expire(LocalDate date) {
+		if (date.isAfter(this.period.getFrom())) {
+			this.period = new DatePeriod(this.period.getFrom(), date);
 		} else {
-			this.toDate = this.fromDate;
+			this.period = new DatePeriod(this.period.getFrom(), this.period.getFrom());			
 		}
 	}
 	
@@ -131,7 +132,5 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	public boolean equalDeptCode(String deptCode) {
 		return this.deptCode.equals(deptCode) ? true : false;
 	}
-	
-	
-			
+				
 }

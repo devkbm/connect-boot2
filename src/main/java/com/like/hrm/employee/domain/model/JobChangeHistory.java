@@ -85,7 +85,7 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 			 && ( date.isBefore(this.period.getTo()) || date.isEqual(this.period.getTo()) ) ? true : false;		
 	}
 	
-	public void terminateHistory(LocalDate date) {
+	public void expire(LocalDate date) {
 		if (date.isAfter(this.period.getFrom())) {
 			this.period = new DatePeriod(this.period.getFrom(), date);			
 		} else {

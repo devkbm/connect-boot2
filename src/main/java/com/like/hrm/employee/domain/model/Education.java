@@ -67,6 +67,8 @@ public class Education extends AuditEntity implements Serializable {
 	@Column(name="CMT")
 	private String comment;
 		
+	// 시작일, 종료일, 전공학과명, 복수전공학과명, 학교소재지, 수업연한, 입사학력여부, 수고권대학여부, 야간여부, 이공계여부, 이미지
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;

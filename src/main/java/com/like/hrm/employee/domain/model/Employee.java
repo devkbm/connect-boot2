@@ -2,13 +2,12 @@ package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -20,6 +19,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.hrm.employee.domain.model.vo.DeptChangeList;
+import com.like.hrm.employee.domain.model.vo.JobChangeList;
+import com.like.hrm.employee.domain.model.vo.StatusChangeList;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -99,20 +101,26 @@ public class Employee extends AuditEntity implements Serializable {
 	/**
 	 * 부서이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<DeptChangeHistory> deptHistory = new LinkedHashSet<>();
+	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	//Set<DeptChangeHistory> deptHistory = new LinkedHashSet<>();
+	@Embedded
+	DeptChangeList deptHistory;
 		
 	/**
 	 * 직위 직급 등 인사정보 이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<JobChangeHistory> jobHistory = new LinkedHashSet<>();		
-	
+	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	//Set<JobChangeHistory> jobHistory = new LinkedHashSet<>();
+	@Embedded
+	JobChangeList jobHistory;
+		
 	/**
 	 * 근무상태 이력
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<StatusChangeHistory> statusHistory = new LinkedHashSet<>();
+	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	//Set<StatusChangeHistory> statusHistory = new LinkedHashSet<>();
+	@Embedded
+	StatusChangeList statusHistory;
 	
 	/**
 	 * 자격면허
@@ -153,103 +161,7 @@ public class Employee extends AuditEntity implements Serializable {
 		
 	public String getEmployeeId() {
 		return this.id;
-	}
-	
-	public Set<DeptChangeHistory> getDeptChangeHistory() {
-		return this.deptHistory;
-	}
-	
-	public Set<JobChangeHistory> getJobChangeHistory() {
-		return this.jobHistory;
-	}
-	
-	public Set<StatusChangeHistory> getStatusChangeHistory() {
-		return this.statusHistory;
-	}
-	
-	/**
-	 * <p>부서변경이력을 추가한다.</p>
-	 * 1. 동일 부서 유형의 유효한 부서 정보 종료
-	 * 2. 신규 부서 정보 입력
-	 * @param deptChangeHistory
-	 */
-	public void addDeptChange(DeptChangeHistory deptChangeHistory) {
-		
-		this.terminateDept(deptChangeHistory.getDeptType()
-						  ,deptChangeHistory.getFromDate());
-		
-		deptHistory.add(deptChangeHistory);
-	}	
-	
-	/**
-	 * <p>부서 이력 중 기준일자에 해당하는 사용가능한 이력이 있을 경우 전일로 종료시킨다.</p>
-	 * @param deptType
-	 * @param referenceDate
-	 */
-	public void terminateDept(String deptType, LocalDate referenceDate) {
-				
-		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
-			
-			if (referenceDate.isBefore(deptHistory.getFromDate())
-			 && deptHistory.equalDeptType(deptType)) {
-				throw new IllegalArgumentException(deptHistory.getFromDate() + "일로 시작하는 부서 이력이 존재합니다.");
-			}
-			
-			if ( deptHistory.equalDeptType(deptType)			  	
-			  && deptHistory.isEnabled(referenceDate) )
-				
-				deptHistory.terminateHistory(referenceDate.minusDays(1));				
-		}									
-		
-	}
-	
-	/**
-	 * <p>인사정보이력을 추가한다.</p>
-	 * 1. 동일 인사 유형의 유효한 인사 정보 종료
-	 * 2. 신규 인사 정보 입력
-	 * @param jobChangeHistory
-	 */
-	public void addJobChange(JobChangeHistory jobChangeHistory) {
-		this.terminateJob(jobChangeHistory.getJobType()
-						 ,jobChangeHistory.getPeriod().getFrom());
-		
-		jobHistory.add(jobChangeHistory);
-	}
-	
-	/**
-	 * <p>인사정보 이력을 종료일자 기준으로 종료시킨다.</p>
-	 * @param jobType
-	 * @param referenceDate
-	 */
-	public void terminateJob(String jobType, LocalDate referenceDate) {
-		
-		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
-			
-			if (jobHistory.equalJobType(jobType) 
-			 && referenceDate.isBefore(jobHistory.getPeriod().getFrom())) {
-				throw new IllegalArgumentException(jobHistory.getPeriod().getFrom() + "일로 시작하는 이력이 존재합니다.");
-			}
-			
-			if ( jobHistory.equalJobType(jobType) 			  
-			  && jobHistory.isEnabled(referenceDate) )
-				
-				jobHistory.terminateHistory(referenceDate.minusDays(1));				
-		}
-	}
-	
-	public void changeStatus(String appointmentCode, String statusCode, LocalDate fromDate, LocalDate toDate) {
-		for (StatusChangeHistory statusHistory: this.getStatusChangeHistory()) {
-			if (fromDate.isBefore(statusHistory.getFromDate())) {
-				throw new IllegalArgumentException(statusHistory.getFromDate() + "일로 시작하는 이력이 존재합니다.");
-			}
-			
-			if (statusHistory.isEnabled(fromDate)) {
-				statusHistory.terminateHistory(fromDate.minusDays(1));
-			}
-		}
-					
-		this.statusHistory.add(new StatusChangeHistory(this, appointmentCode, statusCode, fromDate, toDate));
-	}
+	}			
 
 	public void changeImagePath(String imagePath) {
 		this.imagePath = imagePath;
@@ -286,7 +198,4 @@ public class Employee extends AuditEntity implements Serializable {
 		this.educationList.add(education);
 	}
 
-
-	
-	
 }

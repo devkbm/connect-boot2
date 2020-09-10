@@ -13,6 +13,7 @@ import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.JobChangeHistory;
 import com.like.hrm.employee.domain.model.License;
+import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
 
@@ -71,10 +72,9 @@ public class EmployeeService {
 		DeptChangeHistory deptChangeHistory = new DeptChangeHistory(emp
 																   ,dto.getDeptType()
 																   ,dto.getDeptCode()
-																   ,dto.getFromDate()
-																   ,dto.getToDate());
+																   ,new DatePeriod(dto.getFromDate(),dto.getToDate()));
 				
-		emp.addDeptChange(deptChangeHistory);
+		emp.getDeptHistory().add(deptChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
 	}
@@ -86,18 +86,19 @@ public class EmployeeService {
 																,dto.getJobType()
 																,dto.getJobCode()
 																,new DatePeriod(dto.getFromDate(),dto.getToDate()));
-		emp.addJobChange(jobChangeHistory);
+		emp.getJobHistory().add(jobChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
 	}
 	
 	public void saveStatusChangeHistory(EmployeeDTO.NewStatus dto) {
 		Employee emp = getEmployeeInfo(dto.getEmployeeId());
-						
-		emp.changeStatus(dto.getAppointmentCode()
-						,dto.getStatusCode()
-						,dto.getFromDate()
-						,dto.getToDate());	
+		
+		StatusChangeHistory statusChangeHistory = new StatusChangeHistory(emp
+																		 ,dto.getAppointmentCode()
+																		 ,dto.getStatusCode()
+																		 ,new DatePeriod(dto.getFromDate(),dto.getToDate())); 			
+		emp.getStatusHistory().add(statusChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
 	}

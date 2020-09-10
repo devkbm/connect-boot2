@@ -27,9 +27,9 @@ public class EmployeeExpression {
 		QJobChangeHistory qJobChangeHistory = QJobChangeHistory.jobChangeHistory;
 		QStatusChangeHistory qStatusChangeHistory = QStatusChangeHistory.statusChangeHistory;				
 		
-		return date.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)
+		return date.between(qDeptChangeHistory.period.from, qDeptChangeHistory.period.to)
 		  .and(date.between(qJobChangeHistory.period.from, qJobChangeHistory.period.to))
-		  .and(date.between(qStatusChangeHistory.fromDate, qStatusChangeHistory.toDate));
+		  .and(date.between(qStatusChangeHistory.period.from, qStatusChangeHistory.period.to));
 		  
 	}
 	
@@ -75,7 +75,7 @@ public class EmployeeExpression {
 				  			 .on(qDeptChangeHistory.deptCode.eq(qDept.deptCode))				  			 				  			 				  		
 				             .where(qDept.deptNameKorean.like(deptName)
 				               .and(qDeptChangeHistory.employee.eq(employee))
-				               .and(dateExpression.between(qDeptChangeHistory.fromDate, qDeptChangeHistory.toDate)))
+				               .and(dateExpression.between(qDeptChangeHistory.period.from, qDeptChangeHistory.period.to)))
 				             .exists();
 	}
 	

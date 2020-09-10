@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -18,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.common.vo.DatePeriod;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,18 +43,17 @@ public class StatusChangeHistory extends AuditEntity implements Serializable {
 		
 	@Column(name="STATUS_CODE")
 	private String statusCode;
-	
-	/**
-	 * 시작일
-	 */
+		
+	/*
 	@Column(name="FROM_DT")
 	private LocalDate fromDate;
-	
-	/**
-	 * 종료일
-	 */
+		
 	@Column(name="TO_DT")
 	private LocalDate toDate;
+	*/
+	
+	@Embedded
+	private DatePeriod period;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
@@ -68,25 +69,27 @@ public class StatusChangeHistory extends AuditEntity implements Serializable {
 	public StatusChangeHistory(Employee employee
 							  ,String appointmentCode
 							  ,String statusCode
-							  ,LocalDate fromDate
-							  ,LocalDate toDate) {		
+							  ,DatePeriod period) {		
 		this.employee = employee;
 		this.appointmentCode = appointmentCode;
 		this.statusCode = statusCode;
-		this.fromDate = fromDate;
-		this.toDate = toDate;	
+		this.period = period;
+		//this.fromDate = fromDate;
+		//this.toDate = toDate;	
 	}
 	
 	public boolean isEnabled(LocalDate date) {
-		return  ( date.isAfter(fromDate) || date.isEqual(fromDate) ) 
-			 && ( date.isBefore(toDate) || date.isEqual(toDate) ) ? true : false;		
+		return  ( date.isAfter(this.period.getFrom()) || date.isEqual(this.period.getFrom()) ) 
+			 && ( date.isBefore(this.period.getTo()) || date.isEqual(this.period.getTo()) ) ? true : false;		
 	}
 	
-	public void terminateHistory(LocalDate date) {
-		if (date.isAfter(this.fromDate)) {
-			this.toDate = date;
+	public void expire(LocalDate date) {
+		if (date.isAfter(this.period.getFrom())) {
+			this.period = new DatePeriod(this.period.getFrom(), date);
+			//this.toDate = date;
 		} else {
-			this.toDate = this.fromDate;
+			this.period = new DatePeriod(this.period.getFrom(), this.period.getFrom());
+			//this.toDate = this.fromDate;
 		}
 	}
 	

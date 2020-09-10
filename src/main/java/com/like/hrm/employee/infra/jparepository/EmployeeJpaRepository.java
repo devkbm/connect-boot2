@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.Lists;
 import com.like.hrm.employee.boundary.EmployeeDTO.SearchEmployee;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QDeptChangeHistory;
@@ -70,11 +69,11 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 		return queryFactory
 				.select(qEmployee).distinct()
 				.from(qEmployee)
-				.leftJoin(qEmployee.deptHistory, qDeptChangeHistory)
+				.leftJoin(qEmployee.deptHistory.deptHistory, qDeptChangeHistory)
 				.fetchJoin()
-				.leftJoin(qEmployee.jobHistory, qJobChangeHistory)
+				.leftJoin(qEmployee.jobHistory.jobHistory, qJobChangeHistory)
 				.fetchJoin()
-				.leftJoin(qEmployee.statusHistory, qStatusChangeHistory)
+				.leftJoin(qEmployee.statusHistory.statusHistory, qStatusChangeHistory)
 				.fetchJoin()
 				.leftJoin(qEmployee.educationList, qEducation)
 				.fetchJoin()
