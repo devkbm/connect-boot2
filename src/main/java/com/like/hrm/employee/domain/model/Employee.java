@@ -27,7 +27,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
+//@JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
