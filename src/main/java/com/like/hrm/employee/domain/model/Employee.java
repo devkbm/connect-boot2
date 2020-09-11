@@ -2,25 +2,22 @@ package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 import com.like.hrm.employee.domain.model.vo.DeptChangeList;
+import com.like.hrm.employee.domain.model.vo.FamilyList;
 import com.like.hrm.employee.domain.model.vo.JobChangeList;
+import com.like.hrm.employee.domain.model.vo.LicenseList;
+import com.like.hrm.employee.domain.model.vo.SchoolCareerList;
 import com.like.hrm.employee.domain.model.vo.StatusChangeList;
 
 import lombok.AccessLevel;
@@ -101,38 +98,38 @@ public class Employee extends AuditEntity implements Serializable {
 	/**
 	 * 부서이력
 	 */
-	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	//Set<DeptChangeHistory> deptHistory = new LinkedHashSet<>();
 	@Embedded
 	DeptChangeList deptHistory;
 		
 	/**
 	 * 직위 직급 등 인사정보 이력
 	 */
-	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	//Set<JobChangeHistory> jobHistory = new LinkedHashSet<>();
 	@Embedded
 	JobChangeList jobHistory;
 		
 	/**
 	 * 근무상태 이력
 	 */
-	//@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	//Set<StatusChangeHistory> statusHistory = new LinkedHashSet<>();
 	@Embedded
-	StatusChangeList statusHistory;
+	StatusChangeList statusHistory;	
 	
 	/**
-	 * 자격면허
+	 * 가족 명단
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<License> licenseList = new LinkedHashSet<>();
+	@Embedded
+	FamilyList familyList;
 	
 	/**
-	 * 교육이력
+	 * 자격면허 명단
 	 */
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<Education> educationList = new LinkedHashSet<>();
+	@Embedded
+	LicenseList licenseList;
+		
+	/**
+	 * 학력이력
+	 */
+	@Embedded
+	SchoolCareerList schoolCareerList;	
 	
 	public Employee(String id
 				   ,String name
@@ -165,37 +162,6 @@ public class Employee extends AuditEntity implements Serializable {
 
 	public void changeImagePath(String imagePath) {
 		this.imagePath = imagePath;
-	}	
-
-	public License getLicense(Long id) {
-		return this.licenseList.stream()
-							   .filter(e -> e.getLicenseId().equals(id))
-							   .findFirst()
-							   .orElse(null);
-	}
-	
-	public void addLicense(License license) {
-		if (this.licenseList == null) {
-			this.licenseList = new LinkedHashSet<>();
-		}
-		
-		this.licenseList.add(license);
-	}
-	
-	
-	public Education getEducation(Long id) {
-		return this.educationList.stream()
-								 .filter(e -> e.getEducationId().equals(id))
-								 .findFirst()
-								 .orElse(null);
-	}
-	
-	public void addEducation(Education education) {
-		if (this.educationList == null) {
-			this.educationList = new LinkedHashSet<>();
-		}
-		
-		this.educationList.add(education);
-	}
+	}		
 
 }

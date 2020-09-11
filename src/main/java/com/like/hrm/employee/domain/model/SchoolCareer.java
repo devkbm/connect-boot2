@@ -3,6 +3,7 @@ package com.like.hrm.employee.domain.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
+import com.like.common.vo.DatePeriod;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -40,7 +42,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "HRMEMPEDUCATION")
 @EntityListeners(AuditingEntityListener.class)
-public class Education extends AuditEntity implements Serializable {
+public class SchoolCareer extends AuditEntity implements Serializable {
 	
 	private static final long serialVersionUID = 5879415854289672377L;
 
@@ -61,6 +63,30 @@ public class Education extends AuditEntity implements Serializable {
 	@Column(name="SCHOOL_CODE")
 	private String schoolCode;
 	
+	
+	@Embedded
+	DatePeriod period;
+	
+	/**
+	 * 전공학과명
+	 */
+	private String majorName;
+	
+	/**
+	 * 복수전공학과명
+	 */
+	private String pluralMajorName;
+	
+	/**
+	 * 소재지
+	 */	
+	private String location;
+	
+	/**
+	 * 수업연한
+	 */
+	private Integer lessonYear;
+	
 	/**
 	 * 설명
 	 */
@@ -73,7 +99,7 @@ public class Education extends AuditEntity implements Serializable {
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;
 	
-	public Education(Employee employee
+	public SchoolCareer(Employee employee
 				    ,String eduType
 				    ,String schoolCode
 				    ,String comment) {

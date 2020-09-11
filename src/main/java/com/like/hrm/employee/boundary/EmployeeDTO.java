@@ -12,8 +12,9 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.like.hrm.employee.domain.model.Education;
+import com.like.hrm.employee.domain.model.SchoolCareer;
 import com.like.hrm.employee.domain.model.Employee;
+import com.like.hrm.employee.domain.model.Family;
 import com.like.hrm.employee.domain.model.License;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.querydsl.core.BooleanBuilder;
@@ -271,14 +272,14 @@ public class EmployeeDTO {
 		@Nullable
 		private String comment;
 		
-		public Education newEducation(Employee employee) {
-			return new Education(employee
+		public SchoolCareer newEntity(Employee employee) {
+			return new SchoolCareer(employee
 								,this.eduType
 								,this.schoolCode
 								,this.comment);
 		}
 		
-		public void modifyEducation(Education entity) {
+		public void modifyEnity(SchoolCareer entity) {
 			entity.modifyEntity(eduType
 							   ,schoolCode
 							   ,comment);	
@@ -308,18 +309,84 @@ public class EmployeeDTO {
 		@Nullable
 		private String comment;
 		
-		public License newLicense(Employee employee) {
+		public License newEntity(Employee employee) {
 			return new License(employee
 							  ,this.licenseType
 							  ,this.licenseCode
 							  ,this.comment);
 		}
 		
-		public void modifyLicense(License entity) {
+		public void modifyEntity(License entity) {
 			entity.modifyEntity(licenseType
 							   ,licenseCode
 							   ,comment);	
 		}	
+		
+		public static SaveLicense convert(License entity)  {
+			return SaveLicense.builder()
+							  .employeeId(entity.getEmployee().getId())
+							  .licenseId(entity.getLicenseId())
+							  .licenseType(entity.getLicenseType())
+							  .licenseCode(entity.getLicenseCode())
+							  .comment(entity.getComment())
+							  .build();
+		}
 	}	
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class SaveFamily implements Serializable {
+		
+		@NotEmpty
+		private String employeeId;
+		
+		@Nullable
+		private Long id;
+		
+		private String name;
+				
+		private String residentRegistrationNumber;
+				
+		private String relation;
+				
+		private String occupation;
+				
+		private String eduType;
+				
+		private String comment;
+		
+		public Family newEntity(Employee employee) {
+			return new Family(employee
+							 ,name
+							 ,residentRegistrationNumber
+							 ,relation
+							 ,occupation
+							 ,eduType
+							 ,comment);					
+		}
+		
+		public void modifyEntity(Family entity) {
+			entity.modifyEntity(name
+							   ,residentRegistrationNumber
+							   ,relation
+							   ,occupation
+							   ,eduType
+							   ,comment);
+		}
+		
+		public static SaveFamily convert(Family entity) {
+			return SaveFamily.builder()
+							 .employeeId(entity.getEmployee().getId())
+							 .id(entity.getId())
+							 .name(entity.getResidentRegistrationNumber())
+							 .relation(entity.getRelation())
+							 .occupation(entity.getOccupation())
+							 .eduType(entity.getEduType())
+							 .comment(entity.getComment())
+							 .build();
+		}
+	}
 	
 }

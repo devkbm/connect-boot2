@@ -1,6 +1,7 @@
 package com.like.hrm.employee.domain.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>부서 이력 관리 클래스</p>
+ * <p>자격 면허 관리</p>
  * 
  * Unique Index : EMP_ID, DEPT_TYPE, DEPT_CODE <br>
  * [상세] <br>
@@ -52,24 +53,38 @@ public class License extends AuditEntity implements Serializable {
 	/**
 	 * 자격면허유형
 	 */
-	@Column(name="LICENSE_TYPE")
+	@Column(name="LICENSE_TYPE", nullable = false)
 	private String licenseType;
 	
 	/**
 	 * 자격면허코드
 	 */
-	@Column(name="LICENSE_CODE")
+	@Column(name="LICENSE_CODE", nullable = false)
 	private String licenseCode;
+	
+	/**
+	 * 취득일자
+	 */
+	private LocalDate dateOfAcquisition;
+	
+	/**
+	 * 인증기관
+	 */
+	private String certificationAuthority;
+	
+	/**
+	 * 필수여부
+	 */
+	private Boolean isMandatory;
 	
 	/**
 	 * 설명
 	 */
-	@Column(name="CMT")
+	@Column(name="CMT", nullable = true)
 	private String comment;
 	
 	// 취득일자, 자격면허, 자격면허인가번호, 발행기관, 필수면허번호여부, 이미지
 		
-	// 가족 - 가족성명, 주민등록번호, 가족관계, 직업, 학력, 비고, 건강보험등재
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "EMP_ID", nullable=false, updatable=false)
 	private Employee employee;

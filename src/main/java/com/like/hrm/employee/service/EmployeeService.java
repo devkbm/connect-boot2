@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.common.vo.DatePeriod;
 import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
-import com.like.hrm.employee.domain.model.Education;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.JobChangeHistory;
-import com.like.hrm.employee.domain.model.License;
 import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
@@ -101,51 +99,7 @@ public class EmployeeService {
 		emp.getStatusHistory().add(statusChangeHistory);
 		
 		employeeRepository.saveEmployee(emp);
-	}
-	
-	public License getLicense(String empId, Long id) {
-		Employee emp = getEmployeeInfo(empId);
-						
-		return emp.getLicense(id);
-	}
-	
-	public void saveLicense(EmployeeDTO.SaveLicense dto) {
-		Employee emp = getEmployeeInfo(dto.getEmployeeId());
-		
-		License license = emp.getLicense(dto.getLicenseId());
-		
-		if (license == null) {
-			license = dto.newLicense(emp);
-		} else {
-			dto.modifyLicense(license);
-		}
-		
-		emp.addLicense(license);
-		
-		employeeRepository.saveEmployee(emp);
-	}
-	
-	public Education getEducation(String empId, Long id) {
-		Employee emp = getEmployeeInfo(empId);
-		
-		return emp.getEducation(id);
-	}
-	
-	public void saveEducation(EmployeeDTO.SaveEducation dto) {
-		Employee emp = getEmployeeInfo(dto.getEmployeeId());
-		
-		Education education = emp.getEducation(dto.getEducationId());
-		
-		if (education == null) {
-			education = dto.newEducation(emp);
-		} else {
-			dto.modifyEducation(education);
-		}
-		
-		emp.addEducation(education);
-		
-		employeeRepository.saveEmployee(emp);
-	}
+	}	
 	
 	private Employee getEmployeeInfo(String empId) {
 		Employee emp = employeeRepository.getEmployee(empId);

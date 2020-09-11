@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.like.hrm.employee.boundary.EmployeeDTO.SearchEmployee;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.QDeptChangeHistory;
-import com.like.hrm.employee.domain.model.QEducation;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.like.hrm.employee.domain.model.QJobChangeHistory;
 import com.like.hrm.employee.domain.model.QLicense;
+import com.like.hrm.employee.domain.model.QSchoolCareer;
 import com.like.hrm.employee.domain.model.QStatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.infra.jparepository.springdata.JpaEmployee;
@@ -32,7 +32,7 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 	private static final QDeptChangeHistory qDeptChangeHistory = QDeptChangeHistory.deptChangeHistory;
 	private static final QJobChangeHistory qJobChangeHistory = QJobChangeHistory.jobChangeHistory;
 	private static final QStatusChangeHistory qStatusChangeHistory = QStatusChangeHistory.statusChangeHistory;
-	private static final QEducation qEducation = QEducation.education;
+	private static final QSchoolCareer qSchoolCareer = QSchoolCareer.schoolCareer;
 	private static final QLicense qLicense = QLicense.license;
 	
 	
@@ -75,9 +75,9 @@ public class EmployeeJpaRepository implements EmployeeRepository {
 				.fetchJoin()
 				.leftJoin(qEmployee.statusHistory.statusHistory, qStatusChangeHistory)
 				.fetchJoin()
-				.leftJoin(qEmployee.educationList, qEducation)
+				.leftJoin(qEmployee.schoolCareerList.schoolCareerList, qSchoolCareer)
 				.fetchJoin()
-				.leftJoin(qEmployee.licenseList, qLicense)
+				.leftJoin(qEmployee.licenseList.licenseList, qLicense)
 				.fetchJoin()
 				.where(dto.getBooleanBuilder())				
 				.fetch();
