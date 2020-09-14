@@ -33,25 +33,17 @@ public class DutyApplication extends AuditEntity {
 	
 	@Id		
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="DUTY_ID")
+	@Column(name="DUTY_ID", nullable = false)
 	private Long dutyId;
 	
-	@Column(name="EMP_ID")
+	@Column(name="EMP_ID", nullable = false)
 	private String employeeId;
 	
-	@Column(name="DUTY_CODE")
+	@Column(name="DUTY_CODE", nullable = false)
 	private String dutyCode;
 	
-	@Column(name="DUTY_REASON")
-	private String dutyReason;
-	
-	/*
-	@Column(name="DUTY_START_DT")
-	private LocalDateTime dutyStartDateTime;
-	
-	@Column(name="DUTY_END_DT")
-	private LocalDateTime dutyEndDateTime;
-	*/
+	@Column(name="DUTY_REASON", nullable = false)
+	private String dutyReason;	
 		
 	@AttributeOverrides({
 		@AttributeOverride(name = "from", column = @Column(name = "DUTY_START_DT")),

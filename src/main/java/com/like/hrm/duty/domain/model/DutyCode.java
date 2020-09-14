@@ -31,13 +31,15 @@ public class DutyCode extends AuditEntity {
 	@Column(name="ENABLE_YN", nullable = false)
 	private Boolean enabled;
 	
-	@Column(name="DUTY_GROUP", nullable = true)
+	@Column(name="DUTY_GROUP", nullable = false)
 	private String dutyGroup;
 		
 	// 경조비 대상 여부
+	@Column(name="DUTY_GROUP", nullable = false)
 	private Boolean isFamilyEvent;
 	
 	// 경조비 지급 금액
+	@Column(name="DUTY_GROUP", nullable = true)
 	private Long familyEventAmt;		
 	
 	@Column(name = "CMT")

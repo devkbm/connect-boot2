@@ -134,6 +134,23 @@ create table if not exists HRMEMPSTATUSHISTORY (
 	constraint fk_hrmempstatushistory foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 )  COMMENT = '직원상태이력';
 
+create table if not exists HRMEMPFAMILY (
+	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT			DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER		VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID				INT				not null	COMMENT '직원학력ID'	AUTO_INCREMENT,
+	EMP_ID			VARCHAR(10) 	not null  	COMMENT '사원ID',
+	FAMILY_NAME		VARCHAR(500)	not null	COMMENT '가족성명',
+	RREGNO			VARCHAR(20)		not null	COMMENT '주민등록번호',
+	FAMILY_REL_CODE	VARCHAR(3)		not null	COMMENT '가족관계코드',
+	OCCUPATION_NAME	VARCHAR(500)	not null	COMMENT '직업명',
+	SCHOOL_CAREER_TYPE	VARCHAR(3)	not null	COMMENT '학력구분',
+	CMT				VARCHAR(2000) 	null 		COMMENT '비고',
+	constraint pk_hrmempfamily primary key(ID),
+	constraint fk_hrmempfamily1 foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+) COMMENT = '직원가족정보';
+
 create table if not exists HRMEMPEDUCATION (
 	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
 	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
@@ -149,18 +166,22 @@ create table if not exists HRMEMPEDUCATION (
 ) COMMENT = '직원학력정보';
 
 create table if not exists HRMEMPLICENSE (
-	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
-	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',
-	UPD_DT			DATETIME		null		COMMENT '최종수정일시',
-	UPD_USER		VARCHAR(50)		null		COMMENT '최종수정유저',
-	ID				INT				not null	COMMENT '직원자격면허ID'	AUTO_INCREMENT,
-	EMP_ID			VARCHAR(10) 	not null  	COMMENT '사원ID',
-	LICENSE_TYPE	VARCHAR(2)		not null	COMMENT '자격면허유형',
-	LICENSE_CODE	VARCHAR(5)		not null	COMMENT '자격면허코드',	
-	CMT				VARCHAR(2000) 	null 		COMMENT '비고',
+	SYS_DT					DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID						INT				not null	COMMENT '직원자격면허ID'	AUTO_INCREMENT,
+	EMP_ID					VARCHAR(10) 	not null  	COMMENT '사원ID',
+	LICENSE_TYPE			VARCHAR(2)		not null	COMMENT '자격면허유형',
+	LICENSE_CODE			VARCHAR(5)		not null	COMMENT '자격면허코드',
+	DATE_OF_ACQUISITION		DATE			null		COMMENT '취득일자',
+	CERTIFICATION_AUTHORITY	VARCHAR(500)	null		COMMENT '인증기관',
+	MANDATORY_YN			BOOLEAN			not null	COMMENT '필수여부',
+	CMT						VARCHAR(2000) 	null 		COMMENT '비고',
 	constraint pk_hrmemplicense primary key(ID),
 	constraint fk_hrmemplicense foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 ) COMMENT = '직원자격면허';
+
 
 create table if not exists COM.HRMAPPOINTMENTLEDGER (
 	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
@@ -216,6 +237,8 @@ create table HRMDUTYCODE (
 	DUTY_NAME				VARCHAR(50) 	NOT NULL 	COMMENT '근무명',
 	DUTY_GROUP				VARCHAR(20) 	NOT NULL 	COMMENT '근무그룹',
 	ENABLE_YN				BOOLEAN 		NOT NULL 	COMMENT '사용여부',	
+	FAMILY_EVENT_YN			BOOLEAN 		NOT NULL 	COMMENT '사용여부',
+	FAMILY_EVENT_AMT		INT				null		COMMENT '경조사지급금액',
 	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_hrmdutycode primary key(DUTY_CODE)
 ) COMMENT = '근무코드정보';
@@ -231,6 +254,8 @@ create table HRMDUTYAPPLICATION (
 	DUTY_REASON				VARCHAR(2000) 	NOT NULL 	COMMENT '근태사유',
 	DUTY_START_DT			DATETIME		NOT NULL 	COMMENT '근태시작일',
 	DUTY_END_DT				DATETIME		NOT NULL 	COMMENT '근태종료일',
+	FAMILY_EVENT_DT			DATETIME		NULL		COMMENT '경조사발생일자',
+	FAMILY_EVENT_AMT		INT				NULL		COMMENT '경조사지급금액',
 	constraint pk_hrmdutyapplication primary key(DUTY_ID),
 	constraint fk_hrmdutyapplication1 foreign key(DUTY_CODE) references HRMDUTYCODE(DUTY_CODE)
 ) COMMENT = '근태신청정보';

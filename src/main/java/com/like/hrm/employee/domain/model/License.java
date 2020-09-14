@@ -47,7 +47,7 @@ public class License extends AuditEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
+	@Column(name="ID", nullable = false)
 	private Long licenseId;
 		
 	/**
@@ -65,16 +65,19 @@ public class License extends AuditEntity implements Serializable {
 	/**
 	 * 취득일자
 	 */
+	@Column(name="DATE_OF_ACQUISITION", nullable = true)
 	private LocalDate dateOfAcquisition;
 	
 	/**
 	 * 인증기관
 	 */
+	@Column(name="CERTIFICATION_AUTHORITY", nullable = true)
 	private String certificationAuthority;
 	
 	/**
 	 * 필수여부
 	 */
+	@Column(name="MANDATORY_YN", nullable = false)
 	private Boolean isMandatory;
 	
 	/**

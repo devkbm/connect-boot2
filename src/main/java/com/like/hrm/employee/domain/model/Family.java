@@ -31,10 +31,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "HRMEMPLICENSE")
 @EntityListeners(AuditingEntityListener.class)
 public class Family extends AuditEntity implements Serializable {
-		
+			
+	private static final long serialVersionUID = -3377701513438383323L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
+	@Column(name="ID", nullable = false)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -44,31 +46,37 @@ public class Family extends AuditEntity implements Serializable {
 	/**
 	 * 가족 성명
 	 */
+	@Column(name="FAMILY_NAME", nullable = false)
 	private String name;
 	
 	/**
 	 * 주민등록번호
 	 */
+	@Column(name="RREGNO", nullable = false)
 	private String residentRegistrationNumber;
 	
 	/**
 	 * 가족관계
 	 */
+	@Column(name="FAMILY_REL_CODE", nullable = false)
 	private String relation;
 	
 	/**
 	 * 직업
 	 */
+	@Column(name="ID", nullable = false)
 	private String occupation;
 	
 	/**
 	 * 학력구분
 	 */
-	private String eduType;
+	@Column(name="ID", nullable = false)
+	private String schoolCareerType;
 	
 	/**
 	 * 비고
 	 */
+	@Column(name="CMT", nullable = false)
 	private String comment;
 	
 	
@@ -77,14 +85,14 @@ public class Family extends AuditEntity implements Serializable {
 				 ,String residentRegistrationNumber
 				 ,String relation
 				 ,String occupation
-				 ,String eduType
+				 ,String schoolCareerType
 				 ,String comment) {
 		this.employee = employee;
 		this.name = name;
 		this.residentRegistrationNumber = residentRegistrationNumber;
 		this.relation = relation;
 		this.occupation = occupation;
-		this.eduType = eduType;
+		this.schoolCareerType = schoolCareerType;
 		this.comment = comment;
 	}
 	
@@ -92,13 +100,13 @@ public class Family extends AuditEntity implements Serializable {
 							,String residentRegistrationNumber
 							,String relation
 							,String occupation
-							,String eduType
+							,String schoolCareerType
 							,String comment) {
 		this.name = name;
 		this.residentRegistrationNumber = residentRegistrationNumber;
 		this.relation = relation;
 		this.occupation = occupation;
-		this.eduType = eduType;
+		this.schoolCareerType = schoolCareerType;
 		this.comment = comment;
 	}
 }
