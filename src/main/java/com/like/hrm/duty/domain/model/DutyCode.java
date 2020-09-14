@@ -34,6 +34,12 @@ public class DutyCode extends AuditEntity {
 	@Column(name="DUTY_GROUP", nullable = true)
 	private String dutyGroup;
 		
+	// 경조비 대상 여부
+	private Boolean isFamilyEvent;
+	
+	// 경조비 지급 금액
+	private Long familyEventAmt;		
+	
 	@Column(name = "CMT")
 	private String comment;
 	

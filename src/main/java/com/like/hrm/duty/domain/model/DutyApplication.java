@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 import com.like.common.vo.Period;
+import com.like.hrm.duty.domain.model.vo.FamilyEvent;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -58,21 +59,22 @@ public class DutyApplication extends AuditEntity {
 	})
 	Period period;
 	
+	@Embedded
+	FamilyEvent familyEvent;
+	
 	@Transient
 	private List<DutyApplicationAttachedFile> fileList;
 	
 	public DutyApplication(String employeeId
 						  ,String dutyCode
 						  ,String dutyReason
-						  //,LocalDateTime dutyStartDateTime
-						  //,LocalDateTime dutyEndDateTime
-						  ,Period period) {
+						  ,Period period
+						  ,FamilyEvent familyEvent) {
 		this.employeeId = employeeId;
 		this.dutyCode = dutyCode;
 		this.dutyReason = dutyReason;
 		this.period = period;
-		//this.dutyStartDateTime = dutyStartDateTime;
-		//this.dutyEndDateTime = dutyEndDateTime;
+		this.familyEvent = familyEvent;
 	}	
 	
 	public void modifyEntity(String dutyCode
