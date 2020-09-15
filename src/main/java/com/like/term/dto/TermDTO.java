@@ -1,25 +1,19 @@
 package com.like.term.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.like.board.domain.model.QArticle;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.term.domain.model.QTermDictionary;
+import com.like.term.domain.model.TermDictionary;
 import com.querydsl.core.BooleanBuilder;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 public class TermDTO {
 
@@ -49,5 +43,68 @@ public class TermDTO {
 		}
 	}
 	
-	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SaveTerm implements Serializable {
+		
+		Long pkTerm;	
+				
+		String domain;
+				
+		String term;
+					
+		String nameKor;
+				
+		String abbreviationKor;
+				
+		String nameEng;
+					
+		String abbreviationEng;
+				
+		String description;
+				
+		String comment;
+		
+		public TermDictionary newEntity() {
+			return TermDictionary.builder()
+								 .domain(domain)
+								 .term(term)
+								 .nameKor(nameKor)
+								 .abbreviationKor(abbreviationKor)
+								 .nameEng(nameEng)
+								 .abbreviationEng(abbreviationEng)
+								 .description(description)
+								 .comment(comment)
+								 .build();
+		}
+		
+		public void modifyEntity(TermDictionary entity) {
+			entity.modifyEntity(domain
+					           ,term
+					           ,nameKor
+					           ,abbreviationKor
+					           ,nameEng
+					           ,abbreviationEng
+					           ,description
+					           ,comment);
+			
+		}
+		
+		public static SaveTerm convert(TermDictionary entity) {
+			return SaveTerm.builder()
+						   .pkTerm(entity.getPkTerm())
+						   .domain(entity.getDomain())
+						   .term(entity.getTerm())
+						   .nameKor(entity.getNameKor())
+						   .abbreviationKor(entity.getAbbreviationKor())
+						   .nameEng(entity.getNameEng())
+						   .abbreviationEng(entity.getAbbreviationEng())
+						   .description(entity.getDescription())
+						   .comment(entity.getComment())
+						   .build();
+		}
+	}
 }

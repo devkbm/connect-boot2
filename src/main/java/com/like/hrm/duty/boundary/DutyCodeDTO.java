@@ -4,9 +4,17 @@ import java.io.Serializable;
 
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.domain.model.QDutyCode;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class DutyCodeDTO {
 
@@ -45,6 +53,61 @@ public class DutyCodeDTO {
 			}
 			
 			return qDutyCode.dutyName.like("%"+dutyName+"%");
+		}
+	}
+	
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SaveDutyCode implements Serializable {				
+
+		private String dutyCode;
+				
+		private String dutyName;
+				
+		private Boolean enabled;
+				
+		private String dutyGroup;
+					
+		private Boolean isFamilyEvent;
+		
+		private Long familyEventAmt;		
+		
+		private String comment;
+		
+		public DutyCode newEntity() {
+			return DutyCode.builder()
+						   .dutyCode(dutyCode)
+						   .dutyName(dutyName)
+						   .enabled(enabled)
+						   .dutyGroup(dutyGroup)
+						   .isFamilyEvent(isFamilyEvent)
+						   .familyEventAmt(familyEventAmt)
+						   .comment(comment)
+						   .build();
+		}
+		
+		public void modifyEntity(DutyCode entity) {
+			entity.modifyEntity(dutyName
+							   ,enabled
+							   ,dutyGroup
+							   ,isFamilyEvent
+							   ,familyEventAmt
+							   ,comment);
+		}
+		
+		public static SaveDutyCode convert(DutyCode entity) {
+			return SaveDutyCode.builder()
+							   .dutyCode(entity.getDutyCode())
+							   .dutyName(entity.getDutyName())
+							   .enabled(entity.getEnabled())
+							   .dutyGroup(entity.getDutyGroup())
+							   .isFamilyEvent(entity.getIsFamilyEvent())
+							   .familyEventAmt(entity.getFamilyEventAmt())
+							   .comment(entity.getComment())
+							   .build();
 		}
 	}
 }

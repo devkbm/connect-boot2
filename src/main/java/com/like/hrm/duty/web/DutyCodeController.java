@@ -19,8 +19,6 @@ import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyCodeCommandService;
 import com.like.hrm.duty.service.DutyCodeQueryService;
-import com.like.hrm.employee.boundary.EmployeeDTO;
-import com.like.hrm.employee.domain.model.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +57,7 @@ public class DutyCodeController {
 	}
 	
 	@RequestMapping(value={"/hrm/dutycode"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDutyCode(@RequestBody DutyCode dto, BindingResult result) {				
+	public ResponseEntity<?> saveDutyCode(@RequestBody DutyCodeDTO.SaveDutyCode dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());

@@ -65,15 +65,7 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	
 	@Formula("(select x.DEPT_NM_KOR from com.comdept x where x.dept_cd = dept_code)")
 	private String deptName;
-	
-	/*
-	@Column(name="FROM_DT")
-	private LocalDate fromDate;
 		
-	@Column(name="TO_DT")
-	private LocalDate toDate;
-	*/
-	
 	@Embedded
 	private DatePeriod period;
 	
@@ -84,9 +76,7 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 	public DeptChangeHistory(Employee employee, String deptType, String deptCode, DatePeriod period) {
 		this.employee = employee;
 		this.deptType = deptType;
-		this.deptCode = deptCode;
-		//this.fromDate = fromDate;
-		//this.toDate = toDate;
+		this.deptCode = deptCode;		
 		this.period = period;
 	}
 	

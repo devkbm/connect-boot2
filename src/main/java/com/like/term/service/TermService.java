@@ -34,6 +34,19 @@ public class TermService {
 		termRepository.saveTerm(term);
 	}
 	
+	public void saveTerm(TermDTO.SaveTerm dto) {
+		TermDictionary entity = null;
+		
+		if (dto.getPkTerm() == null) {
+			entity = dto.newEntity();
+		} else {
+			entity = termRepository.getTerm(dto.getPkTerm());
+			dto.modifyEntity(entity);
+		}
+		
+		termRepository.saveTerm(entity);
+	}
+	
 	public void saveTerm(List<TermDictionary> termList) {
 		termRepository.saveTerm(termList);		
 	}

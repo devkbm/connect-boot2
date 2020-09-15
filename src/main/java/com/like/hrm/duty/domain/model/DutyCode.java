@@ -48,9 +48,14 @@ public class DutyCode extends AuditEntity {
 	public void modifyEntity(String dutyName
 							,Boolean enabled
 							,String dutyGroup
+							,Boolean isFamilyEvent
+							,Long familyEventAmt
 							,String comment) {
 		this.dutyName = dutyName;
 		this.enabled = enabled;
 		this.dutyGroup = dutyGroup;
+		this.isFamilyEvent = isFamilyEvent;
+		this.familyEventAmt = familyEventAmt;
+		this.comment = comment;
 	}
 }

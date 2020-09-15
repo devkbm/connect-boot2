@@ -2,9 +2,12 @@ package com.like.hrm.employee.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
@@ -13,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.like.hrm.employee.domain.model.SchoolCareer;
+import com.like.hrm.duty.boundary.DutyApplicationDTO;
+import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.Family;
 import com.like.hrm.employee.domain.model.License;
@@ -20,6 +25,7 @@ import com.like.hrm.employee.domain.model.QEmployee;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -141,6 +147,46 @@ public class EmployeeDTO {
 	}
 	
 	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class ResponseEmployee implements Serializable {
+		
+		private String id;	
+		
+		private String name;
+		
+		private String nameEng;
+		
+		private String nameChi;
+		
+		private String legalName;
+					
+		private String residentRegistrationNumber;
+		
+		private String gender;
+		
+		private LocalDate birthday;				
+		
+		private String imagePath;
+		
+		private Set<NewDept> deptHistory;
+		
+		public static ResponseEmployee convert(Employee entity) {
+			return ResponseEmployee.builder()
+								   .id(entity.getId())
+								   .name(entity.getName())
+								   .nameEng(entity.getNameEng())
+								   .nameChi(entity.getNameChi())
+								   .residentRegistrationNumber(entity.getResidentRegistrationNumber())
+								   .gender(entity.getGender())
+								   .birthday(entity.getBirthday())
+								   .imagePath(entity.getImagePath())								   
+								   .build();
+		}
+	}
+	
+	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Builder
@@ -179,22 +225,31 @@ public class EmployeeDTO {
 	public static class NewDept implements Serializable {
 				
 		private static final long serialVersionUID = 8984690778056785945L;
-
-		@NotEmpty
+		
 		private String employeeId;
 		
-		@NotEmpty
+		private Long id;
+		
 		private String deptType;
-				
-		@NotEmpty
+						
 		private String deptCode;
 				
-		@NotEmpty
+		private String deptName;
+		
 		private LocalDate fromDate;
-			
-		@NotEmpty
+					
 		private LocalDate toDate;
 		
+		public static NewDept convert(DeptChangeHistory entity) {
+			return NewDept.builder()
+						  .employeeId(entity.getEmployee().getId())
+						  .id(entity.getId())
+						  .deptType(entity.getDeptType())
+						  .deptCode(entity.getDeptCode())
+						  .fromDate(entity.getPeriod().getFrom())
+						  .toDate(entity.getPeriod().getTo())
+						  .build();
+		}
 	}
 	
 	
@@ -353,7 +408,7 @@ public class EmployeeDTO {
 				
 		private String occupation;
 				
-		private String eduType;
+		private String schoolCareerType;
 				
 		private String comment;
 		
@@ -363,7 +418,7 @@ public class EmployeeDTO {
 							 ,residentRegistrationNumber
 							 ,relation
 							 ,occupation
-							 ,eduType
+							 ,schoolCareerType
 							 ,comment);					
 		}
 		
@@ -372,7 +427,7 @@ public class EmployeeDTO {
 							   ,residentRegistrationNumber
 							   ,relation
 							   ,occupation
-							   ,eduType
+							   ,schoolCareerType
 							   ,comment);
 		}
 		
@@ -383,7 +438,7 @@ public class EmployeeDTO {
 							 .name(entity.getResidentRegistrationNumber())
 							 .relation(entity.getRelation())
 							 .occupation(entity.getOccupation())
-							 .eduType(entity.getEduType())
+							 .schoolCareerType(entity.getSchoolCareerType())
 							 .comment(entity.getComment())
 							 .build();
 		}

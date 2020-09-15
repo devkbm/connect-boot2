@@ -17,6 +17,7 @@ import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -25,6 +26,7 @@ import lombok.ToString;
  * 
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter
 @ToString(callSuper=true, includeFieldNames=true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -76,6 +78,24 @@ public class TermDictionary extends AuditEntity implements Serializable {
 		this.comment = comment;
 	}	
 	
+	public void modifyEntity(String domain
+							,String term
+							,String nameKor
+							,String abbreviationKor
+							,String nameEng
+							,String abbreviationEng
+							,String description
+							,String comment) {	
+		this.domain = domain;
+		this.term = term;
+		this.nameKor = nameKor;
+		this.abbreviationKor = abbreviationKor;
+		this.nameEng = nameEng;
+		this.abbreviationEng = abbreviationEng;
+		this.description = description;
+		this.comment = comment;
+	}
+
 	
 	
 }
