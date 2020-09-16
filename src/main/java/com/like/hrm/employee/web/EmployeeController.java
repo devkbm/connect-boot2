@@ -48,9 +48,11 @@ public class EmployeeController {
 				
 		Employee emp = employeeService.getEmployee(id);  									
 		
+		EmployeeDTO.ResponseEmployee dto = EmployeeDTO.ResponseEmployee.convert(emp); 
+		
 		return WebControllerUtil
-				.getResponse(emp											
-							,String.format("%d 건 조회되었습니다.", emp == null ? 0 : 1)
+				.getResponse(dto											
+							,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 							,HttpStatus.OK);
 	}
 	

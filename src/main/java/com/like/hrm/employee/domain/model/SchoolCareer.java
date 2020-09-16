@@ -55,7 +55,7 @@ public class SchoolCareer extends AuditEntity implements Serializable {
 	 * 학력유형
 	 */
 	@Column(name="EDU_TYPE")
-	private String eduType;
+	private String schoolCareerType;
 	
 	/**
 	 * 학교코드
@@ -100,19 +100,19 @@ public class SchoolCareer extends AuditEntity implements Serializable {
 	private Employee employee;
 	
 	public SchoolCareer(Employee employee
-				    ,String eduType
+				    ,String schoolCareerType
 				    ,String schoolCode
 				    ,String comment) {
 		this.employee = employee;
-		this.eduType = eduType;
+		this.schoolCareerType = schoolCareerType;
 		this.schoolCode = schoolCode;
 		this.comment = comment;
 	}
 	
 	public void modifyEntity(String eduType
-		    				,String schoolCode
+		    				,String schoolCareerType
 							,String comment) {
-		this.eduType = eduType;
+		this.schoolCareerType = schoolCareerType;
 		this.schoolCode = schoolCode;
 		this.comment = comment;		
 	}

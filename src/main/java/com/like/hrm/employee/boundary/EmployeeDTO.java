@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -16,10 +17,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.like.hrm.employee.domain.model.SchoolCareer;
+import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.duty.boundary.DutyApplicationDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.Family;
+import com.like.hrm.employee.domain.model.JobChangeHistory;
 import com.like.hrm.employee.domain.model.License;
 import com.like.hrm.employee.domain.model.QEmployee;
 import com.querydsl.core.BooleanBuilder;
@@ -172,7 +175,26 @@ public class EmployeeDTO {
 		
 		private Set<NewDept> deptHistory;
 		
+		private Set<NewJob> jobHistory;
+		
+		private Set<NewStatus> statusHistory;
+		
 		public static ResponseEmployee convert(Employee entity) {
+			Set<NewDept> deptHistory = entity.getDeptHistory().getDeptChangeHistory()
+											 .stream()
+											 	.map(e -> NewDept.convert(e))
+											 	.collect(Collectors.toSet());
+			
+			Set<NewJob> jobHistory = entity.getJobHistory().getJobChangeHistory()
+										   .stream()
+										   	.map(e -> NewJob.convert(e))
+										   	.collect(Collectors.toSet());
+				
+			Set<NewStatus> statusHistory = entity.getStatusHistory().getStatusChangeHistory()
+												 .stream()
+													 .map(e -> NewStatus.convert(e))
+													 .collect(Collectors.toSet());												 												 	
+			
 			return ResponseEmployee.builder()
 								   .id(entity.getId())
 								   .name(entity.getName())
@@ -181,7 +203,10 @@ public class EmployeeDTO {
 								   .residentRegistrationNumber(entity.getResidentRegistrationNumber())
 								   .gender(entity.getGender())
 								   .birthday(entity.getBirthday())
-								   .imagePath(entity.getImagePath())								   
+								   .imagePath(entity.getImagePath())
+								   .deptHistory(deptHistory)
+								   .jobHistory(jobHistory)
+								   .statusHistory(statusHistory)
 								   .build();
 		}
 	}
@@ -276,6 +301,16 @@ public class EmployeeDTO {
 		@NotEmpty
 		private LocalDate toDate;
 		
+		public static NewJob convert(JobChangeHistory entity) {
+			return NewJob.builder()
+						 .employeeId(entity.getEmployee().getId())
+						 .jobType(entity.getJobType())
+						 .jobCode(entity.getJobCode())
+						 .fromDate(entity.getPeriod().getFrom())
+						 .toDate(entity.getPeriod().getTo())
+						 .build();			
+		}
+		
 	}
 	
 	
@@ -302,6 +337,15 @@ public class EmployeeDTO {
 		@NotEmpty
 		private LocalDate toDate;
 		
+		public static NewStatus convert(StatusChangeHistory entity) {
+			return NewStatus.builder()
+							.employeeId(entity.getEmployee().getId())
+							.appointmentCode(entity.getAppointmentCode())
+							.statusCode(entity.getStatusCode())
+							.fromDate(entity.getPeriod().getFrom())
+							.toDate(entity.getPeriod().getTo())
+							.build();
+		}
 	}
 	
 	@Data
@@ -319,7 +363,7 @@ public class EmployeeDTO {
 		private Long educationId;
 		
 		@NotEmpty
-		private String eduType;
+		private String schoolCareerType;
 				
 		@NotEmpty
 		private String schoolCode;
@@ -329,16 +373,26 @@ public class EmployeeDTO {
 		
 		public SchoolCareer newEntity(Employee employee) {
 			return new SchoolCareer(employee
-								,this.eduType
+								,this.schoolCareerType
 								,this.schoolCode
 								,this.comment);
 		}
 		
 		public void modifyEnity(SchoolCareer entity) {
-			entity.modifyEntity(eduType
+			entity.modifyEntity(schoolCareerType
 							   ,schoolCode
 							   ,comment);	
 		}	
+		
+		public static SaveEducation convert(SchoolCareer entity) {
+			return SaveEducation.builder()
+								.employeeId(entity.getEmployee().getId())
+								.educationId(entity.getEducationId())
+								.schoolCareerType(entity.getSchoolCareerType())
+								.schoolCode(entity.getSchoolCode())
+								.comment(entity.getComment())
+								.build();
+		}
 	}
 	
 	@Data
