@@ -70,21 +70,25 @@ public class SchoolCareer extends AuditEntity implements Serializable {
 	/**
 	 * 전공학과명
 	 */
+	@Column(name="MAJOR_NAME")
 	private String majorName;
 	
 	/**
 	 * 복수전공학과명
 	 */
+	@Column(name="PLURAL_MAJOR_NAME")
 	private String pluralMajorName;
 	
 	/**
 	 * 소재지
 	 */	
+	@Column(name="LOCATION")
 	private String location;
 	
 	/**
 	 * 수업연한
 	 */
+	@Column(name="LESSON_YEAR")
 	private Integer lessonYear;
 	
 	/**
@@ -109,8 +113,8 @@ public class SchoolCareer extends AuditEntity implements Serializable {
 		this.comment = comment;
 	}
 	
-	public void modifyEntity(String eduType
-		    				,String schoolCareerType
+	public void modifyEntity(String schoolCareerType
+		    				,String schoolCode
 							,String comment) {
 		this.schoolCareerType = schoolCareerType;
 		this.schoolCode = schoolCode;
