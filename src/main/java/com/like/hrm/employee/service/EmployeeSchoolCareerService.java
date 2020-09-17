@@ -1,5 +1,6 @@
 package com.like.hrm.employee.service;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.employee.boundary.EmployeeDTO;
@@ -9,6 +10,7 @@ import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
 
 @Transactional
+@Service
 public class EmployeeSchoolCareerService {
 
 	private EmployeeRepository employeeRepository;

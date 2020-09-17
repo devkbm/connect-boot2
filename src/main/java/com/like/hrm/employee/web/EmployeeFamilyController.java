@@ -20,7 +20,7 @@ import com.like.hrm.employee.service.EmployeeFamilyService;
 public class EmployeeFamilyController {
 
 	private EmployeeFamilyService service;
-	
+		
 	public EmployeeFamilyController(EmployeeFamilyService service) {
 		this.service = service;	
 	}

@@ -151,6 +151,26 @@ create table if not exists HRMEMPFAMILY (
 	constraint fk_hrmempfamily1 foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
 ) COMMENT = '직원가족정보';
 
+create table if not exists HRMEMPSCHOOLCAREER (
+	SYS_DT				DATETIME		null		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(50)		null		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		null		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(50)		null		COMMENT '최종수정유저',
+	ID					INT				not null	COMMENT '직원학력ID'	AUTO_INCREMENT,
+	EMP_ID				VARCHAR(10) 	not null  	COMMENT '사원ID',
+	SCHOOL_CAREER_TYPE	VARCHAR(2)		not null	COMMENT '학력유형',	
+	SCHOOL_CODE			VARCHAR(5)		not null	COMMENT '학교코드',
+	FROM_DT				DATE			null 		COMMENT '시작일자',
+	TO_DT				DATE			null 		COMMENT '종료일자',
+	MAJOR_NAME			VARCHAR(500)	null 		COMMENT '전공학과명',
+	PLURAL_MAJOR_NAME	VARCHAR(500)	null 		COMMENT '복수전공학과명',
+	LOCATION			VARCHAR(500)	null 		COMMENT '소재지',
+	LESSON_YEAR			INT				null 		COMMENT '복수전공학과명',
+	CMT					VARCHAR(2000) 	null 		COMMENT '비고',
+	constraint pk_hrmempschoolcareer primary key(ID),
+	constraint fk_hrmempschoolcareer foreign key(EMP_ID) references HRMEMPLOYEE(EMP_ID)  
+) COMMENT = '직원학력정보';
+
 create table if not exists HRMEMPEDUCATION (
 	SYS_DT			DATETIME		null		COMMENT '최초등록일시',
 	SYS_USER 		VARCHAR(50)		null		COMMENT '최초등록유저',

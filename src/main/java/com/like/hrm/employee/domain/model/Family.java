@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "HRMEMPLICENSE")
+@Table(name = "HRMEMPFAMILY")
 @EntityListeners(AuditingEntityListener.class)
 public class Family extends AuditEntity implements Serializable {
 			
@@ -64,19 +64,19 @@ public class Family extends AuditEntity implements Serializable {
 	/**
 	 * 직업
 	 */
-	@Column(name="ID", nullable = false)
+	@Column(name="OCCUPATION_NAME", nullable = true)
 	private String occupation;
 	
 	/**
 	 * 학력구분
 	 */
-	@Column(name="ID", nullable = false)
+	@Column(name="SCHOOL_CAREER_TYPE", nullable = true)
 	private String schoolCareerType;
 	
 	/**
 	 * 비고
 	 */
-	@Column(name="CMT", nullable = false)
+	@Column(name="CMT", nullable = true)
 	private String comment;
 	
 	

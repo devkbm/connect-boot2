@@ -36,11 +36,11 @@ import lombok.NoArgsConstructor;
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"employee"})
-@EqualsAndHashCode(callSuper = false, of = {"educationId"})
+@EqualsAndHashCode(callSuper = false, of = {"id"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "HRMEMPEDUCATION")
+@Table(name = "HRMEMPSCHOOLCAREER")
 @EntityListeners(AuditingEntityListener.class)
 public class SchoolCareer extends AuditEntity implements Serializable {
 	
@@ -49,12 +49,12 @@ public class SchoolCareer extends AuditEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
-	private Long educationId;
+	private Long id;
 		
 	/**
 	 * 학력유형
 	 */
-	@Column(name="EDU_TYPE")
+	@Column(name="SCHOOL_CAREER_TYPE")
 	private String schoolCareerType;
 	
 	/**

@@ -271,6 +271,7 @@ public class EmployeeDTO {
 						  .id(entity.getId())
 						  .deptType(entity.getDeptType())
 						  .deptCode(entity.getDeptCode())
+						  .deptName(entity.getDeptName())
 						  .fromDate(entity.getPeriod().getFrom())
 						  .toDate(entity.getPeriod().getTo())
 						  .build();
@@ -387,7 +388,7 @@ public class EmployeeDTO {
 		public static SaveEducation convert(SchoolCareer entity) {
 			return SaveEducation.builder()
 								.employeeId(entity.getEmployee().getId())
-								.educationId(entity.getEducationId())
+								.educationId(entity.getId())
 								.schoolCareerType(entity.getSchoolCareerType())
 								.schoolCode(entity.getSchoolCode())
 								.comment(entity.getComment())

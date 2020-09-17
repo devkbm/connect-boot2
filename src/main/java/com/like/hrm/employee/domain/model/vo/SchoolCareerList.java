@@ -24,7 +24,7 @@ public class SchoolCareerList {
 	
 	public SchoolCareer get(Long id) {
 		return this.schoolCareerList.stream()
-								 .filter(e -> e.getEducationId().equals(id))
+								 .filter(e -> e.getId().equals(id))
 								 .findFirst()
 								 .orElse(null);
 	}
@@ -38,6 +38,6 @@ public class SchoolCareerList {
 	}
 	
 	public void remove(Long id) {
-		this.schoolCareerList.removeIf(e -> e.getEducationId().equals(id));
+		this.schoolCareerList.removeIf(e -> e.getId().equals(id));
 	}
 }
