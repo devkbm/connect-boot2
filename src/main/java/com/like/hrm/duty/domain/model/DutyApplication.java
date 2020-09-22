@@ -1,15 +1,19 @@
 package com.like.hrm.duty.domain.model;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -50,6 +54,9 @@ public class DutyApplication extends AuditEntity {
 		@AttributeOverride(name = "to", column = @Column(name = "DUTY_END_DT"))
 	})
 	Period period;
+		
+	@OneToMany(mappedBy = "dutyApplication", orphanRemoval = true, cascade = CascadeType.ALL)
+	List<DutyApplicationDate> selectedDate;
 	
 	@Embedded
 	FamilyEvent familyEvent;
@@ -57,24 +64,31 @@ public class DutyApplication extends AuditEntity {
 	@Transient
 	private List<DutyApplicationAttachedFile> fileList;
 	
+	@Builder
 	public DutyApplication(String employeeId
 						  ,String dutyCode
 						  ,String dutyReason
 						  ,Period period
-						  ,FamilyEvent familyEvent) {
+						  ,FamilyEvent familyEvent
+						  ,List<LocalDate> selectedDate) {
 		this.employeeId = employeeId;
 		this.dutyCode = dutyCode;
 		this.dutyReason = dutyReason;
 		this.period = period;
 		this.familyEvent = familyEvent;
+		this.selectedDate = selectedDate.stream()
+										.map(e -> new DutyApplicationDate(this,e))
+										.collect(Collectors.toList());
 	}	
 	
 	public void modifyEntity(String dutyCode
 							,String dutyReason
-							,Period period) {
+							,Period period
+							,List<DutyApplicationDate> selectedDate) {
 		this.dutyCode = dutyCode;
 		this.dutyReason = dutyReason;
 		this.period = period;
+		this.selectedDate = selectedDate;
 	}
 	
 	public void addFile(DutyApplicationAttachedFile file) {

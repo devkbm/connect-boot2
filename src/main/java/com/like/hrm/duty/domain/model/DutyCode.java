@@ -45,6 +45,8 @@ public class DutyCode extends AuditEntity {
 	@Column(name = "CMT")
 	private String comment;
 	
+	private DutyCodeRule dutyCodeRule;
+	
 	public void modifyEntity(String dutyName
 							,Boolean enabled
 							,String dutyGroup

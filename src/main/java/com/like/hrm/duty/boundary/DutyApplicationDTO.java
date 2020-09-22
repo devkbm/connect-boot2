@@ -1,13 +1,17 @@
 package com.like.hrm.duty.boundary;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.vo.Period;
 import com.like.hrm.duty.domain.model.DutyApplication;
+import com.like.hrm.duty.domain.model.DutyApplicationDate;
 import com.like.hrm.duty.domain.model.QDutyApplication;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -68,20 +72,25 @@ public class DutyApplicationDTO {
 				
 		private LocalDateTime dutyEndDateTime;
 		
-		public DutyApplication newEntity() {
+		private List<LocalDate> selectedDate;
+		
+		public DutyApplication newEntity() {							
+			
 			return DutyApplication.builder()
 								  .dutyId(dutyId)
 								  .employeeId(employeeId)
 								  .dutyCode(dutyCode)
 								  .dutyReason(dutyReason)
 								  .period(new Period(dutyStartDateTime, dutyEndDateTime))
+								  .selectedDate(selectedDate)
 								  .build();
 		}
 		
 		public void modifyEntity(DutyApplication entity) {
 			entity.modifyEntity(dutyCode
 							   ,dutyReason
-							   ,new Period(dutyStartDateTime, dutyEndDateTime));		
+							   ,new Period(dutyStartDateTime, dutyEndDateTime)
+							   ,null);		
 		}
 		
 		public static SaveDutyApplication convert(DutyApplication entity) {
