@@ -3,9 +3,12 @@ package com.like.hrm.duty.domain.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.model.DutyCode;
-import com.like.hrm.duty.domain.model.DutyCodeLimitRule;
+import com.like.hrm.duty.domain.model.DutyCodeRule;
+import com.like.hrm.duty.domain.model.DutyApplicationInputLimitRule;
+import com.like.hrm.duty.domain.repository.DutyApplicationInputLimitRuleRepository;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 
@@ -15,32 +18,38 @@ public class DutyApplicationValidatorService {
 	
 	private DutyCodeRepository dutyCodeRepository;
 	
+	private DutyApplicationInputLimitRuleRepository dutyApplicationInputLimitRuleRepository; 
+	
 	public DutyApplicationValidatorService(DutyApplicationRepository dutyApplicationRepository
-										  ,DutyCodeRepository dutyCodeRepository) {
+										  ,DutyCodeRepository dutyCodeRepository
+										  ,DutyApplicationInputLimitRuleRepository dutyApplicationInputLimitRuleRepository) {
 		this.dutyApplicationRepository = dutyApplicationRepository;
 		this.dutyCodeRepository = dutyCodeRepository;
+		this.dutyApplicationInputLimitRuleRepository = dutyApplicationInputLimitRuleRepository;
 	}
 	
 	public boolean valid(DutyApplication application) {
-		boolean result = false;
+		boolean valid = false;
 		String employeeId = application.getEmployeeId();		
 		DutyCode dutyCode = dutyCodeRepository.getDutyCode(application.getDutyCode());
-		DutyCodeLimitRule dutyCodeRule = dutyCode.getDutyCodeRule();		
+		List<DutyCodeRule> ruleList = dutyCode.getDutyCodeRule();
+		DutyApplicationInputLimitRule limit = null;
 		
-		List<DutyCode> sameDutyRuleList = null;
-		
-		if (dutyCode.getDutyCodeRule() != null) {
-			sameDutyRuleList = dutyCodeRepository.getDutyCodeList(dutyCodeRule);
+		for (DutyCodeRule rule : ruleList) {
+			limit = dutyApplicationInputLimitRuleRepository.getDutyApplicationInputLimitRule(rule.getDutyApplicationInputLimitId());
+			
+			List<DutyCode> dutyCodeList = getDutyCodeBySameLimitRule(rule.getDutyApplicationInputLimitId());
 			
 			long cnt = this.dutyApplicationRepository.getDutyApplicationCount(employeeId
-																			 ,sameDutyRuleList
-																			 ,dutyCodeRule.getFromDate()
-																			 ,dutyCodeRule.getToDate());
-		} else {
-			result = true;
+																			 ,dutyCodeList
+																			 ,limit.getFrom()
+																			 ,limit.getTo());
 		}
+			
+		return valid;
+	}
 	
-		
-		return result;
+	private List<DutyCode> getDutyCodeBySameLimitRule(Long id) {
+		return dutyCodeRepository.getDutyCodeList(id);
 	}
 }

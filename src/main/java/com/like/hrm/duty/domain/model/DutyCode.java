@@ -1,8 +1,13 @@
 package com.like.hrm.duty.domain.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.like.common.domain.AuditEntity;
@@ -42,10 +47,11 @@ public class DutyCode extends AuditEntity {
 	@Column(name="FAMILY_EVENT_AMT", nullable = true)
 	private Long familyEventAmt;		
 	
-	@Column(name = "CMT")
+	@Column(name = "CMT", nullable = true)
 	private String comment;
 	
-	private DutyCodeLimitRule dutyCodeRule;
+	@OneToMany(mappedBy = "article", cascade=CascadeType.ALL, orphanRemoval = true)
+	private List<DutyCodeRule> dutyCodeRule;
 	
 	public void modifyEntity(String dutyName
 							,Boolean enabled
@@ -59,5 +65,11 @@ public class DutyCode extends AuditEntity {
 		this.isFamilyEvent = isFamilyEvent;
 		this.familyEventAmt = familyEventAmt;
 		this.comment = comment;
+	}
+	
+	public boolean containDutyApplicationInputLimit(Long id) {
+		return this.dutyCodeRule.stream()
+								.filter(e -> e.getDutyApplicationInputLimitId().equals(id))
+								.count() > 1 ? true : false;
 	}
 }
