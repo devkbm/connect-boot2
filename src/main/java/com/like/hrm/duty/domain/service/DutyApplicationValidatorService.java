@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.model.DutyCode;
-import com.like.hrm.duty.domain.model.DutyCodeRule;
+import com.like.hrm.duty.domain.model.DutyCodeLimitRule;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 
@@ -25,7 +25,7 @@ public class DutyApplicationValidatorService {
 		boolean result = false;
 		String employeeId = application.getEmployeeId();		
 		DutyCode dutyCode = dutyCodeRepository.getDutyCode(application.getDutyCode());
-		DutyCodeRule dutyCodeRule = dutyCode.getDutyCodeRule();		
+		DutyCodeLimitRule dutyCodeRule = dutyCode.getDutyCodeRule();		
 		
 		List<DutyCode> sameDutyRuleList = null;
 		

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyCode;
-import com.like.hrm.duty.domain.model.DutyCodeRule;
+import com.like.hrm.duty.domain.model.DutyCodeLimitRule;
 
 public interface DutyCodeRepository {
 
@@ -18,11 +18,11 @@ public interface DutyCodeRepository {
 	
 	List<DutyCode> getDutyCodeList(DutyCodeDTO.SearchDutyCode condition);	
 	
-	DutyCodeRule getDutyCodeRule(Long id);
+	DutyCodeLimitRule getDutyCodeRule(Long id);
 	
-	void ssaveDutyCodeRule(DutyCodeRule entity);
+	void ssaveDutyCodeRule(DutyCodeLimitRule entity);
 	
-	void deleteDutyCodeRule(DutyCodeRule entity);
+	void deleteDutyCodeRule(DutyCodeLimitRule entity);
 	
-	List<DutyCode> getDutyCodeList(DutyCodeRule dutyCodeRule);
+	List<DutyCode> getDutyCodeList(DutyCodeLimitRule dutyCodeRule);
 }
