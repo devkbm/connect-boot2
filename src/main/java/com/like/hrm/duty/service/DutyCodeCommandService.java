@@ -28,12 +28,11 @@ public class DutyCodeCommandService {
 	}
 	
 	public void saveDutyCode(DutyCodeDTO.SaveDutyCode dto) {
-		DutyCode entity = null;
+		DutyCode entity = dutyCodeRepository.getDutyCode(dto.getDutyCode());
 		
-		if (dto.getDutyCode() == null) {
+		if (entity == null) {
 			entity = dto.newEntity();
-		} else {
-			entity = dutyCodeRepository.getDutyCode(dto.getDutyCode());
+		} else {			
 			dto.modifyEntity(entity);
 		}
 				

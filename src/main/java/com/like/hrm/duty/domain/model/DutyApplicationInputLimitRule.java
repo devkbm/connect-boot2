@@ -31,14 +31,14 @@ public class DutyApplicationInputLimitRule extends AuditEntity {
 	@Column(name="FROM_YEAR_TYPE", nullable = false)
 	private String fromYear;
 	
-	@Column(name="FROM_DT", nullable = false)
-	private LocalDate fromDate;
+	@Column(name="FROM_MMDD", nullable = false)
+	private String fromDate;
 	
 	@Column(name="TO_YEAR_TYPE", nullable = false)
 	private String toYear;
 	
-	@Column(name="TO_DT", nullable = false)
-	private LocalDate toDate;
+	@Column(name="TO_MMDD", nullable = false)
+	private String toDate;
 	
 	@Column(name="CNT", nullable = false)
 	private Long count;
@@ -51,9 +51,9 @@ public class DutyApplicationInputLimitRule extends AuditEntity {
 	
 	@Builder
 	public DutyApplicationInputLimitRule(String fromYear
-										,LocalDate fromDate
+										,String fromDate
 										,String toYear
-										,LocalDate toDate
+										,String toDate
 										,Long count
 										,String invalidMessage
 										,String comment) {	
@@ -67,18 +67,22 @@ public class DutyApplicationInputLimitRule extends AuditEntity {
 	}
 	
 	public LocalDate getFrom() {
+		int month = Integer.parseInt(fromDate.substring(0, 2));
+		int day = Integer.parseInt(fromDate.substring(2, 2));
+		
 		if (this.fromYear.equals("PREV")) {
-			return LocalDate.of(LocalDate.now().getYear() - 1, fromDate.getMonth(), fromDate.getDayOfMonth());
+			return LocalDate.of(LocalDate.now().getYear() - 1, month, day);
 		} 
 		
-		return LocalDate.of(LocalDate.now().getYear(), fromDate.getMonth(), fromDate.getDayOfMonth());				
+		return LocalDate.of(LocalDate.now().getYear(), month, day);			
 	}
 	
 	public LocalDate getTo() {
-		if (this.toYear.equals("PREV")) {
+		/*if (this.toYear.equals("PREV")) {
 			return LocalDate.of(LocalDate.now().getYear() - 1, toDate.getMonth(), toDate.getDayOfMonth());
 		} 
 		
-		return LocalDate.of(LocalDate.now().getYear(), toDate.getMonth(), toDate.getDayOfMonth());
+		return LocalDate.of(LocalDate.now().getYear(), toDate.getMonth(), toDate.getDayOfMonth());*/
+		return null;
 	}
 }

@@ -114,24 +114,24 @@ public class DutyApplicationController {
 											,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/hrm/dutyapplication"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationDTO.SaveDutyApplication dto, BindingResult result) {				
+	@RequestMapping(value={"/hrm/dutyapplication/limit"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationInputLimitRule dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());
 		} 
 																	
-		dutyApplicationCommandService.saveDutyApplication(dto);						
+		dutyApplicationInputLimitRuleService.saveDutyApplicationInputLimitRule(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/hrm/dutyapplication/{id}")
+	@DeleteMapping("/hrm/dutyapplication/limit/{id}")
 	public ResponseEntity<?> deleteDutyApplicationLimit(@PathVariable(value="id") Long id) {				
 																		
-		dutyApplicationCommandService.deleteDutyApplication(id);						
+		//dutyApplicationInputLimitRuleService.deleteDutyApplicationInputLimitRule(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

@@ -47,7 +47,7 @@ public class DutyCode extends AuditEntity {
 	@Column(name = "CMT", nullable = true)
 	private String comment;
 	
-	@OneToMany(mappedBy = "article", cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "dutyCode", cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<DutyCodeRule> dutyCodeRule;
 	
 	@Builder
