@@ -29,10 +29,9 @@ public class DutyApplicationValidatorService {
 	}
 	
 	public boolean valid(DutyApplication application) {
-		boolean valid = false;
-		String employeeId = application.getEmployeeId();		
-		DutyCode dutyCode = dutyCodeRepository.getDutyCode(application.getDutyCode());
-		List<DutyCodeRule> ruleList = dutyCode.getDutyCodeRule();
+		boolean valid = true;
+		String employeeId = application.getEmployeeId();				
+		List<DutyCodeRule> ruleList = getDutyCodeRuleList(application.getDutyCode());
 		DutyApplicationInputLimitRule limit = null;
 		
 		for (DutyCodeRule rule : ruleList) {
@@ -44,6 +43,9 @@ public class DutyApplicationValidatorService {
 																			 ,dutyCodeList
 																			 ,limit.getFrom()
 																			 ,limit.getTo());
+			
+			if (cnt > limit.getCount())
+				valid = false;				
 		}
 			
 		return valid;
@@ -51,5 +53,9 @@ public class DutyApplicationValidatorService {
 	
 	private List<DutyCode> getDutyCodeBySameLimitRule(Long id) {
 		return dutyCodeRepository.getDutyCodeList(id);
+	}
+	
+	private List<DutyCodeRule> getDutyCodeRuleList(String dutyCode) {
+		return dutyCodeRepository.getDutyCode(dutyCode).getDutyCodeRule();
 	}
 }

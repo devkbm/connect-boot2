@@ -90,7 +90,7 @@ public class DutyApplicationDTO {
 			entity.modifyEntity(dutyCode
 							   ,dutyReason
 							   ,new Period(dutyStartDateTime, dutyEndDateTime)
-							   ,null);		
+							   ,selectedDate);		
 		}
 		
 		public static SaveDutyApplication convert(DutyApplication entity) {

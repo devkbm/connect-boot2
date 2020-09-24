@@ -1,6 +1,8 @@
 package com.like.hrm.duty.boundary;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
@@ -77,6 +79,8 @@ public class DutyCodeDTO {
 		
 		private String comment;
 		
+		private List<Long> dutyApplicationInputLimitIdList;
+		
 		public DutyCode newEntity() {
 			return DutyCode.builder()
 						   .dutyCode(dutyCode)
@@ -86,6 +90,7 @@ public class DutyCodeDTO {
 						   .isFamilyEvent(isFamilyEvent)
 						   .familyEventAmt(familyEventAmt)
 						   .comment(comment)
+						   .dutyApplicationInputLimitIdList(dutyApplicationInputLimitIdList)
 						   .build();
 		}
 		
@@ -107,6 +112,7 @@ public class DutyCodeDTO {
 							   .isFamilyEvent(entity.getIsFamilyEvent())
 							   .familyEventAmt(entity.getFamilyEventAmt())
 							   .comment(entity.getComment())
+							   .dutyApplicationInputLimitIdList(entity.getDutyCodeRule().stream().map(e -> e.getDutyApplicationInputLimitId()).collect(Collectors.toList()))
 							   .build();
 		}
 	}

@@ -1,8 +1,8 @@
 package com.like.hrm.duty.domain.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -27,6 +27,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Aggregation Root
+ *  
+ * @author CB457 
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -76,23 +81,34 @@ public class DutyApplication extends AuditEntity {
 		this.dutyReason = dutyReason;
 		this.period = period;
 		this.familyEvent = familyEvent;
-		this.selectedDate = selectedDate.stream()
-										.map(e -> new DutyApplicationDate(this,e))
-										.collect(Collectors.toList());
+		this.selectedDate = addApplicationDate(selectedDate);
 	}	
 	
 	public void modifyEntity(String dutyCode
 							,String dutyReason
 							,Period period
-							,List<DutyApplicationDate> selectedDate) {
+							,List<LocalDate> selectedDate) {
 		this.dutyCode = dutyCode;
 		this.dutyReason = dutyReason;
 		this.period = period;
-		this.selectedDate = selectedDate;
+		
+		this.selectedDate.clear();
+		this.selectedDate = addApplicationDate(selectedDate);
 	}
 	
 	public void addFile(DutyApplicationAttachedFile file) {
 		this.fileList.add(file);
+	}
+	
+	private List<DutyApplicationDate> addApplicationDate(List<LocalDate> dateList) {
+		if (this.selectedDate == null)
+			this.selectedDate = new ArrayList<>();
+		
+		for (LocalDate date : dateList) {
+			this.selectedDate.add(new DutyApplicationDate(this, date));
+		}		
+		
+		return this.selectedDate;
 	}
 	
 }

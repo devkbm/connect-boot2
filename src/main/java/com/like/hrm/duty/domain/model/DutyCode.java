@@ -1,11 +1,11 @@
 package com.like.hrm.duty.domain.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -13,13 +13,10 @@ import javax.persistence.Table;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -53,6 +50,27 @@ public class DutyCode extends AuditEntity {
 	@OneToMany(mappedBy = "article", cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<DutyCodeRule> dutyCodeRule;
 	
+	@Builder
+	public DutyCode(String dutyCode
+				   ,String dutyName
+				   ,Boolean enabled
+				   ,String dutyGroup
+				   ,Boolean isFamilyEvent
+				   ,Long familyEventAmt
+				   ,String comment
+				   ,List<Long> dutyApplicationInputLimitIdList) {		
+		this.dutyCode = dutyCode;
+		this.dutyName = dutyName;
+		this.enabled = enabled;
+		this.dutyGroup = dutyGroup;
+		this.isFamilyEvent = isFamilyEvent;
+		this.familyEventAmt = familyEventAmt;
+		this.comment = comment;
+		this.dutyCodeRule = dutyApplicationInputLimitIdList.stream()
+														   .map(e-> new DutyCodeRule(this, e))
+														   .collect(Collectors.toList());
+	}
+	
 	public void modifyEntity(String dutyName
 							,Boolean enabled
 							,String dutyGroup
@@ -72,4 +90,13 @@ public class DutyCode extends AuditEntity {
 								.filter(e -> e.getDutyApplicationInputLimitId().equals(id))
 								.count() > 1 ? true : false;
 	}
+	
+	public void addDutyCodeRule(Long dutyApplicationInputLimitId) {
+		this.dutyCodeRule.add(new DutyCodeRule(this, dutyApplicationInputLimitId));
+	}
+	
+	public void removeDutyCodeRule(Long dutyApplicationInputLimitId) {
+		this.dutyCodeRule.removeIf(e -> e.getId().equals(dutyApplicationInputLimitId));
+	}
+	
 }

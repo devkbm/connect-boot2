@@ -279,3 +279,45 @@ create table HRMDUTYAPPLICATION (
 	constraint pk_hrmdutyapplication primary key(DUTY_ID),
 	constraint fk_hrmdutyapplication1 foreign key(DUTY_CODE) references HRMDUTYCODE(DUTY_CODE)
 ) COMMENT = '근태신청정보';
+
+create table HRMDUTYAPPLICATIONDATE (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(50)		NULL		COMMENT '최종수정유저',	   
+    ID						INT				NOT NULL	COMMENT 'ID'	AUTO_INCREMENT,
+    FK_DUTY_ID				INT				NOT NULL	COMMENT '근태신청ID',	
+	DUTY_DT					DATETIME		NOT NULL 	COMMENT '근태일시',	
+	constraint pk_hrmdutyapplicationdate primary key(ID),
+	constraint fk_hrmdutyapplicationdate foreign key(FK_DUTY_ID) references HRMDUTYAPPLICATION(DUTY_ID)
+) COMMENT = '근태신청일시정보';
+
+create table HRMDUTYAPPLICATIONLIMIT (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(50)		NULL		COMMENT '최종수정유저',	   
+    ID						INT				NOT NULL	COMMENT 'ID'	AUTO_INCREMENT,
+    FROM_YEAR_TYPE			VARCHAR(10)		NOT NULL	COMMENT '시작년도구분',
+    FROM_MMDD				VARCHAR(4)		NOT NULL	COMMENT '시작월일',
+    TO_YEAR_TYPE			VARCHAR(10)		NOT NULL	COMMENT '종료년도구분',
+    TO_MMDD					VARCHAR(4)		NOT NULL	COMMENT '종료월일',
+    CNT						INT				NOT NULL	COMMENT '제한갯수',
+    INVALID_MSG				VARCHAR(2000)	NULL		COMMENT '초과시메시지',
+	CMT						VARCHAR(2000)	NULL		COMMENT '비고',	
+	constraint pk_hrmdutyapplicationlimit primary key(ID),
+	constraint fk_hrmdutyapplicationlimit foreign key(FK_DUTY_ID) references HRMDUTYAPPLICATION(DUTY_ID)
+) COMMENT = '근태신청제한정보';
+
+create table HRMDUTYCODERULE (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',	   
+    RULE_ID					INT				NOT NULL	COMMENT 'ID'	AUTO_INCREMENT,
+    DUTY_CODE				VARCHAR(20)		NOT NULL	COMMENT '근무코드',	
+	FK_LIMIT_ID				INT				NOT NULL	COMMENT 'FK_제한정보ID',
+	constraint pk_hrmdutycoderule primary key(RULE_ID),
+	constraint fk_hrmdutycoderule1 foreign key(DUTY_CODE) references HRMDUTYCODE(DUTY_CODE),
+	constraint fk_hrmdutycoderule2 foreign key(FK_LIMIT_ID) references HRMDUTYAPPLICATIONLIMIT(ID)
+) COMMENT = '근무코드정책정보';

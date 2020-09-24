@@ -18,7 +18,9 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.boundary.DutyApplicationDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
+import com.like.hrm.duty.domain.model.DutyApplicationInputLimitRule;
 import com.like.hrm.duty.service.DutyApplicationCommandService;
+import com.like.hrm.duty.service.DutyApplicationInputLimitRuleService;
 import com.like.hrm.duty.service.DutyApplicationQueryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +33,14 @@ public class DutyApplicationController {
 	
 	private DutyApplicationQueryService dutyApplicationQueryService;
 	
+	private DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService;
+	
 	public DutyApplicationController(DutyApplicationCommandService dutyApplicationCommandService
-									,DutyApplicationQueryService dutyApplicationQueryService) {
+									,DutyApplicationQueryService dutyApplicationQueryService
+									,DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService) {
 		this.dutyApplicationCommandService = dutyApplicationCommandService;
 		this.dutyApplicationQueryService = dutyApplicationQueryService;
+		this.dutyApplicationInputLimitRuleService = dutyApplicationInputLimitRuleService;
 	}
 	
 	@GetMapping("/hrm/dutyapplication")
@@ -78,7 +84,7 @@ public class DutyApplicationController {
 	}
 	
 	@DeleteMapping("/hrm/dutyapplication/{id}")
-	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="id") Long id) {				
+	public ResponseEntity<?> deleteDutyApplication(@PathVariable(value="id") Long id) {				
 																		
 		dutyApplicationCommandService.deleteDutyApplication(id);						
 								 					
@@ -86,4 +92,50 @@ public class DutyApplicationController {
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
+	
+	@GetMapping("/hrm/dutyapplication/limit")
+	public ResponseEntity<?> getDutyApplicationLimitList() {
+		
+		List<DutyApplicationInputLimitRule> list = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule();					
+					
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/hrm/dutyapplication/limit/{id}")
+	public ResponseEntity<?> getDutyApplicationLimit(@PathVariable(value="id") Long id) {
+		
+		DutyApplicationInputLimitRule dto = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule(id);					
+					
+		return WebControllerUtil.getResponse(dto											
+											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
+											,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value={"/hrm/dutyapplication"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationDTO.SaveDutyApplication dto, BindingResult result) {				
+		
+		if ( result.hasErrors()) {			
+			throw new ControllerException(result.toString());
+		} 
+																	
+		dutyApplicationCommandService.saveDutyApplication(dto);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/hrm/dutyapplication/{id}")
+	public ResponseEntity<?> deleteDutyApplicationLimit(@PathVariable(value="id") Long id) {				
+																		
+		dutyApplicationCommandService.deleteDutyApplication(id);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+		
 }
