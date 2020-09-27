@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
@@ -102,6 +103,7 @@ public class DutyApplicationDTO {
 									  .dutyReason(entity.getDutyReason())
 									  .dutyStartDateTime(entity.getPeriod().getFrom())
 									  .dutyEndDateTime(entity.getPeriod().getTo())
+									  .selectedDate(entity.getSelectedDate().stream().map(e -> e.getDate()).collect(Collectors.toList()))
 									  .build();
 		}
 	}
