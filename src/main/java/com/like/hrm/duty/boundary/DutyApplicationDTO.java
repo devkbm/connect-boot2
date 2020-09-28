@@ -3,7 +3,6 @@ package com.like.hrm.duty.boundary;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,6 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.vo.Period;
 import com.like.hrm.duty.domain.model.DutyApplication;
-import com.like.hrm.duty.domain.model.DutyApplicationDate;
 import com.like.hrm.duty.domain.model.QDutyApplication;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;

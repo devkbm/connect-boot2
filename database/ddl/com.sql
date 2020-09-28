@@ -163,3 +163,14 @@ create table if not exists COM.COMLOGINHISTORY (
 	SUCCESS_YN			BOOLEAN			NOT NULL	COMMENT '성공여부',
 	constraint pk_comloginhistory primary key(ID) 	
 ) COMMENT = '로그인이력';
+
+create table if not exists COM.COMHOLIDAY (
+	SYS_DT				DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 			VARCHAR(50)		NULL		COMMENT '최초등록유저',
+	UPD_DT				DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER			VARCHAR(50)		NULL		COMMENT '최종수정유저',
+	HOLIDAY_DT			DATETIME		NOT NULL	COMMENT '휴일',
+   	HOLIDAY_NM			VARCHAR(255) 	NOT NULL 	COMMENT '휴일명',    
+	CMT					VARCHAR(2000) 	NULL 		COMMENT '비고',
+	constraint pk_comholiday primary key(HOLIDAY_DT)	
+) COMMENT = '공휴일관리';

@@ -22,6 +22,10 @@ public class DateInfo {
 		return this.date;
 	}
 	
+	public Holiday getHoliday() {
+		return this.holiday;
+	}
+	
 	public void setHoliday(Holiday holiday) {
 		this.holiday = holiday;
 	}

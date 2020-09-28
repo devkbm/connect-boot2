@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.like.common.domain.AuditEntity;
-import com.like.hrm.duty.domain.model.enums.YearType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
