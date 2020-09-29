@@ -14,9 +14,9 @@ import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 public class DutyCodeCommandService {
 
 	private DutyCodeRepository dutyCodeRepository;
-	
+			
 	public DutyCodeCommandService(DutyCodeRepository dutyCodeRepository) {
-		this.dutyCodeRepository = dutyCodeRepository;
+		this.dutyCodeRepository = dutyCodeRepository;		
 	}
 	
 	public DutyCode getDutyCode(String dutyCode) {
@@ -48,4 +48,6 @@ public class DutyCodeCommandService {
 		
 		this.dutyCodeRepository.deleteDutyCode(entity);
 	}
+		
+	
 }

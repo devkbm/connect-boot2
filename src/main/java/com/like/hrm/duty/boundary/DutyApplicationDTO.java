@@ -104,5 +104,15 @@ public class DutyApplicationDTO {
 									  .selectedDate(entity.getSelectedDate().stream().map(e -> e.getDate()).collect(Collectors.toList()))
 									  .build();
 		}
+		
+		public class SelectedDate implements Serializable {
+			
+			LocalDate date;
+			
+			boolean isSelected;
+			
+			boolean isHoliday;
+		}
+		
 	}
 }
