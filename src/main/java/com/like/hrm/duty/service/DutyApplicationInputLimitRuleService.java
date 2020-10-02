@@ -33,4 +33,9 @@ public class DutyApplicationInputLimitRuleService {
 	public void deleteDutyApplicationInputLimitRule(DutyApplicationInputLimitRule entity) {
 		repository.deleteDutyApplicationInputLimitRule(entity);
 	}
+	
+	public void deleteDutyApplicationInputLimitRule(Long id) {
+		DutyApplicationInputLimitRule entity = repository.getDutyApplicationInputLimitRule(id);
+		repository.deleteDutyApplicationInputLimitRule(entity);
+	}
 }

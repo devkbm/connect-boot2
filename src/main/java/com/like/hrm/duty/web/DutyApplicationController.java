@@ -131,7 +131,7 @@ public class DutyApplicationController {
 	@DeleteMapping("/hrm/dutyapplication/limit/{id}")
 	public ResponseEntity<?> deleteDutyApplicationLimit(@PathVariable(value="id") Long id) {				
 																		
-		//dutyApplicationInputLimitRuleService.deleteDutyApplicationInputLimitRule(id);						
+		dutyApplicationInputLimitRuleService.deleteDutyApplicationInputLimitRule(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
