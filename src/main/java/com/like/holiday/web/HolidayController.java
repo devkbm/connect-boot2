@@ -35,7 +35,7 @@ public class HolidayController {
 		this.holidayUtilService = holidayUtilService;
 	}
 	
-	@GetMapping("/com/holiday/{fromDate}/{toDate}")
+	@GetMapping("/common/holiday/{fromDate}/{toDate}")
 	public ResponseEntity<?> getHolidayList(@PathVariable(value="fromDate") @DateTimeFormat(pattern="yyyyMMdd") LocalDate fromDate
 										   ,@PathVariable(value="toDate") @DateTimeFormat(pattern="yyyyMMdd") LocalDate toDate) {
 		
@@ -46,7 +46,7 @@ public class HolidayController {
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/com/holiday/{id}")
+	@GetMapping("/common/holiday/{id}")
 	public ResponseEntity<?> getHoliday(@PathVariable(value="id") @DateTimeFormat(pattern="yyyyMMdd") LocalDate id) {
 		
 		Holiday entity = holidayService.getHoliyday(id);
@@ -56,7 +56,7 @@ public class HolidayController {
 											,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/com/holiday"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	@RequestMapping(value={"/common/holiday"}, method={RequestMethod.POST,RequestMethod.PUT}) 
 	public ResponseEntity<?> saveHoliday(@RequestBody Holiday dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
@@ -70,7 +70,7 @@ public class HolidayController {
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/com/holiday/{id}")
+	@DeleteMapping("/common/holiday/{id}")
 	public ResponseEntity<?> delHoliday(@PathVariable(value="id") @DateTimeFormat(pattern="yyyyMMdd") LocalDate id) {						
 												
 		holidayService.deleteHoliday(id);
