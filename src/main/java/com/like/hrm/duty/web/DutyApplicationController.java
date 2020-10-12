@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.boundary.DutyApplicationDTO;
+import com.like.hrm.duty.boundary.DutyApplicationInputLimitRuleDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.model.DutyApplicationInputLimitRule;
 import com.like.hrm.duty.service.DutyApplicationCommandService;
@@ -96,8 +97,11 @@ public class DutyApplicationController {
 	@GetMapping("/hrm/dutyapplication/limit")
 	public ResponseEntity<?> getDutyApplicationLimitList() {
 		
-		List<DutyApplicationInputLimitRule> list = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule();					
+		List<DutyApplicationInputLimitRule> entityList = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule();					
 					
+		List<DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule> list = entityList.stream()
+																								  .map(e -> DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(e))
+																								  .collect(Collectors.toList());
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
@@ -107,15 +111,17 @@ public class DutyApplicationController {
 	@GetMapping("/hrm/dutyapplication/limit/{id}")
 	public ResponseEntity<?> getDutyApplicationLimit(@PathVariable(value="id") Long id) {
 		
-		DutyApplicationInputLimitRule dto = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule(id);					
-					
+		DutyApplicationInputLimitRule entity = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule(id);					
+		
+		DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto = DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(entity); 
+		
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value={"/hrm/dutyapplication/limit"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationInputLimitRule dto, BindingResult result) {				
+	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());

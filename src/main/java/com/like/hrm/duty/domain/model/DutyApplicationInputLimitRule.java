@@ -65,6 +65,22 @@ public class DutyApplicationInputLimitRule extends AuditEntity {
 		this.comment = comment;
 	}
 	
+	public void modifyEntity(String fromYear
+							,String fromDate
+							,String toYear
+							,String toDate
+							,Long count
+							,String invalidMessage
+							,String comment) {
+		this.fromYear = fromYear;
+		this.fromDate = fromDate;
+		this.toYear = toYear;
+		this.toDate = toDate;
+		this.count = count;
+		this.invalidMessage = invalidMessage;
+		this.comment = comment;
+	}
+	
 	public LocalDate getFrom() {
 		int month = Integer.parseInt(fromDate.substring(0, 2));
 		int day = Integer.parseInt(fromDate.substring(2, 2));

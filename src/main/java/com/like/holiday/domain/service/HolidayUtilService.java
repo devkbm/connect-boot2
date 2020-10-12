@@ -35,7 +35,7 @@ public class HolidayUtilService {
 		if (fromDate.isAfter(toDate)) 
 			throw new IllegalArgumentException("종료일자보다 시작일자가 큽니다.");
 		
-		List<DateInfo> list = new ArrayList<>();			
+		List<DateInfo> list = new ArrayList<>(1000);			
 		
 		while (fromDate.isBefore(toDate) || fromDate.isEqual(toDate)) {
 			list.add(new DateInfo(fromDate));			
