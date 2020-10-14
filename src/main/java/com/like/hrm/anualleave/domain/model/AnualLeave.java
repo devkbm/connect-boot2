@@ -64,8 +64,8 @@ public class AnualLeave {
 	 * 출근율을 구한다.
 	 * @return 출근율
 	 */
-	public float getWorkRate() {
-		return total_work_days / (total_work_days - except_days);
+	public double getWorkRate() {		
+		return (double)(total_work_days - except_days) / total_work_days * 100;
 	}	
 	
 	public void calc(LocalDate toDate) {
@@ -116,6 +116,19 @@ public class AnualLeave {
 	}
 	
 	public static void main(String[] args) {
+		AnualLeave a = new AnualLeave(2021
+									 ,"111"
+									 ,LocalDate.of(2020, 1, 1)
+									 ,LocalDate.of(2021, 1, 1)
+									 ,LocalDate.of(2021, 12, 31));
+		a.except_days = 7;
+		a.calc(LocalDate.of(2021, 02, 01));
+				
+		System.out.println(a.isIntraAnual);
+		System.out.println(a.total_work_days);
+		System.out.println(a.except_days);
+		System.out.println(a.cnt);		
+		System.out.println(a.getWorkRate());		
 		
 	}
 
