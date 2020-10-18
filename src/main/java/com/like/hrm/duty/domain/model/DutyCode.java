@@ -65,10 +65,12 @@ public class DutyCode extends AuditEntity {
 		this.dutyGroup = dutyGroup;
 		this.isFamilyEvent = isFamilyEvent;
 		this.familyEventAmt = familyEventAmt;
-		this.comment = comment;
-		this.dutyCodeRule = dutyApplicationInputLimitIdList.stream()
-														   .map(e-> new DutyCodeRule(this, e))
-														   .collect(Collectors.toList());
+		this.comment = comment;		
+		if (dutyApplicationInputLimitIdList != null) {			
+			this.dutyCodeRule = dutyApplicationInputLimitIdList.stream()
+															   .map(e-> new DutyCodeRule(this, e))
+															   .collect(Collectors.toList());
+		}
 	}
 	
 	public void modifyEntity(String dutyName

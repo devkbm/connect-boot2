@@ -73,7 +73,7 @@ public class DutyCodeDTO {
 				
 		private String dutyGroup;
 					
-		private Boolean isFamilyEvent;
+		private Boolean isFamilyEvent = false;
 		
 		private Long familyEventAmt;		
 		

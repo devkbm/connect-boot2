@@ -1,6 +1,7 @@
 package com.like.hrm.duty.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,12 @@ public class DutyCodeController {
 		
 		List<DutyCode> list = dutyCodeQueryService.getDutyCodeList(dto);					
 		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
+		List<DutyCodeDTO.SaveDutyCode> dtoList = list.stream()
+													 .map(e -> DutyCodeDTO.SaveDutyCode.convert(e))
+													 .collect(Collectors.toList());
+		
+		return WebControllerUtil.getResponse(dtoList											
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 	
@@ -62,7 +67,8 @@ public class DutyCodeController {
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());
 		} 
-																	
+					
+		log.info(dto.toString());
 		dutyCodeCommandService.saveDutyCode(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
