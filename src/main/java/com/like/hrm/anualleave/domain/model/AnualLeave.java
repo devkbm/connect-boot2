@@ -82,8 +82,9 @@ public class AnualLeave {
 		} else {
 		// 발생연차 + 누진 연차(2년에 1개 추가 총 25개까지)
 			this.cnt = 15;
+			System.out.println("누진" + this.getWorkYears(toDate));
 			if (this.getWorkYears(toDate) > 2) {
-				this.add_cnt = this.getWorkYears(toDate) / 2;
+				this.add_cnt = (int)Math.floor(this.getWorkYears(toDate) / 2);
 			}
 				
 		}
@@ -119,15 +120,15 @@ public class AnualLeave {
 		AnualLeave a = new AnualLeave(2021
 									 ,"111"
 									 ,LocalDate.of(2020, 1, 1)
-									 ,LocalDate.of(2021, 1, 1)
-									 ,LocalDate.of(2021, 12, 31));
-		a.except_days = 7;
-		a.calc(LocalDate.of(2021, 02, 01));
+									 ,LocalDate.of(2026, 1, 1)
+									 ,LocalDate.of(2026, 12, 31));
+		a.except_days = 0;
+		a.calc(LocalDate.of(2026, 02, 01));
 				
 		System.out.println(a.isIntraAnual);
 		System.out.println(a.total_work_days);
 		System.out.println(a.except_days);
-		System.out.println(a.cnt);		
+		System.out.println(a.cnt + ":" + a.add_cnt);		
 		System.out.println(a.getWorkRate());		
 		
 	}
