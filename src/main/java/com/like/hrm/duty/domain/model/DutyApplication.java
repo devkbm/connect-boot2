@@ -3,6 +3,7 @@ package com.like.hrm.duty.domain.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -98,6 +99,10 @@ public class DutyApplication extends AuditEntity {
 	
 	public void addFile(DutyApplicationAttachedFile file) {
 		this.fileList.add(file);
+	}
+	
+	public List<LocalDate> getSelectedDate() {
+		return this.selectedDate.stream().map(e -> e.getDate()).collect(Collectors.toList());
 	}
 	
 	private List<DutyApplicationDate> addApplicationDate(List<LocalDate> dateList) {

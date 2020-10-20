@@ -10,8 +10,8 @@ import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AnualLeaveTest {
-
-	@Test
+	
+	@Test	
 	public void TEST01_월만근하지않으면_휴가발생하지않음() {
 		// Given
 		AnualLeave entity = new AnualLeave(2020

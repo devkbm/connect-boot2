@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.like.holiday.domain.model.DateInfo;
+import com.like.holiday.domain.model.DateInfoList;
 import com.like.holiday.domain.model.Holiday;
 import com.like.holiday.domain.repository.HolidayRepository;
 
@@ -22,16 +23,20 @@ public class HolidayUtilService {
 		this.holidayRepository = holidayRepository;
 	}
 	
-	public List<DateInfo> getDateList(LocalDate fromDate, LocalDate toDate) {
+	public DateInfoList getDateInfoList(LocalDate fromDate, LocalDate toDate) {
+		return new DateInfoList(this.getDateInfoAndHoliday(fromDate, toDate));
+	}
+	
+	private List<DateInfo> getDateInfoAndHoliday(LocalDate fromDate, LocalDate toDate) {
 		
-		List<DateInfo> list = this.getDateInfoList(fromDate, toDate);
+		List<DateInfo> list = this.getRawDateInfoList(fromDate, toDate);
 		
 		this.setHoliday(fromDate, toDate, list);
 		
 		return list;
 	}
 	
-	private List<DateInfo> getDateInfoList(LocalDate fromDate, LocalDate toDate) {
+	private List<DateInfo> getRawDateInfoList(LocalDate fromDate, LocalDate toDate) {
 		if (fromDate.isAfter(toDate)) 
 			throw new IllegalArgumentException("종료일자보다 시작일자가 큽니다.");
 		

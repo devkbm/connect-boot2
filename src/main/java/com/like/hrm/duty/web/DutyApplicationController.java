@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.holiday.domain.service.HolidayUtilService;
 import com.like.hrm.duty.boundary.DutyApplicationDTO;
 import com.like.hrm.duty.boundary.DutyApplicationInputLimitRuleDTO;
 import com.like.hrm.duty.domain.model.DutyApplication;
@@ -36,12 +37,16 @@ public class DutyApplicationController {
 	
 	private DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService;
 	
+	private HolidayUtilService holidayUtilService;
+	
 	public DutyApplicationController(DutyApplicationCommandService dutyApplicationCommandService
 									,DutyApplicationQueryService dutyApplicationQueryService
-									,DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService) {
+									,DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService
+									,HolidayUtilService holidayUtilService) {
 		this.dutyApplicationCommandService = dutyApplicationCommandService;
 		this.dutyApplicationQueryService = dutyApplicationQueryService;
 		this.dutyApplicationInputLimitRuleService = dutyApplicationInputLimitRuleService;
+		this.holidayUtilService = holidayUtilService;
 	}
 	
 	@GetMapping("/hrm/dutyapplication")
@@ -50,7 +55,7 @@ public class DutyApplicationController {
 		List<DutyApplication> list = dutyApplicationQueryService.getDutyApplicationList(dto);					
 		
 		List<DutyApplicationDTO.SaveDutyApplication> dtoList = list.stream()
-																   .map(e -> DutyApplicationDTO.SaveDutyApplication.convert(e))
+																   .map(e -> DutyApplicationDTO.SaveDutyApplication.convert(e, holidayUtilService))
 																   .collect(Collectors.toList());
 		
 		return WebControllerUtil.getResponse(dtoList											
@@ -63,7 +68,7 @@ public class DutyApplicationController {
 		
 		DutyApplication entity = dutyApplicationCommandService.getDutyApplication(id);
 					
-		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity);
+		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity, holidayUtilService);
 		
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)

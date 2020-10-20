@@ -28,12 +28,16 @@ public class DateInfo {
 		return holiday;
 	}
 
-	public String getDayOfWeek() {
-		return this.date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-	}
-
 	public void setHoliday(Holiday holiday) {
 		this.holiday = holiday;
+	}
+	
+	public boolean isHoliday() {
+		return this.holiday != null ? true : false;
+	}
+	
+	public String getDayOfWeek() {
+		return this.date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
 	}
 	
 	public static void main(String[] args) {

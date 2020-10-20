@@ -76,7 +76,7 @@ public class AnualLeave {
 		// 2. 총근무일수를 계산
 		this.calcTotalWorkDays(toDate);
 		
-		// 출근율 80% 미만이거나, 1년이하 근무자 월만근갯수 휴가 발생
+		// 3. 출근율 80% 미만이거나, 1년이하 근무자 월만근갯수 휴가 발생
 		if ( this.getWorkRate() < 80 || this.isIntraAnual ) {
 			this.cnt = ChronoUnit.MONTHS.between(this.from, toDate);
 		} else {
@@ -88,6 +88,16 @@ public class AnualLeave {
 			}
 				
 		}
+		
+		// 4. 총 갯수가 25가 넘으면 25로 설정
+		if (this.cnt + this.add_cnt > 25) {
+			this.cnt = 15;
+			this.add_cnt = 10;
+		}
+	}
+	
+	public float getTotalCount() {
+		return this.cnt + this.add_cnt;
 	}
 	
 	/**

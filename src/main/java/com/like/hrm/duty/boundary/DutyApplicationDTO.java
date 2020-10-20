@@ -3,6 +3,7 @@ package com.like.hrm.duty.boundary;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,9 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.vo.Period;
+import com.like.holiday.domain.model.DateInfo;
+import com.like.holiday.domain.model.DateInfoList;
+import com.like.holiday.domain.service.HolidayUtilService;
 import com.like.hrm.duty.domain.model.DutyApplication;
 import com.like.hrm.duty.domain.model.QDutyApplication;
 import com.querydsl.core.BooleanBuilder;
@@ -71,7 +75,7 @@ public class DutyApplicationDTO {
 				
 		private LocalDateTime dutyEndDateTime;
 		
-		private List<LocalDate> selectedDate;
+		private List<DutyDate> selectedDate;
 		
 		public DutyApplication newEntity() {							
 			
@@ -81,7 +85,7 @@ public class DutyApplicationDTO {
 								  .dutyCode(dutyCode)
 								  .dutyReason(dutyReason)
 								  .period(new Period(dutyStartDateTime, dutyEndDateTime))
-								  .selectedDate(selectedDate)
+								  .selectedDate(this.getSelectedDate())
 								  .build();
 		}
 		
@@ -89,10 +93,13 @@ public class DutyApplicationDTO {
 			entity.modifyEntity(dutyCode
 							   ,dutyReason
 							   ,new Period(dutyStartDateTime, dutyEndDateTime)
-							   ,selectedDate);		
+							   ,this.getSelectedDate());		
 		}
 		
-		public static SaveDutyApplication convert(DutyApplication entity) {
+		public static SaveDutyApplication convert(DutyApplication entity, HolidayUtilService service) {
+			
+			DateInfoList dateInfoList = service.getDateInfoList(entity.getPeriod().getFrom().toLocalDate()
+															   ,entity.getPeriod().getTo().toLocalDate());
 			
 			return SaveDutyApplication.builder()
 									  .dutyId(entity.getDutyId())
@@ -101,11 +108,32 @@ public class DutyApplicationDTO {
 									  .dutyReason(entity.getDutyReason())
 									  .dutyStartDateTime(entity.getPeriod().getFrom())
 									  .dutyEndDateTime(entity.getPeriod().getTo())
-									  .selectedDate(entity.getSelectedDate().stream().map(e -> e.getDate()).collect(Collectors.toList()))
+									  .selectedDate(SaveDutyApplication.convertDutyDate(entity, dateInfoList))
 									  .build();
 		}
 		
-		public class SelectedDate implements Serializable {
+		private List<LocalDate> getSelectedDate() {
+			return selectedDate.stream().map(e -> e.getDate()).collect(Collectors.toList());
+		}
+		
+		private static List<DutyDate> convertDutyDate(DutyApplication entity, DateInfoList dateInfoList) {
+			List<DutyDate> dutyDatelist = new ArrayList<>(dateInfoList.size());
+			List<LocalDate> selectedDate = entity.getSelectedDate();					
+			
+			for (DateInfo date : dateInfoList.getDates()) {
+				
+				DutyDate d = new DutyDate(date.getDate()
+										 ,selectedDate.contains(date.getDate())
+										 ,date.isHoliday());
+				dutyDatelist.add(d);
+			}
+			
+			return dutyDatelist;			
+		}
+		
+		@Data	
+		@AllArgsConstructor
+		public static class DutyDate implements Serializable {
 			
 			LocalDate date;
 			
