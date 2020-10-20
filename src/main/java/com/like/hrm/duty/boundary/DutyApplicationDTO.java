@@ -24,7 +24,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DutyApplicationDTO {
 
 	public static class SearchDutyApplication implements Serializable {
@@ -96,7 +99,7 @@ public class DutyApplicationDTO {
 							   ,this.getSelectedDate());		
 		}
 		
-		public static SaveDutyApplication convert(DutyApplication entity, HolidayUtilService service) {
+		public static SaveDutyApplication convert(DutyApplication entity, HolidayUtilService service) {					
 			
 			DateInfoList dateInfoList = service.getDateInfoList(entity.getPeriod().getFrom().toLocalDate()
 															   ,entity.getPeriod().getTo().toLocalDate());
@@ -120,27 +123,40 @@ public class DutyApplicationDTO {
 			List<DutyDate> dutyDatelist = new ArrayList<>(dateInfoList.size());
 			List<LocalDate> selectedDate = entity.getSelectedDate();					
 			
-			for (DateInfo date : dateInfoList.getDates()) {
-				
-				DutyDate d = new DutyDate(date.getDate()
-										 ,selectedDate.contains(date.getDate())
-										 ,date.isHoliday());
-				dutyDatelist.add(d);
+			for (DateInfo date : dateInfoList.getDates()) {							
+				dutyDatelist.add(new DutyDate(date.getDate()										
+											 ,selectedDate.contains(date.getDate())
+											 ,date.isHoliday()));
 			}
+			
+			log.info(dutyDatelist.toString());
 			
 			return dutyDatelist;			
 		}
+					
+	}
 		
-		@Data	
-		@AllArgsConstructor
-		public static class DutyDate implements Serializable {
+	@ToString
+	@Data	
+	@AllArgsConstructor
+	public static class DutyDate implements Serializable {
+		
+		LocalDate date;
+		
+		boolean isSelected;
+		
+		boolean isHoliday;
+		
+		public static List<DutyDate> convertDutyDate(DateInfoList dateInfoList) {
+			List<DutyDate> dutyDatelist = new ArrayList<>(dateInfoList.size());
 			
-			LocalDate date;
+			for (DateInfo date : dateInfoList.getDates()) {							
+				dutyDatelist.add(new DutyDate(date.getDate()										
+											 ,true
+											 ,date.isHoliday()));
+			}					
 			
-			boolean isSelected;
-			
-			boolean isHoliday;
+			return dutyDatelist;
 		}
-		
 	}
 }

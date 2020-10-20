@@ -1,8 +1,10 @@
 package com.like.hrm.duty.web;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -67,11 +69,22 @@ public class DutyApplicationController {
 	public ResponseEntity<?> getDutyApplication(@PathVariable(value="id") Long id) {
 		
 		DutyApplication entity = dutyApplicationCommandService.getDutyApplication(id);
-					
-		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity, holidayUtilService);
+						
+		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity, holidayUtilService);			
 		
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/dutyapplication/period/{from}/{to}")
+	public ResponseEntity<?> getDutyApplicationPeriod(@PathVariable(value="from") @DateTimeFormat(pattern="yyyyMMdd")LocalDate from
+													 ,@PathVariable(value="to") @DateTimeFormat(pattern="yyyyMMdd") LocalDate to) {
+						
+		List<DutyApplicationDTO.DutyDate> dtoList = DutyApplicationDTO.DutyDate.convertDutyDate(holidayUtilService.getDateInfoList(from, to));			
+		
+		return WebControllerUtil.getResponse(dtoList											
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
 	
