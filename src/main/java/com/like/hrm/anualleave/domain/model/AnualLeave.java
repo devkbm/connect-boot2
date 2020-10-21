@@ -28,13 +28,13 @@ public class AnualLeave {
 	LocalDate to;
 	
 	// 발생갯수
-	float cnt;
+	double cnt;
 	
 	// 가산갯수
-	float add_cnt;
+	double add_cnt;
 	
 	// 사용갯수
-	float use_cnt;
+	double use_cnt;
 	
 	// 총근무일수
 	long total_work_days;
@@ -84,7 +84,7 @@ public class AnualLeave {
 			this.cnt = 15;
 			System.out.println("누진" + this.getWorkYears(toDate));
 			if (this.getWorkYears(toDate) > 2) {
-				this.add_cnt = (int)Math.floor(this.getWorkYears(toDate) / 2);
+				this.add_cnt = Math.floor(this.getWorkYears(toDate) / 2);
 			}
 				
 		}
@@ -96,7 +96,7 @@ public class AnualLeave {
 		}
 	}
 	
-	public float getTotalCount() {
+	public double getTotalCount() {
 		return this.cnt + this.add_cnt;
 	}
 	
