@@ -110,56 +110,6 @@ public class DutyApplicationController {
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
-	}
-	
-	@GetMapping("/hrm/dutyapplication/limit")
-	public ResponseEntity<?> getDutyApplicationLimitList() {
-		
-		List<DutyApplicationInputLimitRule> entityList = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule();					
-					
-		List<DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule> list = entityList.stream()
-																								  .map(e -> DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(e))
-																								  .collect(Collectors.toList());
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-	
-	
-	@GetMapping("/hrm/dutyapplication/limit/{id}")
-	public ResponseEntity<?> getDutyApplicationLimit(@PathVariable(value="id") Long id) {
-		
-		DutyApplicationInputLimitRule entity = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule(id);					
-		
-		DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto = DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(entity); 
-		
-		return WebControllerUtil.getResponse(dto											
-											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
-											,HttpStatus.OK);
-	}
-	
-	@RequestMapping(value={"/hrm/dutyapplication/limit"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveDutyApplicationLimit(@RequestBody DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto, BindingResult result) {				
-		
-		if ( result.hasErrors()) {			
-			throw new ControllerException(result.toString());
-		} 
-																	
-		dutyApplicationInputLimitRuleService.saveDutyApplicationInputLimitRule(dto);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 저장되었습니다.", 1)
-											,HttpStatus.OK);
-	}
-	
-	@DeleteMapping("/hrm/dutyapplication/limit/{id}")
-	public ResponseEntity<?> deleteDutyApplicationLimit(@PathVariable(value="id") Long id) {				
-																		
-		dutyApplicationInputLimitRuleService.deleteDutyApplicationInputLimitRule(id);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
-	}
+	}	
 		
 }
