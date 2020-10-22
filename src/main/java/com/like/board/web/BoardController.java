@@ -2,7 +2,7 @@ package com.like.board.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -52,16 +52,13 @@ public class BoardController {
 	@GetMapping("/grw/board/boardType")
 	public ResponseEntity<?> getMenuTypeList() {				
 		
-		List<EnumDTO> list = new ArrayList<EnumDTO>();
+		List<EnumDTO> list = new ArrayList<>();
 		
-		for (BoardType boardType : BoardType.values()) {
-			EnumDTO dto = new EnumDTO(boardType.toString(), boardType.getName());
-			list.add(dto);
+		for (BoardType boardType : BoardType.values()) {			
+			list.add(new EnumDTO(boardType.toString(), boardType.getName()));
 		}				 					
-		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
+								
+		return WebControllerUtil.getResponse(list				
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
@@ -71,9 +68,7 @@ public class BoardController {
 											
 		List<?> list = boardQueryService.getBoardHierarchy();				 			
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
+		return WebControllerUtil.getResponse(list						
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
@@ -82,14 +77,11 @@ public class BoardController {
 	public ResponseEntity<?> getBoardList(BoardDTO.SearchBoard dto) {						
 		
 		List<Board> list = boardQueryService.getBoardList(dto); 										
-		List<BoardDTO.SaveBoard> dtoList = new ArrayList<>();
-		
-		for (Board board : list) {
-			dtoList.add(BoardDTO.SaveBoard.convertDTO(board));
-		}
-		return WebControllerUtil.getResponse(dtoList
-											,dtoList.size()
-											,true
+		List<BoardDTO.SaveBoard> dtoList = list.stream()
+											   .map(e -> BoardDTO.SaveBoard.convertDTO(e))
+											   .collect(Collectors.toList());
+				
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
@@ -101,31 +93,21 @@ public class BoardController {
 		
 		BoardDTO.SaveBoard dto = BoardDTO.SaveBoard.convertDTO(board);				
 							
-		return WebControllerUtil.getResponse(dto
-											,board != null ? 1 : 0
-											,true
+		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", board != null ? 1 : 0)
 											,HttpStatus.OK);
 	}	
 		
 	@RequestMapping(value={"/grw/board"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.SaveBoard boardDTO, BindingResult result) {
-							
-		/*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		log.info(authentication.getPrincipal().toString());*/
+	public ResponseEntity<?> saveBoard(@RequestBody @Valid final BoardDTO.SaveBoard boardDTO, BindingResult result) {								
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 			
-							
-		log.info(boardDTO.toString());
+		} 											
 		
 		boardCommandService.saveBoard(boardDTO);				
 								 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}	
@@ -135,9 +117,7 @@ public class BoardController {
 												
 		boardCommandService.deleteBoard(id);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}		

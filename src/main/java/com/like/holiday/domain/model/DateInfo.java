@@ -1,9 +1,13 @@
 package com.like.holiday.domain.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+import lombok.ToString;
+
+@ToString(includeFieldNames = true)
 public class DateInfo {
 
 	private LocalDate date;
@@ -34,6 +38,10 @@ public class DateInfo {
 	
 	public boolean isHoliday() {
 		return this.holiday != null ? true : false;
+	}
+	
+	public boolean isWeekend() {		
+		return this.date.getDayOfWeek() == DayOfWeek.SATURDAY || this.date.getDayOfWeek() == DayOfWeek.SUNDAY ? true : false; 
 	}
 	
 	public String getDayOfWeek() {

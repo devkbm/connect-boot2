@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
@@ -31,13 +30,17 @@ import com.like.file.service.FileService;
 
 @Controller
 public class FileController {
-
-	@Resource(name = "boardCommandService")
-	private BoardCommandService boardCommandService;
 	
-	@Resource(name = "fileService")
+	private BoardCommandService boardCommandService;
+		
 	private FileService fileService;	
 			
+	public FileController(BoardCommandService boardCommandService
+						 ,FileService fileService) {
+		this.boardCommandService = boardCommandService;
+		this.fileService = fileService;
+	}
+	
 	@RequestMapping(value={"/common/file/{id}"}, method=RequestMethod.GET) 
 	public HttpServletResponse fileDownLoad(HttpServletResponse response,
 			@PathVariable(value="id") String id) throws Exception {

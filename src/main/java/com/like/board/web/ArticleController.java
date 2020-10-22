@@ -52,9 +52,7 @@ public class ArticleController {
 			dtoList.add(ArticleDTO.ArticleResponse.converDTO(article));
 		}
 		
-		return WebControllerUtil.getResponse(dtoList
-											,dtoList.size()
-											,true
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
@@ -64,13 +62,9 @@ public class ArticleController {
 		
 		Article article = boardQueryService.getArticle(id);		
 	
-		ArticleDTO.ArticleResponse response = ArticleDTO.ArticleResponse.converDTO(article);		
+		ArticleDTO.ArticleResponse response = ArticleDTO.ArticleResponse.converDTO(article);				
 		
-		// log.info(SecurityContextHolder.getContext().getAuthentication().getName());
-		
-		return WebControllerUtil.getResponse(response
-											,article == null ? 0 : 1
-											,article == null ? false : true
+		return WebControllerUtil.getResponse(response											
 											,String.format("%d 건 조회되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -80,9 +74,7 @@ public class ArticleController {
 		
 		boardCommandService.deleteArticle(id);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -92,9 +84,7 @@ public class ArticleController {
 		
 		boardCommandService.deleteArticle(articleList);									
 		
-		return WebControllerUtil.getResponse(null
-											,articleList.size()
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", articleList.size())
 											,HttpStatus.OK);
 	}	
@@ -106,12 +96,10 @@ public class ArticleController {
 		if ( result.hasErrors() ) {
 			throw new ControllerException(result.getAllErrors().toString());
 		}			
-		log.info(dto.toString());														
+											
 		boardCommandService.saveArticle(dto);											
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -126,9 +114,7 @@ public class ArticleController {
 										
 		boardCommandService.saveArticle(dto);											
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -140,9 +126,7 @@ public class ArticleController {
 				
 		Article aritlce = boardCommandService.updateArticleHitCnt(id, userId);			
 										
-		return WebControllerUtil.getResponse(aritlce
-											,1
-											,true
+		return WebControllerUtil.getResponse(aritlce											
 											,String.format("%d건 업데이트 하였습니다.", 1)
 											,HttpStatus.OK);
 	}	

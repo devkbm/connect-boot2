@@ -15,6 +15,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 로그인, 로그아웃 이력관리 클래스
+ * @author cb457
+ *
+ */
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 @Getter
 @Entity

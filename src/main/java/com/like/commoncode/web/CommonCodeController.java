@@ -44,9 +44,7 @@ public class CommonCodeController {
 		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
 		
 		return WebControllerUtil
-				.getResponse(list
-							,list.size()
-							,true
+				.getResponse(list							
 							,String.format("%d 건 조회되었습니다.", list.size())
 							,HttpStatus.OK);
 	}
@@ -57,9 +55,7 @@ public class CommonCodeController {
 		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
 		
 		return WebControllerUtil
-				.getResponse(list
-							,list.size()
-							,true
+				.getResponse(list							
 							,String.format("%d 건 조회되었습니다.", list.size())
 							,HttpStatus.OK);
 	}
@@ -72,9 +68,7 @@ public class CommonCodeController {
 		CodeDTO.SaveCode dto = CodeDTO.convertDTO(entity);
 		
 		return WebControllerUtil
-				.getResponse(dto
-							,1
-							,true
+				.getResponse(dto							
 							,String.format("%d 건 조회되었습니다.", 1)
 							,HttpStatus.OK);
 	}
@@ -85,16 +79,12 @@ public class CommonCodeController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 									
-		
-		log.info(dto.toString());
+		} 												
 		
 		commonCodeCommandService.saveCode(dto);		
 											 				
 		return WebControllerUtil
-				.getResponse(null
-							,1
-							,true
+				.getResponse(null							
 							,String.format("%d 건 저장되었습니다.", 1)
 							,HttpStatus.OK);
 	}	
@@ -105,9 +95,7 @@ public class CommonCodeController {
 		commonCodeCommandService.deleteCode(id);
 								 						
 		return WebControllerUtil
-				.getResponse(null
-							,1
-							,true
+				.getResponse(null							
 							,String.format("%d 건 삭제되었습니다.", 1)
 							,HttpStatus.OK);
 	}

@@ -3,7 +3,6 @@ package com.like.commoncode.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.commoncode.boundary.CodeComboDTO;
@@ -21,14 +20,17 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 public class CodeJpaRepository implements CommonCodeRepository {
 	
 	private final QCode qCode = QCode.code1;
-	
-	@Autowired
+		
 	private JPAQueryFactory	queryFactory;	
-	
-	@Autowired
+		
 	private JpaCommonCode jpaCommonCode;		
 		
-
+	public CodeJpaRepository(JPAQueryFactory queryFactory
+							,JpaCommonCode jpaCommonCode) {
+		this.queryFactory = queryFactory;
+		this.jpaCommonCode = jpaCommonCode;
+	}
+	
 	@Override
 	public Code getCode(String codeId) {
 		Optional<Code> entity = jpaCommonCode.findById(codeId);

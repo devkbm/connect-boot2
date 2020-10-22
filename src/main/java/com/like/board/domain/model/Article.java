@@ -15,11 +15,11 @@ import lombok.ToString;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.domain.model.vo.Period;
 import com.like.common.domain.AuditEntity;
+import com.like.common.util.SessionUtil;
 import com.like.file.domain.model.FileInfo;
 
 @ToString
@@ -64,6 +64,9 @@ public class Article extends AuditEntity {
 	@Column(name="HIT_CNT")
     int hitCount;
         
+	/**
+	 * 게시기간
+	 */
 	@Embedded
     Period period;
 	
@@ -166,19 +169,12 @@ public class Article extends AuditEntity {
 		this.files = files;
 	}
 	
-	public Boolean getEditable() {
-		boolean rtn = false;
-		
-		if (isWriter())
-			rtn = true;
-		
-		return rtn;
+	public Boolean getEditable() {			
+		return isWriter();
 	}
 	
-	private boolean isWriter() {		
-		String sessionId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		return sessionId.equals(this.createdBy) ? true : false;
+	private boolean isWriter() {						
+		return this.createdBy.equals(SessionUtil.getUserId());		
 	}
 
 			

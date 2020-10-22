@@ -1,9 +1,7 @@
 package com.like.dept.infra.jparepository;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
@@ -18,14 +16,18 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
 public class DeptJpaRepository implements DeptRepository {
-	
-	@Autowired
+		
 	private JPAQueryFactory  queryFactory;
-	
-	@Autowired
+		
 	private JpaDept jpaDept;
 	
 	private static final QDept qDept = QDept.dept;
+	
+	public DeptJpaRepository(JPAQueryFactory  queryFactory
+							,JpaDept jpaDept) {
+		this.queryFactory = queryFactory;
+		this.jpaDept = jpaDept;
+	}
 	
 	@Override
 	public boolean isDept(String deptCode) {
@@ -33,11 +35,8 @@ public class DeptJpaRepository implements DeptRepository {
 	}
 	
 	@Override
-	public Dept getDept(String deptCode) {
-		Optional<Dept> entity = jpaDept.findById(deptCode);
-		
-		//return entity.isPresent() ? entity.get() : null;
-		return entity.orElse(null);
+	public Dept getDept(String deptCode) {		
+		return jpaDept.findById(deptCode).orElse(null);
 	}
 
 	@Override
@@ -53,7 +52,6 @@ public class DeptJpaRepository implements DeptRepository {
 				.fetch();
 	}
 	
-
 	@Override
 	public List<DeptHierarchy> getDeptHierarchy() {
 		List<DeptHierarchy> rootNodeList = this.getDeptRootNodeList();

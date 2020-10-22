@@ -39,9 +39,7 @@ public class DeptController {
 							
 		List<DeptHierarchy> list = deptService.getDeptHierarchyList();  						 						
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
+		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
@@ -51,9 +49,7 @@ public class DeptController {
 							
 		List<Dept> list = deptService.getDeptList(searchCondition);  						 						
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
+		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
@@ -65,9 +61,7 @@ public class DeptController {
 		
 		SaveDept dto = DeptDTO.convertDTO(dept);
 		
-		return WebControllerUtil.getResponse(dto
-											,dto == null ? 0 : 1
-											,true
+		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
@@ -77,15 +71,11 @@ public class DeptController {
 		
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} 					
-		
-		log.info(dto.toString());
+		} 								
 														
 		deptService.saveDept(dto);		
 											 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}		
@@ -95,9 +85,7 @@ public class DeptController {
 												
 		deptService.deleteDept(deptCode);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}

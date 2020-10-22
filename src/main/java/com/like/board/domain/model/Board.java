@@ -37,7 +37,9 @@ public class Board extends AuditEntity {
 	@Column(name="PK_BOARD")
 	Long pkBoard;
 	    
-		
+	/**
+	 * 상위 게시판
+	 */
 	@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE}, optional = true)
 	@JoinColumn(name="PPK_BOARD", nullable = false)
 	Board parent;
@@ -86,11 +88,13 @@ public class Board extends AuditEntity {
 	@Column(name="SEQ")
 	long sequence = 0;	
 
+	/**
+	 * 게시글 리스트
+	 */
 	@Singular(value="articles")
     @OneToMany(mappedBy = "board")          
     List<Article> articles;           
-    
-	
+    	
 	public void modifyEntity(Board parent
 						    ,BoardType boardType
 						    ,String boardName

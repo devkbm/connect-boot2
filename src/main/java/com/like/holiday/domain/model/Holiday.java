@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Table(name = "COMHOLIDAY")
 @Entity
-public class Holiday extends AuditEntity implements Serializable {
+public class Holiday extends AuditEntity implements Serializable {	
 
 	@Id	
 	@Column(name="HOLIDAY_DT")

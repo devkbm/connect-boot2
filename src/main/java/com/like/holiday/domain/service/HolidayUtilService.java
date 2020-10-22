@@ -1,8 +1,11 @@
 package com.like.holiday.domain.service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import org.springframework.stereotype.Service;
 
@@ -24,23 +27,18 @@ public class HolidayUtilService {
 	}
 	
 	public DateInfoList getDateInfoList(LocalDate fromDate, LocalDate toDate) {
-		return new DateInfoList(this.getDateInfoAndHoliday(fromDate, toDate));
-	}
-	
-	private List<DateInfo> getDateInfoAndHoliday(LocalDate fromDate, LocalDate toDate) {
+		List<DateInfo> days = this.getRawDateInfoList(fromDate, toDate);
 		
-		List<DateInfo> list = this.getRawDateInfoList(fromDate, toDate);
+		List<Holiday> holidays = this.getHolidayList(fromDate, toDate);
 		
-		this.setHoliday(fromDate, toDate, list);
-		
-		return list;
-	}
+		return new DateInfoList(days, holidays);
+	}			
 	
 	private List<DateInfo> getRawDateInfoList(LocalDate fromDate, LocalDate toDate) {
 		if (fromDate.isAfter(toDate)) 
 			throw new IllegalArgumentException("종료일자보다 시작일자가 큽니다.");
 		
-		List<DateInfo> list = new ArrayList<>(1000);			
+		List<DateInfo> list = new ArrayList<>(366);			
 		
 		while (fromDate.isBefore(toDate) || fromDate.isEqual(toDate)) {
 			list.add(new DateInfo(fromDate));			
@@ -50,16 +48,25 @@ public class HolidayUtilService {
 		return list;
 	}
 	
-	private List<DateInfo> setHoliday(LocalDate fromDate, LocalDate toDate, List<DateInfo> list) {
-		List<Holiday> holidayList = holidayRepository.getHoliday(fromDate, toDate);											
+	private List<Holiday> getHolidayList(LocalDate fromDate, LocalDate toDate) {
+		return holidayRepository.getHoliday(fromDate, toDate);
+	}	
 		
-		for (Holiday holiday : holidayList) {
-			list.forEach(e -> {
-				if (e.getDate().isEqual(holiday.getDate()))
-					e.setHoliday(holiday);
-			} );
+	public void ss(LocalDate from, LocalDate to) {
+		List<LocalDate> days = this.toLocalDateList(from, to);
+		List<Holiday> holidays = this.getHolidayList(from, to);
+		
+		for (LocalDate day: days) {
 		}
-		
-		return list;
 	}
+	
+	
+	public static List<LocalDate> toLocalDateList(LocalDate start, LocalDate end) {		  
+		final long days = start.until(end, ChronoUnit.DAYS);
+
+		return LongStream.rangeClosed(0, days)
+					     .mapToObj(start::plusDays)
+					     .collect(Collectors.toList());
+	}
+	
 }

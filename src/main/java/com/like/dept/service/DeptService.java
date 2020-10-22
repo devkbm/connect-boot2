@@ -50,18 +50,13 @@ public class DeptService {
 	
 	public void saveDept(DeptDTO.SaveDept dto) {
 		Dept dept = deptRepository.getDept(dto.getDeptCode());
-		Dept parentDept = null;
-		
-		if (dto.getParentDeptCode() != null) {
-			parentDept = deptRepository.getDept(dto.getParentDeptCode());
-		}
+		Dept parentDept = dto.getParentDeptCode() == null ? null : deptRepository.getDept(dto.getParentDeptCode()); 			
 		
 		if (dept == null) {
 			dept = dto.newDept(parentDept);
 		} else {
 			dto.modifyDept(dept, parentDept);
-		}
-				
+		}				
 		
 		deptRepository.saveDept(dept);
 	}
