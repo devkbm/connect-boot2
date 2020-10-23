@@ -8,9 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.util.StringUtils;
 
 import com.like.hrm.code.domain.model.HrmTypeDetailCode;
-import com.like.hrm.code.domain.model.QHrmType;
 import com.like.hrm.code.domain.model.QHrmTypeDetailCode;
-import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 

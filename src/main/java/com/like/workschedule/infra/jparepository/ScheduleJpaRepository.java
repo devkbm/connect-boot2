@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.google.common.collect.Lists;
 import com.like.workschedule.boundary.ScheduleDTO;
 import com.like.workschedule.boundary.WorkDTO;
-import com.like.workschedule.domain.model.QSchedule;
 import com.like.workschedule.domain.model.QWorkGroup;
 import com.like.workschedule.domain.model.QWorkGroupMember;
 import com.like.workschedule.domain.model.Schedule;
@@ -20,9 +19,6 @@ import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.infra.jparepository.springdata.JpaSchedule;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroup;
 import com.like.workschedule.infra.jparepository.springdata.JpaWorkGroupMember;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -41,8 +37,7 @@ public class ScheduleJpaRepository implements ScheduleRepository {
 	private JpaSchedule jpaSchedule;	
 	
 	private final QWorkGroup qWorkGroup = QWorkGroup.workGroup;
-	private final QWorkGroupMember qWorkGroupMember = QWorkGroupMember.workGroupMember;
-	private final QSchedule qSchedule = QSchedule.schedule;
+	private final QWorkGroupMember qWorkGroupMember = QWorkGroupMember.workGroupMember;	
 	
 	@Override
 	public List<WorkGroup> getWorkGroupList(WorkDTO.SearchWorkGroup searchCondition) {

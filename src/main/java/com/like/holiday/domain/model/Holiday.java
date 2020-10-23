@@ -21,6 +21,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "COMHOLIDAY")
 @Entity
 public class Holiday extends AuditEntity implements Serializable {	
+	
+	private static final long serialVersionUID = -1170840034409404138L;
 
 	@Id	
 	@Column(name="HOLIDAY_DT")

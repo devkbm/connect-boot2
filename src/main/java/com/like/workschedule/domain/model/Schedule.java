@@ -1,6 +1,5 @@
 package com.like.workschedule.domain.model;
 
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
@@ -32,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "GRWSCHEDULE")
 @EntityListeners(AuditingEntityListener.class)
-public class Schedule extends AuditEntity implements Serializable {
+public class Schedule extends AuditEntity {	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

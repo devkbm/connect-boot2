@@ -1,8 +1,5 @@
 package com.like.hrm.appointment.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,9 +13,6 @@ import com.like.hrm.appointment.domain.model.Ledger;
 import com.like.hrm.appointment.domain.model.LedgerList;
 import com.like.hrm.appointment.domain.repository.AppointmentLedgerRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 @Transactional
 public class AppointmentService {

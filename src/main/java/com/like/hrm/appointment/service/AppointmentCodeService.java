@@ -1,7 +1,5 @@
 package com.like.hrm.appointment.service;
 
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;

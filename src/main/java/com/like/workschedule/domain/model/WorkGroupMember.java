@@ -1,7 +1,5 @@
 package com.like.workschedule.domain.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -26,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @IdClass(WorkGroupMemberId.class)
 @Table(name = "GRWWORKGROUPUSER")
-public class WorkGroupMember extends AuditEntity implements Serializable {
+public class WorkGroupMember extends AuditEntity {
 	
 	@JsonBackReference
 	@Id	

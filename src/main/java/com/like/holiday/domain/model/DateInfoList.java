@@ -2,6 +2,7 @@ package com.like.holiday.domain.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,8 +24,10 @@ public class DateInfoList {
 		return this.dates.get(date);
 	}
 	
-	public List<DateInfo> getDates() {
-		return new ArrayList<>(this.dates.values());
+	public List<DateInfo> getDates() {	
+		List<DateInfo> list = new ArrayList<>(this.dates.values());
+		Collections.sort(list, (e1, e2) -> e1.getDate().compareTo(e2.getDate()));
+		return list;
 	}
 		
 	public int size() {

@@ -7,15 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.util.WebControllerUtil;
-import com.like.hrm.code.boundary.HrmTypeDTO;
-import com.like.hrm.code.boundary.HrmTypeDetailCodeDTO;
 import com.like.hrm.code.domain.repository.HrmCodeRepository;
-import com.like.hrm.code.service.HrmCodeQueryService;
-import com.like.hrm.code.service.HrmCodeService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 public class HrmCodeValidController {
 	

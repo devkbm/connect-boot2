@@ -4,16 +4,11 @@ import java.io.Serializable;
 
 import org.springframework.util.StringUtils;
 
-
-import com.like.hrm.code.domain.model.HrmRelationCode;
 import com.like.hrm.code.domain.model.QHrmRelationCode;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 public class HrmRelationCodeDTO {
 
