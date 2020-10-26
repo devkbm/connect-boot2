@@ -39,7 +39,7 @@ public class HolidayController {
 	public ResponseEntity<?> getHolidayList(@PathVariable(value="fromDate") @DateTimeFormat(pattern="yyyyMMdd") LocalDate fromDate
 										   ,@PathVariable(value="toDate") @DateTimeFormat(pattern="yyyyMMdd") LocalDate toDate) {
 		
-		List<DateInfo> list = holidayUtilService.getDateInfoList(fromDate, toDate).getDates();			
+		List<DateInfo> list = holidayUtilService.getDateInfos(fromDate, toDate).getDates();			
 					
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())

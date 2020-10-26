@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.vo.Period;
 import com.like.holiday.domain.model.DateInfo;
 import com.like.holiday.domain.model.DateInfoList;
@@ -23,7 +27,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +63,7 @@ public class DutyApplicationDTO {
 		
 	}
 	
+	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	@Data
 	@Builder
@@ -136,15 +143,23 @@ public class DutyApplicationDTO {
 					
 	}
 		
-	@ToString
-	@Data	
+	
+	@JsonAutoDetect(isGetterVisibility = Visibility.ANY)	
+	@ToString(includeFieldNames = true)
+	@Getter
+	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class DutyDate implements Serializable {
-		
+				
+		private static final long serialVersionUID = 5742215979107207193L;
+
 		LocalDate date;
 		
+		@JsonProperty(value = "isSelected")
 		boolean isSelected;
 		
+		@JsonProperty(value = "isHoliday")
 		boolean isHoliday;
 		
 		public static List<DutyDate> convertDutyDate(DateInfoList dateInfoList) {

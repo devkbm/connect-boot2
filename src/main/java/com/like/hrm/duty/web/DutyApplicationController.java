@@ -72,6 +72,7 @@ public class DutyApplicationController {
 						
 		DutyApplicationDTO.SaveDutyApplication dto = DutyApplicationDTO.SaveDutyApplication.convert(entity, holidayUtilService);			
 		
+		log.info(dto.toString());
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
