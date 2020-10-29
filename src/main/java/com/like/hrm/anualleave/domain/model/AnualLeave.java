@@ -6,17 +6,22 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
+import javax.persistence.EmbeddedId;
+
 /**
  * 직원 연차 클래스
- *
+ * 
+ * 연차 계산 로직 
+ *   - 1. 1년 초과 근무자는 15개 연차 발생.
+ *   - 2. 1년 미만 또는 출근율 80% 미만 근무자는 월만근갯수당 1개씩 연차발생
+ *   - 3. 1년 초과후 2년마다 1개씩 누진 연차 발생
+ * 제약조건
+ *   - 1. 연차발생갯수는 25개를 초과할 수 없다.
  */
 public class AnualLeave {
-
-	// 귀속년도
-	Integer yyyy;
-		
-	// 사원번호
-	String empId;
+	
+	@EmbeddedId
+	AnualLeaveId id;
 			
 	// 연차기준일(입사일)
 	LocalDate base;
@@ -48,13 +53,11 @@ public class AnualLeave {
 	// 비고
 	String comment;
 	
-	public AnualLeave(Integer yyyy
-					 ,String empId
+	public AnualLeave(AnualLeaveId id
 					 ,LocalDate base 					 
 					 ,LocalDate from
 					 ,LocalDate to) {
-		this.yyyy = yyyy;
-		this.empId = empId;
+		this.id = id;
 		this.base = base;		
 		this.from = from;
 		this.to = to;			
@@ -127,8 +130,7 @@ public class AnualLeave {
 	}
 	
 	public static void main(String[] args) {
-		AnualLeave a = new AnualLeave(2021
-									 ,"111"
+		AnualLeave a = new AnualLeave(new AnualLeaveId(2021, "1111")
 									 ,LocalDate.of(2020, 1, 1)
 									 ,LocalDate.of(2026, 1, 1)
 									 ,LocalDate.of(2026, 12, 31));
