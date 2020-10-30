@@ -24,6 +24,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * <p> 직원정보 </p>
+ * 
+ * @author CB457
+ *
+ */
 //@JsonIgnoreProperties(ignoreUnknown = true, value = {"deptHistory","jobHistory"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

@@ -8,16 +8,19 @@ import java.time.temporal.ChronoUnit;
 
 import javax.persistence.EmbeddedId;
 
+import lombok.Getter;
+
 /**
- * 직원 연차 클래스
+ * <p>직원 연차 클래스</p>
  * 
- * 연차 계산 로직 
- *   - 1. 1년 초과 근무자는 15개 연차 발생.
- *   - 2. 1년 미만 또는 출근율 80% 미만 근무자는 월만근갯수당 1개씩 연차발생
- *   - 3. 1년 초과후 2년마다 1개씩 누진 연차 발생
- * 제약조건
- *   - 1. 연차발생갯수는 25개를 초과할 수 없다.
+ * 연차 계산 로직 <br>
+ *   - 1. 1년 초과 근무자는 15개 연차 발생. <br>
+ *   - 2. 1년 미만 또는 출근율 80% 미만 근무자는 월만근갯수당 1개씩 연차발생 <br>
+ *   - 3. 1년 초과후 2년마다 1개씩 누진 연차 발생 <br>
+ * 제약조건 <br>
+ *   - 1. 연차발생갯수는 25개를 초과할 수 없다. <br>
  */
+@Getter
 public class AnualLeave {
 	
 	@EmbeddedId

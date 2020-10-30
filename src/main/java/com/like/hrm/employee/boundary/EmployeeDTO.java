@@ -2,13 +2,11 @@ package com.like.hrm.employee.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
@@ -18,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.like.hrm.employee.domain.model.SchoolCareer;
 import com.like.hrm.employee.domain.model.StatusChangeHistory;
-import com.like.hrm.duty.boundary.DutyApplicationDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.hrm.employee.domain.model.Family;

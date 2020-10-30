@@ -32,6 +32,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "HRMEMPSTATUSHISTORY")
 @EntityListeners(AuditingEntityListener.class)
 public class StatusChangeHistory extends AuditEntity implements Serializable {
+	
+	private static final long serialVersionUID = -5019024388179398823L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
