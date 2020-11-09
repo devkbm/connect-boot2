@@ -320,3 +320,23 @@ create table HRMDUTYCODERULE (
 	constraint fk_hrmdutycoderule1 foreign key(DUTY_CODE) references HRMDUTYCODE(DUTY_CODE),
 	constraint fk_hrmdutycoderule2 foreign key(FK_LIMIT_ID) references HRMDUTYAPPLICATIONLIMIT(LIMIT_ID)
 ) COMMENT = '근무코드정책정보';
+
+create table if not exists COM.HRMANUALLEAVE (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    YYYY					INT				NOT NULL	COMMENT '귀속년도',
+    EMP_ID					VARCHAR(20)		NOT NULL	COMMENT '사원번호',
+    BASE_DT					DATETIME		NOT NULL   	COMMENT '기준일',
+    FROM_DT					DATETIME	 	NOT NULL 	COMMENT '연차시작일',
+	TO_DT					DATETIME 		NOT NULL 	COMMENT '연차종료일',
+	TOTAL_WORK_DAYS			INT				NULL 		COMMENT '총근무일수',
+	EXCEPT_DAYS				INT				NULL 		COMMENT '총근무일수',
+	CNT						DECIMAL(16,5)	NULL 		COMMENT '발생갯수',		
+	ADD_CNT					DECIMAL(16,5)	NULL 		COMMENT '가산갯수',
+	USE_CNT					DECIMAL(16,5)	NULL 		COMMENT '사용갯수',
+	INTRA_ANUAL				BOOLEAN			NULL 		COMMENT '총근무일수',	
+	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
+	constraint pk_hrmanualleave primary key(YYYY,EMP_ID)	
+) COMMENT = '직원연차정보';

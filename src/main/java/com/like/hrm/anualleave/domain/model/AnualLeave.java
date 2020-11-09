@@ -6,9 +6,17 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+import com.like.common.domain.AuditEntity;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>직원 연차 클래스</p>
@@ -21,39 +29,53 @@ import lombok.Getter;
  *   - 1. 연차발생갯수는 25개를 초과할 수 없다. <br>
  */
 @Getter
-public class AnualLeave {
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Table(name = "HRMANUALLEAVE")
+@Entity
+public class AnualLeave extends AuditEntity {
 	
 	@EmbeddedId
 	AnualLeaveId id;
 			
 	// 연차기준일(입사일)
+	@Column(name="BASE_DT")
 	LocalDate base;
 	
 	// 사용 시작일자
+	@Column(name="FROM_DT")
 	LocalDate from;
 	
 	// 사용 종료일자
+	@Column(name="TO_DT")
 	LocalDate to;
 	
 	// 발생갯수
+	@Column(name="CNT")
 	double cnt;
 	
 	// 가산갯수
+	@Column(name="ADD_CNT")
 	double add_cnt;
 	
 	// 사용갯수
+	@Column(name="USE_CNT")
 	double use_cnt;
 	
 	// 총근무일수
+	@Column(name="TOTAL_WORK_DAYS")
 	long total_work_days;
 	
 	// 제외근무일수
+	@Column(name="EXCEPT_DAYS")
 	long except_days;
 
 	// 1년 미만 여부
+	@Column(name="INTRA_ANUAL")
 	Boolean isIntraAnual;
 	
 	// 비고
+	@Column(name="CMT")
 	String comment;
 	
 	public AnualLeave(AnualLeaveId id
@@ -64,6 +86,14 @@ public class AnualLeave {
 		this.base = base;		
 		this.from = from;
 		this.to = to;			
+	}
+	
+	public void modify(LocalDate base 					 
+					  ,LocalDate from
+					  ,LocalDate to) {
+		this.base = base;
+		this.from = from;
+		this.to = to;
 	}
 			
 	/**

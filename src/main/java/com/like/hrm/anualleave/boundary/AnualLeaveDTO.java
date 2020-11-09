@@ -52,7 +52,7 @@ public class AnualLeaveDTO {
 		}
 		
 		public void modifyEntity(AnualLeave entity) {
-								
+			entity.modify(base, from, to);
 		}
 		
 		public static SaveAnualLeave convertDTO(AnualLeave entity) {
