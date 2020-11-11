@@ -22,6 +22,14 @@ import com.like.common.domain.AuditEntity;
 import com.like.common.util.SessionUtil;
 import com.like.file.domain.model.FileInfo;
 
+/**
+ * <p>게시글 클래스</p>
+ * 
+ * [상세내용] <br>
+ *   1. <br>
+ * [제약조건] <br>
+ *   1. <br>
+ */
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

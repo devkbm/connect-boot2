@@ -19,6 +19,14 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 
+/**
+ * <p>게시판 클래스</p>
+ * 
+ * [상세내용] <br>
+ *   1. <br>
+ * [제약조건] <br>
+ *   1. <br>
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

@@ -14,16 +14,16 @@ import com.like.board.infra.jparepository.springdata.JpaBoardBookmark;
 @Repository
 public class BoardBookmarkJpaRepository implements BoardBookmarkRepository {
 
-	private JpaBoardBookmark jpaBoardBookmark;
+	private final QBoardBookmark q = QBoardBookmark.boardBookmark;
 	
+	private JpaBoardBookmark jpaBoardBookmark;
+		
 	public BoardBookmarkJpaRepository(JpaBoardBookmark jpaBoardBookmark) {
 		this.jpaBoardBookmark = jpaBoardBookmark;
 	}
 	
 	@Override
-	public List<BoardBookmark> getBookmarkList(String userId) {
-		QBoardBookmark q = QBoardBookmark.boardBookmark;
-		
+	public List<BoardBookmark> getBookmarkList(String userId) {				
 		return Lists.newArrayList(jpaBoardBookmark.findAll(q.userId.eq(userId), new QSort(q.seq.asc())));
 	}
 

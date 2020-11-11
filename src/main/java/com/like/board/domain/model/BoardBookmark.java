@@ -17,6 +17,14 @@ import com.like.common.domain.AuditEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * <p>게시판 즐겨찾기 클래스</p>
+ * 
+ * [상세내용] <br>
+ *   1. <br>
+ * [제약조건] <br>
+ *   1. <br>
+ */
 @Getter
 @NoArgsConstructor
 @Entity

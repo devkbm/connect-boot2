@@ -42,11 +42,7 @@ public class BoardCommandService {
 
 	public void saveBoard(BoardDTO.SaveBoard dto) {			
 		Board board = null;			
-		Board parentBoard = null;
-		
-		if (dto.getPpkBoard() != null) {
-			parentBoard = boardRepository.getBoard(dto.getPpkBoard());
-		}
+		Board parentBoard = dto.getPpkBoard() != null ? boardRepository.getBoard(dto.getPpkBoard()) : null;			
 																
 		if (dto.getPkBoard() == null) {
 			board = dto.newBoard(parentBoard);

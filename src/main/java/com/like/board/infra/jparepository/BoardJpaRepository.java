@@ -1,9 +1,7 @@
 package com.like.board.infra.jparepository;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.BoardRepository;
@@ -17,19 +15,21 @@ import com.like.board.domain.model.*;
 
 @Repository
 public class BoardJpaRepository implements BoardRepository {
-				
-	@Autowired
-	private JPAQueryFactory  queryFactory;
 	
-	@Autowired
+	private final QBoard qBoard = QBoard.board;
+	
+	private JPAQueryFactory queryFactory;
+		
 	private JpaBoard jpaBoard;
-				
-	private final QBoard qBoard = QBoard.board;		
 		
-	public Board getBoard(Long id) {
-		Optional<Board> entity = jpaBoard.findById(id);
+	public BoardJpaRepository(JPAQueryFactory queryFactory
+							 ,JpaBoard jpaBoard) {
+		this.queryFactory = queryFactory;
+		this.jpaBoard = jpaBoard;
+	}		
 		
-		return entity.isPresent() ? entity.get() : null;
+	public Board getBoard(Long id) {				
+		return jpaBoard.findById(id).orElse(null);
 	}
 	
 	public List<Board> getBoardList(Predicate condition) {		

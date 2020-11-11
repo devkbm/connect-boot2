@@ -23,6 +23,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * <p>게시글 첨부파일 클래스</p>
+ * 
+ * [상세내용] <br>
+ *   1. <br>
+ * [제약조건] <br>
+ *   1. <br>
+ */
 @ToString(exclude= {"article","fileInfo"})
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"article","fileInfo"})

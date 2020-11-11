@@ -12,6 +12,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.like.common.domain.AuditEntity;
 
+/**
+ * <p>게시글 조회여부 클래스</p>
+ * 
+ * [상세내용] <br>
+ *   1. <br>
+ * [제약조건] <br>
+ *   1. <br>
+ */
 @JsonAutoDetect
 @Getter
 @Entity

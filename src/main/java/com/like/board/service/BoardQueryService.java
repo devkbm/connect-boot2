@@ -3,8 +3,6 @@ package com.like.board.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +17,20 @@ import com.like.board.infra.mapper.BoardMapper;
 @Service
 @Transactional(readOnly=true)
 public class BoardQueryService {
-
-	@Resource(name="boardJpaRepository")
+	
 	private BoardRepository boardRepository;
-    
-    @Resource(name="articleJpaRepository")
+        
 	private ArticleRepository articleRepository;
-    
-    @Resource(name="boardMapper")
+        
     private BoardMapper boardMapper;
+    
+    public BoardQueryService(BoardRepository boardRepository
+    						,ArticleRepository articleRepository
+    						,BoardMapper boardMapper) {
+    	this.boardRepository = boardRepository;
+    	this.articleRepository = articleRepository;
+    	this.boardMapper = boardMapper;
+    }
     
     public Board getBoard(Long id) {
     	return boardRepository.getBoard(id);

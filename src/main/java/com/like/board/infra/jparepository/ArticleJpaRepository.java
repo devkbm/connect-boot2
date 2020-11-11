@@ -3,7 +3,8 @@ package com.like.board.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Repository;
 
 import com.like.board.domain.repository.ArticleRepository;
@@ -21,23 +22,29 @@ import com.like.board.domain.model.*;
 
 @Repository
 public class ArticleJpaRepository implements ArticleRepository {
-				
-	@Autowired
-	private JPAQueryFactory  queryFactory;	
 	
-	@Autowired
-	private JpaArticle jpaArticle;
-	
-	@Autowired
-	private JpaArticleCheck jpaArticleCheck;
-	
-	@Autowired
-	private JpaAttachedFile jpaAttachedFile;
-			
 	private final QArticle qArticle = QArticle.article;
 	private final QArticleCheck qArticleCheck = QArticleCheck.articleCheck;
 	private final QFileInfo qFileInfo = QFileInfo.fileInfo;
 	private final QAttachedFile qAttachedFile = QAttachedFile.attachedFile;
+	
+	private JPAQueryFactory  queryFactory;	
+		
+	private JpaArticle jpaArticle;
+		
+	private JpaArticleCheck jpaArticleCheck;
+		
+	private JpaAttachedFile jpaAttachedFile;
+	
+	public ArticleJpaRepository(JPAQueryFactory queryFactory
+							   ,JpaArticle jpaArticle
+							   ,JpaArticleCheck jpaArticleCheck
+							   ,JpaAttachedFile jpaAttachedFile) {
+		this.queryFactory = queryFactory;
+		this.jpaArticle = jpaArticle;
+		this.jpaArticleCheck = jpaArticleCheck;
+		this.jpaAttachedFile = jpaAttachedFile;
+	}			
 
 	public ArticleCheck findFkarticleAndSysuser(Long fkarticle, String userId) {
 									
@@ -47,21 +54,18 @@ public class ArticleJpaRepository implements ArticleRepository {
 					.fetchOne();				
 	}
 		
-	public Article getArticle(Long id) {	
-		Optional<Article> entity = jpaArticle.findById(id);
-		
-		return entity.orElse(null);
-		
+	public Article getArticle(Long id) {					
+		return jpaArticle.findById(id).orElse(null);		
 	}
 			
 	public List<Article> getArticleList(Long fkBoard) { 			
 				
 		return queryFactory.select(qArticle)
-							.from(qArticle)	
-							.leftJoin(qArticle.files, qAttachedFile)
-							.fetchJoin()
-							.where(qArticle.board.pkBoard.eq(fkBoard))							
-							.fetch();				
+						   .from(qArticle)	
+						   .leftJoin(qArticle.files, qAttachedFile)
+						   .fetchJoin()
+						   .where(qArticle.board.pkBoard.eq(fkBoard))							
+						   .fetch();				
 	}
 	
 	public List<Article> getArticleList(Predicate condition) { 	
@@ -105,14 +109,7 @@ public class ArticleJpaRepository implements ArticleRepository {
 	
 	public void deleteArticle(List<Article> articleList) {
 		jpaArticle.deleteAll(articleList);
-	}
-	
-	private void deleteArticleCheck(Long fkArticle) {
-		queryFactory
-			.delete(qArticleCheck)
-			.where(qArticleCheck.article.pkArticle.eq(fkArticle))
-			.execute();					
-	}
+	}	
 	
 	public ArticleCheck getArticleCheck(Long fkarticle, String userId) {				
 					
@@ -138,23 +135,20 @@ public class ArticleJpaRepository implements ArticleRepository {
 		return rtn + 1;		
 	}
 	
-	public Article updateArticleHitCnt(Long pkAriticle, String userId) {				
+	public Article updateArticleHitCnt(Long pkAriticle, String userId) {										
 				
-		Optional<Article> entity = jpaArticle.findById(pkAriticle);		
-				
-		Article article = entity.get();
+		Article article = jpaArticle.findById(pkAriticle).orElse(null);
+		
+		if (article == null) 
+			throw new EntityNotFoundException(pkAriticle + " 존재하지 않습니다.");
 		
 		article.updateHitCnt();
 		
 		jpaArticle.save(article);
 				
-		ArticleCheck check = queryFactory
-									.selectFrom(qArticleCheck)
-									.where(qArticleCheck.article.pkArticle.eq(pkAriticle)
-									  .and(qArticleCheck.createdBy.eq(userId)))
-									.fetchOne();
+		ArticleCheck check = this.getArticleCheck(pkAriticle, userId);
 		
-		if ( check == null) {
+		if (check == null) {
 			check = new ArticleCheck(article);				
 		}				
 		
@@ -166,13 +160,11 @@ public class ArticleJpaRepository implements ArticleRepository {
 	}
 	
 	public List<FileInfo> getFileInfoList(Long pkArticle) {
-		
-		
+				
 		Optional<Article> entity = jpaArticle.findById(pkArticle);
 		
 		return entity.isPresent() ? entity.get().getAttachedFileInfoList() : null;
 	}
-	
 	
 	
 	/**
@@ -186,6 +178,6 @@ public class ArticleJpaRepository implements ArticleRepository {
 		} else if (article.getSeq() == 0 ) {
 			article.setSeq(1);
 		}
-	}
+	}	
 	
 }
