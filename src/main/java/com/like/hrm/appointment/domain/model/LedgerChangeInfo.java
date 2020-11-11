@@ -29,6 +29,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * <p>발령대장 명단 변경 정보</p> 
+ * [상세] <br/>
+ * 1. <br/>
+ * [제약사항] <br/>
+ * 1. <br/>
+ */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper=true, includeFieldNames=true, exclude = {"ledgerList"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

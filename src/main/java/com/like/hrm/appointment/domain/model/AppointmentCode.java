@@ -28,7 +28,7 @@ import lombok.ToString;
 /**
  * <p>발령 코드 기준 정보</p> 
  * [상세] <br/>
- * 1. 
+ * 1.
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

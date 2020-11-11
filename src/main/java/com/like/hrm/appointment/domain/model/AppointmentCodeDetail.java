@@ -28,7 +28,9 @@ import lombok.NoArgsConstructor;
 /**
  * <p>발령 코드 상세 정보</p> 
  * [상세] <br/>
- * 1. 식별자 : 발령코드 + 변경유형 + 변경유형상세
+ * 1. 식별자 : 발령코드 + 변경유형 + 변경유형상세 <br/>
+ * [제약사항] <br/>
+ * 1. 식별자가 발령코드, 변경유형, 변경유형상세로 구성되어있기 때문에 변경시 기존 코드 삭제후 재등록한다.
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
