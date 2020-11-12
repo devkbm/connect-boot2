@@ -3,7 +3,6 @@ package com.like.todo.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.todo.domain.model.QTask;
@@ -21,24 +20,26 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 @Repository
 public class TaskJpaRepository implements TaskRepository {
 
-	@Autowired
+	private final QTaskGroup qTaskGroup = QTaskGroup.taskGroup;	
+	private final QTask qTask =  QTask.task1;
+		
 	private JPAQueryFactory  queryFactory;
-	
-	@Autowired
+		
 	private JpaTaskGroup jpaTaskGroup;
-	
-	@Autowired
+		
 	private JpaTask jpaTask;
 	
-	private final QTaskGroup qTaskGroup = QTaskGroup.taskGroup;
-	
-	private final QTask qTask =  QTask.task1;
+	public TaskJpaRepository(JPAQueryFactory queryFactory
+							,JpaTaskGroup jpaTaskGroup
+							,JpaTask jpaTask) {
+		this.queryFactory = queryFactory;
+		this.jpaTaskGroup = jpaTaskGroup;
+		this.jpaTask = jpaTask;
+	}
 	
 	@Override
-	public TaskGroup getTaskGroup(Long pkTaskGroup) {
-		Optional<TaskGroup> entity = jpaTaskGroup.findById(pkTaskGroup);
-		
-		return entity.orElse(null);
+	public TaskGroup getTaskGroup(Long pkTaskGroup) {			
+		return jpaTaskGroup.findById(pkTaskGroup).orElse(null);
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class TaskJpaRepository implements TaskRepository {
 	@Override
 	public List<TaskGroup> getTaskGroupList(String userId) {		
 		return queryFactory.selectFrom(qTaskGroup)
-				.where(qTaskGroup.modifiedBy.eq(userId))
-				.fetch();				
+						   .where(qTaskGroup.modifiedBy.eq(userId))
+						   .fetch();				
 	}
 
 	@Override
@@ -75,8 +76,7 @@ public class TaskJpaRepository implements TaskRepository {
 
 	@Override
 	public Task getTask(Long pkTask) {
-		Optional<Task> entity = jpaTask.findById(pkTask);
-		return entity.orElse(null);
+		return jpaTask.findById(pkTask).orElse(null);
 	}
 
 	@Override
@@ -106,7 +106,5 @@ public class TaskJpaRepository implements TaskRepository {
 	public void deleteTask(Long pkTask) {
 		jpaTask.deleteById(pkTask);
 	}
-
-	
 
 }

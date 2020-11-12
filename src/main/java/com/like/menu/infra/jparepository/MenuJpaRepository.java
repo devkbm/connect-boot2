@@ -3,7 +3,6 @@ package com.like.menu.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.like.menu.boundary.MenuDTO;
@@ -30,22 +29,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Repository
 public class MenuJpaRepository implements MenuRepository {
-				
-	@Autowired
-	private JPAQueryFactory	queryFactory;
-	
-	@Autowired
-	private JpaMenuGroup jpaMenuGroup;
-	
-	@Autowired
-	private JpaMenu jpaMenu;
-	
-	@Autowired
-	private JpaWebResource jpaWebResource;
-	
+
 	private final QMenuGroup qMenuGroup = QMenuGroup.menuGroup;	
 	private final QMenu qMenu = QMenu.menu;	
 	private final QWebResource qWebResource = QWebResource.webResource;
+		
+	private JPAQueryFactory	queryFactory;
+		
+	private JpaMenuGroup jpaMenuGroup;
+		
+	private JpaMenu jpaMenu;
+		
+	private JpaWebResource jpaWebResource;
+	
+	public MenuJpaRepository(JPAQueryFactory queryFactory
+							,JpaMenuGroup jpaMenuGroup
+							,JpaMenu jpaMenu
+							,JpaWebResource jpaWebResource) {
+		this.queryFactory = queryFactory;
+		this.jpaMenuGroup = jpaMenuGroup;
+		this.jpaMenu = jpaMenu;
+		this.jpaWebResource = jpaWebResource;
+	}
 
 	@Override
 	public MenuGroup getMenuGroup(String menuGroupCode) {

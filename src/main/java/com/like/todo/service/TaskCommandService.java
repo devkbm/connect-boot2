@@ -2,8 +2,6 @@ package com.like.todo.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +12,12 @@ import com.like.todo.domain.repository.TaskRepository;
 @Service
 @Transactional
 public class TaskCommandService {
-	
-	@Resource(name="taskJpaRepository")
+		
 	private TaskRepository taskRepository;
+	
+	public TaskCommandService(TaskRepository taskRepository) {
+		this.taskRepository = taskRepository;		
+	}
 	
 	public void newTaskGroup() {
 		TaskGroup taskGroup = new TaskGroup("기본 일정");

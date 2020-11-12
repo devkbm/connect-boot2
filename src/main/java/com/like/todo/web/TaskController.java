@@ -2,7 +2,6 @@ package com.like.todo.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +23,17 @@ import com.like.todo.service.TaskQueryService;
 
 @RestController
 public class TaskController {
-
-	@Resource
-	private TaskQueryService taskQueryService;
 	
-	@Resource
+	private TaskQueryService taskQueryService;
+		
 	private TaskCommandService taskCommandService;
 
+	public TaskController(TaskQueryService taskQueryService
+						 ,TaskCommandService taskCommandService) {
+		this.taskQueryService = taskQueryService;
+		this.taskCommandService = taskCommandService;
+	}
+	
 	@RequestMapping(value={"/todo/taskgroups"}, method=RequestMethod.GET) 
 	public ResponseEntity<?> getTaskGroupList(@RequestParam(value="userId", required=true) String userId) {
 			
