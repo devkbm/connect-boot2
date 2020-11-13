@@ -1,4 +1,4 @@
-package com.like.todo.domain.repository.dto;
+package com.like.todo.boundary;
 
 import java.time.LocalDate;
 

@@ -1,10 +1,9 @@
 package com.like.todo.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.like.todo.boundary.TaskDTO;
 import com.like.todo.domain.model.Task;
 import com.like.todo.domain.model.TaskGroup;
 import com.like.todo.domain.repository.TaskRepository;
@@ -24,28 +23,33 @@ public class TaskCommandService {
 		taskRepository.saveTaskGroup(taskGroup);
 	}
 	
-	public void saveTaskGroup(TaskGroup taskGroup) {
+	public void saveTaskGroup(TaskDTO.SaveTaskGroup dto) {
+		TaskGroup entity = taskRepository.getTaskGroup(dto.getPkTaskGroup());
+		
+		entity.modify(dto.getTaskGroupName());
+		
+		taskRepository.saveTaskGroup(entity);	
+	}	
+		
+	public void deleteTaskGroup(Long pkTaskGroup) {
+		taskRepository.deleteTaskGroup(pkTaskGroup);
+	}	
+	
+	public void saveTask(TaskDTO.SaveTask dto) {
+		TaskGroup taskGroup = taskRepository.getTaskGroup(dto.getPkTaskGroup());
+		Task entity = null;
+		if (dto.getPkTask() == null) {
+			entity = dto.newEntity(taskGroup);
+		} else {
+			entity = taskGroup.getTask(dto.getPkTask());
+			dto.modifyEntity(entity);
+		}
+		
 		taskRepository.saveTaskGroup(taskGroup);
 	}
 	
-	public void saveTaskGroup(List<TaskGroup> taskGroupList) {
-		taskRepository.saveTaskGroup(taskGroupList);
+	public void deleteTask(Long pkTaskGroup, Long pkTask) {
+		TaskGroup taskGroup = taskRepository.getTaskGroup(pkTaskGroup);	
+		taskGroup.removeTask(pkTask);
 	}
-	
-	public void deleteTaskGroup(Long pkTaskGroup) {
-		taskRepository.deleteTaskGroup(pkTaskGroup);
-	}
-	
-	public void deleteTaskGroup(List<TaskGroup> taskGroupList) {
-		taskRepository.deleteTaskGroup(taskGroupList);
-	}
-
-	public void saveTask(Task task) {
-		taskRepository.saveTask(task);
-	}
-	
-	public void deleteTask(Long pkTask) {
-		taskRepository.deleteTask(pkTask);
-	}
-
 }

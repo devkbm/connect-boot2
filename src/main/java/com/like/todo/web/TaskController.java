@@ -1,23 +1,24 @@
 package com.like.todo.web;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.common.util.SessionUtil;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.todo.boundary.TaskDTO;
+import com.like.todo.domain.model.Task;
 import com.like.todo.domain.model.TaskGroup;
-import com.like.todo.domain.repository.dto.TaskQueryDTO;
-import com.like.todo.domain.repository.dto.TaskResultListDTO;
 import com.like.todo.service.TaskCommandService;
 import com.like.todo.service.TaskQueryService;
 
@@ -33,97 +34,88 @@ public class TaskController {
 		this.taskQueryService = taskQueryService;
 		this.taskCommandService = taskCommandService;
 	}
-	
-	@RequestMapping(value={"/todo/taskgroups"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getTaskGroupList(@RequestParam(value="userId", required=true) String userId) {
-			
-		ResponseEntity<?> result = null;
-		int resultSize = 0;		
 		
-		List<TaskGroup> list = taskQueryService.getTaskGroupList(userId);
-		resultSize = list.size();
-			
-		result = WebControllerUtil.getResponse(list, 
-				resultSize, 
-				true, 
-				String.format("%d 건 조회되었습니다.", resultSize), 
-				HttpStatus.OK); 					
-		
-		return result;
-	}	
-	
-	@RequestMapping(value={"/todo/taskgroups/new"}, method={RequestMethod.GET})
-	public ResponseEntity<?> newTaskGroup() {
-			
-		ResponseEntity<?> res = null;
+	@GetMapping("/todo/taskgroup/mylist")
+	public ResponseEntity<?> getTaskGroupList() {
 						
-		taskCommandService.newTaskGroup();
-								
-		res = WebControllerUtil.getResponse(null,
-				1, 
-				true, 
-				"생성되었습니다.", 
-				HttpStatus.OK);
+		String userId = SessionUtil.getUserId();
 		
+		List<TaskGroup> list = taskQueryService.getTaskGroupList(userId);			 					
+		
+		return WebControllerUtil.getResponse(list
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}	
+		
+	@PostMapping("/todo/taskgroup/new")
+	public ResponseEntity<?> newTaskGroup() {
+										
+		taskCommandService.newTaskGroup();										
 								 					
-		return res;
+		return WebControllerUtil.getResponse(null
+										    ,"생성되었습니다."
+										    ,HttpStatus.OK);
 	}
-	
-	@RequestMapping(value={"/todo/taskgroups"}, method={RequestMethod.POST,RequestMethod.PUT})
-	public ResponseEntity<?> saveTaskGroupList(@RequestBody List<TaskGroup> taskGroupList, BindingResult result) {
-			
-		ResponseEntity<?> res = null;
 		
+	@PostMapping("/todo/taskgroup")
+	public ResponseEntity<?> saveTaskGroup(@RequestBody TaskDTO.SaveTaskGroup dto, BindingResult result) {
+							
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {
+		} 
 			
-			taskCommandService.saveTaskGroup(taskGroupList);
-									
-			res = WebControllerUtil.getResponse(null,
-					taskGroupList.size(), 
-					true, 
-					String.format("%d 건 저장되었습니다.", taskGroupList.size()), 
-					HttpStatus.OK);
-		}
-								 					
-		return res;
+		taskCommandService.saveTaskGroup(dto);
+																				 			
+		return WebControllerUtil.getResponse(null
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+		
+	@DeleteMapping("/todo/taskgroup/{id}")
+	public ResponseEntity<?> deleteTerm(@PathVariable("id") Long id) {							
+			
+		taskCommandService.deleteTaskGroup(id);
+											 				
+		return WebControllerUtil.getResponse(null
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+		
+	@GetMapping("/todo/taskgroup/{id}/task")
+	public ResponseEntity<?> getTaskList(@PathVariable("id") Long id) {				
+		
+		List<Task> list = taskQueryService.getTaskGroup(id).getTaskList();
+		
+		List<TaskDTO.SaveTask> dtoList = list.stream().map(e -> TaskDTO.SaveTask.convert(e)).collect(Collectors.toList()); 											
+		
+		return WebControllerUtil.getResponse(dtoList
+											,String.format("%d 건 조회되었습니다.", dtoList.size())
+											,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/todo/taskgroups"}, method={RequestMethod.DELETE})
-	public ResponseEntity<?> deleteTerm(@RequestBody List<TaskGroup> taskGroupList, BindingResult result) {
-			
-		ResponseEntity<?> res = null;
-		
+	@PostMapping("/todo/taskgroup/task")
+	public ResponseEntity<?> saveTask(@RequestBody TaskDTO.SaveTask dto, BindingResult result) {
+							
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
-		} else {
+		} 
 			
-			taskCommandService.deleteTaskGroup(taskGroupList);
-									
-			res = WebControllerUtil.getResponse(null,
-					taskGroupList.size(), 
-					true, 
-					String.format("%d 건 삭제되었습니다.", taskGroupList.size()), 
-					HttpStatus.OK);
-		}
-								 					
-		return res;
+		taskCommandService.saveTask(dto);
+																				 			
+		return WebControllerUtil.getResponse(null
+											,String.format("%d 건 저장되었습니다.", 1)
+											,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/todo/tasks"}, method=RequestMethod.GET) 
-	public ResponseEntity<?> getTaskList(@ModelAttribute TaskQueryDTO taskQueryDTO) {
+	@DeleteMapping("/todo/taskgroup/{id}/task/{id2}")
+	public ResponseEntity<?> deleteTask(@PathVariable("id") Long id
+									   ,@PathVariable("id") Long id2) {							
 			
-		ResponseEntity<?> result = null;
-		
-		List<TaskResultListDTO> list = taskQueryService.getTaskList(taskQueryDTO); 							
-			
-		result = WebControllerUtil.getResponse(list, 
-				list.size(), 
-				true, 
-				String.format("%d 건 조회되었습니다.", list.size()), 
-				HttpStatus.OK); 					
-		
-		return result;
+		taskCommandService.deleteTask(id, id2);
+											 				
+		return WebControllerUtil.getResponse(null
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
 	}
+	
 }

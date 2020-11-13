@@ -1,6 +1,5 @@
 package com.like.todo.domain.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -16,24 +15,21 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"taskGroup"})
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"taskGroup"})
+@Getter
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 @Entity
 @Table(name = "grtask")
 @EntityListeners(AuditingEntityListener.class)
-public class Task extends AuditEntity implements Serializable {	
-	
-	private static final long serialVersionUID = 7486045149831399610L;
+public class Task extends AuditEntity {		
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,11 +52,22 @@ public class Task extends AuditEntity implements Serializable {
 	@JoinColumn(name = "fk_task_group", nullable=false, updatable=false)
 	TaskGroup taskGroup;	
 	
+	@Builder
 	public Task(TaskGroup taskGroup, String task, LocalDate dueDate, String comments) {
 		this.taskGroup = taskGroup;
 		this.task = task;
 		this.dueDate = dueDate;
 		this.comments = comments;
+	}
+	
+	public void modify(String task
+					  ,boolean isCompleted
+					  ,LocalDate dueDate
+					  ,String comments) {
+		this.task = task;
+		this.isCompleted = isCompleted;
+		this.dueDate = dueDate;
+		this.comments = comments;		
 	}
 	
 }
