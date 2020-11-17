@@ -1,7 +1,5 @@
 package com.like.term.domain.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -12,7 +10,6 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
@@ -25,16 +22,13 @@ import lombok.ToString;
  * <p>용어사전 엔티티<p/>
  * 
  */
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Getter
 @ToString(callSuper=true, includeFieldNames=true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "COMTERM")
 @EntityListeners(AuditingEntityListener.class)
-public class TermDictionary extends AuditEntity implements Serializable {
-	
-	private static final long serialVersionUID = -206378092418320228L;
+public class TermDictionary extends AuditEntity {	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

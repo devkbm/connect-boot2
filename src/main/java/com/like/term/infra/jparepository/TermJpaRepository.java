@@ -3,26 +3,29 @@ package com.like.term.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.like.term.boundary.TermDTO;
 import com.like.term.domain.model.QTermDictionary;
 import com.like.term.domain.model.TermDictionary;
 import com.like.term.domain.repository.TermRepository;
-import com.like.term.dto.TermDTO;
 import com.like.term.infra.jparepository.springdata.JpaTerm;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
 public class TermJpaRepository implements TermRepository {
-				
-	@Autowired
-	private JPAQueryFactory  queryFactory;
 	
-	@Autowired
+	private final QTermDictionary qTermDictionary = QTermDictionary.termDictionary;
+		
+	private JPAQueryFactory  queryFactory;
+		
 	private JpaTerm jpaTerm;
 
-	private final QTermDictionary qTermDictionary = QTermDictionary.termDictionary;
+	public TermJpaRepository(JPAQueryFactory queryFactory
+							,JpaTerm jpaTerm) {
+		this.queryFactory = queryFactory;
+		this.jpaTerm = jpaTerm;
+	}	
 	
 	@Override
 	public TermDictionary getTerm(Long pkTerm) {
@@ -39,8 +42,8 @@ public class TermJpaRepository implements TermRepository {
 	@Override
 	public List<TermDictionary> getTermList(TermDTO.QueryCondition condition) {									
 		return queryFactory.selectFrom(qTermDictionary)
-				.where(condition.getBooleanBuilder())
-				.fetch();
+						   .where(condition.getBooleanBuilder())
+						   .fetch();
 	}
 
 	@Override
@@ -49,19 +52,8 @@ public class TermJpaRepository implements TermRepository {
 	}
 
 	@Override
-	public void saveTerm(List<TermDictionary> termList) {
-		jpaTerm.saveAll(termList);		
-	}
-
-	@Override
 	public void deleteTerm(Long pkTerm) {
 		jpaTerm.deleteById(pkTerm);		
 	}
-
-	@Override
-	public void deleteTerm(List<TermDictionary> termList) {
-		jpaTerm.deleteAll(termList);
-	}
 				
-	
 }

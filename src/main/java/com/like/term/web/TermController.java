@@ -6,17 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
+import com.like.term.boundary.TermDTO;
 import com.like.term.domain.model.TermDictionary;
-import com.like.term.dto.TermDTO;
 import com.like.term.service.TermService;
 
 @RestController
@@ -38,8 +38,8 @@ public class TermController {
 							,String.format("%d 건 조회되었습니다.", term == null ? 0 : 1)
 							,HttpStatus.OK);
 	}	
-	
-	@RequestMapping(value={"/common/terms"}, method=RequestMethod.GET) 
+		
+	@GetMapping("/common/terms")
 	public ResponseEntity<?> getTermList(TermDTO.QueryCondition contidion) {
 				
 		List<TermDictionary> list = termService.getTermList(contidion); 							
@@ -49,8 +49,8 @@ public class TermController {
 							,String.format("%d 건 조회되었습니다.", list.size())
 							,HttpStatus.OK);
 	}	
-	
-	@RequestMapping(value={"/common/terms"}, method={RequestMethod.POST,RequestMethod.PUT})
+		
+	@PostMapping("/common/terms")
 	public ResponseEntity<?> saveTerm(@RequestBody TermDTO.SaveTerm dto, BindingResult result) {
 					
 		if ( result.hasErrors()) {
@@ -65,9 +65,8 @@ public class TermController {
 							,HttpStatus.OK);
 	
 	}
-			
-		
-	@RequestMapping(value={"/common/terms/{id}"}, method=RequestMethod.DELETE) 
+					
+	@DeleteMapping("/common/terms/{id}")
 	public ResponseEntity<?> delTerm(@PathVariable(value="id") Long id) {
 								
 		termService.deleteTerm(id);										

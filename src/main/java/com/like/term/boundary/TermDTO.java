@@ -1,4 +1,4 @@
-package com.like.term.dto;
+package com.like.term.boundary;
 
 import java.io.Serializable;
 
@@ -49,7 +49,9 @@ public class TermDTO {
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SaveTerm implements Serializable {
-		
+				
+		private static final long serialVersionUID = 6104580538309815203L;
+
 		Long pkTerm;	
 				
 		String domain;
