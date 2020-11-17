@@ -31,7 +31,7 @@ public class TaskCommandServiceTest {
 	@Test
 	@Ignore
 	public void 업무그룹조회() {
-		List<?> list = tqs.getTaskGroupList();
+		List<?> list = null;// tqs.getTaskGroupList();
 		
 		log.info(list.toString());
 	}
@@ -41,7 +41,7 @@ public class TaskCommandServiceTest {
 	public void 업무그룹등록() {
 		TaskGroup taskGroup = new TaskGroup("제목없는 목록");
 		
-		tcs.saveTaskGroup(taskGroup);
+		//tcs.saveTaskGroup(taskGroup);
 		
 		log.info(taskGroup.toString());
 	}

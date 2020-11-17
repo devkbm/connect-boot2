@@ -167,7 +167,8 @@ public class UserDTO {
 					   .dept(dept)				
 					   .mobileNum(this.mobileNum)
 					   .email(this.email)
-					   .accountSpec(new AccountSpec(accountNonExpired, accountNonLocked, credentialsNonExpired, enabled))					   
+					   //.accountSpec(new AccountSpec(accountNonExpired, accountNonLocked, credentialsNonExpired, enabled))					   
+					   .accountSpec(new AccountSpec(true, true, true, true))
 					   .authorities(authorityList)
 					   .menuGroupList(menuGroupList)					
 					   .build();

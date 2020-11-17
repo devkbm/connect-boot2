@@ -19,6 +19,9 @@ import com.like.term.boundary.TermDTO;
 import com.like.term.domain.model.TermDictionary;
 import com.like.term.service.TermService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class TermController {
 	
@@ -56,6 +59,8 @@ public class TermController {
 		if ( result.hasErrors()) {
 			throw new ControllerException("오류");
 		}			
+		
+		log.info(dto.toString());
 		
 		termService.saveTerm(dto);										
 		
