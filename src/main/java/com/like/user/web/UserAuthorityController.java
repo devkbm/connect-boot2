@@ -33,10 +33,8 @@ public class UserAuthorityController {
 		List<Authority> authorityList = userService.getAuthorityList(dto);								 				
 		
 		return WebControllerUtil
-				.getResponse(authorityList
-							,authorityList.size()
-							,authorityList.size() > 0 ? true : false
-							,"조회 되었습니다."
+				.getResponse(authorityList							
+							,String.format("%d 건 조회되었습니다.", authorityList.size())
 							,HttpStatus.OK);
 	}
 	
@@ -46,10 +44,8 @@ public class UserAuthorityController {
 		Authority authority = userService.getAuthority(authorityName);										
 		
 		return WebControllerUtil
-				.getResponse(authority
-							,authority == null ? 0 : 1
-							,authority == null ? false : true
-							,"조회 되었습니다."
+				.getResponse(authority							
+							,String.format("%d 건 조회되었습니다.", 1)
 							,HttpStatus.OK);
 	}
 	
@@ -63,9 +59,7 @@ public class UserAuthorityController {
 		userService.createAuthority(dto);					
 																				 				
 		return WebControllerUtil
-				.getResponse(null
-							,1
-							,true
+				.getResponse(null							
 							,String.format("%d 건 저장되었습니다.", 1)
 							,HttpStatus.OK);
 	}	
@@ -76,9 +70,7 @@ public class UserAuthorityController {
 		userService.deleteAuthority(authorityName);					
 			
 		return WebControllerUtil
-				.getResponse(null
-							,1
-							,true
+				.getResponse(null							
 							,String.format("%d 건 삭제되었습니다.", 1)
 							,HttpStatus.OK);
 	}

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class TermDTO {
 
 	@Data
-	public static class QueryCondition implements Serializable {
+	public static class SearchTerm implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 

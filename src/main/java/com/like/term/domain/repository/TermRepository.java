@@ -11,7 +11,7 @@ public interface TermRepository {
 	
 	List<TermDictionary> getTermList();
 	
-	List<TermDictionary> getTermList(TermDTO.QueryCondition condition);
+	List<TermDictionary> getTermList(TermDTO.SearchTerm condition);
 	
 	void saveTerm(TermDictionary term);	
 	

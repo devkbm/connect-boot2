@@ -2,8 +2,6 @@ package com.like.term.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +12,13 @@ import com.like.term.domain.repository.TermRepository;
 @Service("termService")
 @Transactional
 public class TermService {
-	
-    @Resource(name="termJpaRepository")
+	    
 	private TermRepository termRepository;      
 	
+    public TermService(TermRepository termRepository) {
+    	this.termRepository = termRepository;
+    }
+    
 	public TermDictionary getTerm(Long pkTerm) {
 		return termRepository.getTerm(pkTerm);
 	}
@@ -26,7 +27,7 @@ public class TermService {
 		return termRepository.getTermList();
 	}
 	
-	public List<TermDictionary> getTermList(TermDTO.QueryCondition condition) {
+	public List<TermDictionary> getTermList(TermDTO.SearchTerm condition) {
 		return termRepository.getTermList(condition);
 	}
 
@@ -35,12 +36,11 @@ public class TermService {
 	}
 	
 	public void saveTerm(TermDTO.SaveTerm dto) {
-		TermDictionary entity = null;
+		TermDictionary entity = dto.getPkTerm() != null ? termRepository.getTerm(dto.getPkTerm()) : null; 
 		
-		if (dto.getPkTerm() == null) {
+		if (entity == null) {
 			entity = dto.newEntity();
-		} else {
-			entity = termRepository.getTerm(dto.getPkTerm());
+		} else {			
 			dto.modifyEntity(entity);
 		}
 		

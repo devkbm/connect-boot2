@@ -43,7 +43,7 @@ public class TermController {
 	}	
 		
 	@GetMapping("/common/terms")
-	public ResponseEntity<?> getTermList(TermDTO.QueryCondition contidion) {
+	public ResponseEntity<?> getTermList(TermDTO.SearchTerm contidion) {
 				
 		List<TermDictionary> list = termService.getTermList(contidion); 							
 							

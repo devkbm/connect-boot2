@@ -13,9 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
@@ -54,9 +53,7 @@ public class MenuController {
 		
 		List<MenuDTO.MenuHierarchy> menuGroup = menuQueryService.getMenuHierachy(menuGroupCode); 							
 		
-		return WebControllerUtil.getResponse(menuGroup
-											,menuGroup.size()
-											,true
+		return WebControllerUtil.getResponse(menuGroup											
 											,String.format("%d 건 조회되었습니다.", menuGroup.size())
 											,HttpStatus.OK);
 	}
@@ -68,9 +65,7 @@ public class MenuController {
 		
 		log.info(SecurityContextHolder.getContext().getAuthentication().getName());
 		
-		return WebControllerUtil.getResponse(menuGroup
-											,menuGroup.size()
-											,true
+		return WebControllerUtil.getResponse(menuGroup											
 											,String.format("%d 건 조회되었습니다.", menuGroup.size())
 											,HttpStatus.OK);
 	}
@@ -82,9 +77,7 @@ public class MenuController {
 		
 		MenuGroupDTO.SaveMenuGroup dto = SaveMenuGroup.convert(menuGroup);
 								
-		return WebControllerUtil.getResponse(dto
-											,dto != null ? 1 : 0
-											,true
+		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
@@ -96,14 +89,12 @@ public class MenuController {
 		
 		List<MenuGroupDTO.SaveMenuGroup> dtoList = list.stream().map(e -> SaveMenuGroup.convert(e)).collect(Collectors.toList());
 		
-		return WebControllerUtil.getResponse(dtoList
-											,dtoList.size()
-											,true
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
-	
-	@RequestMapping(value={"/common/menugroup/{id}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+		
+	@PostMapping("/common/menugroup/{id}")
 	public ResponseEntity<?> saveMenuGroup(@Valid @RequestBody MenuGroupDTO.SaveMenuGroup dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
@@ -112,9 +103,7 @@ public class MenuController {
 																			
 		menuCommandService.saveMenuGroup(dto);			
 										 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -124,9 +113,7 @@ public class MenuController {
 												
 		menuCommandService.deleteMenuGroup(menuGroupCode);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -139,9 +126,7 @@ public class MenuController {
 		
 		MenuDTO.SaveMenu dto = MenuDTO.SaveMenu.convert(menu);			
 		
-		return WebControllerUtil.getResponse(dto
-											,dto != null ? 1 : 0
-											,true
+		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
@@ -153,9 +138,7 @@ public class MenuController {
 		
 		List<MenuDTO.SaveMenu> dtoList = list.stream().map(e -> MenuDTO.SaveMenu.convert(e)).collect(Collectors.toList());
 		
-		return WebControllerUtil.getResponse(dtoList
-											,dtoList.size()
-											,true
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK);
 	}
@@ -170,15 +153,12 @@ public class MenuController {
 			list.add(dto);
 		}				 					
 		
-		return WebControllerUtil.getResponse(list
-											,list.size()
-											,true
+		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
-	
-	
-	@RequestMapping(value={"/common/menu/{menucode}"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+		
+	@PostMapping("/common/menu/{menucode}")
 	public ResponseEntity<?> saveMenu(@RequestBody @Valid MenuDTO.SaveMenu dto, BindingResult result) throws Exception {
 											
 		if ( result.hasErrors()) {
@@ -188,9 +168,7 @@ public class MenuController {
 									
 		menuCommandService.saveMenu(dto);																			
 														 				
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -200,9 +178,7 @@ public class MenuController {
 												
 		menuCommandService.deleteMenu(menuCode);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -215,9 +191,7 @@ public class MenuController {
 										
 		List<WebResourceDTO.SaveWebResource> dtoList = list.stream().map(e -> SaveWebResource.convertDTO(e)).collect(Collectors.toList());
 		
-		return WebControllerUtil.getResponse(dtoList
-											,dtoList.size()
-											,true
+		return WebControllerUtil.getResponse(dtoList											
 											,String.format("%d 건 조회되었습니다.", dtoList.size())
 											,HttpStatus.OK); 
 	}
@@ -229,14 +203,12 @@ public class MenuController {
 		
 		WebResourceDTO.SaveWebResource dto = SaveWebResource.convertDTO(resource);
 		
-		return WebControllerUtil.getResponse(dto
-											,dto != null ? 1 : 0
-											,true
+		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto != null ? 1 : 0)
 											,HttpStatus.OK);
 	}
-	
-	@RequestMapping(value={"/common/webresource"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+		
+	@PostMapping("/common/webresource")
 	public ResponseEntity<?> saveResource(@RequestBody @Valid WebResourceDTO.SaveWebResource dto, BindingResult result) throws Exception {
 										
 		if ( result.hasErrors()) {
@@ -245,9 +217,7 @@ public class MenuController {
 																	
 		menuCommandService.saveWebResource(dto);																						
 										 					
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
 											,HttpStatus.OK);
 	}
@@ -257,9 +227,7 @@ public class MenuController {
 												
 		menuCommandService.deleteWebResource(code);							
 		
-		return WebControllerUtil.getResponse(null
-											,1
-											,true
+		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
