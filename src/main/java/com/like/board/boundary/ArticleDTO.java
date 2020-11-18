@@ -200,7 +200,11 @@ public class ArticleDTO {
 	    List<String> attachFile;	   
 	    
 	    public Article newArticle(Board board) {
-			
+	    	if (this.fromDate == null || this.toDate == null) {
+				this.fromDate = LocalDate.now();
+				this.toDate = LocalDate.of(9999, 12, 31);
+			}
+	    	
 			return Article.builder()	
 						  .board(board)
 						  .ppkArticle(this.ppkArticle)
@@ -212,7 +216,11 @@ public class ArticleDTO {
 		}
 	    
 	    public void modifyArticle(Article entity) {
-			
+	    	if (this.fromDate == null || this.toDate == null) {
+				this.fromDate = entity.getPeriod().getFromDate();
+				this.toDate = entity.getPeriod().getToDate();
+			}	   
+	    	
 	    	entity.modifyEntity(title
 	    					   ,contents
 	    					   ,new Period(fromDate, toDate)
