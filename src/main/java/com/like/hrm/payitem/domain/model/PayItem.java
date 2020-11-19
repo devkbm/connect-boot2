@@ -1,5 +1,6 @@
 package com.like.hrm.payitem.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AccessLevel;
@@ -25,7 +26,7 @@ public class PayItem {
 	Boolean usePayTable;	
 	
 	// 급여테이블
-	List<PayTable> payTable;
+	List<PayTable> payTable = new ArrayList<>();
 
 	public PayItem(String code
 				  ,String codeName
@@ -51,6 +52,14 @@ public class PayItem {
 		this.seq = seq;
 		this.comment = comment;
 		this.usePayTable = usePayTable;
+	}
+	
+	public void add(PayTable entity) {
+		this.payTable.add(entity);
+	}
+	
+	public void remove(PayTable entity) {
+		this.payTable.remove(entity);
 	}
 	
 }
