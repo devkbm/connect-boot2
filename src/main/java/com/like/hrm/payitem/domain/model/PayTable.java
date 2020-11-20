@@ -3,9 +3,11 @@ package com.like.hrm.payitem.domain.model;
 import java.util.List;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 // 급여테이블
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PayTable {
 
