@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,17 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.employee.boundary.EmployeeDTO;
-import com.like.hrm.employee.domain.model.SchoolCareer;
 import com.like.hrm.employee.domain.model.Employee;
-import com.like.hrm.employee.domain.model.License;
 import com.like.hrm.employee.service.EmployeeService;
 
 @RestController
 public class EmployeeController {
 	
 	private EmployeeService employeeService;
-	
-	@Autowired
+		
 	public EmployeeController(EmployeeService employeeService) {
 		this.employeeService = employeeService;
 	}

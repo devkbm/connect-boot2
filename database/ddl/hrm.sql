@@ -340,3 +340,18 @@ create table if not exists COM.HRMANUALLEAVE (
 	CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',
 	constraint pk_hrmanualleave primary key(YYYY,EMP_ID)	
 ) COMMENT = '직원연차정보';
+
+
+create table if not exists COM.HRMPAYITEM (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
+    CODE					VARCHAR(10)		NOT NULL	COMMENT '급여항목코드',	
+    CODE_NM					VARCHAR(50)		NOT NULL	COMMENT '급여항목명',
+    ITEM_TYPE				VARCHAR(10)		NOT NULL	COMMENT '구분코드',    
+	PAY_TABLE_YN			BOOLEAN			NOT NULL	COMMENT '급여테이블사용여부',
+	SEQ						INT				NULL		COMMENT '순번',
+    CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',	
+	constraint pk_hrmpayitem primary key(CODE)	
+) COMMENT = '급여항목코드정보';

@@ -10,6 +10,7 @@ import com.like.hrm.payitem.domain.model.PayTable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -17,6 +18,7 @@ public class PayItemDTO {
 
 	@NoArgsConstructor	
 	@AllArgsConstructor
+	@Getter
 	@Builder
 	@ToString
 	public static class SavePayItem implements Serializable {		
@@ -40,13 +42,13 @@ public class PayItemDTO {
 			return new PayItem(code
 							  ,codeName
 							  ,type
+							  ,usePayTable
 							  ,seq
-							  ,comment
-							  ,usePayTable);
+							  ,comment);
 		}
 		
 		public void modifyEntity(PayItem entity) {
-			entity.modify(codeName, type, seq, comment, usePayTable);
+			entity.modify(codeName, type, usePayTable, seq, comment);
 		}
 		
 		public static SavePayItem convert(PayItem entity) {
