@@ -66,6 +66,7 @@ public class PayItemDTO {
 	
 	@NoArgsConstructor	
 	@AllArgsConstructor
+	@Getter
 	@Builder
 	@ToString
 	public static class SavePayTable implements Serializable {

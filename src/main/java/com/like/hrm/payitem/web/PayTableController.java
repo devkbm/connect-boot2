@@ -15,38 +15,38 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.payitem.boundary.PayItemDTO;
-import com.like.hrm.payitem.domain.model.PayItem;
-import com.like.hrm.payitem.service.PayItemService;
+import com.like.hrm.payitem.domain.model.PayTable;
+import com.like.hrm.payitem.service.PayTableService;
 
 @RestController
-public class PayItemController {
+public class PayTableController {
 
-	private PayItemService payItemService;
+	private PayTableService payTableService;
 	
-	public PayItemController(PayItemService payItemService) {
-		this.payItemService = payItemService;		
+	public PayTableController(PayTableService payTableService) {
+		this.payTableService = payTableService;
 	}
 	
-	@GetMapping("/hrm/payitem/{code}")
-	public ResponseEntity<?> getPayItem(@PathVariable(value="code") String code) {
+	@GetMapping("/hrm/paytable/{id}")
+	public ResponseEntity<?> getPayTable(@PathVariable(value="id") Long id) {
 		
-		PayItem entity = payItemService.getPayItem(code);
+		PayTable entity = payTableService.getPayTable(id);
 						
-		PayItemDTO.SavePayItem dto = PayItemDTO.SavePayItem.convert(entity);			
+		PayItemDTO.SavePayTable dto = PayItemDTO.SavePayTable.convert(entity);			
 				
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
 											,HttpStatus.OK);
 	}
 		
-	@PostMapping("/hrm/payitem")
-	public ResponseEntity<?> savePayItem(@RequestBody @Valid PayItemDTO.SavePayItem dto, BindingResult result) {				
+	@PostMapping("/hrm/paytable")
+	public ResponseEntity<?> savePayTable(@RequestBody @Valid PayItemDTO.SavePayTable dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());
 		} 
 							
-		payItemService.save(dto);						
+		payTableService.save(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -54,10 +54,10 @@ public class PayItemController {
 	}
 	
 		
-	@DeleteMapping("/hrm/payitem/{code}")
-	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="code") String code) {				
+	@DeleteMapping("/hrm/paytable/{id}")
+	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="id") Long id) {				
 																		
-		payItemService.delete(code);						
+		payTableService.delete(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

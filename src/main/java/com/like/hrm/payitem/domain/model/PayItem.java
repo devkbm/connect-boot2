@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -40,6 +41,7 @@ public class PayItem extends AuditEntity {
 	Boolean usePayTable;	
 	
 	// 급여테이블
+	@Transient
 	List<PayTable> payTable = new ArrayList<>();
 
 	@Column(name="SEQ")

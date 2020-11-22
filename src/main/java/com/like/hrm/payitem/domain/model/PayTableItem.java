@@ -19,4 +19,12 @@ public class PayTableItem {
 	BigDecimal ammount;
 	
 	String comment;
+	
+	public PayTableItem(String code1
+					   ,String code2
+					   ,String code3
+					   ,BigDecimal ammount
+					   ,String comment) {
+		
+	}
 }
