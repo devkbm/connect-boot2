@@ -2,12 +2,15 @@ package com.like.hrm.payitem.domain.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -49,8 +52,8 @@ public class PayTable extends AuditEntity {
 	
 	@Column(name="CMT")
 	String comment;
-	
-	@Transient
+		
+	@OneToMany(mappedBy = "payTable", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	List<PayTableItem> items;
 	
 	public PayTable(String name

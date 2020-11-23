@@ -6,9 +6,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,21 +32,23 @@ public class PayTableItem {
 	@Column(name="ID")
 	Long id;
 	
-	@Column(name="ID")
+	@Column(name="CODE1")
 	String code1;
 	
-	@Column(name="ID")
+	@Column(name="CODE2")
 	String code2;
 	
-	@Column(name="ID")
+	@Column(name="CODE3")
 	String code3;
 	
-	@Column(name="ID")
+	@Column(name="AMT")
 	BigDecimal ammount;
 	
-	@Column(name="ID")
+	@Column(name="CMT")
 	String comment;
 		
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PAY_TABBLE_ID", nullable=false, updatable=false)
 	PayTable payTable;	
 	
 	public PayTableItem(PayTable payTable

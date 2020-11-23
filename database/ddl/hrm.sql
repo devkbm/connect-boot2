@@ -371,3 +371,19 @@ create table if not exists COM.HRMPAYTABLE (
     CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',	
 	constraint pk_hrmpaytable primary key(ID)	
 ) COMMENT = '급여테이블정보';
+
+create table if not exists COM.HRMPAYTABLEITEM (
+	SYS_DT					DATETIME		NULL		COMMENT '최초등록일시',
+	SYS_USER 				VARCHAR(20)		NULL		COMMENT '최초등록유저',
+	UPD_DT					DATETIME		NULL		COMMENT '최종수정일시',
+	UPD_USER				VARCHAR(20)		NULL		COMMENT '최종수정유저',
+	ID						INT				NOT NULL	COMMENT 'ID'	AUTO_INCREMENT,           
+	PAY_TABBLE_ID			INT				NOT NULL	COMMENT 'FK_PAYTABLE',
+    CODE1					VARCHAR(10)		NULL 		COMMENT '급여테이블항목코드1',    
+    CODE2					VARCHAR(10)		NULL 		COMMENT '급여테이블항목코드2',
+    CODE3					VARCHAR(10)		NULL 		COMMENT '급여테이블항목코드3',	
+	AMT						DECIMAL			null		COMMENT '금액',
+    CMT						VARCHAR(2000) 	NULL 		COMMENT '비고',	
+	constraint pk_hrmpaytableitem primary key(ID),
+	constraint fk_hrmpaytableitem1 foreign key(PAY_TABBLE_ID) references HRMPAYTABLE(ID)
+) COMMENT = '급여테이블항목정보';
