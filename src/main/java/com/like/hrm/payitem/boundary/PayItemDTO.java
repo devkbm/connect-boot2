@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.like.hrm.payitem.domain.model.PayItem;
 import com.like.hrm.payitem.domain.model.PayTable;
+import com.like.hrm.payitem.domain.model.PayTableItem;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -106,7 +107,14 @@ public class PayItemDTO {
 		}
 	}
 	
+	@NoArgsConstructor	
+	@AllArgsConstructor
+	@Getter
+	@Builder
+	@ToString
 	public static class SavePayTableItem implements Serializable {
+		
+		private Long payTableId;
 		
 		private Long id;
 		
@@ -119,6 +127,34 @@ public class PayItemDTO {
 		private BigDecimal ammount;
 		
 		private String comment;
+		
+		public PayTableItem newEntity(PayTable payTable) {
+			return new PayTableItem(payTable
+							       ,code1
+							       ,code2
+							       ,code3
+							       ,ammount
+							       ,comment);
+		}
+		
+		public void modifyEntity(PayTableItem entity) {
+			entity.modify(ammount, comment);
+		}
+		
+		public SavePayTableItem convert(PayTableItem entity) {
+			Long payTableId = entity.getPayTable() != null ? entity.getPayTable().getId() : null;
+			
+			return SavePayTableItem.builder()	
+								   .payTableId(payTableId)
+								   .id(entity.getId())
+								   .code1(entity.getCode1())
+								   .code2(entity.getCode2())
+								   .code3(entity.getCode3())
+								   .ammount(entity.getAmmount())
+								   .comment(entity.getComment())
+								   .build();
+		}
+		
 	}
 	
 	
