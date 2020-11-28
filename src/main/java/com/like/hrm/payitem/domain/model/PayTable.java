@@ -94,6 +94,10 @@ public class PayTable extends AuditEntity {
 	}
 	
 	public void remove(Long itemId) {
-		this.items.removeIf(e -> e.id.equals(itemId));
+		// 동작 안함
+		//this.items.removeIf(e -> e.id.equals(itemId));
+		PayTableItem item = this.get(itemId);
+		this.items.remove(item);
+		
 	}
 }

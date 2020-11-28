@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.like.common.domain.AuditEntity;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "HRMPAYTABLEITEM")
 @EntityListeners(AuditingEntityListener.class)
-public class PayTableItem {
+public class PayTableItem extends AuditEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

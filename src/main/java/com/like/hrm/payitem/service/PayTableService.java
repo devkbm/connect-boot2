@@ -1,5 +1,7 @@
 package com.like.hrm.payitem.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,10 @@ public class PayTableService {
 		this.payTableRepository.delete(entity);
 	}
 	
+	public List<PayTableItem> getPayTableItem(Long payTableId) {
+		return this.getPayTable(payTableId).getItems();
+	}
+	
 	public PayTableItem getPayTableItem(Long payTableId, Long id) {
 		PayTable entity = this.getPayTable(payTableId);
 		
@@ -63,5 +69,7 @@ public class PayTableService {
 		PayTable entity = this.getPayTable(payTableId);
 		
 		entity.remove(id);
+		
+		payTableRepository.save(entity);
 	}
 }

@@ -1,5 +1,8 @@
 package com.like.hrm.payitem.web;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -62,6 +65,20 @@ public class PayTableController {
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
+	@GetMapping("/hrm/paytable/{payTableId}/item")
+	public ResponseEntity<?> getPayTableItems(@PathVariable(value="payTableId") Long payTableId) {
+		
+		List<PayTableItem> entity = payTableService.getPayTableItem(payTableId);
+						
+		List<PayItemDTO.SavePayTableItem> dto = entity.stream()
+													  .map(e -> PayItemDTO.SavePayTableItem.convert(e))
+													  .collect(Collectors.toList());			
+				
+		return WebControllerUtil.getResponse(dto											
+											,String.format("%d 건 조회되었습니다.", dto.size())
 											,HttpStatus.OK);
 	}
 	

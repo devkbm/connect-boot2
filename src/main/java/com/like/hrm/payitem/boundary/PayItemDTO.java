@@ -113,8 +113,7 @@ public class PayItemDTO {
 	@Builder
 	@ToString
 	public static class SavePayTableItem implements Serializable {
-		
-		@NotEmpty
+				
 		private Long payTableId;
 		
 		private Long id;
