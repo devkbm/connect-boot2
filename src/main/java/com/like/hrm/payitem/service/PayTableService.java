@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.payitem.boundary.PayItemDTO;
 import com.like.hrm.payitem.domain.model.PayTable;
+import com.like.hrm.payitem.domain.model.PayTableItem;
 import com.like.hrm.payitem.domain.repository.PayTableRepository;
 
 @Transactional
@@ -37,5 +38,30 @@ public class PayTableService {
 		PayTable entity = this.getPayTable(id);
 		
 		this.payTableRepository.delete(entity);
+	}
+	
+	public PayTableItem getPayTableItem(Long payTableId, Long id) {
+		PayTable entity = this.getPayTable(payTableId);
+		
+		return entity.get(id);
+	}
+	
+	public void save(PayItemDTO.SavePayTableItem dto) {
+		PayTable entity = this.getPayTable(dto.getPayTableId());
+		PayTableItem item = entity.get(dto.getId());
+		
+		if (item == null) {
+			entity.add(dto.newEntity(entity));
+		} else {
+			dto.modifyEntity(item);
+		}
+		
+		payTableRepository.save(entity);
+	}
+	
+	public void delete(Long payTableId, Long id) {
+		PayTable entity = this.getPayTable(payTableId);
+		
+		entity.remove(id);
 	}
 }

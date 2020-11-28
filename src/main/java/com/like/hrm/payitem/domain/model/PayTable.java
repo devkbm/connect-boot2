@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -82,5 +81,19 @@ public class PayTable extends AuditEntity {
 		this.typeCode2 = typeCode2;
 		this.typeCode3 = typeCode3;
 		this.comment = comment;
+	}
+	
+	public PayTableItem get(Long id) {
+		return this.items.stream()
+						 .filter(e -> e.id.equals(id))
+						 .findFirst().orElse(null);
+	}
+	
+	public void add(PayTableItem item) {
+		this.items.add(item);
+	}
+	
+	public void remove(Long itemId) {
+		this.items.removeIf(e -> e.id.equals(itemId));
 	}
 }

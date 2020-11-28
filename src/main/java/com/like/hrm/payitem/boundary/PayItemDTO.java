@@ -114,6 +114,7 @@ public class PayItemDTO {
 	@ToString
 	public static class SavePayTableItem implements Serializable {
 		
+		@NotEmpty
 		private Long payTableId;
 		
 		private Long id;
@@ -141,7 +142,7 @@ public class PayItemDTO {
 			entity.modify(ammount, comment);
 		}
 		
-		public SavePayTableItem convert(PayTableItem entity) {
+		public static SavePayTableItem convert(PayTableItem entity) {
 			Long payTableId = entity.getPayTable() != null ? entity.getPayTable().getId() : null;
 			
 			return SavePayTableItem.builder()	
