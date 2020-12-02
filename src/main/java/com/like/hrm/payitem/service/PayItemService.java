@@ -1,5 +1,7 @@
 package com.like.hrm.payitem.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,10 @@ public class PayItemService {
 	
 	public PayItemService(PayItemRepository payItemRepository) {
 		this.payItemRepository = payItemRepository;
+	}
+	
+	public List<PayItem> getPayItem(PayItemDTO.SearchPayItem dto) {
+		return payItemRepository.getPayItemList(dto);
 	}
 	
 	public PayItem getPayItem(String code) {

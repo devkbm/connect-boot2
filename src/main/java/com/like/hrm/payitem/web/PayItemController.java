@@ -1,5 +1,8 @@
 package com.like.hrm.payitem.web;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,19 @@ public class PayItemController {
 	
 	public PayItemController(PayItemService payItemService) {
 		this.payItemService = payItemService;		
+	}
+	
+	@GetMapping("/hrm/payitem")
+	public ResponseEntity<?> getHrmTypeList(PayItemDTO.SearchPayItem dto) {
+		
+		List<PayItemDTO.SavePayItem> list = payItemService.getPayItem(dto)
+										   .stream()
+										   .map(e -> PayItemDTO.SavePayItem.convert(e))
+										   .collect(Collectors.toList());															
+					
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
 	}
 	
 	@GetMapping("/hrm/payitem/{code}")

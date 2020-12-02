@@ -1,7 +1,11 @@
 package com.like.hrm.payitem.infra.jparepository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
+import com.like.hrm.payitem.boundary.PayItemDTO.SearchPayItem;
 import com.like.hrm.payitem.domain.model.PayItem;
 import com.like.hrm.payitem.domain.repository.PayItemRepository;
 import com.like.hrm.payitem.infra.jparepository.springdata.JpaPayItem;
@@ -28,6 +32,11 @@ public class PayItemJpaRepository implements PayItemRepository {
 	@Override
 	public void delete(PayItem entity) {
 		this.jpaPayItem.delete(entity);
+	}
+
+	@Override
+	public List<PayItem> getPayItemList(SearchPayItem condition) {		
+		return Lists.newArrayList(jpaPayItem.findAll(condition.getBooleanBuilder()));
 	}
 
 }

@@ -5,18 +5,57 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.util.StringUtils;
+
+import com.like.hrm.code.domain.model.QHrmType;
+import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.like.hrm.payitem.domain.model.PayItem;
 import com.like.hrm.payitem.domain.model.PayTable;
 import com.like.hrm.payitem.domain.model.PayTableItem;
+import com.like.hrm.payitem.domain.model.QPayItem;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 public class PayItemDTO {
 
+	
+	@Data
+	public static class SearchPayItem implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
+		private final QPayItem qType = QPayItem.payItem;
+								
+		private String code;
+		
+		private String codeName;				
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder				
+				.and(likeCodeName(this.codeName));
+						
+			return builder;
+		}			
+		
+		private BooleanExpression likeCodeName(String codeName) {
+			if (StringUtils.isEmpty(codeName)) {
+				return null;
+			}
+			
+			return qType.codeName.like("%" + codeName + "%");
+		}
+				
+	}
+	
 	@NoArgsConstructor	
 	@AllArgsConstructor
 	@Getter
