@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.hrm.payitem.boundary.PayItemDTO;
+import com.like.hrm.payitem.boundary.PayTableDTO;
 import com.like.hrm.payitem.domain.model.PayTable;
 import com.like.hrm.payitem.domain.model.PayTableItem;
 import com.like.hrm.payitem.service.PayTableService;
@@ -36,7 +36,7 @@ public class PayTableController {
 		
 		PayTable entity = payTableService.getPayTable(id);
 						
-		PayItemDTO.SavePayTable dto = PayItemDTO.SavePayTable.convert(entity);			
+		PayTableDTO.SavePayTable dto = PayTableDTO.SavePayTable.convert(entity);			
 				
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
@@ -44,7 +44,7 @@ public class PayTableController {
 	}
 		
 	@PostMapping("/hrm/paytable")
-	public ResponseEntity<?> savePayTable(@RequestBody @Valid PayItemDTO.SavePayTable dto, BindingResult result) {				
+	public ResponseEntity<?> savePayTable(@RequestBody @Valid PayTableDTO.SavePayTable dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());
@@ -73,8 +73,8 @@ public class PayTableController {
 		
 		List<PayTableItem> entity = payTableService.getPayTableItem(payTableId);
 						
-		List<PayItemDTO.SavePayTableItem> dto = entity.stream()
-													  .map(e -> PayItemDTO.SavePayTableItem.convert(e))
+		List<PayTableDTO.SavePayTableItem> dto = entity.stream()
+													  .map(e -> PayTableDTO.SavePayTableItem.convert(e))
 													  .collect(Collectors.toList());			
 				
 		return WebControllerUtil.getResponse(dto											
@@ -88,7 +88,7 @@ public class PayTableController {
 		
 		PayTableItem entity = payTableService.getPayTableItem(payTableId, id);
 						
-		PayItemDTO.SavePayTableItem dto = PayItemDTO.SavePayTableItem.convert(entity);			
+		PayTableDTO.SavePayTableItem dto = PayTableDTO.SavePayTableItem.convert(entity);			
 				
 		return WebControllerUtil.getResponse(dto											
 											,String.format("%d 건 조회되었습니다.", dto == null ? 0 : 1)
@@ -96,7 +96,7 @@ public class PayTableController {
 	}
 	
 	@PostMapping("/hrm/paytable/item")
-	public ResponseEntity<?> savePayTableItem(@RequestBody @Valid PayItemDTO.SavePayTableItem dto, BindingResult result) {				
+	public ResponseEntity<?> savePayTableItem(@RequestBody @Valid PayTableDTO.SavePayTableItem dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {			
 			throw new ControllerException(result.toString());

@@ -1,17 +1,12 @@
 package com.like.hrm.payitem.boundary;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
 
-import com.like.hrm.code.domain.model.QHrmType;
-import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.like.hrm.payitem.domain.model.PayItem;
-import com.like.hrm.payitem.domain.model.PayTable;
-import com.like.hrm.payitem.domain.model.PayTableItem;
 import com.like.hrm.payitem.domain.model.QPayItem;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -27,9 +22,9 @@ public class PayItemDTO {
 
 	
 	@Data
-	public static class SearchPayItem implements Serializable {
+	public static class SearchPayItem implements Serializable {		
 		
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 2460256856277606586L;
 
 		private final QPayItem qType = QPayItem.payItem;
 								
@@ -102,99 +97,7 @@ public class PayItemDTO {
 							  .build();
 		}
 		
-	}
-	
-	@NoArgsConstructor	
-	@AllArgsConstructor
-	@Getter
-	@Builder
-	@ToString
-	public static class SavePayTable implements Serializable {
-	
-		private Long id;
-		
-		private String name;
-		
-		private Boolean enabled;
-		
-		private String typeCode1;
-		
-		private String typeCode2;
-		
-		private String typeCode3;
-		
-		private String comment;
-		
-		public PayTable newEntity() {
-			return new PayTable(name
-							   ,enabled
-							   ,typeCode1
-							   ,typeCode2
-							   ,typeCode3
-							   ,comment);
-		}
-		
-		public void modifyEntity(PayTable entity) {
-			entity.modify(name, enabled, typeCode1, typeCode2, typeCode3, comment);
-		}
-		
-		public static SavePayTable convert(PayTable entity) {
-			return SavePayTable.builder()
-							   .id(entity.getId())
-							   .name(entity.getName())
-							   .build();
-		}
-	}
-	
-	@NoArgsConstructor	
-	@AllArgsConstructor
-	@Getter
-	@Builder
-	@ToString
-	public static class SavePayTableItem implements Serializable {
-				
-		private Long payTableId;
-		
-		private Long id;
-		
-		private String code1;
-		
-		private String code2;
-		
-		private String code3;
-		
-		private BigDecimal ammount;
-		
-		private String comment;
-		
-		public PayTableItem newEntity(PayTable payTable) {
-			return new PayTableItem(payTable
-							       ,code1
-							       ,code2
-							       ,code3
-							       ,ammount
-							       ,comment);
-		}
-		
-		public void modifyEntity(PayTableItem entity) {
-			entity.modify(ammount, comment);
-		}
-		
-		public static SavePayTableItem convert(PayTableItem entity) {
-			Long payTableId = entity.getPayTable() != null ? entity.getPayTable().getId() : null;
-			
-			return SavePayTableItem.builder()	
-								   .payTableId(payTableId)
-								   .id(entity.getId())
-								   .code1(entity.getCode1())
-								   .code2(entity.getCode2())
-								   .code3(entity.getCode3())
-								   .ammount(entity.getAmmount())
-								   .comment(entity.getComment())
-								   .build();
-		}
-		
-	}
+	}	
 	
 	
 }

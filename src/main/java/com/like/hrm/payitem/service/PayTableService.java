@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.hrm.payitem.boundary.PayItemDTO;
+import com.like.hrm.payitem.boundary.PayTableDTO;
 import com.like.hrm.payitem.domain.model.PayTable;
 import com.like.hrm.payitem.domain.model.PayTableItem;
 import com.like.hrm.payitem.domain.repository.PayTableRepository;
@@ -24,7 +24,7 @@ public class PayTableService {
 		return this.payTableRepository.getPayTable(id);
 	}
 	
-	public void save(PayItemDTO.SavePayTable dto) {
+	public void save(PayTableDTO.SavePayTable dto) {
 		PayTable entity = dto.getId() != null ? payTableRepository.getPayTable(dto.getId()) : null;
 		
 		if (entity == null) {
@@ -52,7 +52,7 @@ public class PayTableService {
 		return entity.get(id);
 	}
 	
-	public void save(PayItemDTO.SavePayTableItem dto) {
+	public void save(PayTableDTO.SavePayTableItem dto) {
 		PayTable entity = this.getPayTable(dto.getPayTableId());
 		PayTableItem item = entity.get(dto.getId());
 		
