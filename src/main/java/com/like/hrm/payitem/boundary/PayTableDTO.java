@@ -3,17 +3,51 @@ package com.like.hrm.payitem.boundary;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import org.springframework.util.StringUtils;
+
 import com.like.hrm.payitem.domain.model.PayTable;
 import com.like.hrm.payitem.domain.model.PayTableItem;
+import com.like.hrm.payitem.domain.model.QPayTable;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 public class PayTableDTO {
 
+	@Data
+	public static class SearchPayTable implements Serializable {					
+		
+		private static final long serialVersionUID = 2467975207582687337L;
+
+		private final QPayTable qType = QPayTable.payTable;
+								
+		private String name;						
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder				
+				.and(likeName(this.name));
+						
+			return builder;
+		}			
+		
+		private BooleanExpression likeName(String name) {
+			if (StringUtils.isEmpty(name)) {
+				return null;
+			}
+			
+			return qType.name.like("%" + name + "%");
+		}
+				
+	}
+	
 	@NoArgsConstructor	
 	@AllArgsConstructor
 	@Getter

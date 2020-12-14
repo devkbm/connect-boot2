@@ -31,6 +31,19 @@ public class PayTableController {
 		this.payTableService = payTableService;
 	}
 	
+	@GetMapping("/hrm/paytable")
+	public ResponseEntity<?> getPayTableList(PayTableDTO.SearchPayTable dto) {			
+						
+		List<PayTableDTO.SavePayTable> list = payTableService.getPayTableList(dto)
+															 .stream()
+															 .map(e -> PayTableDTO.SavePayTable.convert(e))
+															 .collect(Collectors.toList());
+				
+		return WebControllerUtil.getResponse(list											
+											,String.format("%d 건 조회되었습니다.", list.size())
+											,HttpStatus.OK);
+	}
+	
 	@GetMapping("/hrm/paytable/{id}")
 	public ResponseEntity<?> getPayTable(@PathVariable(value="id") Long id) {
 		

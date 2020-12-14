@@ -20,6 +20,10 @@ public class PayTableService {
 		this.payTableRepository = payTableRepository;
 	}
 	
+	public List<PayTable> getPayTableList(PayTableDTO.SearchPayTable dto) {
+		return this.payTableRepository.getPayTableList(dto);
+	}
+	
 	public PayTable getPayTable(Long id) {
 		return this.payTableRepository.getPayTable(id);
 	}
