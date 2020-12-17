@@ -88,6 +88,10 @@ public class PayTableDTO {
 			return SavePayTable.builder()
 							   .id(entity.getId())
 							   .name(entity.getName())
+							   .typeCode1(entity.getTypeCode1())
+							   .typeCode2(entity.getTypeCode2())
+							   .typeCode3(entity.getTypeCode3())
+							   .comment(entity.getComment())
 							   .build();
 		}
 	}
