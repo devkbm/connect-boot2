@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.like.common.vo.Period;
 import com.like.holiday.domain.model.DateInfo;
 import com.like.holiday.domain.model.DateInfoList;
@@ -36,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DutyApplicationDTO {
 
+	@Builder
 	public static class SearchDutyApplication implements Serializable {
 		
 		private static final long serialVersionUID = 6850895780318962483L;
