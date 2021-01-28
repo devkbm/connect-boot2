@@ -1,6 +1,5 @@
 package com.like.commoncode.domain.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -15,8 +14,6 @@ import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.like.common.domain.AuditEntity;
 
 import lombok.AccessLevel;
@@ -25,50 +22,46 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"parentCode"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper=true, includeFieldNames=true, exclude = {"parentCode"})
 @Getter
 @Entity
 @Table(name = "comcode")
 @EntityListeners(AuditingEntityListener.class)
-public class Code extends AuditEntity implements Serializable {
-			
-	private static final long serialVersionUID = 1122730947003822818L;
-	
+public class Code extends AuditEntity  {
+					
 	@Id
-	@Column(name="code_id")
-	String id;
-		
-	/*@Column(name="p_code_id")
-	String parentId;*/
+	@Column(name="CODE_ID")
+	String id;		
 	
-	@Column(name="code")
+	@Column(name="SYSTEM_TYPE_CODE")
+	String systemTypeCode;
+	
+	@Column(name="CODE")
 	String code;
 		
-	@Column(name="code_name")
+	@Column(name="CODE_NAME")
 	String codeName;
 	
-	@Column(name="code_name_abbr")
+	@Column(name="CODE_NAME_ABBR")
 	String codeNameAbbreviation;		
 	
-	@Column(name="from_dt")
+	@Column(name="FROM_DT")
 	LocalDateTime fromDate;
 	
-	@Column(name="to_dt")
+	@Column(name="TO_DT")
 	LocalDateTime toDate;
 	
-	@Column(name="hierarchy_level")
+	@Column(name="HIERARCHY_LEVEL")
 	int hierarchyLevel = 1;
 	
-	@Column(name="prt_seq")
+	@Column(name="PRT_SEQ")
 	int seq = 0;
 			
-	@Column(name="fixed_length_yn")
+	@Column(name="FIXED_LENGTH_YN")
 	boolean fixedLengthYn = true;
 	
-	@Column(name="code_length")
+	@Column(name="CODE_LENGTH")
 	Integer codeLength;
 	
 	@Transient
@@ -88,7 +81,8 @@ public class Code extends AuditEntity implements Serializable {
 	Code parentCode;
 
 	@Builder
-	public Code(String code
+	public Code(String systemTypeCode
+			   ,String code
 			   ,String codeName
 			   ,String codeNameAbbreviation
 			   ,LocalDateTime fromDate
@@ -97,8 +91,8 @@ public class Code extends AuditEntity implements Serializable {
 			   ,boolean fixedLengthYn
 			   ,Integer codeLength
 			   ,String cmt
-			   ,Code parentCode) {
-		
+			   ,Code parentCode) {		
+		this.systemTypeCode = systemTypeCode;
 		this.code = code;
 		this.codeName = codeName;
 		this.codeNameAbbreviation = codeNameAbbreviation;		
@@ -146,7 +140,7 @@ public class Code extends AuditEntity implements Serializable {
 	private String createId() {
 		
 		if ( this.parentCode == null ) {
-			this.id = this.code;			
+			this.id = this.systemTypeCode + this.code;			
 		} else {
 			this.id = this.parentCode.id + this.code;
 		}

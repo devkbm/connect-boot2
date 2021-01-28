@@ -1,6 +1,7 @@
 package com.like.commoncode.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
-import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
+import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.service.CommonCodeCommandService;
 import com.like.commoncode.service.CommonCodeQueryService;
@@ -54,9 +55,13 @@ public class CommonCodeController {
 							
 		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
 		
+		List<CodeDTO.SaveCode> dtoList = list.stream()
+											 .map(e -> CodeDTO.SaveCode.convertDTO(e))
+											 .collect(Collectors.toList());
+		
 		return WebControllerUtil
-				.getResponse(list							
-							,String.format("%d 건 조회되었습니다.", list.size())
+				.getResponse(dtoList							
+							,String.format("%d 건 조회되었습니다.", dtoList.size())
 							,HttpStatus.OK);
 	}
 	
@@ -65,7 +70,7 @@ public class CommonCodeController {
 								  						 					
 		Code entity = commonCodeQueryService.getCode(id);
 		
-		CodeDTO.SaveCode dto = CodeDTO.convertDTO(entity);
+		CodeDTO.SaveCode dto = CodeDTO.SaveCode.convertDTO(entity);
 		
 		return WebControllerUtil
 				.getResponse(dto							

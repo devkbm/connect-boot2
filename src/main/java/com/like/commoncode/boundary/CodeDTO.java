@@ -2,48 +2,20 @@ package com.like.commoncode.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.QCode;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CodeDTO {
-	
-	public static CodeDTO.SaveCode convertDTO(Code entity) {					
-		
-		Code parent = entity.getParentCode();
-									
-		return SaveCode.builder()
-					   .createdDt(entity.getCreatedDt())
-					   .createdBy(entity.getCreatedBy())
-					   .modifiedDt(entity.getModifiedDt())
-					   .modifiedBy(entity.getModifiedBy())
-					   .id(entity.getId())
-					   .parentId(parent == null ? null : parent.getId())
-					   .code(entity.getCode())
-					   .codeName(entity.getCodeName())
-					   .codeNameAbbreviation(entity.getCodeNameAbbreviation())								
-					   .fromDate(entity.getFromDate())
-					   .toDate(entity.getToDate())
-					   .seq(entity.getSeq())
-					   .fixedLengthYn(entity.isFixedLengthYn())
-					   .codeLength(entity.getCodeLength())
-					   .cmt(entity.getCmt())
-					   .build();	
-	}
+public class CodeDTO {	
 	
 	@Data
 	public static class SearchCode implements Serializable {
@@ -53,6 +25,8 @@ public class CodeDTO {
 		private final QCode qCode = QCode.code1;
 		
 		String id;
+		
+		String systemTypeCode;
 		
 		String parentId;
 			
@@ -68,8 +42,9 @@ public class CodeDTO {
 			BooleanBuilder builder = new BooleanBuilder();
 					
 			builder
-				.and(equalId(this.id))					// 특정 아이디만 검색
-				.and(equalParentId(this.parentId))	 	// 특정 아이디의 하위 코드 검색
+				.and(eqId(this.id))					// 특정 아이디만 검색	
+				.and(eqSystemTypeCode(this.systemTypeCode))
+				.and(eqParentId(this.parentId))	 	// 특정 아이디의 하위 코드 검색
 				.and(likeCode(this.code))
 				.and(likeCodeName(this.codeName))
 				.and(likeCodeNameAbbreviation(this.codeNameAbbreviation));
@@ -81,7 +56,7 @@ public class CodeDTO {
 			return builder;
 		}
 		
-		private BooleanExpression equalId(String id) {
+		private BooleanExpression eqId(String id) {
 			if (StringUtils.isEmpty(id)) {
 				return null;
 			}
@@ -89,7 +64,15 @@ public class CodeDTO {
 			return qCode.id.eq(id);
 		}
 		
-		private BooleanExpression equalParentId(String parentId) {
+		private BooleanExpression eqSystemTypeCode(String systemTypeCode) {
+			if (StringUtils.isEmpty(parentId)) {
+				return null;
+			}
+			
+			return qCode.parentCode.id.eq(parentId);
+		}
+		
+		private BooleanExpression eqParentId(String parentId) {
 			if (StringUtils.isEmpty(parentId)) {
 				return null;
 			}
@@ -140,6 +123,8 @@ public class CodeDTO {
 		
 		String id;
 		
+		String systemTypeCode;
+		
 		String parentId;
 			
 		String code;
@@ -164,7 +149,8 @@ public class CodeDTO {
 		
 		public Code newCode(Code parentCode) {
 						
-			return Code.builder()				
+			return Code.builder()
+					   .systemTypeCode(this.systemTypeCode)
 					   .parentCode(parentCode)
 					   .code(this.code)
 					   .codeName(this.codeName)
@@ -188,80 +174,32 @@ public class CodeDTO {
 							 ,this.codeLength
 							 ,this.cmt);
 		}
-				
-	}
-	
-	@Data	
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)	
-	
-	public static class CodeHierarchy implements Serializable {
-				
-		private static final long serialVersionUID = -4482323353197356218L;
-
-		LocalDateTime createdDt;	
 		
-		String createdBy;
-		
-		LocalDateTime modifiedDt;
-		
-		String modifiedBy;
-		
-		String id;
-		
-		String parentId;
-						
-		String code;
+		public static CodeDTO.SaveCode convertDTO(Code entity) {					
 			
-		String codeName;
-			
-		String codeNameAbbreviation;					
-		
-		LocalDateTime fromDate;
-			
-		LocalDateTime toDate;			
-		
-		int seq;
-					
-		String cmt;
-		
-		List<CodeDTO.CodeHierarchy> children = new ArrayList<>();
-		
-		
-		/**
-		 * NzTreeNode property 
-		 */
-		String title;
-		
-		String key;
-				
-		@JsonProperty(value="isLeaf") 
-		boolean isLeaf;
-		
-		@QueryProjection
-		public CodeHierarchy(LocalDateTime createdDt, String createdBy, LocalDateTime modifiedDt, String modifiedBy,
-				String id, String parentId, String code, String codeName, String codeNameAbbreviation, 
-				LocalDateTime fromDate, LocalDateTime toDate, int seq, String cmt) {
-			super();
-			this.createdDt = createdDt;
-			this.createdBy = createdBy;
-			this.modifiedDt = modifiedDt;
-			this.modifiedBy = modifiedBy;
-			this.id = id;
-			this.parentId = parentId;
-			this.code = code;
-			this.codeName = codeName;
-			this.codeNameAbbreviation = codeNameAbbreviation;
-			this.fromDate = fromDate;
-			this.toDate = toDate;
-			this.seq = seq;
-			this.cmt = cmt;
-			
-			this.title 	= this.codeName + " - " + this.code;
-			this.key  	= this.id;
-			//this.isLeaf	= this.children.isEmpty() ? true : false;			
+			Code parent = entity.getParentCode();
+										
+			return SaveCode.builder()
+						   .createdDt(entity.getCreatedDt())
+						   .createdBy(entity.getCreatedBy())
+						   .modifiedDt(entity.getModifiedDt())
+						   .modifiedBy(entity.getModifiedBy())
+						   .id(entity.getId())
+						   .systemTypeCode(entity.getSystemTypeCode())
+						   .parentId(parent == null ? null : parent.getId())
+						   .code(entity.getCode())
+						   .codeName(entity.getCodeName())
+						   .codeNameAbbreviation(entity.getCodeNameAbbreviation())								
+						   .fromDate(entity.getFromDate())
+						   .toDate(entity.getToDate())
+						   .seq(entity.getSeq())
+						   .fixedLengthYn(entity.isFixedLengthYn())
+						   .codeLength(entity.getCodeLength())
+						   .cmt(entity.getCmt())
+						   .build();	
 		}
-		
+				
 	}
-	
+			
 	
 }

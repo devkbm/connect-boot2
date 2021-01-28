@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import com.like.hrm.payitem.domain.model.PayTable;
 import com.like.hrm.payitem.domain.model.PayTableItem;
 import com.like.hrm.payitem.domain.model.QPayTable;
+import com.like.hrm.payitem.domain.model.QPayTableItem;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -94,6 +95,34 @@ public class PayTableDTO {
 							   .comment(entity.getComment())
 							   .build();
 		}
+	}
+	
+	@Data
+	public static class SearchPayTableItem implements Serializable {								
+
+		private static final long serialVersionUID = 1621155618257579268L;
+
+		private final QPayTableItem qType = QPayTableItem.payTableItem;
+
+		private Long payTableId;								
+					
+		public BooleanBuilder getBooleanBuilder() {
+			BooleanBuilder builder = new BooleanBuilder();
+			
+			builder				
+				.and(eqPayTableId(this.payTableId));
+						
+			return builder;
+		}
+		
+		private BooleanExpression eqPayTableId(Long payTableId) {
+			if (StringUtils.isEmpty(payTableId)) {
+				return null;
+			}
+			
+			return qType.payTable.id.eq(payTableId);
+		}			
+				
 	}
 	
 	@NoArgsConstructor	

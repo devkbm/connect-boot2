@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.like.commoncode.boundary.CodeComboDTO;
 import com.like.commoncode.boundary.CodeDTO;
+import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.querydsl.core.types.Predicate;
 
@@ -20,7 +21,7 @@ public interface CommonCodeRepository {
 	
 	List<Code> getCodeList(Predicate predicate);
 	
-	List<CodeDTO.CodeHierarchy> getCodeHierarchyList(Predicate predicate);
+	List<CodeHierarchy> getCodeHierarchyList(CodeDTO.SearchCode dto);
 	
 	List<CodeComboDTO> getCodeListByComboBox(String codeGroup);
 	

@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.like.commoncode.boundary.CodeComboDTO;
-import com.like.commoncode.boundary.CodeDTO.CodeHierarchy;
+import com.like.commoncode.boundary.CodeDTO;
+import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.domain.model.QCode;
 import com.like.commoncode.domain.repository.CommonCodeRepository;
 import com.like.commoncode.infra.jparepository.springdata.JpaCommonCode;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
@@ -62,8 +65,8 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 	
 	@Override
-	public List<CodeHierarchy> getCodeHierarchyList(Predicate predicate) {
-		List<CodeHierarchy> rootNodeList = this.getCodeRootNodeList();
+	public List<CodeHierarchy> getCodeHierarchyList(CodeDTO.SearchCode dto) {
+		List<CodeHierarchy> rootNodeList = this.getCodeRootNodeList(dto.getSystemTypeCode());
 		
 		List<CodeHierarchy> result = this.addCodeChildrenList(rootNodeList);
 		
@@ -91,22 +94,36 @@ public class CodeJpaRepository implements CommonCodeRepository {
 		jpaCommonCode.deleteById(codeId);		
 	}	
 	
-	private List<CodeHierarchy> getCodeRootNodeList() {
+	private List<CodeHierarchy> getCodeRootNodeList(String systemTypeCode) {
 		
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		builder.and(qCode.isRootNode())
+		       .and(qCode.enabled());
+		
+		if (!StringUtils.isEmpty(systemTypeCode)) {
+			builder.and(qCode.systemTypeCode.eq(systemTypeCode));
+		}		
+				
 		return queryFactory
 				.select(this.getCodehierarchyConstructor())
 				.from(qCode)
-				.where(qCode.isRootNode()
-					.and(qCode.enabled()))					
+				.where(builder)			
+				.orderBy(qCode.seq.asc())
 				.fetch();
 	}
 		
 	private List<CodeHierarchy> getCodeChildNodeList(String parentId) {
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		builder
+			.and(qCode.parentCode.id.eq(parentId))
+			.and(qCode.enabled());
+			
 		return queryFactory
 				.select(this.getCodehierarchyConstructor())
 				.from(qCode)
-				.where(qCode.parentCode.id.eq(parentId)
-					.and(qCode.enabled()))
+				.where(builder)
 				.orderBy(qCode.seq.asc())
 				.fetch();
 	}
@@ -139,7 +156,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 	}
 	
 	
-	private ConstructorExpression<CodeHierarchy> getCodehierarchyConstructor() {
+	private ConstructorExpression<CodeHierarchy> getCodehierarchyConstructor() {		
 		return Projections.constructor(
 				CodeHierarchy.class,
 				qCode._super.createdDt, 
@@ -147,6 +164,7 @@ public class CodeJpaRepository implements CommonCodeRepository {
 				qCode._super.modifiedDt, 
 				qCode._super.modifiedBy,
 				qCode.id, 
+				qCode.systemTypeCode,
 				qCode.parentCode.id, 
 				qCode.code, 
 				qCode.codeName, 
@@ -156,6 +174,8 @@ public class CodeJpaRepository implements CommonCodeRepository {
 				qCode.seq, 
 				qCode.cmt);		
 	}
+	
+	
 	
 	
 }
