@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.team.domain.model.TeamMember;
-import com.like.team.dto.TeamDTO;
+import com.like.team.boundary.TeamDTO;
 import com.like.team.domain.model.Team;
 import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;

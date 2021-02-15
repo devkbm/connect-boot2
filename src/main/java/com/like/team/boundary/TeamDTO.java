@@ -1,4 +1,4 @@
-package com.like.team.dto;
+package com.like.team.boundary;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

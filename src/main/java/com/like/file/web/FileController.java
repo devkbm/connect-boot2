@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-
-import com.like.board.service.BoardCommandService;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.dto.FileResponseDTO;
 import com.like.file.infra.file.LocalFileRepository;
@@ -30,14 +28,10 @@ import com.like.file.service.FileService;
 
 @Controller
 public class FileController {
-	
-	private BoardCommandService boardCommandService;
-		
+			
 	private FileService fileService;	
 			
-	public FileController(BoardCommandService boardCommandService
-						 ,FileService fileService) {
-		this.boardCommandService = boardCommandService;
+	public FileController(FileService fileService) {		
 		this.fileService = fileService;
 	}
 	

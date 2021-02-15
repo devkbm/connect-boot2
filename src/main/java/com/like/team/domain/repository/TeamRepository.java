@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.like.team.domain.model.TeamMember;
-import com.like.team.dto.TeamDTO;
 import com.like.user.domain.model.User;
+import com.like.team.boundary.TeamDTO;
 import com.like.team.domain.model.Team;
 
 @Repository

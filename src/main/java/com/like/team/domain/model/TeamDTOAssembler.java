@@ -2,7 +2,7 @@ package com.like.team.domain.model;
 
 import java.util.stream.Collectors;
 
-import com.like.team.dto.TeamDTO;
+import com.like.team.boundary.TeamDTO;
 
 public class TeamDTOAssembler {	
 		
