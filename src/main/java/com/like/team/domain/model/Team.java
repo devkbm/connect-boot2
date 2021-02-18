@@ -46,7 +46,7 @@ public class Team extends AuditEntity implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="team", fetch = FetchType.EAGER)
-	List<TeamMember> memberList = new ArrayList<TeamMember>();			
+	List<TeamMember> members = new ArrayList<TeamMember>();			
 	
 	public Team(String teamName) {
 		this.teamName = teamName;		
@@ -56,9 +56,9 @@ public class Team extends AuditEntity implements Serializable {
 		this.teamName = teamName;
 	}
 	
-	public void addMemberList(List<TeamMember> memberList) {
-		this.memberList = memberList;
-	}
+	public List<TeamMember> getTeamMemberList() {
+		return this.members;
+	}	
 		
 	public List<User> getMemberList() {
 		/*
@@ -70,13 +70,19 @@ public class Team extends AuditEntity implements Serializable {
 		
 		return memberList;
 		*/
-		return this.memberList
+		return this.members
 				.stream()
 				.map(r -> r.getUser())
 				.collect(Collectors.toList());
 	}
 	
-	public List<TeamMember> getTeamMemberList() {
-		return this.memberList;
+	public void addMember(User user)
+	{
+		this.members.add(new TeamMember(this, user));
 	}
+	
+	public void addMemberList(List<TeamMember> memberList) {
+		this.members = memberList;
+	}
+	
 }

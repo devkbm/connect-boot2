@@ -37,14 +37,13 @@ public class TeamMember extends AuditEntity implements Serializable {
 	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
 	private User user;	
 	
+	// 권한
+	private String authority;
+	
 	public TeamMember(Team team, User user) {
 		this.id = new TeamMemberId(team.getTeamId(), user.getUserId());
-	}
-	
-	public TeamMember(TeamMemberId id) {		
-		this.id = id;
-	}
-			
+	}	
+		
 	public Team getTeam() {
 		return this.team;
 	}
