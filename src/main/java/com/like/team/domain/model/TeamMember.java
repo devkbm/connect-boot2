@@ -40,9 +40,13 @@ public class TeamMember extends AuditEntity implements Serializable {
 	// 권한
 	private String authority;
 	
+	public TeamMember(TeamMemberId teamMemberId) {
+		this.id = teamMemberId;
+	}
+	
 	public TeamMember(Team team, User user) {
 		this.id = new TeamMemberId(team.getTeamId(), user.getUserId());
-	}	
+	}
 		
 	public Team getTeam() {
 		return this.team;
