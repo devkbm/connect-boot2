@@ -72,13 +72,11 @@ public class AppointmentService {
 		return list;			
 	}
 	
-	public void saveLedgerList(LedgerDTO.SaveLedgerList dto) {
-		Ledger ledger = appointmentRepository.getLedger(dto.getLedgerId());
-		LedgerList list = ledger.getAppointmentList(dto.getListId());			
+	public void saveLedgerList(LedgerDTO.SaveLedgerList dto) {		
+		LedgerList list = null; //ledger.getAppointmentList(dto.getListId());			
 		
 		if (list == null) {			
-			list = dto.newEntity(ledger);
-			ledger.addAppointmentList(list);
+			list = dto.newEntity();			
 		} else {
 			list = dto.modifyEntity(list);
 		}			

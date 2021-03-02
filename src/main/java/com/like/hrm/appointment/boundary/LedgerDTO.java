@@ -93,7 +93,7 @@ public class LedgerDTO {
 
 		private final QLedgerList qType = QLedgerList.ledgerList;
 		
-		@NotEmpty(message = "발령번호는 필수 값입니다.")
+		// @NotEmpty(message = "발령번호는 필수 값입니다.")
 		private String ledgerId;
 		
 		private String listId;
@@ -128,8 +128,7 @@ public class LedgerDTO {
 	public static class SaveLedgerList implements Serializable {
 												
 		private static final long serialVersionUID = -339266416839829125L;
-
-		@NotEmpty
+		
 		private String ledgerId;
 		
 		private String listId;
@@ -151,9 +150,8 @@ public class LedgerDTO {
 			this.changeInfoList = new ArrayList<>();
 		}		
 		
-		public LedgerList newEntity(Ledger ledger) {
-			LedgerList entity = new LedgerList(ledger
-											  ,this.empId
+		public LedgerList newEntity() {
+			LedgerList entity = new LedgerList(this.empId
 											  ,this.appointmentCode							  
 											  ,this.appointmentFromDate
 											  ,this.appointmentToDate);
@@ -169,7 +167,8 @@ public class LedgerDTO {
 		public LedgerList modifyEntity(LedgerList entity) {
 			entity.modifyEntity(getAppointmentCode()
 							   ,getAppointmentFromDate()
-							   ,getAppointmentToDate());
+							   ,getAppointmentToDate()
+							   ,null);
 										
 			for (ChangeInfo info : changeInfoList ) {
 				if (info.getId() != null) {

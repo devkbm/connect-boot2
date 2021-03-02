@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -52,9 +54,10 @@ public class LedgerList extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = 8498392159292587566L;
 
 	/**
-	 * 식별자 : 발령장번호 + 직원번호+ 발령코드
+	 * 식별자
 	 */
 	@Id	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="LIST_ID")
 	String listId;
 	
@@ -103,30 +106,25 @@ public class LedgerList extends AuditEntity implements Serializable {
 	
 	@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)			
-	@JoinColumn(name="LEDGER_ID", nullable=false, updatable=false)
+	@JoinColumn(name="LEDGER_ID", nullable=true, updatable=true)
 	private Ledger ledger;
 	
-	public LedgerList(Ledger ledger					 
-					 ,String empId
+	public LedgerList(String empId
 					 ,String appointmentCode
 				 	 ,LocalDate appointmentFromDate
-					 ,LocalDate appointmentToDate) {				
-		Integer size = ledger.getAppointmentList().size() + 1;
-		
-		this.ledger = ledger;		
-		this.sequence = size.longValue();
+					 ,LocalDate appointmentToDate) {													
 		this.empId = empId;
 		this.appointmentCode = appointmentCode;
 		this.appointmentFromDate = appointmentFromDate;
-		this.appointmentToDate = appointmentToDate;		
-		this.finishYn = false;
-		
-		this.listId = this.getLedger().getLedgerId() + empId + appointmentCode;
+		this.appointmentToDate = appointmentToDate;
+		this.sequence = 0L;
+		this.finishYn = false;			
 	}
 	
 	public void modifyEntity(String appointmentCode
 							,LocalDate appointmentFromDate
-			           		,LocalDate appointmentToDate) {
+			           		,LocalDate appointmentToDate
+			           		,Ledger ledger) {
 		
 		// 발령 코드 변경시 상세내역 삭제
 		if (this.appointmentCode.equals(appointmentCode) != true) {
@@ -135,7 +133,8 @@ public class LedgerList extends AuditEntity implements Serializable {
 		
 		this.appointmentCode = appointmentCode;
 		this.appointmentFromDate = appointmentFromDate;
-		this.appointmentToDate = appointmentToDate;		
+		this.appointmentToDate = appointmentToDate;
+		this.ledger = ledger;
 	}
 	
 	public void addChangeInfo(LedgerChangeInfo changeInfo) {		
