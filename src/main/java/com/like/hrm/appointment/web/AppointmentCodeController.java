@@ -25,20 +25,20 @@ import com.like.hrm.appointment.service.AppointmentCodeService;
 @RestController
 public class AppointmentCodeController {
 
-	private AppointmentCodeService appointmentService;	
+	private AppointmentCodeService commandService;	
 	
-	private AppointmentCodeQueryService appointmentQueryService;
+	private AppointmentCodeQueryService queryService;
 
-	public AppointmentCodeController(AppointmentCodeService appointmentService
-									,AppointmentCodeQueryService appointmentQueryService) {
-		this.appointmentService = appointmentService;
-		this.appointmentQueryService = appointmentQueryService;
+	public AppointmentCodeController(AppointmentCodeService commandService
+									,AppointmentCodeQueryService queryService) {
+		this.commandService = commandService;
+		this.queryService = queryService;
 	}
 	
 	@GetMapping("/hrm/appointmentcode")
 	public ResponseEntity<?> getCodeList(AppointmentCodeDTO.SearchCode search) {
 																	
-		List<AppointmentCode> list = appointmentQueryService.getAppointentCodeList(search);  							
+		List<AppointmentCode> list = queryService.getAppointentCodeList(search);  							
 		
 		List<AppointmentCodeDTO.SaveCode> dtoList = list.stream()
 														.map(r -> AppointmentCodeDTO.SaveCode.convertDTO(r))
@@ -52,7 +52,7 @@ public class AppointmentCodeController {
 	@GetMapping("/hrm/appointmentcode/{id}")
 	public ResponseEntity<?> getCode(@PathVariable(value="id") String id) {
 		
-		AppointmentCode code = appointmentService.getAppointmentCode(id);
+		AppointmentCode code = commandService.getAppointmentCode(id);
 					
 		return WebControllerUtil.getResponse(code											
 											,String.format("%d 건 조회되었습니다.", code == null ? 0 : 1)
@@ -66,7 +66,7 @@ public class AppointmentCodeController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		appointmentService.saveAppointmentCode(code);						
+		commandService.saveAppointmentCode(code);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -76,7 +76,7 @@ public class AppointmentCodeController {
 	@DeleteMapping("/hrm/appointmentcode/{id}")
 	public ResponseEntity<?> delCode(@PathVariable(value="id") String id) {						
 												
-		appointmentService.deleteAppintmentCode(id);
+		commandService.deleteAppintmentCode(id);
 								 						
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
@@ -86,7 +86,7 @@ public class AppointmentCodeController {
 	@GetMapping("/hrm/appointmentcodedetail")
 	public ResponseEntity<?> getCodeDetailList(AppointmentCodeDTO.SearchCodeDetail dto) {
 		 				
-		List<AppointmentCodeDetail> list = appointmentQueryService.getAppointmentCodeDetailList(dto);
+		List<AppointmentCodeDetail> list = queryService.getAppointmentCodeDetailList(dto);
 
 		List<AppointmentCodeDTO.SaveCodeDetail> dtoList = list.stream()
 															  .map(r -> AppointmentCodeDTO.SaveCodeDetail.convert(r))
@@ -101,7 +101,7 @@ public class AppointmentCodeController {
 	public ResponseEntity<?> getCodeDetail(@PathVariable(value="id") String id,
 										   @PathVariable(value="detailId") String detailId) {
 		 		
-		AppointmentCodeDetail code = appointmentService.getAppointmentCodeDetail(id, detailId);
+		AppointmentCodeDetail code = commandService.getAppointmentCodeDetail(id, detailId);
 					
 		AppointmentCodeDTO.SaveCodeDetail dto = AppointmentCodeDTO.SaveCodeDetail.convert(code);
 				
@@ -117,7 +117,7 @@ public class AppointmentCodeController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		appointmentService.saveAppointmentCodeDetail(dto);						
+		commandService.saveAppointmentCodeDetail(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -128,7 +128,7 @@ public class AppointmentCodeController {
 	public ResponseEntity<?> delCodeDetail(@PathVariable(value="id") String id,
 			   							   @PathVariable(value="detailId") String detailId) {						
 												
-		appointmentService.deleteAppointmentCodeDetail(id, detailId);
+		commandService.deleteAppointmentCodeDetail(id, detailId);
 								 						
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

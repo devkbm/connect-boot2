@@ -1,6 +1,6 @@
 package com.like.hrm.appointment.domain.event;
 
-import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.AppointmentList;
 
 import lombok.Data;
 
@@ -11,9 +11,9 @@ public class AppointmentProcessEvent {
 	
 	private Object source;
 	
-	private LedgerList ledgerList; 	
+	private AppointmentList ledgerList; 	
 	
-	public AppointmentProcessEvent(Object source, LedgerList ledgerList) {
+	public AppointmentProcessEvent(Object source, AppointmentList ledgerList) {
 		this.source = source;
 		this.ledgerList = ledgerList;
 	}

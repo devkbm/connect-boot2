@@ -8,8 +8,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.like.common.vo.DatePeriod;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
-import com.like.hrm.appointment.domain.model.LedgerChangeInfo;
-import com.like.hrm.appointment.domain.model.LedgerList;
+import com.like.hrm.appointment.domain.model.AppointmentChangeInfo;
+import com.like.hrm.appointment.domain.model.AppointmentList;
 import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;
@@ -32,10 +32,10 @@ public class AppointmentProcessService {
 	//@EventListener
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void onApplicationEvent(AppointmentProcessEvent event) {					
-		LedgerList list = event.getLedgerList();		
+		AppointmentList list = event.getLedgerList();		
 		Employee employee = employeeRepository.getEmployee(list.getEmpId());
 
-		for (LedgerChangeInfo ledgerChangeInfo : list.getChangeInfoList()) {
+		for (AppointmentChangeInfo ledgerChangeInfo : list.getChangeInfoList()) {
 								
 			if (HrmTypeEnum.DEPT.equals(ledgerChangeInfo.getChangeType())) {				
 				appointDeptInfo(employee
@@ -61,7 +61,7 @@ public class AppointmentProcessService {
 							
 	}
 	
-	private void appointDeptInfo(Employee employee, LedgerChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {				
+	private void appointDeptInfo(Employee employee, AppointmentChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {				
 		employee.getDeptHistory().add(
 				new DeptChangeHistory(employee
 									 ,info.getChangeTypeDetail()
@@ -70,7 +70,7 @@ public class AppointmentProcessService {
 		);
 	}
 	
-	private void appointJobInfo(Employee employee, LedgerChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {
+	private void appointJobInfo(Employee employee, AppointmentChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {
 		employee.getJobHistory().add(
 				new JobChangeHistory(employee
 									 ,info.getChangeTypeDetail()
@@ -79,7 +79,7 @@ public class AppointmentProcessService {
 		);	
 	}
 	
-	private void appointStatusInfo(Employee employee, LedgerChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {
+	private void appointStatusInfo(Employee employee, AppointmentChangeInfo info, LocalDate appointmentFromDate, LocalDate appointmentToDate) {
 		employee.getStatusHistory().add(
 				new StatusChangeHistory(employee
 									   ,info.getLedgerList().getAppointmentCode()

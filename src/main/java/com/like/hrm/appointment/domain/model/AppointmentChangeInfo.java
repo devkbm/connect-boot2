@@ -44,7 +44,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "HRMAPPOINTMENTINFO")
 @EntityListeners(AuditingEntityListener.class)
-public class LedgerChangeInfo extends AuditEntity implements Serializable {
+public class AppointmentChangeInfo extends AuditEntity implements Serializable {
 	
 	private static final long serialVersionUID = 6755495351146205498L;
 
@@ -70,9 +70,9 @@ public class LedgerChangeInfo extends AuditEntity implements Serializable {
 	@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)			
 	@JoinColumn(name="LIST_ID", nullable=false, updatable=false)
-	LedgerList ledgerList;
+	AppointmentList ledgerList;
 	
-	public LedgerChangeInfo(LedgerList ledgerList
+	public AppointmentChangeInfo(AppointmentList ledgerList
 						   ,HrmTypeEnum changeType
 						   ,String changeTypeDetail
 						   ,String changeCode

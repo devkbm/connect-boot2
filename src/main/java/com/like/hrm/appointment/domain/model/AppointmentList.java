@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @Entity
 @Table(name = "HRMAPPOINTMENTLEDGERLIST")
 @EntityListeners(AuditingEntityListener.class)
-public class LedgerList extends AuditEntity implements Serializable {
+public class AppointmentList extends AuditEntity implements Serializable {
 	
 	private static final long serialVersionUID = 8498392159292587566L;
 
@@ -102,17 +102,17 @@ public class LedgerList extends AuditEntity implements Serializable {
 	 * 발령변경정보
 	 */
 	@OneToMany(mappedBy = "ledgerList", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
-	List<LedgerChangeInfo> changeInfoList = new ArrayList<>();
+	List<AppointmentChangeInfo> changeInfoList = new ArrayList<>();
 	
 	@JsonBackReference
 	@ManyToOne(fetch=FetchType.LAZY)			
 	@JoinColumn(name="LEDGER_ID", nullable=true, updatable=true)
-	private Ledger ledger;
+	private AppointmentRegister ledger;
 	
-	public LedgerList(String empId
-					 ,String appointmentCode
-				 	 ,LocalDate appointmentFromDate
-					 ,LocalDate appointmentToDate) {													
+	public AppointmentList(String empId
+						  ,String appointmentCode
+ 					 	  ,LocalDate appointmentFromDate
+						  ,LocalDate appointmentToDate) {													
 		this.empId = empId;
 		this.appointmentCode = appointmentCode;
 		this.appointmentFromDate = appointmentFromDate;
@@ -124,7 +124,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 	public void modifyEntity(String appointmentCode
 							,LocalDate appointmentFromDate
 			           		,LocalDate appointmentToDate
-			           		,Ledger ledger) {
+			           		,AppointmentRegister ledger) {
 		
 		// 발령 코드 변경시 상세내역 삭제
 		if (this.appointmentCode.equals(appointmentCode) != true) {
@@ -137,7 +137,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 		this.ledger = ledger;
 	}
 	
-	public void addChangeInfo(LedgerChangeInfo changeInfo) {		
+	public void addChangeInfo(AppointmentChangeInfo changeInfo) {		
 		if (this.changeInfoList == null) 
 			this.changeInfoList = new ArrayList<>();
 		
@@ -147,7 +147,7 @@ public class LedgerList extends AuditEntity implements Serializable {
 	public boolean isContainChangeInfo(Long changeId) {
 		boolean rtn = false;
 		
-		for (LedgerChangeInfo info : this.changeInfoList) {
+		for (AppointmentChangeInfo info : this.changeInfoList) {
 			if ( info.getId().equals(changeId) ) 
 				rtn = true;
 		}
@@ -155,11 +155,11 @@ public class LedgerList extends AuditEntity implements Serializable {
 		return rtn;
 	}
 	
-	public LedgerChangeInfo getChangeInfo(Long changeId) {			
-		LedgerChangeInfo result = null;
+	public AppointmentChangeInfo getChangeInfo(Long changeId) {			
+		AppointmentChangeInfo result = null;
 		
 		if (!this.changeInfoList.isEmpty()) {
-			for (LedgerChangeInfo info : this.changeInfoList) {
+			for (AppointmentChangeInfo info : this.changeInfoList) {
 				
 				if ( changeId.equals(info.getId()) ) 
 					result = info;

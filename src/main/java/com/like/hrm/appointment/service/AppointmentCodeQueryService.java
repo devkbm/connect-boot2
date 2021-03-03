@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.commoncode.infra.jparepository.CodeJpaRepository;
+import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
-import com.like.hrm.appointment.boundary.LedgerDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO.SearchCodeDetail;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
@@ -25,8 +24,7 @@ public class AppointmentCodeQueryService {
 	private AppointmentCodeRepository appointmentQueryRepository;
 	
 	private CodeJpaRepository codeJpaRepository;
-	
-	@Autowired
+		
 	public AppointmentCodeQueryService(AppointmentCodeRepository appointmentQueryRepository
 			                          ,CodeJpaRepository codeJpaRepository) {
 		this.appointmentQueryRepository = appointmentQueryRepository;
@@ -48,10 +46,11 @@ public class AppointmentCodeQueryService {
 									 .collect(Collectors.toList());
 	}
 	
-	public List<LedgerDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
+	public List<AppointmentListDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
 		List<AppointmentCodeDetail> list = new ArrayList<>(appointmentQueryRepository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
 		//log.info(list.toString());
 		
-		return LedgerDTO.ChangeInfo.convert(list);
+		return AppointmentListDTO.ChangeInfo.convert(list);
+		
 	}
 }

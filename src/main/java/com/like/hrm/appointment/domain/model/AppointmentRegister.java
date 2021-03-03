@@ -39,7 +39,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "HRMAPPOINTMENTLEDGER")
 @EntityListeners(AuditingEntityListener.class)
-public class Ledger extends AuditEntity implements Serializable {
+public class AppointmentRegister extends AuditEntity implements Serializable {
 
 	private static final long serialVersionUID = -5893205308411172278L;
 
@@ -48,7 +48,7 @@ public class Ledger extends AuditEntity implements Serializable {
 	 */
 	@Id	
 	@Column(name="LEDGER_ID")
-	String ledgerId;
+	String id;
 		
 	/**
 	 * 발령 유형(정기, 임의)
@@ -73,19 +73,19 @@ public class Ledger extends AuditEntity implements Serializable {
 	 */
 	@OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true )
 	@MapKeyColumn(name="LIST_ID", insertable = false, updatable = false, nullable = false)
-	Map<String, LedgerList> appointmentList = new HashMap<>();
+	Map<String, AppointmentList> appointmentList = new HashMap<>();
 
 	/**
-	 * @param ledgerId
+	 * @param id
 	 * @param appointmentType
 	 * @param registrationDate
 	 * @param comment
 	 */
-	public Ledger(String ledgerId
-				 ,String appointmentType
-				 ,LocalDate registrationDate
-				 ,String comment) {
-		this.ledgerId = ledgerId;
+	public AppointmentRegister(String id
+							  ,String appointmentType
+							  ,LocalDate registrationDate
+							  ,String comment) {
+		this.id = id;
 		this.appointmentType = appointmentType;
 		this.registrationDate = registrationDate;
 		this.comment = comment;
@@ -97,11 +97,11 @@ public class Ledger extends AuditEntity implements Serializable {
 		this.comment = comment;		
 	}
 	
-	public LedgerList getAppointmentList(String listId) {			
+	public AppointmentList getAppointmentList(String listId) {			
 		return this.appointmentList.get(listId);
 	}
 	
-	public void addAppointmentList(LedgerList list) {
+	public void addAppointmentList(AppointmentList list) {
 		if (this.appointmentList == null)
 			this.appointmentList = new HashMap<>();
 		
@@ -113,7 +113,7 @@ public class Ledger extends AuditEntity implements Serializable {
 			throw new EntityNotFoundException(pk+ "가 존재하지 않습니다.");
 		}
 		
-		LedgerList list = this.getAppointmentList(pk);
+		AppointmentList list = this.getAppointmentList(pk);
 		
 		if (list.getFinishYn()) {
 			throw new IllegalStateException("처리가 왼료된 발령입니다.");
