@@ -59,7 +59,7 @@ public class AppointmentList extends AuditEntity implements Serializable {
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="LIST_ID")
-	String listId;
+	Long listId;
 	
 	/**
 	 * 순번

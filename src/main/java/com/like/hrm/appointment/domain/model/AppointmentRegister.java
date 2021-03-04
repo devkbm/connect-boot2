@@ -105,7 +105,7 @@ public class AppointmentRegister extends AuditEntity implements Serializable {
 		if (this.appointmentList == null)
 			this.appointmentList = new HashMap<>();
 		
-		this.appointmentList.put(list.getListId(), list);
+		//this.appointmentList.put(list.getListId(), list);
 	}
 	
 	public void deleteAppointmentList(String pk) {

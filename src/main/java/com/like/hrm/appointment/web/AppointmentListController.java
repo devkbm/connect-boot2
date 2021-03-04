@@ -44,24 +44,20 @@ public class AppointmentListController {
 		this.appointmentCodeQueryService = appointmentCodeQueryService;
 	}
 	
-	@GetMapping("/hrm/ledger/list")
+	@GetMapping("/hrm/appointmentlist")
 	public ResponseEntity<?> getList(AppointmentListDTO.SearchAppointmentList dto) {
-		
-		//List<LedgerList> list = appointmentQueryService.getLedgerList(dto);
-		List<QueryAppointmentList> list = queryService.getListDTO(dto);
-					
-		//SaveLedgerList rtn = LedgerDTO.convertDTO(list);
+				
+		List<QueryAppointmentList> list = queryService.getListDTO(dto);						
 		
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledger/{ledgerId}/list/{listId}")
-	public ResponseEntity<?> getLedgerList(@PathVariable(value="ledgerId") String ledgerId
-			   							  ,@PathVariable(value="listId") String listId) {
+	@GetMapping("/hrm/appointmentlist/{listId}")
+	public ResponseEntity<?> getAppointmentList(@PathVariable(value="listId") Long listId) {
 		
-		AppointmentList list = commandService.getLedgerList(ledgerId, listId);
+		AppointmentList list = commandService.getAppointmentList(listId);
 					
 		SaveAppointmentList rtn = null; 
 		
@@ -76,15 +72,15 @@ public class AppointmentListController {
 											,HttpStatus.OK);
 	}
 		
-	@RequestMapping(value={"/hrm/ledger/list"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveLedgerList(@RequestBody AppointmentListDTO.SaveAppointmentList dto, BindingResult result) {				
+	@RequestMapping(value={"/hrm/appointmentlist"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveAppointmentList(@RequestBody AppointmentListDTO.SaveAppointmentList dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
 			log.info(result.toString());
 			throw new ControllerException(result.toString());
 		} 
 																	
-		commandService.saveLedgerList(dto);						
+		commandService.saveAppointmentList(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -92,30 +88,28 @@ public class AppointmentListController {
 	}
 	
 	//@GetMapping("/hrm/ledger/{id}/list/{id2}/appoint")
-	@PostMapping(value={"/hrm/ledger/{ledgerId}/list/{listId}/appoint"})
-	public ResponseEntity<?> appointProcess(@PathVariable(value="ledgerId") String ledgerId
-            							   ,@PathVariable(value="listId") String listId) {
+	@PostMapping(value={"/hrm/appointmentlist/{listId}/appoint"})
+	public ResponseEntity<?> appointProcess(@PathVariable(value="listId") Long listId) {
 		
 		
-		commandService.appoint(ledgerId, listId);
+		commandService.appoint(listId);
 		
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 처리되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/hrm/ledger/{ledgerId}/list/{listId}")
-	public ResponseEntity<?> deleteLedgerList(@PathVariable(value="ledgerId") String ledgerId
-			   								 ,@PathVariable(value="listId") String listId) {				
+	@DeleteMapping("/hrm/appointmentlist/{listId}")
+	public ResponseEntity<?> deleteAppointmentList(@PathVariable(value="listId") Long listId) {				
 																		
-		commandService.deleteLedgerList(ledgerId, listId);						
+		commandService.deleteAppointmentList(listId);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledger/list/changeinfo/{code}")
+	@GetMapping("/hrm/appointmentlist/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
 		
 		List<AppointmentListDTO.ChangeInfo> list = appointmentCodeQueryService.getChangeInfoList(code);			

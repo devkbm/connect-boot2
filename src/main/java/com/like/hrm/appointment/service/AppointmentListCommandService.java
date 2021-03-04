@@ -9,9 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.common.web.exception.ControllerException;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
-import com.like.hrm.appointment.domain.model.AppointmentRegister;
 import com.like.hrm.appointment.domain.model.AppointmentList;
-import com.like.hrm.appointment.domain.repository.AppointmentRegisterRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentListRepository;
 
 @Service
 @Transactional
@@ -19,18 +18,18 @@ public class AppointmentListCommandService {
 
 	public ApplicationEventPublisher applicationEventPublisher;
 	
-	private AppointmentRegisterRepository appointmentRepository;
+	private AppointmentListRepository repository;
 	
 	public AppointmentListCommandService(ApplicationEventPublisher applicationEventPublisher
-							 ,AppointmentRegisterRepository appointmentRepository) {
+										,AppointmentListRepository repositoryy) {
 		this.applicationEventPublisher = applicationEventPublisher;
-		this.appointmentRepository = appointmentRepository;
+		this.repository = repositoryy;
 	}
 
-	public void appoint(String ledgerId, String listId) {
+	public void appoint(Long listId) {
 		//log.info("서비스 발행");
-		AppointmentRegister ledger = appointmentRepository.get(ledgerId);
-		AppointmentList list = ledger.getAppointmentList(listId);
+		
+		AppointmentList list = repository.get(listId);
 		
 		if (list.getFinishYn()) {
 			throw new ControllerException("처리가 완료된 발령입니다.");
@@ -39,15 +38,14 @@ public class AppointmentListCommandService {
 		applicationEventPublisher.publishEvent(new AppointmentProcessEvent(this, list));
 	}		
 	
-	public AppointmentList getLedgerList(String ledgerId, String listId) {
-		AppointmentRegister ledger = appointmentRepository.get(ledgerId);
-		AppointmentList list = ledger.getAppointmentList(listId);			
+	public AppointmentList getAppointmentList(Long listId) {		
+		AppointmentList list = repository.get(listId);			
 		
 		return list;			
 	}
 	
-	public void saveLedgerList(AppointmentListDTO.SaveAppointmentList dto) {		
-		AppointmentList list = null; //ledger.getAppointmentList(dto.getListId());			
+	public void saveAppointmentList(AppointmentListDTO.SaveAppointmentList dto) {		
+		AppointmentList list = repository.get(dto.getListId());			
 		
 		if (list == null) {			
 			list = dto.newEntity();			
@@ -56,10 +54,10 @@ public class AppointmentListCommandService {
 		}			
 	}
 	
-	public void deleteLedgerList(String ledgerId, String listId) {
-		AppointmentRegister ledger = appointmentRepository.get(ledgerId);
+	public void deleteAppointmentList(Long listId) {
+		AppointmentList list = repository.get(listId);
 		
-		ledger.deleteAppointmentList(listId);
+		repository.delete(list);
 	}	
 
 }

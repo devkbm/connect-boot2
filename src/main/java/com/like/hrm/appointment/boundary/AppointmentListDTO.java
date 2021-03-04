@@ -35,7 +35,7 @@ public class AppointmentListDTO {
 		// @NotEmpty(message = "발령번호는 필수 값입니다.")
 		private String ledgerId;
 		
-		private String listId;
+		private Long listId;
 					
 		public BooleanBuilder getBooleanBuilder() {
 			BooleanBuilder builder = new BooleanBuilder();
@@ -52,7 +52,7 @@ public class AppointmentListDTO {
 			return qType.ledger.id.eq(ledgerId);
 		}
 		
-		private BooleanExpression equalListId(String listId) {
+		private BooleanExpression equalListId(Long listId) {
 			if (StringUtils.isEmpty(listId)) {
 				return null;
 			}
@@ -70,7 +70,7 @@ public class AppointmentListDTO {
 		
 		private String ledgerId;
 		
-		private String listId;
+		private Long listId;
 				
 		private Long sequence;
 			
