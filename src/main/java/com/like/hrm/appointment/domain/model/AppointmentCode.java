@@ -51,6 +51,9 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	@Column(name="USE_YN")
 	boolean useYn = true;
 	
+	/**
+	 * 종료일자 필수 여부
+	 */
 	@Column(name="END_DATE_YN")
 	boolean endDateYn = false;
 	

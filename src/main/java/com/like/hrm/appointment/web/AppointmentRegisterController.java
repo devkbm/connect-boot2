@@ -36,8 +36,8 @@ public class AppointmentRegisterController {
 		this.queryService = queryService;		
 	}
 	
-	@GetMapping("/hrm/ledger")
-	public ResponseEntity<?> getLedger(AppointmentRegisterDTO.SearchAppointmentRegister dto) {
+	@GetMapping("/hrm/appointmentregister")
+	public ResponseEntity<?> getAppointmentRegister(AppointmentRegisterDTO.SearchAppointmentRegister dto) {
 		
 		List<AppointmentRegister> list = queryService.getLedger(dto);						
 		
@@ -46,8 +46,8 @@ public class AppointmentRegisterController {
 											,HttpStatus.OK);
 	}
 	
-	@GetMapping("/hrm/ledger/{id}")
-	public ResponseEntity<?> getLedger(@PathVariable(value="id") String id) {
+	@GetMapping("/hrm/appointmentregister/{id}")
+	public ResponseEntity<?> getAppointmentRegister(@PathVariable(value="id") String id) {
 		
 		AppointmentRegister ledger = commandService.getLedger(id);
 					
@@ -56,8 +56,8 @@ public class AppointmentRegisterController {
 											,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value={"/hrm/ledger"}, method={RequestMethod.POST,RequestMethod.PUT}) 
-	public ResponseEntity<?> saveLedger(@RequestBody AppointmentRegisterDTO.SaveAppointmentRegister dto, BindingResult result) {				
+	@RequestMapping(value={"/hrm/appointmentregister"}, method={RequestMethod.POST,RequestMethod.PUT}) 
+	public ResponseEntity<?> saveAppointmentRegister(@RequestBody AppointmentRegisterDTO.SaveAppointmentRegister dto, BindingResult result) {				
 		
 		if ( result.hasErrors()) {
 			log.info(result.toString());
@@ -71,8 +71,8 @@ public class AppointmentRegisterController {
 											,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/hrm/ledger/{id}")
-	public ResponseEntity<?> deleteLedger(@PathVariable(value="id") String id) {				
+	@DeleteMapping("/hrm/appointmentregister/{id}")
+	public ResponseEntity<?> deleteAppointmentRegister(@PathVariable(value="id") String id) {				
 																		
 		commandService.deleteLedger(id);						
 								 					
