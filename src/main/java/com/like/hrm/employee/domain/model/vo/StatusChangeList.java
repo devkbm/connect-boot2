@@ -39,8 +39,9 @@ public class StatusChangeList {
 			this.statusHistory.add(newHistory);			
 		} else {
 			if (oldHistory.getStatusCode() == newHistory.getStatusCode()) {
-				// 동일한 근무상태일 경우 일자 체크 로직 추가해야함
-				
+				if (newHistory.getPeriod().getTo().isBefore(oldHistory.getPeriod().getTo())) {
+					oldHistory.expire(newHistory.getPeriod().getTo());
+				}
 			} else if (oldHistory.getStatusCode() != newHistory.getStatusCode()) {
 				oldHistory.expire(newFromDate.minusDays(1));
 				this.statusHistory.add(newHistory);
