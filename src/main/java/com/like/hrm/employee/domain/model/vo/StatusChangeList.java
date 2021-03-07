@@ -26,26 +26,50 @@ public class StatusChangeList {
 	public Set<StatusChangeHistory> getStatusChangeHistory() {
 		return this.statusHistory;
 	}
-		
-	public void add(StatusChangeHistory statusChangeHistory) {
-		expire(statusChangeHistory.getPeriod().getFrom());
-					
-		this.statusHistory.add(statusChangeHistory);
-	}
-	
-	public void expire(LocalDate date) {
-		for (StatusChangeHistory statusHistory: this.getStatusChangeHistory()) {
-			if (isValid(statusHistory, date)) {
-				throw new IllegalArgumentException(statusHistory.getPeriod().getFrom() + "일로 시작하는 이력이 존재합니다.");
-			}
 			
-			if (statusHistory.isEnabled(date)) {
-				statusHistory.expire(date.minusDays(1));
-			}
-		}		
+	public void add(StatusChangeHistory newHistory) {
+		LocalDate newFromDate = newHistory.getPeriod().getFrom();
+		StatusChangeHistory oldHistory = this.getStatusChangeHistory(newFromDate);
+		
+		if (isValid(newFromDate)) {
+			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
+		}
+		
+		if (oldHistory == null) {
+			this.statusHistory.add(newHistory);			
+		} else {
+			if (oldHistory.getStatusCode() == newHistory.getStatusCode()) {
+				// 동일한 근무상태일 경우 일자 체크 로직 추가해야함
+				
+			} else if (oldHistory.getStatusCode() != newHistory.getStatusCode()) {
+				oldHistory.expire(newFromDate.minusDays(1));
+				this.statusHistory.add(newHistory);
+			}		
+		}			
+		
 	}
 	
-	private boolean isValid(StatusChangeHistory statusHistory, LocalDate referenceDate) {
-		return referenceDate.isBefore(statusHistory.getPeriod().getFrom());
+	private StatusChangeHistory getStatusChangeHistory(LocalDate date) {	
+		StatusChangeHistory rtn = null;		
+		
+		for (StatusChangeHistory statusHistory: this.getStatusChangeHistory()) {
+			if (statusHistory.isEnabled(date)) {
+				rtn = statusHistory;
+			}
+		}
+		
+		return rtn;			
+	}
+		
+	
+	private boolean isValid(LocalDate referenceDate) {
+		boolean rtn = true;
+		
+		for (StatusChangeHistory statusHistory: this.getStatusChangeHistory()) {
+			if (referenceDate.isBefore(statusHistory.getPeriod().getFrom()))
+				rtn = false;
+		}
+		
+		return rtn;
 	}
 }

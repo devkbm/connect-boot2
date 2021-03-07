@@ -11,11 +11,11 @@ public class AppointmentProcessEvent {
 	
 	private Object source;
 	
-	private AppointmentList ledgerList; 	
+	private AppointmentList appointment; 	
 	
-	public AppointmentProcessEvent(Object source, AppointmentList ledgerList) {
+	public AppointmentProcessEvent(Object source, AppointmentList appointment) {
 		this.source = source;
-		this.ledgerList = ledgerList;
+		this.appointment = appointment;
 	}
 	
 	

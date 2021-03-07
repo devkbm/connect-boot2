@@ -80,6 +80,12 @@ public class StatusChangeHistory extends AuditEntity implements Serializable {
 		//this.toDate = toDate;	
 	}
 	
+	/**
+	 * 시작일자, 종료일자 사이에 포함되는지 여부를 리턴
+	 * from <= date <= to 
+	 * @param date
+	 * @return
+	 */
 	public boolean isEnabled(LocalDate date) {
 		return  ( date.isAfter(this.period.getFrom()) || date.isEqual(this.period.getFrom()) ) 
 			 && ( date.isBefore(this.period.getTo()) || date.isEqual(this.period.getTo()) ) ? true : false;		
@@ -88,10 +94,8 @@ public class StatusChangeHistory extends AuditEntity implements Serializable {
 	public void expire(LocalDate date) {
 		if (date.isAfter(this.period.getFrom())) {
 			this.period = new DatePeriod(this.period.getFrom(), date);
-			//this.toDate = date;
 		} else {
 			this.period = new DatePeriod(this.period.getFrom(), this.period.getFrom());
-			//this.toDate = this.fromDate;
 		}
 	}
 	

@@ -51,6 +51,9 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	@Column(name="USE_YN")
 	boolean useYn = true;
 	
+	@Column(name="EMP_STATUS")
+	String employmentStatus;
+	
 	/**
 	 * 종료일자 필수 여부
 	 */
@@ -70,6 +73,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	public AppointmentCode(String code
 						  ,String codeName
 						  ,boolean useYn
+						  ,String employmentStatus
 						  ,boolean endDateYn
 						  ,Integer sequence
 						  ,String comment
@@ -77,6 +81,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 		this.code 		= code;
 		this.codeName 	= codeName;
 		this.useYn 		= useYn;
+		this.employmentStatus = employmentStatus;
 		this.endDateYn 	= endDateYn;
 		this.sequence 	= sequence;
 		this.comment	= comment;
@@ -85,11 +90,13 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	
 	public void changeInfo(String codeName
 						  ,boolean useYn
+						  ,String employmentStatus
 						  ,boolean endDateYn
 						  ,Integer sequence
 						  ,String comment) {
 		this.codeName 	= codeName;
 		this.useYn 		= useYn;
+		this.employmentStatus = employmentStatus;
 		this.endDateYn 	= endDateYn;
 		this.sequence 	= sequence;
 		this.comment	= comment;

@@ -74,13 +74,15 @@ public class AppointmentCodeDTO {
 					
 		private String code;
 			
-		private String codeName;					
-								
-		private int sequence;
+		private String codeName;														
 			
 		private boolean useYn;
 		
+		String employmentStatus;
+		
 		private boolean endDateYn;
+		
+		private int sequence;
 		
 		private String comment;
 		
@@ -88,6 +90,7 @@ public class AppointmentCodeDTO {
 			return new AppointmentCode(this.code
 									  ,this.codeName
 									  ,this.useYn
+									  ,this.employmentStatus
 									  ,this.endDateYn
 									  ,this.sequence
 									  ,this.comment									  
@@ -97,6 +100,7 @@ public class AppointmentCodeDTO {
 		public void modifyEntity(AppointmentCode entity) {
 			entity.changeInfo(this.codeName
 							 ,this.useYn
+							 ,this.employmentStatus
 							 ,this.endDateYn
 							 ,this.sequence
 							 ,this.comment);					

@@ -61,12 +61,12 @@ public class AppointmentListController {
 					
 		SaveAppointmentList rtn = null; 
 		
-		if (list != null) {
-			rtn = AppointmentListDTO.SaveAppointmentList.convert(list);
-		} else {
+		if (list == null) {
 			rtn = new SaveAppointmentList();
+		} else {
+			rtn = AppointmentListDTO.SaveAppointmentList.convert(list);
 		}
-		
+				
 		return WebControllerUtil.getResponse(rtn											
 											,String.format("%d 건 조회되었습니다.", rtn != null ? 1 : 0)
 											,HttpStatus.OK);
@@ -87,6 +87,16 @@ public class AppointmentListController {
 											,HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/hrm/appointmentlist/{listId}")
+	public ResponseEntity<?> deleteAppointmentList(@PathVariable(value="listId") Long listId) {				
+																		
+		commandService.deleteAppointmentList(listId);						
+								 					
+		return WebControllerUtil.getResponse(null											
+											,String.format("%d 건 삭제되었습니다.", 1)
+											,HttpStatus.OK);
+	}
+	
 	//@GetMapping("/hrm/ledger/{id}/list/{id2}/appoint")
 	@PostMapping(value={"/hrm/appointmentlist/{listId}/appoint"})
 	public ResponseEntity<?> appointProcess(@PathVariable(value="listId") Long listId) {
@@ -98,16 +108,7 @@ public class AppointmentListController {
 											,String.format("%d 건 처리되었습니다.", 1)
 											,HttpStatus.OK);
 	}
-	
-	@DeleteMapping("/hrm/appointmentlist/{listId}")
-	public ResponseEntity<?> deleteAppointmentList(@PathVariable(value="listId") Long listId) {				
-																		
-		commandService.deleteAppointmentList(listId);						
-								 					
-		return WebControllerUtil.getResponse(null											
-											,String.format("%d 건 삭제되었습니다.", 1)
-											,HttpStatus.OK);
-	}
+		
 	
 	@GetMapping("/hrm/appointmentlist/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
