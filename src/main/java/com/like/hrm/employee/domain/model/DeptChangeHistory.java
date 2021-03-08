@@ -115,6 +115,10 @@ public class DeptChangeHistory extends AuditEntity implements Serializable {
 		return rtn;
 	}
 	
+	public boolean equal(String deptType, String deptCode) {
+		return this.deptType.equals(deptType) && this.deptCode.equals(deptCode) ? true : false;
+	}
+	
 	public boolean equalDeptType(String deptType) {
 		return this.deptType.equals(deptType) ? true : false;
 	}

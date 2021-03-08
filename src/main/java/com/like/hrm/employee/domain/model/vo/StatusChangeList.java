@@ -27,6 +27,10 @@ public class StatusChangeList {
 		return this.statusHistory;
 	}
 			
+	/**
+	 * 신규 근무상태이력을 등록한다.
+	 * @param newHistory
+	 */
 	public void add(StatusChangeHistory newHistory) {
 		LocalDate newFromDate = newHistory.getPeriod().getFrom();
 		StatusChangeHistory oldHistory = this.getStatusChangeHistory(newFromDate);
@@ -50,6 +54,11 @@ public class StatusChangeList {
 		
 	}
 	
+	/**
+	 * date에 해당하는 근무상태변경이력 조회
+	 * @param date
+	 * @return
+	 */
 	private StatusChangeHistory getStatusChangeHistory(LocalDate date) {	
 		StatusChangeHistory rtn = null;		
 		
@@ -62,7 +71,11 @@ public class StatusChangeList {
 		return rtn;			
 	}
 		
-	
+	/**
+	 * referenceDate 이전에 등록된 데이터가 존재하는지 여부 조회
+	 * @param referenceDate
+	 * @return
+	 */
 	private boolean isValid(LocalDate referenceDate) {
 		boolean rtn = true;
 		

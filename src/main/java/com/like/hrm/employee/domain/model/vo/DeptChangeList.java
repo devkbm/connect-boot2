@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
+import com.like.hrm.employee.domain.model.StatusChangeHistory;
 
 import lombok.NoArgsConstructor;
 
@@ -29,37 +30,51 @@ public class DeptChangeList {
 	
 	/**
 	 * <p>부서변경이력을 추가한다.</p>
-	 * 1. 동일 부서 유형의 유효한 부서 정보 종료
-	 * 2. 신규 부서 정보 입력
-	 * @param deptChangeHistory
+	 * @param newHistory
 	 */
-	public void add(DeptChangeHistory deptChangeHistory) {
+	public void add(DeptChangeHistory newHistory) {
+		LocalDate newFromDate = newHistory.getPeriod().getFrom();
+		DeptChangeHistory oldHistory = this.getDeptChangeHistory(newFromDate);
 		
-		this.expire(deptChangeHistory.getDeptType()
-						  ,deptChangeHistory.getPeriod().getFrom());
+		if (isValid(newFromDate)) {
+			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
+		}
 		
-		deptHistory.add(deptChangeHistory);
+		if (oldHistory == null) {
+			this.deptHistory.add(newHistory);			
+		} else {
+			if (oldHistory.equal(newHistory.getDeptType(), newHistory.getDeptCode())) {
+				if (newHistory.getPeriod().getTo().isBefore(oldHistory.getPeriod().getTo())) {
+					oldHistory.expire(newHistory.getPeriod().getTo());
+				}
+			} else if (oldHistory.equal(newHistory.getDeptType(), newHistory.getDeptCode()) != true) {
+				oldHistory.expire(newFromDate.minusDays(1));
+				this.deptHistory.add(newHistory);
+			}		
+		}
+	}
+		
+	private DeptChangeHistory getDeptChangeHistory(LocalDate date) {
+		DeptChangeHistory history = null;
+		
+		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
+			if (deptHistory.isEnabled(date)) {
+				history = deptHistory;
+			}
+				
+		}
+		
+		return history;
 	}
 	
-	/**
-	 * <p>부서 이력 중 기준일자에 해당하는 사용가능한 이력이 있을 경우 전일로 종료시킨다.</p>
-	 * @param deptType
-	 * @param referenceDate
-	 */
-	private void expire(String deptType, LocalDate referenceDate) {
-				
-		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
-			
-			if (referenceDate.isBefore(deptHistory.getPeriod().getFrom())
-			 && deptHistory.equalDeptType(deptType)) {
-				throw new IllegalArgumentException(deptHistory.getPeriod().getFrom() + "일로 시작하는 부서 이력이 존재합니다.");
-			}
-			
-			if ( deptHistory.equalDeptType(deptType)			  	
-			  && deptHistory.isEnabled(referenceDate) )
-				
-				deptHistory.expire(referenceDate.minusDays(1));				
-		}									
+	private boolean isValid(LocalDate referenceDate) {
+		boolean rtn = true;
 		
+		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
+			if (referenceDate.isBefore(deptHistory.getPeriod().getFrom()))
+				rtn = false;
+		}
+		
+		return rtn;
 	}
 }
