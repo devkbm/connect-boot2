@@ -88,13 +88,7 @@ public class Employee extends AuditEntity implements Serializable {
 	 */
 	@Column(name="BIRTHDAY")
 	LocalDate birthday;	
-	
-	/**
-	 * 근무상태
-	 */
-	@Column(name="WORK_CONDITION")
-	String workCondition;
-	
+			
 	/**
 	 * 이미지경로
 	 */
@@ -146,8 +140,7 @@ public class Employee extends AuditEntity implements Serializable {
 		this.name = name;
 		this.nameEng = nameEng;
 		this.nameChi = nameChi;
-		this.residentRegistrationNumber = residentRegistrationNumber;
-		this.workCondition = "Z";
+		this.residentRegistrationNumber = residentRegistrationNumber;	
 	}
 	
 	public void modifyEntity(String name

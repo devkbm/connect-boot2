@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
-import com.like.hrm.employee.domain.model.StatusChangeHistory;
 
 import lombok.NoArgsConstructor;
 
@@ -40,6 +39,12 @@ public class DeptChangeList {
 			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
 		}
 		
+		addHistory(oldHistory, newHistory);				
+	}
+	
+	private void addHistory(DeptChangeHistory oldHistory, DeptChangeHistory newHistory) {
+		LocalDate newFromDate = newHistory.getPeriod().getFrom();
+				
 		if (oldHistory == null) {
 			this.deptHistory.add(newHistory);			
 		} else {

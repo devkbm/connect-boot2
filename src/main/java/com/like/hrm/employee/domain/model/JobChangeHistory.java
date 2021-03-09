@@ -93,6 +93,10 @@ public class JobChangeHistory extends AuditEntity implements Serializable {
 		}
 	}
 	
+	public boolean equal(String jobType, String jobCode) {
+		return this.jobType.equals(jobType) && this.jobCode.equals(jobCode) ? true : false;
+	}
+	
 	public boolean equalJobType(String jobType) {
 		return this.jobType.equals(jobType) ? true : false;
 	}

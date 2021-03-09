@@ -33,31 +33,55 @@ public class JobChangeList {
 	 * 2. 신규 인사 정보 입력
 	 * @param jobChangeHistory
 	 */
-	public void add(JobChangeHistory jobChangeHistory) {
-		this.expire(jobChangeHistory.getJobType()
-						 ,jobChangeHistory.getPeriod().getFrom());
+	public void add(JobChangeHistory newHistory) {
+		LocalDate newFromDate = newHistory.getPeriod().getFrom();
+		JobChangeHistory oldHistory = this.getJobChangeHistory(newFromDate);
 		
-		jobHistory.add(jobChangeHistory);
+		if (isValid(newFromDate)) {
+			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
+		}
+		
+		addHistory(oldHistory, newHistory);
 	}
 	
-	/**
-	 * <p>인사정보 이력을 종료일자 기준으로 종료시킨다.</p>
-	 * @param jobType
-	 * @param referenceDate
-	 */
-	private void expire(String jobType, LocalDate referenceDate) {
+	private void addHistory(JobChangeHistory oldHistory, JobChangeHistory newHistory) {
+		LocalDate newFromDate = newHistory.getPeriod().getFrom();
+				
+		if (oldHistory == null) {
+			this.jobHistory.add(newHistory);			
+		} else {
+			if (oldHistory.equal(newHistory.getJobType(), newHistory.getJobCode())) {
+				if (newHistory.getPeriod().getTo().isBefore(oldHistory.getPeriod().getTo())) {
+					oldHistory.expire(newHistory.getPeriod().getTo());
+				}
+			} else if (oldHistory.equal(newHistory.getJobType(), newHistory.getJobCode()) != true) {
+				oldHistory.expire(newFromDate.minusDays(1));
+				this.jobHistory.add(newHistory);
+			}		
+		}
+	}	
+	
+	private JobChangeHistory getJobChangeHistory(LocalDate date) {
+		JobChangeHistory history = null;
 		
 		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
-			
-			if (jobHistory.equalJobType(jobType) 
-			 && referenceDate.isBefore(jobHistory.getPeriod().getFrom())) {
-				throw new IllegalArgumentException(jobHistory.getPeriod().getFrom() + "일로 시작하는 이력이 존재합니다.");
+			if (jobHistory.isEnabled(date)) {
+				history = jobHistory;
 			}
-			
-			if ( jobHistory.equalJobType(jobType) 			  
-			  && jobHistory.isEnabled(referenceDate) )
 				
-				jobHistory.expire(referenceDate.minusDays(1));				
 		}
+		
+		return history;
+	}
+	
+	private boolean isValid(LocalDate referenceDate) {
+		boolean rtn = true;
+		
+		for (JobChangeHistory jobHistory: this.getJobChangeHistory()) {
+			if (referenceDate.isBefore(jobHistory.getPeriod().getFrom()))
+				rtn = false;
+		}
+		
+		return rtn;
 	}
 }
