@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.boundary.QueryAppointmentList;
 import com.like.hrm.appointment.boundary.AppointmentListDTO.SearchAppointmentList;
+import com.like.hrm.appointment.boundary.QQueryAppointmentList;
 import com.like.hrm.appointment.domain.model.AppointmentList;
+import com.like.hrm.appointment.domain.model.QAppointmentCode;
 import com.like.hrm.appointment.domain.model.QAppointmentList;
 import com.like.hrm.appointment.domain.repository.AppointmentListRepository;
 import com.like.hrm.appointment.infra.jparepository.springdata.JpaAppointmentList;
+import com.like.hrm.employee.domain.model.QEmployee;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -51,18 +54,18 @@ public class AppointmentListJpaRepository implements AppointmentListRepository{
 
 	@Override
 	public List<QueryAppointmentList> getListDTO(AppointmentListDTO.SearchAppointmentList searchCondition) {
-		/*
+		
 		return queryFactory
-				.select(new QLedgerDTO_QueryLedgerList(QAppointmentList.appointmentList.ledger.ledgerId
-									                  ,QAppointmentList.appointmentList.listId
-									                  ,QAppointmentList.appointmentList.sequence
-									                  ,QAppointmentList.appointmentList.empId
-									                  ,QEmployee.employee.name
-									                  ,QAppointmentList.appointmentList.appointmentCode
-									                  ,QAppointmentCode.appointmentCode.codeName
-									                  ,QAppointmentList.appointmentList.appointmentFromDate
-									                  ,QAppointmentList.appointmentList.appointmentToDate
-									                  ,QAppointmentList.appointmentList.finishYn)
+				.select(new QQueryAppointmentList(QAppointmentList.appointmentList.ledger.id
+							                     ,QAppointmentList.appointmentList.listId
+							                     ,QAppointmentList.appointmentList.sequence
+							                     ,QAppointmentList.appointmentList.empId
+							                     ,QEmployee.employee.name
+							                     ,QAppointmentList.appointmentList.appointmentCode
+							                     ,QAppointmentCode.appointmentCode.codeName
+							                     ,QAppointmentList.appointmentList.appointmentFromDate
+							                     ,QAppointmentList.appointmentList.appointmentToDate
+							                     ,QAppointmentList.appointmentList.finishYn)
 						)
 				.from(QAppointmentList.appointmentList)
 				.join(QEmployee.employee)
@@ -70,8 +73,7 @@ public class AppointmentListJpaRepository implements AppointmentListRepository{
 				.join(QAppointmentCode.appointmentCode)
 				  .on(QAppointmentList.appointmentList.appointmentCode.eq(QAppointmentCode.appointmentCode.code))
 				.where(searchCondition.getBooleanBuilder())
-				.fetch();*/
-		return null;
+				.fetch();		
 	}
 
 }

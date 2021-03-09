@@ -45,13 +45,15 @@ public class AppointmentListCommandService {
 	}
 	
 	public void saveAppointmentList(AppointmentListDTO.SaveAppointmentList dto) {		
-		AppointmentList list = repository.get(dto.getListId());			
+		AppointmentList list = dto.getListId() == null ? null : repository.get(dto.getListId());			
 		
 		if (list == null) {			
 			list = dto.newEntity();			
 		} else {
 			list = dto.modifyEntity(list);
-		}			
+		}	
+		
+		repository.save(list);
 	}
 	
 	public void deleteAppointmentList(Long listId) {

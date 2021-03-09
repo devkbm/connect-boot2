@@ -16,7 +16,7 @@ public class QueryAppointmentList implements Serializable {
 
 	private String ledgerId;
 	
-	private String listId;
+	private Long listId;
 			
 	private Long sequence;
 				
@@ -47,9 +47,16 @@ public class QueryAppointmentList implements Serializable {
 	 * @param finishYn
 	 */
 	@QueryProjection
-	public QueryAppointmentList(String ledgerId, String listId, Long sequence, String empId, String empName,
-			String appointmentCode, String appointmentCodeName, LocalDate appointmentFromDate,
-			LocalDate appointmentToDate, Boolean finishYn) {
+	public QueryAppointmentList(String ledgerId
+			,Long listId
+			,Long sequence
+			,String empId
+			,String empName
+			,String appointmentCode
+			,String appointmentCodeName
+			,LocalDate appointmentFromDate
+			,LocalDate appointmentToDate
+			,Boolean finishYn) {
 		this.ledgerId = ledgerId;
 		this.listId = listId;
 		this.sequence = sequence;

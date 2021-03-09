@@ -32,13 +32,15 @@ public class AppointmentProcessService {
 	public AppointmentProcessService(EmployeeRepository employeeRepository,
 									 AppointmentCodeRepository appointmentCodeRepository) {		
 		this.employeeRepository = employeeRepository;		
+		this.appointmentCodeRepository = appointmentCodeRepository;
 	}
 		
 	//@EventListener
-	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-	public void onApplicationEvent(AppointmentProcessEvent event) {					
+	@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+	public void onApplicationEvent(AppointmentProcessEvent event) {	
+				
 		AppointmentList list = event.getAppointment();		
-		Employee employee = employeeRepository.getEmployee(list.getEmpId());
+		Employee employee = employeeRepository.getEmployee(list.getEmpId());			
 		AppointmentCode code = appointmentCodeRepository.getAppointmentCode(list.getAppointmentCode());
 		
 		// 1. 인사정보(부서, 직위 등)을 적용한다.

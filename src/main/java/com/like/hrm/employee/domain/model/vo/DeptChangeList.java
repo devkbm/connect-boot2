@@ -35,9 +35,11 @@ public class DeptChangeList {
 		LocalDate newFromDate = newHistory.getPeriod().getFrom();
 		DeptChangeHistory oldHistory = this.getDeptChangeHistory(newFromDate);
 		
+		/*
 		if (isValid(newFromDate)) {
 			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
 		}
+		*/
 		
 		addHistory(oldHistory, newHistory);				
 	}

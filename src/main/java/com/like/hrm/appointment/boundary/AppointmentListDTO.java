@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.util.StringUtils;
 
+import com.like.board.boundary.ArticleDTO;
+import com.like.board.domain.model.vo.Period;
 import com.like.hrm.appointment.domain.model.AppointmentChangeInfo;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.model.AppointmentList;
+import com.like.hrm.appointment.domain.model.AppointmentRegister;
 import com.like.hrm.appointment.domain.model.QAppointmentList;
 import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 import com.querydsl.core.BooleanBuilder;
@@ -41,7 +45,7 @@ public class AppointmentListDTO {
 			BooleanBuilder builder = new BooleanBuilder();
 			
 			builder
-				.and(equalLedgerId(ledgerId))
+				//.and(equalLedgerId(ledgerId))
 				.and(equalListId(listId));
 			
 			
@@ -136,9 +140,11 @@ public class AppointmentListDTO {
 				}
 			}
 			
+			Optional<AppointmentRegister> register = Optional.ofNullable(entity.getLedger());			
+			
 			return SaveAppointmentList
 					.builder()
-					.ledgerId(entity.getLedger().getId())
+					.ledgerId(register.map(AppointmentRegister::getId).orElse(null))
 					.listId(entity.getListId())
 					.sequence(entity.getSequence())
 					.appointmentCode(entity.getAppointmentCode())

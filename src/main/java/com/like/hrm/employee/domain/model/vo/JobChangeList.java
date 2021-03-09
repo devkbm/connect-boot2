@@ -36,10 +36,11 @@ public class JobChangeList {
 	public void add(JobChangeHistory newHistory) {
 		LocalDate newFromDate = newHistory.getPeriod().getFrom();
 		JobChangeHistory oldHistory = this.getJobChangeHistory(newFromDate);
-		
+		/*
 		if (isValid(newFromDate)) {
 			throw new IllegalArgumentException(newHistory.getPeriod().getFrom() + "이전 이력이 존재합니다.");
 		}
+		*/
 		
 		addHistory(oldHistory, newHistory);
 	}

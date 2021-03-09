@@ -51,7 +51,7 @@ public class AppointmentCode extends AuditEntity implements Serializable {
 	@Column(name="USE_YN")
 	boolean useYn = true;
 	
-	@Column(name="EMP_STATUS")
+	@Column(name="EMP_STATUS_CODE")
 	String employmentStatus;
 	
 	/**
