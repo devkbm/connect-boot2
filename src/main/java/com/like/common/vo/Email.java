@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Email {
 	
-	@Column(name="email")
-	String address;	
+	@Column(name="EMAIL")
+	private String address;	
 	
 	public Email(String address) {		
 		if (!Email.isValid(address))

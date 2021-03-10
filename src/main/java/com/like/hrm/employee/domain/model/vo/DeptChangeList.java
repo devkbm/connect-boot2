@@ -33,7 +33,7 @@ public class DeptChangeList {
 	 */
 	public void add(DeptChangeHistory newHistory) {
 		LocalDate newFromDate = newHistory.getPeriod().getFrom();
-		DeptChangeHistory oldHistory = this.getDeptChangeHistory(newFromDate);
+		DeptChangeHistory oldHistory = this.getDeptChangeHistory(newHistory.getDeptType(), newFromDate);
 		
 		/*
 		if (isValid(newFromDate)) {
@@ -45,27 +45,39 @@ public class DeptChangeList {
 	}
 	
 	private void addHistory(DeptChangeHistory oldHistory, DeptChangeHistory newHistory) {
-		LocalDate newFromDate = newHistory.getPeriod().getFrom();
-				
+					
+		// 기존 부서이력이 없을 경우
 		if (oldHistory == null) {
 			this.deptHistory.add(newHistory);			
-		} else {
-			if (oldHistory.equal(newHistory.getDeptType(), newHistory.getDeptCode())) {
-				if (newHistory.getPeriod().getTo().isBefore(oldHistory.getPeriod().getTo())) {
-					oldHistory.expire(newHistory.getPeriod().getTo());
+		} 
+		// 기존 부서이력이 있을 경우 (동일 부서구분)  
+		else if (oldHistory.equalDeptType(newHistory.getDeptType())) {
+
+			LocalDate oldToDate = oldHistory.getPeriod().getTo();
+			LocalDate newToDate = newHistory.getPeriod().getTo();
+			
+			// 동일부서코드일 경우 기존 이력 날짜 조정
+			if (oldHistory.equalDeptCode(newHistory.getDeptCode())) {
+				// 기존 이력에 신규 종료일 적용  
+				if (!newToDate.isEqual(oldToDate)) {
+					oldHistory.expire(newToDate);
 				}
-			} else if (oldHistory.equal(newHistory.getDeptType(), newHistory.getDeptCode()) != true) {
+			}
+			// 동일부서코드가 아닐 경우 기존 이력 종료 후 신규이력 등록
+			else {
+				LocalDate newFromDate = newHistory.getPeriod().getFrom();
+				
 				oldHistory.expire(newFromDate.minusDays(1));
 				this.deptHistory.add(newHistory);
-			}		
+			}											
 		}
 	}
 		
-	private DeptChangeHistory getDeptChangeHistory(LocalDate date) {
+	private DeptChangeHistory getDeptChangeHistory(String deptType, LocalDate date) {
 		DeptChangeHistory history = null;
 		
 		for (DeptChangeHistory deptHistory: this.getDeptChangeHistory()) {
-			if (deptHistory.isEnabled(date)) {
+			if (deptHistory.equalDeptType(deptType) && deptHistory.isEnabled(date)) {
 				history = deptHistory;
 			}
 				

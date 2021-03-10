@@ -45,20 +45,31 @@ public class JobChangeList {
 		addHistory(oldHistory, newHistory);
 	}
 	
-	private void addHistory(JobChangeHistory oldHistory, JobChangeHistory newHistory) {
-		LocalDate newFromDate = newHistory.getPeriod().getFrom();
-				
+	private void addHistory(JobChangeHistory oldHistory, JobChangeHistory newHistory) {		
+			
+		// 기존 인사이력이 없을 경우
 		if (oldHistory == null) {
 			this.jobHistory.add(newHistory);			
-		} else {
-			if (oldHistory.equal(newHistory.getJobType(), newHistory.getJobCode())) {
-				if (newHistory.getPeriod().getTo().isBefore(oldHistory.getPeriod().getTo())) {
-					oldHistory.expire(newHistory.getPeriod().getTo());
+		} 
+		// 기존 인사이력이 있을 경우
+		else if (oldHistory.equalJobType(newHistory.getJobType())) {
+			LocalDate oldToDate = oldHistory.getPeriod().getTo();
+			LocalDate newToDate = newHistory.getPeriod().getTo();
+			
+			// 동일 인사코드일 경우 기존 이력 날짜 조정
+			if (oldHistory.equalJobCode(newHistory.getJobCode())) {
+				// 기존 이력에 신규 종료일 적용  
+				if (!newToDate.isEqual(oldToDate)) {
+					oldHistory.expire(newToDate);
 				}
-			} else if (oldHistory.equal(newHistory.getJobType(), newHistory.getJobCode()) != true) {
+			}
+			// 동일 인사코드가 아닐 경우 기존 이력 종료 후 신규 이력 등록
+			else {
+				LocalDate newFromDate = newHistory.getPeriod().getFrom();
+				
 				oldHistory.expire(newFromDate.minusDays(1));
 				this.jobHistory.add(newHistory);
-			}		
+			}						
 		}
 	}	
 	
