@@ -28,7 +28,7 @@ import lombok.ToString;
 @ToString(callSuper = true, includeFieldNames = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(builderMethodName = "hiddenBuilder")
+@Builder(builderMethodName = "internalBuilder")
 @Getter
 @Entity
 @Table(name = "comdept")
@@ -70,7 +70,7 @@ public class Dept extends AuditEntity implements Serializable {
 	public static DeptBuilder builder(String deptCode) {
 		Assert.hasText(deptCode, "deptCode must not be empty!");
 		
-		return hiddenBuilder().deptCode(deptCode);
+		return internalBuilder().deptCode(deptCode);
 	}	
 
 	/**
