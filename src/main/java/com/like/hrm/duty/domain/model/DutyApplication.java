@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
  *  
  * @author CB457 
  */
-@Builder
+@Builder(builderClassName = "dtoBuilder", builderMethodName = "dtoBuilder")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

@@ -89,8 +89,7 @@ public class DutyApplicationDTO {
 		
 		public DutyApplication newEntity() {							
 			
-			return DutyApplication.builder()
-								  .dutyId(dutyId)
+			return DutyApplication.builder()								  
 								  .employeeId(employeeId)
 								  .dutyCode(dutyCode)
 								  .dutyReason(dutyReason)
