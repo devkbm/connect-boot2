@@ -48,6 +48,7 @@ public class UserDTO {
 								.deptCode(dept.map(Dept::getDeptCode).orElse(null))
 								.mobileNum(entity.getMobileNum())
 								.email(entity.getEmail())
+								.imageBase64(entity.getImage())
 								.enabled(entity.isEnabled())	
 								.accountNonExpired(entity.isAccountNonExpired())
 								.accountNonLocked(entity.isAccountNonLocked())
