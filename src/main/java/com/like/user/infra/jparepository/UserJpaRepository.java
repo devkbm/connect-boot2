@@ -3,7 +3,6 @@ package com.like.user.infra.jparepository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -21,23 +20,25 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 @Repository
 public class UserJpaRepository implements UserRepository {
 
-	@Autowired
-	private JPAQueryFactory  queryFactory;
-	
-	@Autowired
-	private JpaUser jpaUser;
-	
-	@Autowired
-	private JpaAuthority jpaAuthority;
-		
 	private final QUser qUser = QUser.user;
-	private final QAuthority qAuthority = QAuthority.authority;	
+	private final QAuthority qAuthority = QAuthority.authority;
+	
+	private JPAQueryFactory  queryFactory;	
+	private JpaUser jpaUser;		
+	private JpaAuthority jpaAuthority;
+	
+	public UserJpaRepository(JPAQueryFactory  queryFactory
+							,JpaUser jpaUser
+							,JpaAuthority jpaAuthority) {
+		this.queryFactory = queryFactory;
+		this.jpaUser = jpaUser;
+		this.jpaAuthority = jpaAuthority;
+	}
+		
 	
 	@Override
-	public User getUser(String userId) throws UsernameNotFoundException {
-		Optional<User> entity = jpaUser.findById(userId);
-		
-		return entity.orElse(null);
+	public User getUser(String userId) throws UsernameNotFoundException {				
+		return jpaUser.findById(userId).orElse(null);
 	}
 	
 	@Override
@@ -76,9 +77,7 @@ public class UserJpaRepository implements UserRepository {
 		
 	@Override
 	public void addUserAuthority(String userId, Authority authority) { 
-		Optional<User> user = jpaUser.findById(userId);
-		
-		user.get().addAuthoritiy(authority);
+		jpaUser.findById(userId).ifPresent( user -> user.addAuthoritiy(authority) );			
 	}
 
 	@Override
@@ -102,9 +101,8 @@ public class UserJpaRepository implements UserRepository {
 	}
 
 	@Override
-	public Authority getAuthority(String authorityName) {
-		Optional<Authority> entity = jpaAuthority.findById(authorityName);
-		return entity.orElse(null);
+	public Authority getAuthority(String authorityName) {		
+		return jpaAuthority.findById(authorityName).orElse(null);
 	}
 
 	@Override
