@@ -1,17 +1,12 @@
 package com.like.holiday.domain.repository;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.like.holiday.domain.model.Holiday;
 
-public interface HolidayRepository {
-
-	List<Holiday> getHoliday(LocalDate fromDate, LocalDate toDate);
+public interface HolidayRepository extends JpaRepository<Holiday, LocalDate>, QuerydslPredicateExecutor<Holiday> {
 	
-	Holiday getHoliday(LocalDate date);
-
-	void saveHoliday(Holiday entity);
-	
-	void deleteHoliday(Holiday entity);	
 }

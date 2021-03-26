@@ -1,12 +1,9 @@
 package com.like.dept.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.dept.boundary.DeptDTO;
-import com.like.dept.boundary.DeptDTO.DeptHierarchy;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.repository.DeptRepository;
 
@@ -21,36 +18,24 @@ public class DeptService {
 	}
 
 	public boolean isDept(String deptCode) {
-		return deptRepository.isDept(deptCode);
+		return deptRepository.existsById(deptCode);
 	}
 	
 	public Dept getDept(String deptCode) {
-		return deptRepository.getDept(deptCode);
-	}
-	
-	public List<Dept> getAllDeptList() {
-		return deptRepository.getAllDeptList();
-	}
-	
-	public List<DeptHierarchy> getDeptHierarchyList() {
-		return deptRepository.getDeptHierarchy();
-	}
-	
-	public List<Dept> getDeptList(DeptDTO.SearchDept searchCondition) {
-		return deptRepository.getDeptList(searchCondition.getCondition());
-	}
+		return deptRepository.findById(deptCode).orElse(null);
+	}	
 	
 	public void createDept(Dept dept) {
-		deptRepository.saveDept(dept);
+		deptRepository.save(dept);
 	}			
 	
 	public void saveDept(Dept dept) {				
-		deptRepository.saveDept(dept);
+		deptRepository.save(dept);
 	}
 	
 	public void saveDept(DeptDTO.SaveDept dto) {
-		Dept dept = deptRepository.getDept(dto.getDeptCode());
-		Dept parentDept = dto.getParentDeptCode() == null ? null : deptRepository.getDept(dto.getParentDeptCode()); 			
+		Dept dept = deptRepository.findById(dto.getDeptCode()).orElse(null);
+		Dept parentDept = dto.getParentDeptCode() == null ? null : deptRepository.findById(dto.getParentDeptCode()).orElse(null); 			
 		
 		if (dept == null) {
 			dept = dto.newDept(parentDept);
@@ -58,10 +43,10 @@ public class DeptService {
 			dto.modifyDept(dept, parentDept);
 		}				
 		
-		deptRepository.saveDept(dept);
+		deptRepository.save(dept);
 	}
 	
 	public void deleteDept(String deptCode) {
-		deptRepository.deleteDept(deptCode);
+		deptRepository.deleteById(deptCode);
 	}
 }

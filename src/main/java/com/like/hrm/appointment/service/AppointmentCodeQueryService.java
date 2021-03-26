@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.commoncode.infra.jparepository.CodeJpaRepository;
+import com.like.commoncode.domain.repository.CommonCodeQueryRepository;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
 import com.like.hrm.appointment.boundary.ChangeableCodeDTO;
@@ -21,33 +21,33 @@ import com.like.hrm.code.domain.model.enums.HrmTypeEnum;
 @Transactional(readOnly = true)
 public class AppointmentCodeQueryService {
 	
-	private AppointmentCodeRepository appointmentQueryRepository;
+	private AppointmentCodeRepository repository;
 	
-	private CodeJpaRepository codeJpaRepository;
+	private CommonCodeQueryRepository codeQueryRepository;
 		
-	public AppointmentCodeQueryService(AppointmentCodeRepository appointmentQueryRepository
-			                          ,CodeJpaRepository codeJpaRepository) {
-		this.appointmentQueryRepository = appointmentQueryRepository;
-		this.codeJpaRepository = codeJpaRepository;
+	public AppointmentCodeQueryService(AppointmentCodeRepository repository
+			                          ,CommonCodeQueryRepository codeQueryRepository) {
+		this.repository = repository;
+		this.codeQueryRepository = codeQueryRepository;
 	}	
 	
 	public List<AppointmentCode> getAppointentCodeList(AppointmentCodeDTO.SearchCode search) {
-		return appointmentQueryRepository.getAppointmentCodeList(search);
+		return repository.getAppointmentCodeList(search);
 	}
 	
 	public List<AppointmentCodeDetail> getAppointmentCodeDetailList(SearchCodeDetail dto) {
-		return appointmentQueryRepository.getAppointmentCodeDetailList(dto);
+		return repository.getAppointmentCodeDetailList(dto);
 	}
 	
 	public List<ChangeableCodeDTO.EnumDTO> getChangeableCodeDTO(HrmTypeEnum type) {
-		return this.codeJpaRepository.getCodeList(type.getParentCommonCodeId())
+		return this.codeQueryRepository.getCodeList(type.getParentCommonCodeId())
 									 .stream()
 									 .map( r -> ChangeableCodeDTO.EnumDTO.builder().code(r.getCode()).name(r.getCodeName()).build())
 									 .collect(Collectors.toList());
 	}
 	
 	public List<AppointmentListDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
-		List<AppointmentCodeDetail> list = new ArrayList<>(appointmentQueryRepository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
+		List<AppointmentCodeDetail> list = new ArrayList<>(repository.getAppointmentCode(appointmentCode).getCodeDetails().values());		
 		//log.info(list.toString());
 		
 		return AppointmentListDTO.ChangeInfo.convert(list);

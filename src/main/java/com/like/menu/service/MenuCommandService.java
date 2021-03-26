@@ -9,24 +9,37 @@ import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.menu.domain.model.WebResource;
+import com.like.menu.domain.repository.MenuGroupRepository;
+import com.like.menu.domain.repository.MenuRepository;
+import com.like.menu.domain.repository.WebResourceRepository;
 import com.like.menu.domain.repository.MenuRepository;
 
 @Service
 @Transactional
 public class MenuCommandService {
 
+	private MenuGroupRepository menuGroupRepository;
 	private MenuRepository menuRepository;
+	private WebResourceRepository webResourceRepository;
 			
-	public MenuCommandService(MenuRepository menuRepository) {
+	public MenuCommandService(MenuGroupRepository menuGroupRepository
+							 ,MenuRepository menuRepository
+							 ,WebResourceRepository webResourceRepository) {
+		this.menuGroupRepository = menuGroupRepository;
 		this.menuRepository = menuRepository;
+		this.webResourceRepository = webResourceRepository;
 	}
 
+	public MenuGroup getMenuGroup(String menuGroupCode) {
+		return menuGroupRepository.findById(menuGroupCode).orElse(null);
+	}
+	
 	public void saveMenuGroup(MenuGroup codeGroup) {
-		menuRepository.saveMenuGroup(codeGroup);	
+		menuGroupRepository.save(codeGroup);	
 	}
 	
 	public void saveMenuGroup(MenuGroupDTO.SaveMenuGroup dto) {
-		MenuGroup menuGroup = dto.getMenuGroupCode() != null ? menuRepository.getMenuGroup(dto.getMenuGroupCode()) : null; 			
+		MenuGroup menuGroup = dto.getMenuGroupCode() != null ? menuGroupRepository.findById(dto.getMenuGroupCode()).orElse(null) : null; 			
 		
 		if (menuGroup == null) {
 			menuGroup = dto.newMenuGroup();
@@ -34,22 +47,26 @@ public class MenuCommandService {
 			dto.modifyMenuGroup(menuGroup);
 		}
 		
-		menuRepository.saveMenuGroup(menuGroup);	
+		menuGroupRepository.save(menuGroup);	
 	}
 	
 	public void deleteMenuGroup(String menuGroupCode) {
-		menuRepository.deleteMenuGroup(menuGroupCode);
+		menuGroupRepository.deleteById(menuGroupCode);
+	}
+	
+	public Menu getMenu(String menuCode) {
+		return menuRepository.findById(menuCode).orElse(null);
 	}
 	
 	public void saveMenu(Menu menu) throws Exception {			
-		menuRepository.saveMenu(menu);		
+		menuRepository.save(menu);		
 	}
 	
 	public void saveMenu(MenuDTO.SaveMenu dto) {
-		MenuGroup menuGroup = menuRepository.getMenuGroup(dto.getMenuGroupCode());
-		Menu menu = menuRepository.getMenu(dto.getMenuCode());
-		Menu parent = dto.getParentMenuCode() != null ? menuRepository.getMenu(dto.getParentMenuCode()) : null; 
-		WebResource resource = dto.getResource() != null ? menuRepository.getResource(dto.getResource()) : null;					
+		MenuGroup menuGroup = menuGroupRepository.findById(dto.getMenuGroupCode()).orElse(null);
+		Menu menu = menuRepository.findById(dto.getMenuCode()).orElse(null);
+		Menu parent = dto.getParentMenuCode() != null ? menuRepository.findById(dto.getParentMenuCode()).orElse(null) : null; 
+		WebResource resource = dto.getResource() != null ? webResourceRepository.findById(dto.getResource()).orElse(null) : null;					
 					
 		if (menu == null) {
 			menu = dto.newMenu(menuGroup, resource);
@@ -57,32 +74,12 @@ public class MenuCommandService {
 			dto.modifyMenu(menu, parent, menuGroup, resource);
 		}		
 		
-		menuRepository.saveMenu(menu);	
+		menuRepository.save(menu);	
 	}
 	
 	public void deleteMenu(String menuCode) {
 		
-		menuRepository.deleteMenu(menuCode);
-	}
-	
-	public void saveWebResource(WebResource resource) {				
-		menuRepository.saveResource(resource);
-	}
-	
-	public void saveWebResource(WebResourceDTO.SaveWebResource dto) {	
-		WebResource resource = menuRepository.getResource(dto.getResourceCode());
-		
-		if (resource == null) {
-			resource = dto.newWebResource();
-		} else {
-			dto.modifyWebResource(resource);
-		}
-		
-		menuRepository.saveResource(resource);
-	}
-	
-	public void deleteWebResource(String resourceCode) {
-		menuRepository.deleteResource(resourceCode);
-	}
+		menuRepository.deleteById(menuCode);
+	}		
 	
 }

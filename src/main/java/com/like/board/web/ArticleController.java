@@ -1,6 +1,5 @@
 package com.like.board.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -20,47 +19,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.like.board.boundary.ArticleDTO;
 import com.like.board.domain.model.Article;
-import com.like.board.service.BoardCommandService;
-import com.like.board.service.BoardQueryService;
+import com.like.board.service.ArticleCommandService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 public class ArticleController {	
 		
-	private BoardCommandService boardCommandService;
+	private ArticleCommandService service;			
 		
-	private BoardQueryService boardQueryService;		
-		
-	public ArticleController(BoardCommandService boardCommandService
-							,BoardQueryService boardQueryService) {
-		this.boardCommandService = boardCommandService;
-		this.boardQueryService = boardQueryService;		
-	}
-
-	@GetMapping("/grw/board/article")
-	public ResponseEntity<?> getArticleList(ArticleDTO.SearchArticle condition) {
-																	
-		List<Article> list = boardQueryService.getAritlceList(condition);  							
-		
-		List<ArticleDTO.ArticleResponse> dtoList = new ArrayList<>();
-		
-		for (Article article : list) {
-			dtoList.add(ArticleDTO.ArticleResponse.converDTO(article));
-		}
-		
-		return WebControllerUtil.getResponse(dtoList											
-											,String.format("%d 건 조회되었습니다.", dtoList.size())
-											,HttpStatus.OK);
-	}
+	public ArticleController(ArticleCommandService service) {
+		this.service = service;		
+	}	
 	
 	@GetMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> getArticle(@PathVariable(value="id") Long id, HttpSession session) {						
 		
-		Article article = boardQueryService.getArticle(id);		
+		Article article = service.getArticle(id);		
 	
 		ArticleDTO.ArticleResponse response = ArticleDTO.ArticleResponse.converDTO(article);				
 		
@@ -72,7 +47,7 @@ public class ArticleController {
 	@DeleteMapping("/grw/board/article/{id}")
 	public ResponseEntity<?> deleteArticle(@PathVariable(value="id") Long id) {				
 		
-		boardCommandService.deleteArticle(id);							
+		service.deleteArticle(id);							
 		
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)
@@ -82,7 +57,7 @@ public class ArticleController {
 	@DeleteMapping(value={"/grw/board/article"})
 	public ResponseEntity<?> deleteArticle(@RequestBody List<Article> articleList) {						
 		
-		boardCommandService.deleteArticle(articleList);									
+		service.deleteArticle(articleList);									
 		
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", articleList.size())
@@ -97,7 +72,7 @@ public class ArticleController {
 			throw new ControllerException(result.getAllErrors().toString());
 		}			
 											
-		boardCommandService.saveArticle(dto);											
+		service.saveArticle(dto);											
 		
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -112,7 +87,7 @@ public class ArticleController {
 			throw new ControllerException(result.getAllErrors().toString());
 		}						
 										
-		boardCommandService.saveArticle(dto);											
+		service.saveArticle(dto);											
 		
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -124,7 +99,7 @@ public class ArticleController {
 	public ResponseEntity<?> updateArticleHitCnt(@RequestParam(value="id", required=true) Long id,
 												 @RequestParam(value="userid", required=true) String userId) {								
 				
-		Article aritlce = boardCommandService.updateArticleHitCnt(id, userId);			
+		Article aritlce = service.updateArticleHitCnt(id, userId);			
 										
 		return WebControllerUtil.getResponse(aritlce											
 											,String.format("%d건 업데이트 하였습니다.", 1)

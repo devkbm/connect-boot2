@@ -7,41 +7,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.like.menu.boundary.MenuDTO;
 import com.like.menu.boundary.MenuGroupDTO;
-import com.like.menu.boundary.WebResourceDTO;
 import com.like.menu.domain.model.Menu;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.model.WebResource;
-import com.like.menu.infra.jparepository.MenuJpaRepository;
+import com.like.menu.infra.jparepository.MenuQueryJpaRepository;
 
 @Service
 @Transactional(readOnly=true)
 public class MenuQueryService {
 
-	private MenuJpaRepository menuJpaRepository;
+	private MenuQueryJpaRepository menuJpaRepository;
 
-	public MenuQueryService(MenuJpaRepository menuJpaRepository) {
+	public MenuQueryService(MenuQueryJpaRepository menuJpaRepository) {
 		this.menuJpaRepository = menuJpaRepository;
 	}
-
-	public MenuGroup getMenuGroup(String menuGroupCode) {
-		return menuJpaRepository.getMenuGroup(menuGroupCode);
-	}
-	
+		
 	public List<MenuGroup> getMenuGroupList(MenuGroupDTO.SearchMenuGroup condition) {
 		return menuJpaRepository.getMenuGroupList(condition);
 	}
 	
 	public List<MenuGroup> getMenuGroupList(String likeMenuGroupName) {
 		return menuJpaRepository.getMenuGroupList(likeMenuGroupName);
-	}
-	
-	public List<MenuGroup> getMenuGroupList(List<String> menuGroupCodeList) {
-		return menuJpaRepository.getMenuGroupList(menuGroupCodeList);
-	}
-	
-	public Menu getMenu(String menuCode) {
-		return menuJpaRepository.getMenu(menuCode);
-	}
+	}				
 	
 	public List<Menu> getMenuList(MenuDTO.SearchMenu condition) {
 		return menuJpaRepository.getMenuList(condition);
@@ -52,12 +38,5 @@ public class MenuQueryService {
 		
 		return menuJpaRepository.getMenuHierarchyDTO(rootList);
 	}
-	
-	public WebResource getResource(String resourceCode) {
-		return menuJpaRepository.getResource(resourceCode);
-	}
-	
-	public List<WebResource> getResourceList(WebResourceDTO.SearchWebResource condition) {
-		return menuJpaRepository.getResourceList(condition);
-	}
+		
 }

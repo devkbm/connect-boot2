@@ -16,9 +16,13 @@ public class CommonCodeCommandService {
 	public CommonCodeCommandService(CommonCodeRepository codeRepository) {
 		this.codeRepository = codeRepository;
 	}
+	
+	public Code getCode(String commonCodeId) {
+		return codeRepository.findById(commonCodeId).orElse(null);
+	}
 
 	public void saveCode(Code code) {		
-		codeRepository.saveCode(code);		
+		codeRepository.save(code);		
 	}
 	
 	public void saveCode(CodeDTO.SaveCode dto) {
@@ -26,11 +30,11 @@ public class CommonCodeCommandService {
 		Code code = null;
 		
 		if (dto.getParentId() != null) {
-			parentCode = codeRepository.getCode(dto.getParentId());
+			parentCode = codeRepository.findById(dto.getParentId()).orElse(null);
 		}
 		
 		if (dto.getId() != null) {
-			code = codeRepository.getCode(dto.getId());
+			code = codeRepository.findById(dto.getId()).orElse(null);
 		}
 		
 		if (code == null) {
@@ -40,10 +44,10 @@ public class CommonCodeCommandService {
 		}
 		
 		
-		codeRepository.saveCode(code);		
+		codeRepository.save(code);		
 	}
 
 	public void deleteCode(String commonCodeId) {
-		codeRepository.deleteCode(commonCodeId);		
+		codeRepository.deleteById(commonCodeId);		
 	}
 }

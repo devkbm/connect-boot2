@@ -27,19 +27,20 @@ import com.like.team.domain.model.TeamDTOAssembler;
 import com.like.team.service.TeamService;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.User;
-import com.like.user.service.UserService;
+import com.like.user.domain.repository.UserRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 public class TeamController {
+		
+	private TeamService teamService;		
+	private UserRepository userRepository;
 	
-	@Autowired
-	TeamService teamService;
-	
-	@Resource
-	UserService userService;
+	public TeamController(TeamService teamService
+						 ,UserRepository userRepository) {
+		this.teamService = teamService;
+		this.userRepository = userRepository;
+	}
 		
 	@GetMapping(value={"/grw/team"})
 	public ResponseEntity<?> getTeamList(@ModelAttribute TeamDTO.SearchCondition searchCondition) {
@@ -84,7 +85,7 @@ public class TeamController {
 						
 		List<User> userList = null;		
 		if (dto.getMemberList() != null) {
-			userList = userService.getUserList(dto.getMemberList());					 											
+			userList = userRepository.findAllById(dto.getMemberList());					 											
 		}
 		
 		teamService.saveTeam(team, userList);		

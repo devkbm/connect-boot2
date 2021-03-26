@@ -2,6 +2,8 @@ package com.like.dept.infra.jparepository;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
 import com.like.dept.boundary.DeptDTO.SearchDept;
 import com.like.dept.domain.model.Dept;
@@ -11,6 +13,7 @@ import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+@Repository
 public class DeptJpaQueryRepository implements DeptQueryRepository {
 
 	private JPAQueryFactory  queryFactory;

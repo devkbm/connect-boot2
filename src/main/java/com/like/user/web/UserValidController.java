@@ -8,15 +8,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.like.common.web.util.WebControllerUtil;
 import com.like.user.domain.model.Authority;
+import com.like.user.service.AuthorityService;
 import com.like.user.service.UserService;
 
 @RestController
 public class UserValidController {
 	
 	private UserService userService;
+	private AuthorityService authorityService;
 		
-	public UserValidController(UserService userService) {
+	public UserValidController(UserService userService
+							  ,AuthorityService authorityService) {
 		this.userService = userService;
+		this.authorityService = authorityService;
 	}
 
 	@GetMapping(value={"/common/user/{id}/check"})
@@ -33,7 +37,7 @@ public class UserValidController {
 	@GetMapping(value={"/common/authority/{id}/check"})
 	public ResponseEntity<?> getAuthorityDupCheck(@PathVariable(value="id") String authorityName) {			
 					
-		Authority authority = userService.getAuthority(authorityName);										
+		Authority authority = authorityService.getAuthority(authorityName);										
 		
 		boolean rtn = authority == null ? true : false;
 						

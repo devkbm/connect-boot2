@@ -9,26 +9,18 @@ import com.like.commoncode.boundary.CodeComboDTO;
 import com.like.commoncode.boundary.CodeDTO;
 import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
-import com.like.commoncode.domain.repository.CommonCodeRepository;
+import com.like.commoncode.domain.repository.CommonCodeQueryRepository;
 
 @Service
 @Transactional(readOnly=true)
 public class CommonCodeQueryService {
 
-	private CommonCodeRepository codeRepository;
+	private CommonCodeQueryRepository codeRepository;
 			
-	public CommonCodeQueryService(CommonCodeRepository codeRepository) {
+	public CommonCodeQueryService(CommonCodeQueryRepository codeRepository) {
 		this.codeRepository = codeRepository;
 	}
-
-	public Code getCode(String commonCodeId) {
-		return codeRepository.getCode(commonCodeId);
-	}
-	
-	public List<Code> getAllCodeList() {		
-		return codeRepository.getAllCodeList();
-	}
-	
+		
 	public List<Code> getCodeList(String parentCodeId) {		
 		return codeRepository.getCodeList(parentCodeId);
 	}

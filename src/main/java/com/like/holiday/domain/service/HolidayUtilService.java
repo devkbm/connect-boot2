@@ -13,17 +13,14 @@ import org.springframework.stereotype.Service;
 import com.like.holiday.domain.model.DateInfo;
 import com.like.holiday.domain.model.DateInfoList;
 import com.like.holiday.domain.model.Holiday;
-import com.like.holiday.domain.repository.HolidayRepository;
+import com.like.holiday.domain.repository.HolidayQueryRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class HolidayUtilService {
 
-	HolidayRepository holidayRepository;
+	HolidayQueryRepository holidayRepository;
 	
-	public HolidayUtilService(HolidayRepository holidayRepository) {
+	public HolidayUtilService(HolidayQueryRepository holidayRepository) {
 		this.holidayRepository = holidayRepository;
 	}
 	

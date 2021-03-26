@@ -1,8 +1,6 @@
 package com.like.board.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -20,76 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.BoardBookmark;
-import com.like.board.domain.model.enums.BoardType;
 import com.like.board.service.BoardCommandService;
-import com.like.board.service.BoardQueryService;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
-import com.like.menu.boundary.EnumDTO;
 
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * 게시판 Rest 컨트롤러
- * 
- * @author 	bmkim
- * @date	2016.2.23
- */
-@Slf4j
 @RestController
 public class BoardController {
 	
-	private BoardCommandService boardCommandService;
+	private BoardCommandService boardCommandService;			
 		
-	private BoardQueryService boardQueryService;	
-		
-	public BoardController(BoardCommandService boardCommandService
-						  ,BoardQueryService boardQueryService) {
-		this.boardCommandService = boardCommandService;
-		this.boardQueryService = boardQueryService;
+	public BoardController(BoardCommandService boardCommandService) {
+		this.boardCommandService = boardCommandService;		
 	}
-
-	@GetMapping("/grw/board/boardType")
-	public ResponseEntity<?> getMenuTypeList() {				
-		
-		List<EnumDTO> list = new ArrayList<>();
-		
-		for (BoardType boardType : BoardType.values()) {			
-			list.add(new EnumDTO(boardType.toString(), boardType.getName()));
-		}				 					
-								
-		return WebControllerUtil.getResponse(list				
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-	
-	@GetMapping("/grw/boardHierarchy")
-	public ResponseEntity<?> getBoardHierarchyList() {
-											
-		List<?> list = boardQueryService.getBoardHierarchy();				 			
-		
-		return WebControllerUtil.getResponse(list						
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-
-	@GetMapping("/grw/board")
-	public ResponseEntity<?> getBoardList(BoardDTO.SearchBoard dto) {						
-		
-		List<Board> list = boardQueryService.getBoardList(dto); 										
-		List<BoardDTO.SaveBoard> dtoList = list.stream()
-											   .map(e -> BoardDTO.SaveBoard.convertDTO(e))
-											   .collect(Collectors.toList());
-				
-		return WebControllerUtil.getResponse(dtoList											
-											,String.format("%d 건 조회되었습니다.", dtoList.size())
-											,HttpStatus.OK);
-	}
-		
+			
 	@GetMapping("/grw/board/{id}")
 	public ResponseEntity<?> getBoard(@PathVariable(value="id") Long id) {				
 				
-		Board board = boardQueryService.getBoard(id);		
+		Board board = boardCommandService.getBoard(id);		
 		
 		BoardDTO.SaveBoard dto = BoardDTO.SaveBoard.convertDTO(board);				
 							

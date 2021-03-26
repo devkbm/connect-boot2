@@ -44,6 +44,7 @@ import com.like.common.security.RestLoginSuccessHandler;
 import com.like.common.oauth.CustomOAuth2UserService;
 import com.like.common.security.CustomCsrfFilter;
 import com.like.common.security.RestAuthenticationEntryPoint;
+import com.like.user.service.SpringSecurityUserService;
 import com.like.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	UserService userService;
+	SpringSecurityUserService userService;
 	
 	@Autowired
 	private CustomOAuth2UserService customOAuth2UserService;

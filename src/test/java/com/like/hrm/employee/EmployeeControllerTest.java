@@ -48,40 +48,41 @@ public class EmployeeControllerTest {
 		 	 	 
 	@Before 
     public void setUp() { 
-		/*User user = userService.getUser("1");
-		Optional<String> username = Optional.of(user.getUsername());
-		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(username);*/	
-		
-		LoginRequestDTO dto = LoginRequestDTO.builder().username("1").password("1234").build();			
-		
-		System.out.println(dto.toString());
-		ResponseEntity<?> page = testRestTemplate.postForEntity("/common/user/login", dto, AuthenticationToken.class);
-		//System.out.println(token);
-		
-		testRestTemplate.getRestTemplate().setInterceptors(
-	                Collections.singletonList((request, body, execution) -> {
-	                    HttpHeaders headers = request.getHeaders();
-	                    
-	                    String cookie = page.getHeaders().get("Set-Cookie").get(0);
-	            		headers.set("Cookie", cookie);
-	            		headers.add("Content-Type", "application/json");
-	            		
-	                    /*
-	                    String xsrf_token = page.getHeaders().get("Set-Cookie").get(1);	                    	                    	                    	                    	                
-	            		System.out.println(cookie);
-	            		System.out.println(page.getHeaders());
-	            		System.out.println(xsrf_token);
-	            		System.out.println(xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
-	            		*/
-	            		
-	            		//Matcher matcher = Pattern.compile("(?s).*name=\"_csrf\".*?value=\"([^\"]+).*").matcher((CharSequence) page.getBody());
-	            		//assertTrue("No csrf token: " + page.getBody(), matcher.matches());
-	            		//headers.set("X-CSRF-TOKEN", matcher.group(1));	            		
-	            		//headers.set("X-CSRF-TOKEN", xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
-	            		//headers.set("XSRF-TOKEN", xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
-	                    
-	                    return execution.execute(request, body);
-	                }));
+//		/*User user = userService.getUser("1");
+//		Optional<String> username = Optional.of(user.getUsername());
+//		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(username);*/	
+//		/*
+//		LoginRequestDTO dto = LoginRequestDTO.builder().username("1").password("1234").build();			
+//		
+//		System.out.println(dto.toString());
+//		ResponseEntity<?> page = testRestTemplate.postForEntity("/common/user/login", dto, AuthenticationToken.class);
+//		//System.out.println(token);
+//		
+//		testRestTemplate.getRestTemplate().setInterceptors(
+//	                Collections.singletonList((request, body, execution) -> {
+//	                    HttpHeaders headers = request.getHeaders();
+//	                    
+//	                    String cookie = page.getHeaders().get("Set-Cookie").get(0);
+//	            		headers.set("Cookie", cookie);
+//	            		headers.add("Content-Type", "application/json");
+//	            		
+//	                    /*
+//	                    String xsrf_token = page.getHeaders().get("Set-Cookie").get(1);	                    	                    	                    	                    	                
+//	            		System.out.println(cookie);
+//	            		System.out.println(page.getHeaders());
+//	            		System.out.println(xsrf_token);
+//	            		System.out.println(xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
+//	            		*/
+//	            		
+//	            		//Matcher matcher = Pattern.compile("(?s).*name=\"_csrf\".*?value=\"([^\"]+).*").matcher((CharSequence) page.getBody());
+//	            		//assertTrue("No csrf token: " + page.getBody(), matcher.matches());
+//	            		//headers.set("X-CSRF-TOKEN", matcher.group(1));	            		
+//	            		//headers.set("X-CSRF-TOKEN", xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
+//	            		//headers.set("XSRF-TOKEN", xsrf_token.substring(xsrf_token.indexOf("=")+1,xsrf_token.lastIndexOf(";")));
+//	                    
+//	                    return execution.execute(request, body);
+//	                }));
+	                
 	                
     } 
     
@@ -92,6 +93,7 @@ public class EmployeeControllerTest {
 		
 		//setUp();
 		//given					
+		/*
 		String empId = "20200001";			
 		
 		ResponseObject<?> sample = new ResponseObject(new Employee("2020", "11", "11", "11", "11"),0,false, ""); 
@@ -101,5 +103,6 @@ public class EmployeeControllerTest {
 		
 		//then
 		System.out.println(((ResponseObject<Employee>)empl.getBody()).getStatus());
+		*/
 	}
 }

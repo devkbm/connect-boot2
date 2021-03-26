@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.like.team.domain.model.TeamMember;
@@ -15,17 +14,24 @@ import com.like.team.domain.model.Team;
 import com.like.team.domain.repository.TeamRepository;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.User;
+import com.like.user.service.UserQueryService;
 import com.like.user.service.UserService;
 
 @Service
 @Transactional
 public class TeamService {
-
-	@Autowired
-	TeamRepository teamRepository;
 	
-	@Autowired
-	UserService userService;
+	private TeamRepository teamRepository;		
+	private UserService userService;
+	private UserQueryService userQueryService;
+	
+	public TeamService(TeamRepository teamRepository
+					  ,UserService userService
+					  ,UserQueryService userQueryService) {
+		this.teamRepository = teamRepository;
+		this.userService = userService;
+		this.userQueryService = userQueryService;
+	}
 	
 	public Team getTeam(Long teamId) {
 		return teamRepository.getTeam(teamId);
@@ -77,7 +83,7 @@ public class TeamService {
 	 * @return User 
 	 */
 	public List<User> getAllMember(UserDTO.SearchUser searchCondition) {
-		return userService.getUserList(searchCondition);
+		return userQueryService.getUserList(searchCondition);
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public class CodeTest {
 		
 		//When		
 		commonCodeCommandService.saveCode(code);
-		
+		/*
 		Code test = commonCodeQueryService.getCode(code.id);
 		
 		//Then
@@ -74,6 +74,7 @@ public class CodeTest {
 		assertThat(test.cmt).isEqualTo("테스트비고");
 
 		System.out.println(test.toString());
+		*/
 	}
 	
 	

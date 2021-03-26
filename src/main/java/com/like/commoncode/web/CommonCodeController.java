@@ -1,14 +1,10 @@
 package com.like.commoncode.web;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,57 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
-import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.service.CommonCodeCommandService;
-import com.like.commoncode.service.CommonCodeQueryService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 public class CommonCodeController {
 	
-	private CommonCodeCommandService commonCodeCommandService;
+	private CommonCodeCommandService service;			
 		
-	private CommonCodeQueryService commonCodeQueryService;			
-		
-	public CommonCodeController(CommonCodeCommandService commonCodeCommandService
-							   ,CommonCodeQueryService commonCodeQueryService) {
-		this.commonCodeCommandService = commonCodeCommandService;
-		this.commonCodeQueryService = commonCodeQueryService;
-	}
-
-	@GetMapping("/common/codetree") 
-	public ResponseEntity<?> getCodeHierarchyList(@ModelAttribute CodeDTO.SearchCode searchCondition) {
-							
-		List<CodeHierarchy> list = commonCodeQueryService.getCodeHierarchyList(searchCondition);  						 						
-		
-		return WebControllerUtil
-				.getResponse(list							
-							,String.format("%d 건 조회되었습니다.", list.size())
-							,HttpStatus.OK);
-	}
-	
-	@GetMapping("/common/code") 
-	public ResponseEntity<?> getCodeList(@ModelAttribute CodeDTO.SearchCode searchCondition) {
-							
-		List<Code> list = commonCodeQueryService.getCodeList(searchCondition);  						 						
-		
-		List<CodeDTO.SaveCode> dtoList = list.stream()
-											 .map(e -> CodeDTO.SaveCode.convertDTO(e))
-											 .collect(Collectors.toList());
-		
-		return WebControllerUtil
-				.getResponse(dtoList							
-							,String.format("%d 건 조회되었습니다.", dtoList.size())
-							,HttpStatus.OK);
-	}
+	public CommonCodeController(CommonCodeCommandService service) {
+		this.service = service;		
+	}	
 	
 	@GetMapping("/common/code/{id}") 
 	public ResponseEntity<?> getCode(@PathVariable String id) {
 								  						 					
-		Code entity = commonCodeQueryService.getCode(id);
+		Code entity = service.getCode(id);
 		
 		CodeDTO.SaveCode dto = CodeDTO.SaveCode.convertDTO(entity);
 		
@@ -86,7 +47,7 @@ public class CommonCodeController {
 			throw new ControllerException("오류");
 		} 												
 		
-		commonCodeCommandService.saveCode(dto);		
+		service.saveCode(dto);		
 											 				
 		return WebControllerUtil
 				.getResponse(null							
@@ -97,7 +58,7 @@ public class CommonCodeController {
 	@DeleteMapping("/common/code/{id}")
 	public ResponseEntity<?> delCode(@PathVariable(value="id") String id) {						
 												
-		commonCodeCommandService.deleteCode(id);
+		service.deleteCode(id);
 								 						
 		return WebControllerUtil
 				.getResponse(null							

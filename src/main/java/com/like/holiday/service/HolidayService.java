@@ -19,16 +19,15 @@ public class HolidayService {
 	}
 	
 	public Holiday getHoliyday(LocalDate date) {
-		return this.repository.getHoliday(date);
+		return this.repository.findById(date).orElse(null);
 	}
 	
 	public void saveHoliday(Holiday entity) {
-		this.repository.saveHoliday(entity);
+		this.repository.save(entity);
 	}
 	
-	public void deleteHoliday(LocalDate date) {
-		Holiday entity = this.getHoliyday(date);		
-		this.repository.deleteHoliday(entity);
+	public void deleteHoliday(LocalDate date) {		
+		this.repository.deleteById(date);
 	}
 	
 }

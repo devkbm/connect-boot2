@@ -2,8 +2,6 @@ package com.like.user.web;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,22 +56,7 @@ public class UserController {
 							,HttpStatus.OK);
 	}
 		
-	@GetMapping(value={"/common/user"})
-	public ResponseEntity<?> getUserList(UserDTO.SearchUser condition) throws FileNotFoundException, IOException {
-				
-		List<User> userList = userService.getUserList(condition);						
-		
-		List<UserDTO.SaveUser> dtoList = new ArrayList<>();
-		
-		for (User user : userList) {
-			dtoList.add(UserDTO.convertDTO(user));
-		}
-		
-		return WebControllerUtil
-				.getResponse(dtoList							
-							,String.format("%d 건 조회되었습니다.", dtoList.size())
-							,HttpStatus.OK);
-	}
+	
 	
 	@PostMapping(value={"/common/user"})	
 	public ResponseEntity<?> saveUser(@RequestBody UserDTO.SaveUser dto, BindingResult result) {
@@ -82,7 +65,7 @@ public class UserController {
 			throw new ControllerException("오류");
 		}										
 											
-		userService.createUser(dto);					
+		userService.saveUser(dto);					
 																					 		
 		return WebControllerUtil
 				.getResponse(null							

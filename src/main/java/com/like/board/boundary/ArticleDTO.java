@@ -150,6 +150,10 @@ public class ArticleDTO {
 	    					   ,new Period(fromDate, toDate)
 	    					   ,seq);								
 		}
+	    
+	    public boolean isNew() {
+	    	return this.getPkArticle() == null ? true : false;
+	    }
 	}
 	
 	@Data	

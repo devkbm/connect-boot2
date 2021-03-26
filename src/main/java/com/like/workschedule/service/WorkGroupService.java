@@ -15,25 +15,27 @@ import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.id.WorkGroupMemberId;
 import com.like.workschedule.domain.repository.ScheduleRepository;
+import com.like.workschedule.domain.repository.WorkGroupMemberRepository;
+import com.like.workschedule.domain.repository.WorkGroupRepository;
 
 @Service
 @Transactional
 public class WorkGroupService {
 
-	private final ScheduleRepository scheduleRepository;	
+	private WorkGroupRepository repository;
+	private WorkGroupMemberRepository workGroupMemberRepository;
+	private UserRepository userRepository;
 	
-	private final UserRepository userRepository;
-	
-	public WorkGroupService(ScheduleRepository scheduleRepository
-						   ,UserRepository userRepository) {
-		
-		this.scheduleRepository = scheduleRepository;
+	public WorkGroupService(WorkGroupRepository repository
+						   ,WorkGroupMemberRepository workGroupMemberRepository	
+						   ,UserRepository userRepository) {		
+		this.repository = repository;
+		this.workGroupMemberRepository = workGroupMemberRepository;
 		this.userRepository = userRepository;
 	}
-				
-	
+					
 	public List<WorkGroup> getMyWorkGroupList(String userId) {
-		return scheduleRepository.getMyWorkGroupList(userId);	
+		return null;
 	}
 	
 	/**
@@ -42,18 +44,14 @@ public class WorkGroupService {
 	 * @return
 	 */
 	public WorkGroup getWorkGroup(Long id) {
-		return scheduleRepository.getWorkGroup(id);
-	}
-		
-	public void saveWorkGroup(WorkGroup workGroup) {
-		scheduleRepository.saveWorkGroup(workGroup);
-	}
+		return repository.findById(id).orElse(null);
+	}			
 	
 	public void saveWorkGroup(WorkDTO.SaveWorkGroup dto) {
 		WorkGroup entity = null;
 		
 		if (dto.getWorkGroupId() != null) {
-			entity = scheduleRepository.getWorkGroup(dto.getWorkGroupId());
+			entity = repository.findById(dto.getWorkGroupId()).orElse(null);
 		}
 		
 		if (entity == null) {
@@ -66,7 +64,7 @@ public class WorkGroupService {
 		entity.clearWorkGroupMember();
 		
 		if (dtoMemberList != null) {
-			List<User> userList = userRepository.getUserList(dtoMemberList);
+			List<User> userList = userRepository.findAllById(dtoMemberList);
 			
 			for ( User user: userList ) {
 				WorkGroupMember member = new WorkGroupMember(entity, user);				
@@ -74,66 +72,36 @@ public class WorkGroupService {
 			}
 			//workGroupService.saveWorkGroupMember(entity, user);
 		}	
-		
-		
-		scheduleRepository.saveWorkGroup(entity);
+				
+		repository.save(entity);
 	}
 	
 	public void deleteWorkGroup(Long id) {
-		WorkGroup entity = scheduleRepository.getWorkGroup(id);
-		scheduleRepository.deleteWorkGroup(entity);
+		repository.deleteById(id);
 	}
 	
 	public WorkGroupMember getWorkGroupMember(WorkGroupMemberId id) {
-		return scheduleRepository.getWorkGroupMember(id);
+		return workGroupMemberRepository.findById(id).orElse(null);
 	}
 	
 	public void saveWorkGroupMember(WorkGroup workGroup, User user) {
-		scheduleRepository.saveWorkGroup(workGroup);
+		//scheduleRepository.saveWorkGroup(workGroup);
 					
-		scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+		///scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
 	}
 	
 	public void saveWorkGroupMember(WorkGroup workGroup, List<User> userList) {
-		scheduleRepository.saveWorkGroup(workGroup);
+		repository.save(workGroup);
 		
 		for (User user: userList) {
-			scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+			//scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
 		}
 	}
 
 	public void deleteWorkGroupMember(WorkGroupMember workGroupMember) {
-		scheduleRepository.deleteWorkGroupMember(workGroupMember);
+		workGroupMemberRepository.delete(workGroupMember);
 	}
 		
-	public Schedule getSchedule(Long id) {
-		return scheduleRepository.getSchedule(id);
-	}
-	
-	public void saveSchedule(Schedule schedule) {
-		scheduleRepository.saveSchedule(schedule);
-	}
-	
-	public void saveSchedule(ScheduleDTO.SaveSchedule dto) {
-		WorkGroup workGroup = scheduleRepository.getWorkGroup(dto.getWorkGroupId());
-		Schedule entity = null; 
-		
-		if (dto.getId() != null) {
-			entity = scheduleRepository.getSchedule(dto.getId());
-		}
-		
-		if (entity == null) {
-			entity = dto.newSchedule(workGroup);
-		} else {
-			dto.modifySchedule(entity);
-		}
-		
-		scheduleRepository.saveSchedule(entity);
-	}
-	
-	public void deleteSchedule(Long id) {
-		Schedule entity = scheduleRepository.getSchedule(id);
-		scheduleRepository.deleteSchedule(entity);
-	}
+
 	
 }

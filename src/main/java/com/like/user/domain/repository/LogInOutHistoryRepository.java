@@ -1,12 +1,11 @@
 package com.like.user.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.like.user.domain.model.LogInOutHistory;
 
-public interface LogInOutHistoryRepository {
+@Repository
+public interface LogInOutHistoryRepository extends JpaRepository<LogInOutHistory, Long> {
 
-	List<LogInOutHistory> getLogHistory();
-	
-	void saveLogHistory(LogInOutHistory entity);	
 }

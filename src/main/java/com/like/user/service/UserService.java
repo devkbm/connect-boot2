@@ -1,13 +1,8 @@
 package com.like.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,64 +11,48 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.repository.DeptRepository;
 import com.like.menu.domain.model.MenuGroup;
-import com.like.menu.domain.repository.MenuRepository;
-import com.like.user.boundary.AuthorityDTO;
+import com.like.menu.domain.repository.MenuGroupRepository;
 import com.like.user.boundary.UserDTO;
 import com.like.user.domain.model.Authority;
-import com.like.user.domain.model.LogInOutHistory;
 import com.like.user.domain.model.User;
-import com.like.user.domain.repository.LogInOutHistoryRepository;
+import com.like.user.domain.repository.AuthorityRepository;
 import com.like.user.domain.repository.UserRepository;
-import com.like.user.domain.service.UserDomainService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Transactional
 @Service
-public class UserService implements UserDetailsService {	
+public class UserService {	
 	
-	@Autowired
-	UserRepository userRepository;	
-		
-	@Resource(name="menuJpaRepository")
-	private MenuRepository menuRepository;
+	private UserRepository repository;					
+	private MenuGroupRepository menuRepository;	
+	private DeptRepository deptRepository;		
+	private AuthorityRepository authorityRepository;			
 	
-	@Resource(name="deptJpaRepository")
-	private DeptRepository deptRepository;
-	
-	@Autowired
-	private LogInOutHistoryRepository logInOutHistoryRepository;
-	
-	@Autowired
-	UserDomainService userDomainService;
-	
-	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			
-	@Override
-	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {					
-		User user = userRepository.getUser(userId);
-		
-		if (user == null) {
-			throw new UsernameNotFoundException(userId + " is Not Found");
-		}
-		
-		return user;
+	public UserService(UserRepository repository
+			  		  ,MenuGroupRepository menuRepository
+			  		  ,DeptRepository deptRepository
+			  		  ,AuthorityRepository authorityRepository) {
+		this.repository = repository;
+		this.menuRepository = menuRepository;
+		this.deptRepository = deptRepository;
+		this.authorityRepository = authorityRepository;		
 	}
+	
+	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();				
 	
 	/**
 	 * 사용자 도메인을 조회한다.
 	 * @param userId	사용자아이디
 	 * @return 사용자 도메인
 	 */
-	public User getUser(String userId) {
-		User user = userRepository.getUser(userId);
-						
-		return user;
+	public User getUser(String userId) {								
+		return repository.findById(userId).orElse(null);
 	}
 		
 	public User getFullUser(String userId) {
-		User user = userRepository.getFullUser(userId);
+		User user = repository.findById(userId).orElse(null);
 		List<MenuGroup> menuGroupList = user.getMenuGroupList();
 		
 		log.info(menuGroupList.toString());
@@ -81,32 +60,19 @@ public class UserService implements UserDetailsService {
 		return user;				
 	}
 	
-	public List<User> getUserList(List<String> userIds) {
-		return userRepository.getUserList(userIds);
-	}
-	
-	/**
-	 * 유저 도메인 리스트를 조회한다.
-	 * @return	유저 도메인 리스트
-	 */
-	public List<User> getUserList(UserDTO.SearchUser condition) {
-		return userRepository.getUserList(condition);
-	}
-	
 	/**
 	 * 사용자를 생성한다.
 	 * @param user	사용자 도메인
 	 */
-	public void createUser(UserDTO.SaveUser dto) {
-		User user = userRepository.getUser(dto.getUserId());
+	public void saveUser(UserDTO.SaveUser dto) {
+		User user = repository.findById(dto.getUserId()).orElse(null);
 		Dept dept = null;
 		
-		List<Authority> authorityList = userRepository.getAuthorityList(dto.getAuthorityList());		
-		List<MenuGroup> menuGroupList = menuRepository.getMenuGroupList(dto.getMenuGroupList());
-		 
+		List<Authority> authorityList = authorityRepository.findAllById(dto.getAuthorityList());		
+		List<MenuGroup> menuGroupList = menuRepository.findAllById(dto.getMenuGroupList());		 
 		
 		if ( dto.getDeptCode() != null ) {
-			dept = deptRepository.getDept(dto.getDeptCode());
+			dept = deptRepository.findById(dto.getDeptCode()).orElse(null);
 		}
 		
 		if (user == null) {
@@ -115,15 +81,18 @@ public class UserService implements UserDetailsService {
 			dto.modifyUser(user, dept, authorityList, menuGroupList);			
 		}
 		
-		//String rawPassword = user.getPassword();
-		//String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
-		//user.setPassword(encodedPassword);	
-				
-		userDomainService.createUser(user);						
+		if (user.getUsername() == null) {
+			new IllegalArgumentException("유저 아이디가 존재하지 않습니다.");
+		}
+		
+		if ( user.getAuthorityList().isEmpty() ) {
+			initAuthority(user);
+		}						
+								
 	}
 		
 	public void saveUser(User user) {
-		userRepository.saveUser(user);
+		repository.save(user);
 	}
 	
 	/**
@@ -131,7 +100,7 @@ public class UserService implements UserDetailsService {
 	 * @param userId	사용자 아이디
 	 */
 	public void deleteUser(String userId) {
-		 userRepository.deleteUser(userId);         
+		repository.deleteById(userId);         
 	}	
 	
 	/**
@@ -141,7 +110,7 @@ public class UserService implements UserDetailsService {
 	 * @param afterPassword		변경후 비밀번호
 	 */
 	public void changePassword(String userId, String beforePassword, String afterPassword) {
-		User user = userRepository.getUser(userId);			
+		User user = repository.findById(userId).orElse(null);			
 		
 		if ( user.isVaild(beforePassword) ) {
 			user.changePassword(afterPassword);
@@ -153,7 +122,7 @@ public class UserService implements UserDetailsService {
 	 * @param userId	사용자 아이디
 	 */
 	public void initPassword(String userId) {
-		User user = userRepository.getUser(userId);
+		User user = repository.findById(userId).orElse(null);
 				
 		user.initPassword();		
 	}			
@@ -163,77 +132,33 @@ public class UserService implements UserDetailsService {
 	 * @param userId	사용자아이디
 	 * @return 사용자 권한 리스트
 	 */
-	public List<Authority> getAuthorities(String userId) {        									
-        return userRepository.readAuthority(userId);
+	public List<Authority> getUserAuthorities(String userId) {        									
+        return repository.findById(userId).orElse(null).getAuthorityList();
 	}
+					
 	
-	/**
-	 * 전체 권한 도메인 리스트를 조회한다.
-	 * @return	권한 도메인 리스트
-	 */
-	public List<Authority> getAuthorityList(AuthorityDTO.SearchAuthority condition) {        									
-        return userRepository.getAuthorityList(condition);
-	}
-	
-	/**
-	 * 
-	 * @param authorityNameList
-	 * @return
-	 */
-	public List<Authority> getAllAuthorityList(List<String> authorityNameList) {        									
-        return userRepository.getAuthorityList(authorityNameList);
-	}
-		
-	/**
-	 * 권한 도메인을 조회한다.
-	 * @param authorityName	권한명
-	 * @return	권한 도메인
-	 */
-	public Authority getAuthority(String authorityName) {
-		return userRepository.getAuthority(authorityName);
-	}
-	
-	/**
-	 * 권한 도메인을 등록한다.
-	 * @param authority	권한 도메인
-	 */
-	public void createAuthority(AuthorityDTO.SaveAuthority dto) {
-		Authority authority = null;
-		
-		if (dto.getAuthority() != null) {
-			authority = userRepository.getAuthority(dto.getAuthority());
-		} 
-		
-		if (authority == null) {
-			authority = dto.newAuthority();
-		} else {
-			dto.modifyAuthority(authority);
-		}
-		
-		userRepository.createAuthority(authority);
-	}		
-		
-	/**
-	 * 권한 도메인을 삭제한다.
-	 * @param authorityName
-	 */
-	public void deleteAuthority(String authorityName) {
-		userRepository.deleteAuthority(authorityName);
-	}
 	/**
 	 * 중복 유저 검증 기능
 	 * @param userId
 	 * @return 기존 아이디가 있으면 true, 아니면 false 리턴
 	 */
 	public boolean CheckDuplicationUser(String userId) {						
-		return userRepository.getUser(userId) != null ? true : false; 
+		return repository.existsById(userId); 
 	}	
 	
 	public PasswordEncoder passwordEncoder(){
 		return this.passwordEncoder;
-	}	
+	}
+		
 	
-	public void saveLogInOutHistory(LogInOutHistory entity) {
-		logInOutHistoryRepository.saveLogHistory(entity);
+	/**
+	 * 사용자 신규등록시 권한이 없을 경우 기본 권한을 추가한다.
+	 * @param user	사용자 도메인
+	 */
+	private void initAuthority(User user) {							
+		List<Authority> authorities = new ArrayList<Authority>();
+		
+		authorities.add(authorityRepository.findById("ROLE_USER").orElse(null));			
+		user.setAuthorities(authorities);
 	}
 }

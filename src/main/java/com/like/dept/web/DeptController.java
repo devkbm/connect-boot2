@@ -1,13 +1,10 @@
 package com.like.dept.web;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.dept.boundary.DeptDTO;
-import com.like.dept.boundary.DeptDTO.DeptHierarchy;
 import com.like.dept.boundary.DeptDTO.SaveDept;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.service.DeptService;
@@ -32,26 +28,6 @@ public class DeptController {
 	
 	public DeptController(DeptService deptService) {
 		this.deptService = deptService;
-	}
-
-	@GetMapping("/common/depttree")
-	public ResponseEntity<?> getDeptHierarchyList(@ModelAttribute DeptDTO.SearchDept searchCondition) {
-							
-		List<DeptHierarchy> list = deptService.getDeptHierarchyList();  						 						
-		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
-	
-	@GetMapping("/common/dept")
-	public ResponseEntity<?> getDeptList(@ModelAttribute DeptDTO.SearchDept searchCondition) {
-							
-		List<Dept> list = deptService.getDeptList(searchCondition);  						 						
-		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
 	}
 		
 	@GetMapping("/common/dept/{id}")
