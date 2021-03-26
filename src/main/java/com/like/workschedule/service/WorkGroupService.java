@@ -8,13 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.like.user.domain.model.User;
 import com.like.user.domain.repository.UserRepository;
-import com.like.workschedule.boundary.ScheduleDTO;
 import com.like.workschedule.boundary.WorkDTO;
-import com.like.workschedule.domain.model.Schedule;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.domain.model.WorkGroupMember;
 import com.like.workschedule.domain.model.id.WorkGroupMemberId;
-import com.like.workschedule.domain.repository.ScheduleRepository;
 import com.like.workschedule.domain.repository.WorkGroupMemberRepository;
 import com.like.workschedule.domain.repository.WorkGroupRepository;
 
@@ -32,11 +29,7 @@ public class WorkGroupService {
 		this.repository = repository;
 		this.workGroupMemberRepository = workGroupMemberRepository;
 		this.userRepository = userRepository;
-	}
-					
-	public List<WorkGroup> getMyWorkGroupList(String userId) {
-		return null;
-	}
+	}						
 	
 	/**
 	 * 업무그룹를 조회한다.
@@ -85,17 +78,15 @@ public class WorkGroupService {
 	}
 	
 	public void saveWorkGroupMember(WorkGroup workGroup, User user) {
-		//scheduleRepository.saveWorkGroup(workGroup);
-					
-		///scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+		workGroup.addWorkGroupMember(new WorkGroupMember(workGroup, user));
 	}
 	
-	public void saveWorkGroupMember(WorkGroup workGroup, List<User> userList) {
-		repository.save(workGroup);
-		
+	public void saveWorkGroupMember(WorkGroup workGroup, List<User> userList) {		
 		for (User user: userList) {
-			//scheduleRepository.saveWorkGroupMember(new WorkGroupMember(workGroup, user));
+			workGroup.addWorkGroupMember(new WorkGroupMember(workGroup, user));
 		}
+		
+		repository.save(workGroup);
 	}
 
 	public void deleteWorkGroupMember(WorkGroupMember workGroupMember) {

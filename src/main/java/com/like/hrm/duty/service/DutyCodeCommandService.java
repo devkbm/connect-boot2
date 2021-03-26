@@ -1,7 +1,5 @@
 package com.like.hrm.duty.service;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,22 +11,22 @@ import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 @Transactional
 public class DutyCodeCommandService {
 
-	private DutyCodeRepository dutyCodeRepository;
+	private DutyCodeRepository repository;
 			
-	public DutyCodeCommandService(DutyCodeRepository dutyCodeRepository) {
-		this.dutyCodeRepository = dutyCodeRepository;		
+	public DutyCodeCommandService(DutyCodeRepository repository) {
+		this.repository = repository;		
 	}
 	
 	public DutyCode getDutyCode(String dutyCode) {
-		return this.dutyCodeRepository.getDutyCode(dutyCode);
+		return this.repository.findById(dutyCode).orElse(null);
 	}
 	
 	public void saveDutyCode(DutyCode dutyCode) {
-		this.dutyCodeRepository.saveDutyCode(dutyCode);
+		this.repository.save(dutyCode);
 	}
 	
 	public void saveDutyCode(DutyCodeDTO.SaveDutyCode dto) {
-		DutyCode entity = dutyCodeRepository.getDutyCode(dto.getDutyCode());
+		DutyCode entity = repository.findById(dto.getDutyCode()).orElse(null);
 		
 		if (entity == null) {
 			entity = dto.newEntity();
@@ -36,17 +34,11 @@ public class DutyCodeCommandService {
 			dto.modifyEntity(entity);
 		}
 				
-		this.dutyCodeRepository.saveDutyCode(entity);
-	}
+		this.repository.save(entity);		
+	}	
 	
-	
-	public void deleteDutyCode(String dutyCode) {
-		DutyCode entity = this.dutyCodeRepository.getDutyCode(dutyCode);
-		
-		if (entity == null)
-			throw new EntityNotFoundException(dutyCode + "근무코드가 존재하지 않습니다.");
-		
-		this.dutyCodeRepository.deleteDutyCode(entity);
+	public void deleteDutyCode(String dutyCode) {		
+		this.repository.deleteById(dutyCode);
 	}
 		
 	

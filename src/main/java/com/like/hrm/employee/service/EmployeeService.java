@@ -1,8 +1,7 @@
 package com.like.hrm.employee.service;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,38 +14,32 @@ import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 import com.like.hrm.employee.domain.service.EmployeeIdGenerator;
 
-@Service("employeeService")
+@Service
 @Transactional
 public class EmployeeService {
 	
-	private EmployeeRepository employeeRepository;
-	
+	private EmployeeRepository repository;	
 	private EmployeeIdGenerator idGenerator;
-	
-	@Autowired
-	public EmployeeService(EmployeeRepository employeeRepository, EmployeeIdGenerator idGenerator) {
-		this.employeeRepository = employeeRepository;
+		
+	public EmployeeService(EmployeeRepository repository, EmployeeIdGenerator idGenerator) {
+		this.repository = repository;
 		this.idGenerator = idGenerator;
-	}
-	
-	public List<Employee> getEmployeeList(EmployeeDTO.SearchEmployee dto) {
-		return employeeRepository.getEmployeeList(dto);
-	}
+	}	
 	
 	public Employee getEmployee(String id) {
-		return employeeRepository.getEmployee(id);										
+		return repository.findById(id).orElse(null);
 	}
 	
 	public void saveEmployee(Employee employee) {				
-		employeeRepository.saveEmployee(employee);
+		repository.save(employee);
 	}
 	
 	public void saveEmployee(EmployeeDTO.SaveEmployee dto) {
-		Employee employee = employeeRepository.getEmployee(dto.getId());
+		Employee employee = this.getEmployee(dto.getId());
 		
 		dto.modifyEntity(employee);
 		
-		employeeRepository.saveEmployee(employee);
+		repository.save(employee);
 	}
 	
 	public void newEmployee(EmployeeDTO.NewEmployee dto) {										
@@ -57,11 +50,11 @@ public class EmployeeService {
 				                   ,dto.getNameChi()
 				                   ,dto.getResidentRegistrationNumber());
 		
-		employeeRepository.saveEmployee(emp);
+		repository.save(emp);
 	}
 	
 	public void deleteEmployee(String id) {		
-		employeeRepository.deleteEmployee(id);
+		repository.deleteById(id);
 	}
 	
 	public void saveDeptChangeHistory(EmployeeDTO.NewDept dto) {
@@ -74,7 +67,7 @@ public class EmployeeService {
 				
 		emp.getDeptHistory().add(deptChangeHistory);
 		
-		employeeRepository.saveEmployee(emp);
+		repository.save(emp);
 	}
 	
 	public void saveJobChangeHistory(EmployeeDTO.NewJob dto) {
@@ -86,7 +79,7 @@ public class EmployeeService {
 																,new DatePeriod(dto.getFromDate(),dto.getToDate()));
 		emp.getJobHistory().add(jobChangeHistory);
 		
-		employeeRepository.saveEmployee(emp);
+		repository.save(emp);
 	}
 	
 	public void saveStatusChangeHistory(EmployeeDTO.NewStatus dto) {
@@ -98,16 +91,11 @@ public class EmployeeService {
 																		 ,new DatePeriod(dto.getFromDate(),dto.getToDate())); 			
 		emp.getStatusHistory().add(statusChangeHistory);
 		
-		employeeRepository.saveEmployee(emp);
+		repository.save(emp);
 	}	
 	
 	private Employee getEmployeeInfo(String empId) {
-		Employee emp = employeeRepository.getEmployee(empId);
-		
-		if (emp == null) {
-			throw new IllegalArgumentException(empId + " 사번이 존재하지 않습니다.");
-		}
-		
-		return emp;
+		return repository.findById(empId)
+				 .orElseThrow(() -> new EntityNotFoundException(empId + " 사번이 존재하지 않습니다."));
 	}
 }

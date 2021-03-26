@@ -8,15 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.boundary.QueryAppointmentList;
 import com.like.hrm.appointment.domain.model.AppointmentList;
-import com.like.hrm.appointment.domain.repository.AppointmentListRepository;
+import com.like.hrm.appointment.domain.repository.AppointmentListQueryRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class AppointmentListQueryService {
 
-	private AppointmentListRepository repository;
+	private AppointmentListQueryRepository repository;
 	
-	public AppointmentListQueryService(AppointmentListRepository repository) {
+	public AppointmentListQueryService(AppointmentListQueryRepository repository) {
 		this.repository = repository;		
 	}
 	

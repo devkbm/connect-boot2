@@ -20,11 +20,11 @@ public class AppointmentRegisterCommandService {
 	}
 	
 	public AppointmentRegister getLedger(String id) {
-		return repository.get(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	public void saveLedger(AppointmentRegisterDTO.SaveAppointmentRegister dto) {
-		AppointmentRegister ledger = repository.get(dto.getLedgerId());
+		AppointmentRegister ledger = repository.findById(dto.getLedgerId()).orElse(null);
 		
 		if (ledger == null) {
 			ledger = dto.newEntity();
@@ -36,7 +36,7 @@ public class AppointmentRegisterCommandService {
 	}
 	
 	public void deleteLedger(String id) {
-		AppointmentRegister ledger = repository.get(id);
+		AppointmentRegister ledger = repository.findById(id).orElse(null);
 		
 		if (ledger == null) {
 			throw new EntityNotFoundException(id + " 엔티티가 존재하지 않습니다.");

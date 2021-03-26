@@ -1,7 +1,5 @@
 package com.like.workschedule.web;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,41 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.util.SessionUtil;
 import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.workschedule.boundary.WorkDTO;
 import com.like.workschedule.domain.model.WorkGroup;
-import com.like.workschedule.service.WorkGroupQueryService;
 import com.like.workschedule.service.WorkGroupService;
 
 @RestController
 public class WorkGroupController {	
 		
-	private WorkGroupService workGroupService;	
-			
-	private WorkGroupQueryService workGroupQueryService;
+	private WorkGroupService workGroupService;				
 		
-	public WorkGroupController(WorkGroupService workGroupService
-							  ,WorkGroupQueryService workGroupQueryService) {
+	public WorkGroupController(WorkGroupService workGroupService) {
 		this.workGroupService = workGroupService;
-		this.workGroupQueryService = workGroupQueryService;
-	}	
-	
-	@GetMapping(value={"/grw/myworkgroup"})
-	public ResponseEntity<?> getWorkGroupList() {
-						
-		String sessionId = SessionUtil.getUserId(); // SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		List<WorkGroup> workGroupList = workGroupService.getMyWorkGroupList(sessionId);				
-		
-		return WebControllerUtil
-				.getResponse(workGroupList
-							,workGroupList.size()
-							,workGroupList.isEmpty()? false : true
-							,workGroupList.size() + "건 조회 되었습니다."
-							,HttpStatus.OK);												
-	}
+	}			
 	
 	@GetMapping(value={"/grw/workgroup/{id}"})
 	public ResponseEntity<?> getWorkGroup(@PathVariable(value="id") Long id) {

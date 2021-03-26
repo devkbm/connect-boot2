@@ -1,8 +1,5 @@
 package com.like.hrm.employee.web;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -28,21 +25,7 @@ public class EmployeeController {
 		
 	public EmployeeController(EmployeeService employeeService) {
 		this.employeeService = employeeService;
-	}
-	
-	@GetMapping("/hrm/employee")
-	public ResponseEntity<?> getEmployeeList(EmployeeDTO.SearchEmployee dto) {
-		
-		List<Employee> list = employeeService.getEmployeeList(dto);					
-		
-		List<EmployeeDTO.ResponseEmployee> dtoList = list.stream()
-														 .map(e -> EmployeeDTO.ResponseEmployee.convert(e))
-														 .collect(Collectors.toList()); 
-		
-		return WebControllerUtil.getResponse(dtoList											
-											,String.format("%d 건 조회되었습니다.", dtoList.size())
-											,HttpStatus.OK);
-	}
+	}		
 	
 	@GetMapping("/hrm/employee/{id}")
 	public ResponseEntity<?> getEmployee(@PathVariable String id) {

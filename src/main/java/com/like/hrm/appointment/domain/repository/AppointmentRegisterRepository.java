@@ -1,20 +1,11 @@
 package com.like.hrm.appointment.domain.repository;
 
-import java.util.List;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.like.hrm.appointment.boundary.AppointmentRegisterDTO;
 import com.like.hrm.appointment.domain.model.AppointmentRegister;
 
 @Repository
-public interface AppointmentRegisterRepository {		
+public interface AppointmentRegisterRepository extends JpaRepository<AppointmentRegister, String> {		
 	
-	AppointmentRegister get(String id);
-	
-	void save(AppointmentRegister ledger);
-	
-	void delete(AppointmentRegister ledger);	
-		
-	List<AppointmentRegister> getList(AppointmentRegisterDTO.SearchAppointmentRegister searchCondition);
 }

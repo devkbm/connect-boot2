@@ -1,8 +1,5 @@
 package com.like.hrm.duty.web;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,7 +16,6 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.boundary.DutyCodeDTO;
 import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.service.DutyCodeCommandService;
-import com.like.hrm.duty.service.DutyCodeQueryService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,34 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class DutyCodeController {
 
-	private DutyCodeCommandService dutyCodeCommandService;
+	private DutyCodeCommandService service;		
 	
-	private DutyCodeQueryService dutyCodeQueryService;
-	
-	public DutyCodeController(DutyCodeCommandService dutyCodeCommandService
-			 				 ,DutyCodeQueryService dutyCodeQueryService) {
-		this.dutyCodeCommandService = dutyCodeCommandService;
-		this.dutyCodeQueryService = dutyCodeQueryService;
-	}
-	
-	@GetMapping("/hrm/dutycode")
-	public ResponseEntity<?> getDutyCodeList(DutyCodeDTO.SearchDutyCode dto) {
-		
-		List<DutyCode> list = dutyCodeQueryService.getDutyCodeList(dto);					
-		
-		List<DutyCodeDTO.SaveDutyCode> dtoList = list.stream()
-													 .map(e -> DutyCodeDTO.SaveDutyCode.convert(e))
-													 .collect(Collectors.toList());
-		
-		return WebControllerUtil.getResponse(dtoList											
-											,String.format("%d 건 조회되었습니다.", dtoList.size())
-											,HttpStatus.OK);
-	}
+	public DutyCodeController(DutyCodeCommandService service) {
+		this.service = service;		
+	}		
 	
 	@GetMapping("/hrm/dutycode/{id}")
 	public ResponseEntity<?> getDutyCode(@PathVariable(value="id") String id) {
 		
-		DutyCode entity = dutyCodeCommandService.getDutyCode(id);
+		DutyCode entity = service.getDutyCode(id);
 					
 		return WebControllerUtil.getResponse(entity											
 											,String.format("%d 건 조회되었습니다.", entity == null ? 0 : 1)
@@ -69,7 +47,7 @@ public class DutyCodeController {
 		} 
 					
 		log.info(dto.toString());
-		dutyCodeCommandService.saveDutyCode(dto);						
+		service.saveDutyCode(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -80,7 +58,7 @@ public class DutyCodeController {
 	@DeleteMapping("/hrm/dutycode/{id}")
 	public ResponseEntity<?> deleteDutyCode(@PathVariable(value="id") String id) {				
 																		
-		dutyCodeCommandService.deleteDutyCode(id);						
+		service.deleteDutyCode(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

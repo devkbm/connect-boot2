@@ -10,18 +10,18 @@ import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
 @RestController
-public class EmployeeValidController {
+public class EmployeeFormValidController {
 
-	private EmployeeRepository employeeRepository;
+	private EmployeeRepository repository;
 	
-	public EmployeeValidController(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;		
+	public EmployeeFormValidController(EmployeeRepository repository) {
+		this.repository = repository;		
 	}
 	
 	@GetMapping("/hrm/employee/{id}/valid")
 	public ResponseEntity<?> getEmployee(@PathVariable String id) {
 		
-		boolean exist = employeeRepository.isEmployee(id);
+		boolean exist = repository.existsById(id);
 					
 		return WebControllerUtil.getResponse(exist											
 											,exist == true ? "직원정보가 존재합니다." : "직원정보가 존재하지 않습니다."

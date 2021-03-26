@@ -21,7 +21,7 @@ public class DutyCodeValidController {
 	@GetMapping("/hrm/dutycode/{id}/valid")
 	public ResponseEntity<?> getDutyCode(@PathVariable(value="id") String id) {
 		
-		boolean exist = dutyCodeRepository.isDutyCode(id);
+		boolean exist = dutyCodeRepository.existsById(id);
 					
 		return WebControllerUtil.getResponse(exist											
 											,exist == true ? "사용가능한 근태 코드입니다." : "기존 근태 코드가 존재합니다."

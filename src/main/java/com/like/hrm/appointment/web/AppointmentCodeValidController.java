@@ -22,7 +22,7 @@ public class AppointmentCodeValidController {
 	@GetMapping("/hrm/appointmentcode/{id}/valid")
 	public ResponseEntity<?> getCode(@PathVariable(value="id") String id) {
 		
-		boolean exist = appointmentCodeRepository.isAppointmentCode(id);
+		boolean exist = appointmentCodeRepository.existsById(id);
 					
 		return WebControllerUtil.getResponse(exist											
 											,exist == true ? "사용가능한 발령 코드입니다." : "기존 발령 코드가 존재합니다."
@@ -33,7 +33,7 @@ public class AppointmentCodeValidController {
 	public ResponseEntity<?> getCodeDetail(@PathVariable(value="id") String id,
 										   @PathVariable(value="detailId") String detailId) {
 		 		
-		AppointmentCode code = appointmentCodeRepository.getAppointmentCode(id);
+		AppointmentCode code = appointmentCodeRepository.findById(id).orElse(null);
 										
 		boolean exist = code.getCodeDetail(detailId) == null ? false : true;
 		

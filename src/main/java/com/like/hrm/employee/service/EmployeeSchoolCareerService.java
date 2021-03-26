@@ -1,5 +1,7 @@
 package com.like.hrm.employee.service;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +15,10 @@ import com.like.hrm.employee.domain.repository.EmployeeRepository;
 @Service
 public class EmployeeSchoolCareerService {
 
-	private EmployeeRepository employeeRepository;
+	private EmployeeRepository repository;
 				
-	public EmployeeSchoolCareerService(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;	
+	public EmployeeSchoolCareerService(EmployeeRepository repository) {
+		this.repository = repository;	
 	}
 	
 	public SchoolCareer getSchoolCareer(String empId, Long id) {
@@ -38,16 +40,11 @@ public class EmployeeSchoolCareerService {
 		
 		emp.getSchoolCareerList().add(education);
 		
-		employeeRepository.saveEmployee(emp);
+		repository.save(emp);
 	}
 	
 	private Employee getEmployeeInfo(String empId) {
-		Employee emp = employeeRepository.getEmployee(empId);
-		
-		if (emp == null) {
-			throw new IllegalArgumentException(empId + " 사번이 존재하지 않습니다.");
-		}
-		
-		return emp;
+		return repository.findById(empId)
+				 .orElseThrow(() -> new EntityNotFoundException(empId + " 사번이 존재하지 않습니다."));
 	}
 }

@@ -21,6 +21,7 @@ import com.like.hrm.appointment.boundary.AppointmentListDTO.SaveAppointmentList;
 import com.like.hrm.appointment.boundary.QueryAppointmentList;
 import com.like.hrm.appointment.domain.model.AppointmentList;
 import com.like.hrm.appointment.service.AppointmentCodeQueryService;
+import com.like.hrm.appointment.service.AppointmentCodeService;
 import com.like.hrm.appointment.service.AppointmentListCommandService;
 import com.like.hrm.appointment.service.AppointmentListQueryService;
 
@@ -30,29 +31,15 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AppointmentListController {
 
-	private AppointmentListCommandService commandService;	
+	private AppointmentListCommandService commandService;			
+	private AppointmentCodeService appointmentCodeService;	
 	
-	private AppointmentListQueryService queryService;
-	
-	private AppointmentCodeQueryService appointmentCodeQueryService;
-	
-	public AppointmentListController(AppointmentListCommandService commandService
-			,AppointmentListQueryService queryService
-			,AppointmentCodeQueryService appointmentCodeQueryService) {
-		this.commandService = commandService;
-		this.queryService = queryService;
-		this.appointmentCodeQueryService = appointmentCodeQueryService;
+	public AppointmentListController(AppointmentListCommandService commandService									
+									,AppointmentCodeService appointmentCodeService) {
+		this.commandService = commandService;		
+		this.appointmentCodeService = appointmentCodeService;		
 	}
-	
-	@GetMapping("/hrm/appointmentlist")
-	public ResponseEntity<?> getList(AppointmentListDTO.SearchAppointmentList dto) {
-				
-		List<QueryAppointmentList> list = queryService.getListDTO(dto);						
 		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
 	
 	@GetMapping("/hrm/appointmentlist/{listId}")
 	public ResponseEntity<?> getAppointmentList(@PathVariable(value="listId") Long listId) {
@@ -113,7 +100,7 @@ public class AppointmentListController {
 	@GetMapping("/hrm/appointmentlist/changeinfo/{code}")
 	public ResponseEntity<?> getCodeDetailList(@PathVariable(value="code") String code) {
 		
-		List<AppointmentListDTO.ChangeInfo> list = appointmentCodeQueryService.getChangeInfoList(code);			
+		List<AppointmentListDTO.ChangeInfo> list = appointmentCodeService.getChangeInfoList(code);			
 		
 		return WebControllerUtil.getResponse(list											
 											,String.format("%d 건 조회되었습니다.", list.size())

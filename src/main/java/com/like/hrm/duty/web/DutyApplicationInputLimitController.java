@@ -23,16 +23,16 @@ import com.like.hrm.duty.service.DutyApplicationInputLimitRuleService;
 @RestController
 public class DutyApplicationInputLimitController {
 	
-	private DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService;
+	private DutyApplicationInputLimitRuleService service;
 			
-	public DutyApplicationInputLimitController(DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService) {		
-		this.dutyApplicationInputLimitRuleService = dutyApplicationInputLimitRuleService;		
+	public DutyApplicationInputLimitController(DutyApplicationInputLimitRuleService service) {		
+		this.service = service;		
 	}
 	
 	@GetMapping("/hrm/dutyapplication/limit")
 	public ResponseEntity<?> getDutyApplicationLimitList() {
 		
-		List<DutyApplicationInputLimitRule> entityList = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule();					
+		List<DutyApplicationInputLimitRule> entityList = service.getDutyApplicationInputLimitRule();					
 					
 		List<DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule> list = entityList.stream()
 																								  .map(e -> DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(e))
@@ -46,7 +46,7 @@ public class DutyApplicationInputLimitController {
 	@GetMapping("/hrm/dutyapplication/limit/{id}")
 	public ResponseEntity<?> getDutyApplicationLimit(@PathVariable(value="id") Long id) {
 		
-		DutyApplicationInputLimitRule entity = dutyApplicationInputLimitRuleService.getDutyApplicationInputLimitRule(id);					
+		DutyApplicationInputLimitRule entity = service.getDutyApplicationInputLimitRule(id);					
 		
 		DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto = DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule.convert(entity); 
 		
@@ -62,7 +62,7 @@ public class DutyApplicationInputLimitController {
 			throw new ControllerException(result.toString());
 		} 
 																	
-		dutyApplicationInputLimitRuleService.saveDutyApplicationInputLimitRule(dto);						
+		service.saveDutyApplicationInputLimitRule(dto);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 저장되었습니다.", 1)
@@ -72,7 +72,7 @@ public class DutyApplicationInputLimitController {
 	@DeleteMapping("/hrm/dutyapplication/limit/{id}")
 	public ResponseEntity<?> deleteDutyApplicationLimit(@PathVariable(value="id") Long id) {				
 																		
-		dutyApplicationInputLimitRuleService.deleteDutyApplicationInputLimitRule(id);						
+		service.deleteDutyApplicationInputLimitRule(id);						
 								 					
 		return WebControllerUtil.getResponse(null											
 											,String.format("%d 건 삭제되었습니다.", 1)

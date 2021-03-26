@@ -7,23 +7,22 @@ import com.like.hrm.duty.domain.model.DutyCode;
 import com.like.hrm.duty.domain.model.DutyCodeRule;
 import com.like.hrm.duty.domain.model.DutyApplicationInputLimitRule;
 import com.like.hrm.duty.domain.repository.DutyApplicationInputLimitRuleRepository;
+import com.like.hrm.duty.domain.repository.DutyApplicationQueryRepository;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 import com.like.hrm.duty.domain.repository.DutyCodeRepository;
 
 public class DutyApplicationValidatorService {
 
-	private DutyApplicationRepository dutyApplicationRepository;
+	private DutyApplicationQueryRepository dutyApplicationRepository;	
+	private DutyCodeRepository dutyCodeRepository;	
+	private DutyApplicationInputLimitRuleRepository inputLimitRuleRepository; 
 	
-	private DutyCodeRepository dutyCodeRepository;
-	
-	private DutyApplicationInputLimitRuleRepository dutyApplicationInputLimitRuleRepository; 
-	
-	public DutyApplicationValidatorService(DutyApplicationRepository dutyApplicationRepository
+	public DutyApplicationValidatorService(DutyApplicationQueryRepository dutyApplicationRepository
 										  ,DutyCodeRepository dutyCodeRepository
-										  ,DutyApplicationInputLimitRuleRepository dutyApplicationInputLimitRuleRepository) {
+										  ,DutyApplicationInputLimitRuleRepository inputLimitRuleRepository) {
 		this.dutyApplicationRepository = dutyApplicationRepository;
 		this.dutyCodeRepository = dutyCodeRepository;
-		this.dutyApplicationInputLimitRuleRepository = dutyApplicationInputLimitRuleRepository;
+		this.inputLimitRuleRepository = inputLimitRuleRepository;
 	}
 	
 	public boolean valid(DutyApplication application) {
@@ -33,7 +32,7 @@ public class DutyApplicationValidatorService {
 		DutyApplicationInputLimitRule limit = null;
 		
 		for (DutyCodeRule rule : ruleList) {
-			limit = dutyApplicationInputLimitRuleRepository.getDutyApplicationInputLimitRule(rule.getDutyApplicationInputLimitId());
+			limit = inputLimitRuleRepository.findById(rule.getDutyApplicationInputLimitId()).orElse(null);
 			
 			List<DutyCode> dutyCodeList = getDutyCodeBySameLimitRule(rule.getDutyApplicationInputLimitId());
 			
@@ -50,10 +49,12 @@ public class DutyApplicationValidatorService {
 	}
 	
 	private List<DutyCode> getDutyCodeBySameLimitRule(Long id) {
-		return dutyCodeRepository.getDutyCodeList(id);
+		return null;
+		//return dutyCodeRepository.getDutyCodeList(id);
 	}
 	
 	private List<DutyCodeRule> getDutyCodeRuleList(String dutyCode) {
-		return dutyCodeRepository.getDutyCode(dutyCode).getDutyCodeRule();
+		return null;
+		//return dutyCodeRepository.getDutyCode(dutyCode).getDutyCodeRule();
 	}
 }

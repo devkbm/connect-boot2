@@ -1,11 +1,15 @@
 package com.like.hrm.appointment.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.like.hrm.appointment.boundary.AppointmentCodeDTO;
+import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.domain.model.AppointmentCode;
 import com.like.hrm.appointment.domain.model.AppointmentCodeDetail;
 import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
@@ -14,18 +18,18 @@ import com.like.hrm.appointment.domain.repository.AppointmentCodeRepository;
 @Transactional
 public class AppointmentCodeService {
 
-	private AppointmentCodeRepository appointmentCodeRepository;
+	private AppointmentCodeRepository repository;
 		
-	public AppointmentCodeService(AppointmentCodeRepository appointmentCodeRepository) {		
-		this.appointmentCodeRepository = appointmentCodeRepository;
+	public AppointmentCodeService(AppointmentCodeRepository repository) {		
+		this.repository = repository;
 	}
 	
 	public AppointmentCode getAppointmentCode(String codeId) {
-		return appointmentCodeRepository.getAppointmentCode(codeId);
+		return repository.findById(codeId).orElse(null);
 	}
 	
 	public void saveAppointmentCode(AppointmentCodeDTO.SaveCode dto) {
-		AppointmentCode appointmentCode = appointmentCodeRepository.getAppointmentCode(dto.getCode());
+		AppointmentCode appointmentCode = repository.findById(dto.getCode()).orElse(null);
 		
 		if (appointmentCode == null ) {		
 			appointmentCode = dto.newAppointmentCode();
@@ -33,27 +37,25 @@ public class AppointmentCodeService {
 			dto.modifyEntity(appointmentCode);
 		}
 		
-		appointmentCodeRepository.saveAppintmentCode(appointmentCode);
+		repository.save(appointmentCode);
 	}
 	
-	public void deleteAppintmentCode(String codeId) {
-		AppointmentCode appointmentCode = appointmentCodeRepository.getAppointmentCode(codeId);
-		
-		appointmentCodeRepository.deleteAppintmentCode(appointmentCode);
+	public void deleteAppintmentCode(String codeId) {				
+		repository.deleteById(codeId);
 	}
 	
 	public void deleteAppintmentCode(AppointmentCode appointmentCode) {
-		appointmentCodeRepository.deleteAppintmentCode(appointmentCode);
+		repository.delete(appointmentCode);
 	}	
 	
 	public AppointmentCodeDetail getAppointmentCodeDetail(String appointmentCode, String typeId) {
-		AppointmentCode entity = appointmentCodeRepository.getAppointmentCode(appointmentCode);
+		AppointmentCode entity = repository.findById(appointmentCode).orElse(null);
 		
 		return entity.getCodeDetail(typeId);
 	}
 		
 	public void saveAppointmentCodeDetail(AppointmentCodeDTO.SaveCodeDetail dto) {
-		AppointmentCode appointmentCode = appointmentCodeRepository.getAppointmentCode(dto.getCode());			
+		AppointmentCode appointmentCode = repository.findById(dto.getCode()).orElse(null);
 		
 		if (appointmentCode == null) {
 			throw new EntityNotFoundException(dto.getCode() + " 엔티티가 존재하지 않습니다.");
@@ -71,8 +73,15 @@ public class AppointmentCodeService {
 	}
 	
 	public void deleteAppointmentCodeDetail(String appointmentCode, String typeId) {
-		AppointmentCode entity = appointmentCodeRepository.getAppointmentCode(appointmentCode);			
+		AppointmentCode entity = repository.findById(appointmentCode).orElse(null);			
 		entity.deleteAppointmentCodeDetail(typeId);			
 	}		
 	
+	public List<AppointmentListDTO.ChangeInfo> getChangeInfoList(String appointmentCode) {
+		List<AppointmentCodeDetail> list = new ArrayList<>(repository.findById(appointmentCode).orElse(null).getCodeDetails().values());		
+		//log.info(list.toString());
+		
+		return AppointmentListDTO.ChangeInfo.convert(list);
+		
+	}
 }

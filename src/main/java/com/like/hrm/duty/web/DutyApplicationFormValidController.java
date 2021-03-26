@@ -9,22 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.duty.domain.repository.DutyApplicationRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
-public class DutyApplicationValidController {
+public class DutyApplicationFormValidController {
 
-	private DutyApplicationRepository dutyApplicationRepository;
+	private DutyApplicationRepository repository;
 	
-	public DutyApplicationValidController(DutyApplicationRepository dutyApplicationRepository) {
-		this.dutyApplicationRepository = dutyApplicationRepository;
+	public DutyApplicationFormValidController(DutyApplicationRepository repository) {
+		this.repository = repository;
 	}
 	
 	@GetMapping("/hrm/dutyapplication/{id}/valid")
 	public ResponseEntity<?> getDutyCode(@PathVariable(value="id") Long id) {
 		
-		boolean exist = dutyApplicationRepository.isDutyApplication(id);
+		boolean exist = repository.existsById(id);
 					
 		return WebControllerUtil.getResponse(exist											
 											,exist == true ? "사용가능한 근태 코드입니다." : "기존 근태 코드가 존재합니다."

@@ -24,4 +24,7 @@ public class WorkGroupQueryService {
 		return repository.getWorkGroupList(searchCondition);		
 	}
 			
+	public List<WorkGroup> getMyWorkGroupList(String userId) {
+		return repository.getWorkGroupList(userId);
+	}
 }

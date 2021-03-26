@@ -1,7 +1,5 @@
 package com.like.hrm.appointment.web;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,7 +15,6 @@ import com.like.common.web.exception.ControllerException;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentRegisterDTO;
 import com.like.hrm.appointment.domain.model.AppointmentRegister;
-import com.like.hrm.appointment.service.AppointmentRegisterQueryService;
 import com.like.hrm.appointment.service.AppointmentRegisterCommandService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,25 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AppointmentRegisterController {
 	
-	private AppointmentRegisterCommandService commandService;
-	
-	private AppointmentRegisterQueryService queryService;	
+	private AppointmentRegisterCommandService commandService;		
 
-	public AppointmentRegisterController(AppointmentRegisterCommandService commandService
-										,AppointmentRegisterQueryService queryService) {
-		this.commandService = commandService;
-		this.queryService = queryService;		
-	}
-	
-	@GetMapping("/hrm/appointmentregister")
-	public ResponseEntity<?> getAppointmentRegister(AppointmentRegisterDTO.SearchAppointmentRegister dto) {
-		
-		List<AppointmentRegister> list = queryService.getLedger(dto);						
-		
-		return WebControllerUtil.getResponse(list											
-											,String.format("%d 건 조회되었습니다.", list.size())
-											,HttpStatus.OK);
-	}
+	public AppointmentRegisterController(AppointmentRegisterCommandService commandService) {
+		this.commandService = commandService;		
+	}	
 	
 	@GetMapping("/hrm/appointmentregister/{id}")
 	public ResponseEntity<?> getAppointmentRegister(@PathVariable(value="id") String id) {

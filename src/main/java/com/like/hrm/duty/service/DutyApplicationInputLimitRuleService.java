@@ -20,15 +20,15 @@ public class DutyApplicationInputLimitRuleService {
 	}
 	
 	public List<DutyApplicationInputLimitRule> getDutyApplicationInputLimitRule() { 
-		return repository.getDutyApplicationInputLimitRule();
+		return repository.findAll();
 	}
 		
 	public DutyApplicationInputLimitRule getDutyApplicationInputLimitRule(Long id) {
-		return repository.getDutyApplicationInputLimitRule(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	public void saveDutyApplicationInputLimitRule(DutyApplicationInputLimitRule entity) {
-		repository.saveDutyApplicationInputLimitRule(entity);
+		repository.save(entity);
 	}
 	
 	public void saveDutyApplicationInputLimitRule(DutyApplicationInputLimitRuleDTO.SaveDutyApplicationInputLimitRule dto) {
@@ -44,11 +44,10 @@ public class DutyApplicationInputLimitRuleService {
 	}
 	
 	public void deleteDutyApplicationInputLimitRule(DutyApplicationInputLimitRule entity) {
-		repository.deleteDutyApplicationInputLimitRule(entity);
+		repository.delete(entity);
 	}
 	
 	public void deleteDutyApplicationInputLimitRule(Long id) {
-		DutyApplicationInputLimitRule entity = repository.getDutyApplicationInputLimitRule(id);
-		repository.deleteDutyApplicationInputLimitRule(entity);
+		repository.deleteById(id);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.like.common.util.SessionUtil;
 import com.like.common.web.util.WebControllerUtil;
 import com.like.workschedule.boundary.WorkDTO;
 import com.like.workschedule.domain.model.WorkGroup;
@@ -26,6 +27,21 @@ public class WorkGroupQueryController {
 	public ResponseEntity<?> getWorkGroupList(@ModelAttribute WorkDTO.SearchWorkGroup searchCondition) {
 						
 		List<WorkGroup> workGroupList = service.getWorkGroupList(searchCondition);				
+		
+		return WebControllerUtil
+				.getResponse(workGroupList
+							,workGroupList.size()
+							,workGroupList.isEmpty()? false : true
+							,workGroupList.size() + "건 조회 되었습니다."
+							,HttpStatus.OK);												
+	}
+	
+	@GetMapping(value={"/grw/myworkgroup"})
+	public ResponseEntity<?> getWorkGroupList() {
+						
+		String sessionId = SessionUtil.getUserId(); // SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		List<WorkGroup> workGroupList = service.getMyWorkGroupList(sessionId);				
 		
 		return WebControllerUtil
 				.getResponse(workGroupList

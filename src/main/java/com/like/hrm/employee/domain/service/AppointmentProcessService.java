@@ -19,9 +19,6 @@ import com.like.hrm.employee.domain.model.JobChangeHistory;
 import com.like.hrm.employee.domain.model.StatusChangeHistory;
 import com.like.hrm.employee.domain.repository.EmployeeRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class AppointmentProcessService {
 
@@ -40,8 +37,8 @@ public class AppointmentProcessService {
 	public void onApplicationEvent(AppointmentProcessEvent event) {	
 				
 		AppointmentList list = event.getAppointment();		
-		Employee employee = employeeRepository.getEmployee(list.getEmpId());			
-		AppointmentCode code = appointmentCodeRepository.getAppointmentCode(list.getAppointmentCode());
+		Employee employee = employeeRepository.findById(list.getEmpId()).orElse(null);			
+		AppointmentCode code = appointmentCodeRepository.findById(list.getAppointmentCode()).orElse(null);
 		
 		// 1. 인사정보(부서, 직위 등)을 적용한다.
 		appoint(list);
@@ -56,7 +53,7 @@ public class AppointmentProcessService {
 	}
 	
 	private void appoint(AppointmentList list) {		
-		Employee employee = employeeRepository.getEmployee(list.getEmpId());
+		Employee employee = employeeRepository.findById(list.getEmpId()).orElse(null);
 		
 		for (AppointmentChangeInfo changeInfo : list.getChangeInfoList()) {
 			

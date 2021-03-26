@@ -1,5 +1,6 @@
 package com.like.common.vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Embeddable
-public class DatePeriod {
+public class DatePeriod implements Serializable {
 
 	@Column(name="FROM_DT")
 	private LocalDate from;

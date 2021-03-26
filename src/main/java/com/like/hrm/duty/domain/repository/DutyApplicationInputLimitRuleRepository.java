@@ -1,16 +1,9 @@
 package com.like.hrm.duty.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.like.hrm.duty.domain.model.DutyApplicationInputLimitRule;
 
-public interface DutyApplicationInputLimitRuleRepository {
-
-	List<DutyApplicationInputLimitRule> getDutyApplicationInputLimitRule();
-	
-	DutyApplicationInputLimitRule getDutyApplicationInputLimitRule(Long id);
-	
-	void saveDutyApplicationInputLimitRule(DutyApplicationInputLimitRule entity);
-	
-	void deleteDutyApplicationInputLimitRule(DutyApplicationInputLimitRule entity);
+public interface DutyApplicationInputLimitRuleRepository extends JpaRepository<DutyApplicationInputLimitRule, Long>, QuerydslPredicateExecutor<DutyApplicationInputLimitRule> {
 }

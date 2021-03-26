@@ -26,8 +26,8 @@ public class EmployeeFamilyController {
 	}
 	
 	@GetMapping("/hrm/employee/{empId}/family/{id}")
-	public ResponseEntity<?> getFamily(@PathVariable String empId,
-										@PathVariable Long id) {
+	public ResponseEntity<?> getFamily(@PathVariable String empId
+									  ,@PathVariable Long id) {
 				
 		Family entity = service.getFamily(empId, id);  									
 				

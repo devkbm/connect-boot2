@@ -35,19 +35,15 @@ public class DutyApplicationController {
 
 	private DutyApplicationCommandService dutyApplicationCommandService;
 	
-	private DutyApplicationQueryService dutyApplicationQueryService;
-	
-	private DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService;
+	private DutyApplicationQueryService dutyApplicationQueryService;		
 	
 	private HolidayUtilService holidayUtilService;
 	
 	public DutyApplicationController(DutyApplicationCommandService dutyApplicationCommandService
-									,DutyApplicationQueryService dutyApplicationQueryService
-									,DutyApplicationInputLimitRuleService dutyApplicationInputLimitRuleService
+									,DutyApplicationQueryService dutyApplicationQueryService									
 									,HolidayUtilService holidayUtilService) {
 		this.dutyApplicationCommandService = dutyApplicationCommandService;
-		this.dutyApplicationQueryService = dutyApplicationQueryService;
-		this.dutyApplicationInputLimitRuleService = dutyApplicationInputLimitRuleService;
+		this.dutyApplicationQueryService = dutyApplicationQueryService;		
 		this.holidayUtilService = holidayUtilService;
 	}
 	
