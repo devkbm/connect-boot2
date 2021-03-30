@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -103,7 +104,7 @@ public class DeptDTO {
 		
 		String comment;
 		
-		public Dept newDept(Dept parentDept) {
+		public Dept newDept(@Nullable Dept parentDept) {
 			if (this.deptCode == null) {
 				new IllegalArgumentException("부서코드가 없습니다.");
 			}
@@ -120,7 +121,7 @@ public class DeptDTO {
 					   .build();
 		}
 		
-		public void modifyDept(Dept dept, Dept parentDept) {
+		public void modifyDept(Dept dept, @Nullable Dept parentDept) {
 			dept.modifyEntity(deptNameKorean
 							 ,deptAbbreviationKorean
 							 ,deptNameEnglish
