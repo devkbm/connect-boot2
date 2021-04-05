@@ -21,7 +21,6 @@ import com.like.user.domain.model.Authority;
 import com.like.user.domain.model.QUser;
 import com.like.user.domain.model.User;
 import com.like.user.domain.model.vo.AccountSpec;
-import com.like.user.domain.model.vo.UserPassword;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -43,8 +42,7 @@ public class UserDTO {
 								.modifiedDt(entity.getModifiedDt())
 								.modifiedBy(entity.getModifiedBy())
 								.userId(entity.getUserId())
-								.name(entity.getName())
-								.password(entity.getPassword())
+								.name(entity.getName())								
 								.deptCode(dept.map(Dept::getDeptCode).orElse(null))
 								.mobileNum(entity.getMobileNum())
 								.email(entity.getEmail())
@@ -135,8 +133,7 @@ public class UserDTO {
 		String userId;
 			
 		String name;
-			
-		String password;	
+				
 		
 		String deptCode;
 		
@@ -163,8 +160,7 @@ public class UserDTO {
 		public User newUser(Dept dept, List<Authority> authorityList, List<MenuGroup> menuGroupList) {
 			return User.builder()
 					   .userId(this.userId)
-					   .name(this.name)
-					   .password(new UserPassword(this.password))	
+					   .name(this.name)					   
 					   .dept(dept)				
 					   .mobileNum(this.mobileNum)
 					   .email(this.email)

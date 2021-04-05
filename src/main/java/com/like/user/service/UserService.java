@@ -66,15 +66,11 @@ public class UserService {
 	 */
 	public void saveUser(UserDTO.SaveUser dto) {
 		User user = repository.findById(dto.getUserId()).orElse(null);
-		Dept dept = null;
+		Dept dept = dto.getDeptCode() == null ? null : deptRepository.findById(dto.getDeptCode()).orElse(null); 
 		
 		List<Authority> authorityList = authorityRepository.findAllById(dto.getAuthorityList());		
 		List<MenuGroup> menuGroupList = menuRepository.findAllById(dto.getMenuGroupList());		 
-		
-		if ( dto.getDeptCode() != null ) {
-			dept = deptRepository.findById(dto.getDeptCode()).orElse(null);
-		}
-		
+						
 		if (user == null) {
 			user = dto.newUser(dept, authorityList, menuGroupList);
 		} else {

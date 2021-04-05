@@ -46,26 +46,10 @@ public class User extends AuditEntity implements UserDetails {
 	
 	@Column(name="user_name")
 	String name;
-	/*	
-	@Column(name="pwd")
-	String password;	
-	*/
+			
 	@Embedded
 	UserPassword password;
-	
-	/*
-	@Column(name="non_expired_yn")
-	Boolean isAccountNonExpired = true;
 		
-	@Column(name="non_locked_yn")
-	Boolean isAccountNonLocked = true;
-		
-	@Column(name="pass_non_expired_yn")
-	Boolean isCredentialsNonExpired = true;
-		
-	@Column(name="enabled_yn")
-	Boolean isEnabled = true;
-	*/
 	@Embedded
 	AccountSpec accountSpec;
 	
@@ -95,8 +79,15 @@ public class User extends AuditEntity implements UserDetails {
 	List<MenuGroup> menuGroupList = new ArrayList<>();		
 		
 	@Builder
-	public User(String userId, String name, UserPassword password, Dept dept, String mobileNum, String email,
-			AccountSpec accountSpec, List<Authority> authorities,	List<MenuGroup> menuGroupList) {		
+	public User(String userId
+			   ,String name
+			   ,UserPassword password
+			   ,Dept dept
+			   ,String mobileNum
+			   ,String email
+			   ,AccountSpec accountSpec
+			   ,List<Authority> authorities
+			   ,List<MenuGroup> menuGroupList) {		
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
@@ -106,6 +97,8 @@ public class User extends AuditEntity implements UserDetails {
 		this.accountSpec = accountSpec;		
 		this.authorities = authorities;
 		this.menuGroupList = menuGroupList;
+		
+		this.initPassword();
 	}	
 	
 	public void modifyEntity(String name														
