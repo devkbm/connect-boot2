@@ -83,7 +83,9 @@ public class UserService {
 		
 		if ( user.getAuthorityList().isEmpty() ) {
 			initAuthority(user);
-		}						
+		}			
+		
+		repository.save(user);
 								
 	}
 		
