@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.util.SessionUtil;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.util.SessionUtil;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.workschedule.boundary.WorkDTO;
 import com.like.workschedule.domain.model.WorkGroup;
 import com.like.workschedule.service.WorkGroupQueryService;

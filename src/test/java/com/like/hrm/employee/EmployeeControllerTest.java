@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.like.common.web.response.ResponseObject;
+import com.like.core.web.response.ResponseObject;
 import com.like.hrm.employee.domain.model.Employee;
 import com.like.user.boundary.LoginRequestDTO;
 import com.like.user.domain.model.AuthenticationToken;

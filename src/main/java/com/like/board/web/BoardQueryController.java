@@ -13,7 +13,7 @@ import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.service.BoardQueryService;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.menu.boundary.EnumDTO;
 
 @RestController

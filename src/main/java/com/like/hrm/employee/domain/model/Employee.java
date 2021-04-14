@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 import com.like.hrm.employee.domain.model.vo.DeptChangeList;
 import com.like.hrm.employee.domain.model.vo.FamilyList;
 import com.like.hrm.employee.domain.model.vo.JobChangeList;

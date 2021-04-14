@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 import com.like.dept.domain.model.Dept;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.user.domain.model.vo.AccountSpec;

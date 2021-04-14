@@ -18,8 +18,7 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 import com.like.menu.domain.model.enums.MenuType;
 
 import lombok.AccessLevel;

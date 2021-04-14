@@ -17,7 +17,7 @@ import com.like.board.domain.repository.ArticleCheckRepository;
 import com.like.board.domain.repository.ArticleRepository;
 import com.like.board.domain.repository.BoardRepository;
 import com.like.board.domain.service.AttachedFileConverter;
-import com.like.common.util.SessionUtil;
+import com.like.core.util.SessionUtil;
 import com.like.file.domain.model.FileInfo;
 import com.like.file.service.FileService;
 

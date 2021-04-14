@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

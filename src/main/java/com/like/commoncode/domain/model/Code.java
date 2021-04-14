@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.exception.ControllerException;
-import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.service.CommonCodeCommandService;
+import com.like.core.web.exception.ControllerException;
+import com.like.core.web.util.WebControllerUtil;
 
 @RestController
 public class CommonCodeController {

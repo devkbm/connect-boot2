@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.exception.ControllerException;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.exception.ControllerException;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentRegisterDTO;
 import com.like.hrm.appointment.domain.model.AppointmentRegister;
 import com.like.hrm.appointment.service.AppointmentRegisterCommandService;

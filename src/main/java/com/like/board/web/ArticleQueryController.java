@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.like.board.boundary.ArticleDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.service.ArticleQueryService;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.util.WebControllerUtil;
 
 @Controller
 public class ArticleQueryController {

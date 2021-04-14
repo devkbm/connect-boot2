@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.dept.boundary.DeptDTO;
 import com.like.dept.boundary.DeptDTO.DeptHierarchy;
 import com.like.dept.domain.model.Dept;

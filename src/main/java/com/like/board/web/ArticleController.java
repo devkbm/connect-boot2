@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.like.board.boundary.ArticleDTO;
 import com.like.board.domain.model.Article;
 import com.like.board.service.ArticleCommandService;
-import com.like.common.web.exception.ControllerException;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.exception.ControllerException;
+import com.like.core.web.util.WebControllerUtil;
 
 @Controller
 public class ArticleController {	

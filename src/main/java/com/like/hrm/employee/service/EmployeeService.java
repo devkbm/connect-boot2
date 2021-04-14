@@ -5,7 +5,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.common.vo.DatePeriod;
+import com.like.core.vo.DatePeriod;
 import com.like.hrm.employee.boundary.EmployeeDTO;
 import com.like.hrm.employee.domain.model.DeptChangeHistory;
 import com.like.hrm.employee.domain.model.Employee;

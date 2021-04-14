@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import com.like.common.vo.DatePeriod;
+import com.like.core.vo.DatePeriod;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentChangeInfo;
 import com.like.hrm.appointment.domain.model.AppointmentCode;

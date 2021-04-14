@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.exception.ControllerException;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.exception.ControllerException;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.hrm.payitem.boundary.PayItemDTO;
 import com.like.hrm.payitem.domain.model.PayItem;
 import com.like.hrm.payitem.service.PayItemService;

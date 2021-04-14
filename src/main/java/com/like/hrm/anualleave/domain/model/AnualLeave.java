@@ -11,7 +11,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

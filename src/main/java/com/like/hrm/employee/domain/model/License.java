@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

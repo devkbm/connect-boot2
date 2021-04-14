@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.util.StringUtils;
 
-import com.like.common.validation.annotation.Id;
+import com.like.core.validation.annotation.Id;
 import com.like.dept.domain.model.Dept;
 import com.like.menu.domain.model.MenuGroup;
 import com.like.user.domain.model.Authority;

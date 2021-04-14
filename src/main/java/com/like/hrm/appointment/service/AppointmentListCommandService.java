@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.like.common.web.exception.ControllerException;
+import com.like.core.web.exception.ControllerException;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.domain.event.AppointmentProcessEvent;
 import com.like.hrm.appointment.domain.model.AppointmentList;

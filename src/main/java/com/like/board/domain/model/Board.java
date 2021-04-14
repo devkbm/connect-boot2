@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.*;
 import com.like.board.domain.model.enums.BoardType;
 import com.like.board.domain.model.vo.Period;
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

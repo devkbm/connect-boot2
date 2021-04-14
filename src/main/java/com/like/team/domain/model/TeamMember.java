@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.like.common.domain.AuditEntity;
+import com.like.core.domain.AuditEntity;
 import com.like.team.domain.model.id.TeamMemberId;
 import com.like.user.domain.model.User;
 

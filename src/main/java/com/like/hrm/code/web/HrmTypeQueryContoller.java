@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO;
 import com.like.hrm.appointment.boundary.ChangeableTypeDTO.EnumDTO;
 import com.like.hrm.code.boundary.HrmTypeDTO;

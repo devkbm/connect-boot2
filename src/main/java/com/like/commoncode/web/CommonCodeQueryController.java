@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.like.common.web.util.WebControllerUtil;
 import com.like.commoncode.boundary.CodeDTO;
 import com.like.commoncode.boundary.CodeHierarchy;
 import com.like.commoncode.domain.model.Code;
 import com.like.commoncode.service.CommonCodeQueryService;
+import com.like.core.web.util.WebControllerUtil;
 
 @RestController
 public class CommonCodeQueryController {

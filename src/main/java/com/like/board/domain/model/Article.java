@@ -18,8 +18,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.like.board.domain.model.enums.PasswordType;
 import com.like.board.domain.model.vo.Period;
-import com.like.common.domain.AuditEntity;
-import com.like.common.util.SessionUtil;
+import com.like.core.domain.AuditEntity;
+import com.like.core.util.SessionUtil;
 import com.like.file.domain.model.FileInfo;
 
 /**

@@ -19,8 +19,8 @@ import com.like.board.boundary.BoardDTO;
 import com.like.board.domain.model.Board;
 import com.like.board.domain.model.BoardBookmark;
 import com.like.board.service.BoardCommandService;
-import com.like.common.web.exception.ControllerException;
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.exception.ControllerException;
+import com.like.core.web.util.WebControllerUtil;
 
 @RestController
 public class BoardController {

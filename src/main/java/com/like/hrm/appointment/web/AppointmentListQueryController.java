@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.like.common.web.util.WebControllerUtil;
+import com.like.core.web.util.WebControllerUtil;
 import com.like.hrm.appointment.boundary.AppointmentListDTO;
 import com.like.hrm.appointment.boundary.QueryAppointmentList;
 import com.like.hrm.appointment.service.AppointmentListQueryService;

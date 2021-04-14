@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.like.common.vo.Period;
+import com.like.core.vo.Period;
 import com.like.holiday.domain.model.DateInfo;
 import com.like.holiday.domain.model.DateInfoList;
 import com.like.holiday.domain.service.HolidayUtilService;

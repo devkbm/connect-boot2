@@ -12,7 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.like.common.vo.DatePeriod;
+import com.like.core.vo.DatePeriod;
 import com.like.dept.domain.model.Dept;
 import com.like.dept.domain.model.QDept;
 import com.querydsl.core.BooleanBuilder;
